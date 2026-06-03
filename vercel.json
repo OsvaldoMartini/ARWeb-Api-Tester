@@ -1,6 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "npm run build:vercel",
+  "buildCommand": "node_modules/.bin/tsc -b packages/infrastructure packages/api-testing-engine packages/agents packages/mock-server packages/application packages/shared-ui && node_modules/.bin/vite build",
   "outputDirectory": "dist",
   "installCommand": "npm install",
   "framework": null,

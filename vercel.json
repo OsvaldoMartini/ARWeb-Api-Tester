@@ -1,6 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "cd $(git rev-parse --show-toplevel) && npx tsc -b packages/infrastructure packages/api-testing-engine packages/agents packages/mock-server packages/application packages/shared-ui && npx vite build",
+  "buildCommand": "cd $(git rev-parse --show-toplevel) && npx tsc -b packages/domain packages/shared-ui && npx vite build",
   "outputDirectory": "dist",
   "installCommand": "npm install",
   "framework": null,

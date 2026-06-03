@@ -10,6 +10,7 @@
 //! Vite), so the spawn here is intentionally best-effort: if the sidecar binary
 //! isn't bundled (dev), we log and carry on rather than failing to open.
 
+#[cfg(not(debug_assertions))]
 use tauri::Manager;
 #[cfg(not(debug_assertions))]
 use tauri_plugin_shell::{process::CommandChild, ShellExt};

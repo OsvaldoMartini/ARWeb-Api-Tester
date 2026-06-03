@@ -1,7 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "buildCommand": "cd $(git rev-parse --show-toplevel) && node_modules/.bin/tsc -b packages/domain packages/shared-ui && node_modules/.bin/vite build",
-  "outputDirectory": "dist",
+  "outputDirectory": "../dist",
   "installCommand": "cd $(git rev-parse --show-toplevel) && npm install --include=dev",
   "framework": null,
   "rewrites": [

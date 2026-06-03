@@ -1,0 +1,16 @@
+{
+  "$comment": "Demo context for offline/agent flows. These are illustrative placeholders for UI demos only; they are NOT API responses and never bypass the RealApiCatalogValidator. Real endpoint data always comes from imported specs.",
+  "personas": [
+    { "id": "rm-1", "role": "employee", "name": "Relationship Manager", "description": "Manages a book of private-banking clients." },
+    { "id": "client-1", "role": "client", "name": "Demo Client", "description": "Private-banking client used for client-mode demos." }
+  ],
+  "sampleClients": [
+    { "id": "C-1001", "name": "Acme Holdings", "segment": "Corporate", "relationshipManagerId": "rm-1" },
+    { "id": "C-1002", "name": "Jane Doe", "segment": "Private", "relationshipManagerId": "rm-1" }
+  ],
+  "sampleQuestions": [
+    "Which endpoints expose a client's cash balance?",
+    "How do I place a securities order?",
+    "What compliance checks run before a payment?"
+  ]
+}

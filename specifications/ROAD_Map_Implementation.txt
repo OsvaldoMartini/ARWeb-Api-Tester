@@ -1,0 +1,819 @@
+# Roadmap — React + TypeScript + Tauri API Testing Tool
+
+## Important technical decision
+
+Your target should be:
+
+**React + TypeScript frontend**
+**Node.js / TypeScript business engine**
+**SQLite local database**
+**Tauri executable wrapper**
+**No C# business logic**
+
+One clarification: Tauri itself is not a pure Node.js runtime. Tauri applications use a web frontend and a native shell; the backend side commonly uses Rust when needed. However, Tauri officially supports packaging a Node.js application as a sidecar, so the client does **not** need to install Node.js separately. This is the best approach for your goal: no C#, business logic in TypeScript/Node, final delivery as a Tauri `.exe` installer. ([Tauri][1]) ([Tauri][2])
+
+---
+
+# 1. Final Product Vision
+
+Create a desktop application for non-technical clients to test APIs without using Postman, code, scripts, or technical configuration.
+
+The application must allow the user to:
+
+1. Import OpenAPI / Swagger files.
+2. Automatically build an API catalog.
+3. Organize APIs by business category.
+4. Ask questions in natural language.
+5. Generate test cases with AI.
+6. Build visual no-code API workflows.
+7. Execute tests against real APIs.
+8. Execute tests against a local mock server.
+9. Validate that no fake endpoint or field is invented.
+10. Generate reports and exports.
+11. Deliver everything as a Tauri Windows executable.
+
+The strongest source architecture is the combination of Pilot 3 for the multi-agent architecture, Pilot 1 for the BotJob engine and full data model, and Pilot 2 for the mock server, floating AI prompt, and runtime services. 
+
+---
+
+# 2. Target Architecture
+
+```text
+ARWEB API Tester - Tauri Final
+│
+├── apps/
+│   ├── desktop/                 React + TypeScript + Tauri shell
+│   └── node-sidecar/             Node.js backend packaged with Tauri
+│
+├── packages/
+│   ├── domain/                   Pure TypeScript entities and models
+│   ├── application/              Use cases, interfaces, DTOs
+│   ├── infrastructure/           OpenAPI import, SQLite, AI, reports
+│   ├── api-testing-engine/       BotJob engine, assertions, variables
+│   ├── agents/                   Banking agents, router, capability map
+│   ├── mock-server/              Local mock HTTP server
+│   ├── shared-ui/                React components and design system
+│   └── common/                   Logging, validation, utilities
+│
+├── data/
+│   ├── app.db                    SQLite database
+│   ├── demo-context.json
+│   └── exports/
+│
+└── specifications/
+    ├── ROADMAP.md
+    ├── ARCHITECTURE.md
+    └── FUNCTIONAL-SPECIFICATION.md
+```
+
+The architecture should keep the clean separation from Pilot 1, but rewrite it in TypeScript: Domain, Application, Infrastructure, Desktop UI, and Runtime Services. Pilot 1 already has the richest lifecycle model: OpenAPI import, BotJobs, variables, execution runs, execution step results, AI provider settings, and configuration persistence. 
+
+---
+
+# 3. Recommended Technology Stack
+
+| Area             | Recommended Choice                                           |
+| ---------------- | ------------------------------------------------------------ |
+| Desktop wrapper  | Tauri v2                                                     |
+| Frontend         | React + TypeScript                                           |
+| Build frontend   | Vite                                                         |
+| UI library       | Tailwind CSS + shadcn/ui or MUI                              |
+| State management | Zustand or Redux Toolkit                                     |
+| Forms            | React Hook Form + Zod                                        |
+| Backend runtime  | Node.js sidecar packaged with Tauri                          |
+| Language         | TypeScript only                                              |
+| Database         | SQLite                                                       |
+| ORM              | Drizzle ORM or Prisma                                        |
+| OpenAPI parser   | `@apidevtools/swagger-parser`                                |
+| HTTP execution   | `undici` or Axios                                            |
+| Mock server      | Fastify                                                      |
+| AI providers     | OpenAI, Anthropic, Gemini, Azure OpenAI, Ollama, Together.ai |
+| Reports          | HTML/PDF via Playwright or PDFKit                            |
+| Excel/CSV        | ExcelJS + PapaParse                                          |
+| Logging          | Pino                                                         |
+| Testing          | Vitest + Playwright                                          |
+| Packaging        | `npm run tauri build`                                        |
+
+Tauri can bundle the desktop application into Windows installers using the Tauri CLI build command, and the Windows development environment requires Microsoft C++ Build Tools plus WebView2. ([Tauri][3]) ([Tauri][4])
+
+---
+
+# 4. What to Reuse from Each Pilot
+
+## From Pilot 1 — API Testing Workbench Core
+
+Reuse the concepts, not the C# code:
+
+* BotJob engine.
+* 33 command types.
+* Visual no-code workflow idea.
+* Banking taxonomy with 25 categories.
+* SQLite full audit trail.
+* AI test data generation.
+* AI BotJob generation.
+* CSV export.
+* Bash/curl export.
+* Excel/CSV data-driven testing.
+* Variable substitution.
+* Execution runs and step results.
+
+Pilot 1 is the most complete API testing workbench and includes the most important backend functionalities for a serious test tool. 
+
+## From Pilot 2 — Runtime Services and UX
+
+Reuse these ideas:
+
+* Local mock HTTP server.
+* Test runner service.
+* Floating AI prompt window.
+* App context builder.
+* Action registry.
+* Prompt relay / event bus.
+* Classification visualizer.
+* Professional reports.
+* Release distribution model.
+
+Pilot 2 is especially important because it adds runtime infrastructure around the core: mock server, test execution service, floating AI prompt, and app-action integration. 
+
+## From Pilot 3 — Final Core Architecture
+
+Use Pilot 3 as the conceptual base:
+
+* Multi-agent router.
+* 14 banking agents.
+* Capability map.
+* Evidence builder.
+* Demo banking context.
+* Cleanest codebase structure.
+* Employee/client conversation modes.
+* No-invention validation rule.
+
+Pilot 3 is the best architectural foundation because it separates banking responsibilities into specialized agents and keeps the `RealApiCatalogValidator` as the central anti-hallucination gate. 
+
+---
+
+# 5. Roadmap by Phase
+
+## Phase 0 — Product Definition and Technical Baseline
+
+**Goal:** Define the final product before writing code.
+
+Deliverables:
+
+```text
+/specifications/PRODUCT_VISION.md
+/specifications/FUNCTIONAL_REQUIREMENTS.md
+/specifications/TECHNICAL_ARCHITECTURE.md
+/specifications/DATA_MODEL.md
+/specifications/SECURITY_MODEL.md
+```
+
+Decisions:
+
+* The application will not use C#.
+* The UI will be React + TypeScript.
+* The business engine will be Node.js + TypeScript.
+* Tauri will only package and expose native desktop capabilities.
+* Rust inside Tauri must remain minimal and must not contain business logic.
+* The Node sidecar will contain the API testing engine.
+
+---
+
+## Phase 1 — New Tauri + React + TypeScript Foundation
+
+**Goal:** Create the clean final project structure.
+
+Tasks:
+
+1. Create new Tauri v2 project.
+2. Configure React + Vite + TypeScript.
+3. Add Tailwind or MUI.
+4. Add strict TypeScript configuration.
+5. Add ESLint, Prettier, Vitest.
+6. Add Tauri permissions only for required features.
+7. Create the Node.js sidecar package.
+8. Configure the sidecar to start/stop with the desktop app.
+9. Create IPC communication between React and Node sidecar.
+10. Add first startup screen.
+
+Suggested commands:
+
+```bash
+npm create tauri-app@latest arweb-api-tester
+cd arweb-api-tester
+npm install
+npm run tauri dev
+```
+
+Target result:
+
+```text
+React UI starts inside Tauri.
+Node sidecar starts automatically.
+React can call the Node API engine.
+No C# exists in the solution.
+```
+
+---
+
+## Phase 2 — Core TypeScript Domain Model
+
+**Goal:** Rebuild the shared business model in TypeScript.
+
+Create TypeScript models for:
+
+```text
+ApiSpec
+ApiEndpoint
+ApiParameter
+ApiOutputField
+ApiDependency
+BusinessCategory
+BusinessSubcategory
+BusinessTestCase
+BotJob
+BotJobBlock
+BotJobCommand
+BotVariable
+ExecutionRun
+ExecutionStepResult
+AiProviderSetting
+ConfigurationSetting
+DemoBankingContext
+Agent
+CapabilityMap
+Evidence
+```
+
+This phase ports the data model ideas from Pilot 1 and Pilot 3 into TypeScript. Pilot 1 has the most complete persistent schema, while Pilot 3 adds the agent, capability, evidence, and demo-context concepts.  
+
+---
+
+## Phase 3 — SQLite Persistence Layer
+
+**Goal:** Build the local database layer.
+
+Tasks:
+
+1. Add SQLite database.
+2. Add migrations.
+3. Add repository layer.
+4. Persist imported API catalog.
+5. Persist BotJobs.
+6. Persist execution history.
+7. Persist AI provider settings.
+8. Persist app configuration.
+9. Persist prompt templates.
+10. Encrypt API keys.
+
+Recommended schema:
+
+```text
+api_specs
+api_endpoints
+api_parameters
+api_output_fields
+api_dependencies
+business_categories
+business_subcategories
+business_test_cases
+bot_jobs
+bot_job_blocks
+bot_job_commands
+bot_variables
+components
+component_commands
+dataset_definitions
+execution_runs
+execution_step_results
+configuration_settings
+ai_provider_settings
+prompt_templates
+prompt_commands
+demo_banking_contexts
+```
+
+Important: do **not** keep the imported catalog only in memory. Pilot 2 and Pilot 3 both have an in-memory catalog limitation; the final product should persist the catalog to avoid reimporting large API folders on every startup.  
+
+---
+
+## Phase 4 — OpenAPI Import Engine
+
+**Goal:** Recreate the OpenAPI importer in Node.js.
+
+Tasks:
+
+1. Scan folders recursively.
+2. Support `.yaml`, `.yml`, `.json`.
+3. Ignore generated folders:
+
+```text
+node_modules
+dist
+build
+.git
+.vs
+bin
+obj
+```
+
+4. Parse OpenAPI files.
+5. Extract endpoints.
+6. Extract methods, paths, operation IDs, tags.
+7. Extract request schemas.
+8. Extract response schemas.
+9. Extract parameters.
+10. Save everything into SQLite.
+11. Display import errors clearly in the UI.
+
+React screens:
+
+```text
+Load APIs
+Import Status
+Failed Imports
+API Catalog
+Schema Viewer
+```
+
+This phase replaces the C# `OpenApiCatalogImporter` concept with a TypeScript service.
+
+---
+
+## Phase 5 — RealApiCatalogValidator
+
+**Goal:** Implement the most important rule: no fake API usage.
+
+This must be a non-bypassable TypeScript service.
+
+Responsibilities:
+
+```text
+validateEndpointExists(endpointId)
+validateMethodAndPath(method, path)
+validateParameterExists(endpointId, parameterName)
+validateOutputFieldExists(endpointId, jsonPath)
+validateBotJobCommand(command)
+validateAgentPlan(plan)
+validateAiGeneratedBotJob(botJob)
+```
+
+This rule is the core trust mechanism across all three pilots. The final recommendations explicitly identify `RealApiCatalogValidator` as the single most important architectural invariant. 
+
+---
+
+## Phase 6 — Banking Taxonomy and Business Catalog
+
+**Goal:** Make the product understandable for non-technical banking users.
+
+Tasks:
+
+1. Port the 25 banking categories.
+2. Port the 5 subcategories per category.
+3. Create keyword mapping.
+4. Auto-map endpoints to business categories.
+5. Allow manual correction in the UI.
+6. Show API coverage per business domain.
+7. Generate business test case suggestions.
+
+UI screens:
+
+```text
+Business Categories
+Subcategories
+Mapped APIs
+Unmapped APIs
+Coverage Dashboard
+Suggested Test Cases
+```
+
+Pilot 1 already proves that the banking taxonomy is critical for non-technical users because it lets them work by business area instead of raw endpoint names. 
+
+---
+
+## Phase 7 — Multi-Agent Banking Assistant
+
+**Goal:** Rebuild Pilot 3’s agent architecture in TypeScript.
+
+Create these packages:
+
+```text
+packages/agents/
+├── BankingAgentRouter.ts
+├── Orchestrator.ts
+├── CapabilityMap.ts
+├── EvidenceBuilder.ts
+├── agents/
+│   ├── RelationshipManagerAgent.ts
+│   ├── PortfolioAdvisorAgent.ts
+│   ├── CashAndPaymentsAgent.ts
+│   ├── SecuritiesTradingAgent.ts
+│   ├── CreditAndLendingAgent.ts
+│   ├── ComplianceAndRiskAgent.ts
+│   ├── BackOfficeOperationsAgent.ts
+│   ├── ReportingAndCOOAgent.ts
+│   ├── AuditAndUATAgent.ts
+│   ├── ClientWealthAssistantAgent.ts
+│   ├── ClientCashAssistantAgent.ts
+│   ├── ClientTradingAssistantAgent.ts
+│   ├── ClientCreditAssistantAgent.ts
+│   └── ClientMessagesAndDocumentsAgent.ts
+```
+
+Each agent must:
+
+1. Receive the user question.
+2. Identify relevant capabilities.
+3. Build an API execution plan.
+4. Validate the plan through `RealApiCatalogValidator`.
+5. Generate evidence.
+6. Return either a supported answer or a clear limitation.
+
+This is the best part of Pilot 3 and should become the main intelligence layer of the new product. 
+
+---
+
+## Phase 8 — BotJob Engine in TypeScript
+
+**Goal:** Rebuild the Pilot 1 BotJob engine as the core test automation engine.
+
+Minimum command types for MVP:
+
+```text
+API_CALL
+SET_VARIABLE
+ASSERT_STATUS_CODE
+ASSERT_FIELD_VALUE
+ASSERT_JSON_PATH_EXISTS
+EXTRACT_JSON_PATH
+IF
+ELSE
+LOOP
+FOR_EACH
+READ_CSV
+READ_EXCEL
+WAIT
+AI_GENERATE_DATA
+CALL_COMPONENT
+STOP_ON_FAILURE
+```
+
+Later, expand to the full 33 command types from Pilot 1.
+
+Engine responsibilities:
+
+```text
+loadBotJob(botJobId)
+validateBotJob(botJob)
+resolveVariables(context)
+executeCommand(command)
+executeApiCall(command)
+runAssertions(command)
+extractValues(command)
+storeStepResult(result)
+generateExecutionSummary()
+```
+
+Execution result must store:
+
+```text
+runId
+stepId
+commandType
+status
+request
+response
+durationMs
+errorMessage
+assertionResults
+createdAt
+```
+
+Pilot 1 already has the strongest BotJob workflow model, with command execution, variable substitution, AI generation, Excel/CSV testing, and run reporting. 
+
+---
+
+## Phase 9 — Visual No-Code BotJob Designer
+
+**Goal:** Replace WPF BotJob screens with a modern React visual editor.
+
+Recommended layout:
+
+```text
+Left Panel      Business Categories / API Toolbox
+Center Canvas   BotJob Blocks and Commands
+Right Panel     Selected Command Properties
+Bottom Panel    Validation Errors / Execution Logs
+```
+
+Features:
+
+1. Drag-and-drop blocks.
+2. Add API call command.
+3. Add assertion command.
+4. Add variable extraction.
+5. Add loop.
+6. Add condition.
+7. Add Excel/CSV input.
+8. Validate command before saving.
+9. Show business-friendly labels.
+10. Hide technical JSON unless advanced mode is enabled.
+
+This directly implements the non-technical user goal from Pilot 1, where BotJob commands are described in business terms such as “Call API,” “Check field equals,” and “Repeat for each item.” 
+
+---
+
+## Phase 10 — Mock Server in Node.js
+
+**Goal:** Recreate Pilot 2’s mock server as a Fastify service inside the Node sidecar.
+
+Features:
+
+1. Start/stop mock server from UI.
+2. Configurable port.
+3. Match imported endpoints.
+4. Generate schema-aware mock responses.
+5. Log incoming requests.
+6. Show request history in React.
+7. Support latency simulation.
+8. Support error simulation.
+9. Support fixed mock data overrides.
+10. Support export of mock configuration.
+
+UI screen:
+
+```text
+Mock Server
+├── Status
+├── Port
+├── Start / Stop
+├── Imported Endpoints
+├── Request Log
+├── Response Preview
+└── Mock Rules
+```
+
+Pilot 2’s mock server is one of the most reusable components because it allows clients to test without a live banking backend. 
+
+---
+
+## Phase 11 — AI Layer
+
+**Goal:** Create a provider-independent AI system in TypeScript.
+
+Providers:
+
+```text
+OpenAI
+Anthropic Claude
+Google Gemini
+Azure OpenAI
+Ollama local
+Together.ai
+Custom OpenAI-compatible endpoint
+```
+
+AI services:
+
+```text
+AiProviderService
+AiPromptTemplateService
+AiTestDataGenerator
+AiBotJobGenerator
+AiErrorExplainer
+AiEndpointClassifier
+AiChatFormatter
+AppContextBuilder
+ActionRegistry
+```
+
+Rules:
+
+1. AI must never call APIs directly.
+2. AI must only suggest.
+3. Every generated endpoint or field must pass `RealApiCatalogValidator`.
+4. Client mode must hide technical endpoint names.
+5. If AI output looks unsafe or technical in client mode, fallback to rule-based response.
+6. API keys must be encrypted in SQLite.
+
+Pilot 1 provides the strongest multi-provider idea, while Pilot 2 provides the best `AppContextBuilder` and `ActionRegistry` pattern.  
+
+---
+
+## Phase 12 — Reports and Exports
+
+**Goal:** Give clients professional outputs.
+
+Reports:
+
+```text
+API Coverage Report
+Execution Run Report
+Failed Tests Report
+Business Category Coverage
+Customer 360 Demo Report
+Portfolio Report
+Payments Report
+Securities Report
+Credit Report
+Compliance Report
+```
+
+Exports:
+
+```text
+PDF
+HTML
+CSV
+JSON
+Bash/curl script
+Postman collection
+OpenAPI coverage matrix
+```
+
+Pilot 1 already includes CSV and Bash export; Pilot 2 and Pilot 3 include professional PDF report concepts. The final product should combine both. 
+
+---
+
+## Phase 13 — React UX for Non-Technical Clients
+
+**Goal:** Make the tool simple enough for business users.
+
+Main navigation:
+
+```text
+1. Home
+2. Import APIs
+3. API Catalog
+4. Business Categories
+5. AI Assistant
+6. Test Cases
+7. BotJob Designer
+8. Execute Tests
+9. Mock Server
+10. Reports
+11. Settings
+```
+
+UX principles:
+
+1. No code editor visible by default.
+2. Use business terms, not technical terms.
+3. Show guided workflows.
+4. Add demo prompts.
+5. Add “explain this error” AI button.
+6. Add client mode and expert mode.
+7. Always show limitations clearly.
+8. Use badges: mapped, unmapped, validated, failed, passed.
+9. Add first-run wizard.
+10. Add sample banking project.
+
+The final recommendations already identify the best UX ideas: specialist selector, two conversation modes, demo prompts, visual BotJob editor, floating AI window, progress indicators, mock server control, and evidence panel. 
+
+---
+
+## Phase 14 — Security and Packaging
+
+**Goal:** Deliver a safe executable to the client.
+
+Security tasks:
+
+1. Encrypt API keys.
+2. Do not store raw secrets in logs.
+3. Validate all imported files.
+4. Sanitize BotJob names, variables, categories.
+5. Make mock server localhost-only by default.
+6. Add optional mock server token.
+7. Add audit log.
+8. Add warning on Bash export.
+9. Disable dangerous file-system access in Tauri.
+10. Use Tauri permissions carefully.
+
+Packaging tasks:
+
+```bash
+npm run build
+npm run tauri build
+```
+
+Expected output:
+
+```text
+.exe
+.msi or setup installer
+versioned release folder
+portable configuration
+sample API specs
+user manual
+```
+
+Tauri’s Windows distribution docs specify using the Tauri CLI build command to create the Windows installer/bundle. ([Tauri][3])
+
+---
+
+# 6. Suggested Development Timeline
+
+## MVP — 6 to 8 weeks
+
+Deliver:
+
+```text
+React + Tauri shell
+Node sidecar
+SQLite
+OpenAPI import
+API catalog
+RealApiCatalogValidator
+Basic BotJob engine
+Basic execution
+Basic AI provider
+Basic reports
+Windows executable
+```
+
+## Professional Version — 10 to 14 weeks
+
+Add:
+
+```text
+Full BotJob designer
+Multi-agent assistant
+Mock server
+AI BotJob generation
+AI test data generation
+Excel/CSV testing
+Execution history
+Business taxonomy
+PDF reports
+Encrypted settings
+Installer
+```
+
+## Enterprise Version — 16 to 20 weeks
+
+Add:
+
+```text
+Postman export/import
+Advanced mock rules
+Full 33 command types
+Report templates
+Role-based UX modes
+Plugin architecture
+Auto-update
+Code signing
+Advanced logging
+Regression test suite
+Client-specific branding
+```
+
+---
+
+# 7. First MVP Scope
+
+Do not start with everything. Start with this:
+
+```text
+1. Tauri + React shell
+2. Node sidecar
+3. SQLite database
+4. OpenAPI folder import
+5. API catalog screen
+6. RealApiCatalogValidator
+7. Basic BotJob:
+   - API_CALL
+   - ASSERT_STATUS_CODE
+   - ASSERT_FIELD_VALUE
+   - SET_VARIABLE
+   - EXTRACT_JSON_PATH
+8. Execution screen
+9. Execution report
+10. Windows executable
+```
+
+This gives you a real product quickly. After that, add AI, agents, mock server, Excel, and advanced visual workflow.
+
+---
+
+# 8. Final Recommendation
+
+Build a **new TypeScript-first project**, not a direct conversion of the existing C# projects.
+
+Use this strategy:
+
+```text
+Pilot 3 = architecture brain
+Pilot 1 = API testing engine and database model
+Pilot 2 = mock server and AI runtime UX
+Tauri = final executable delivery
+React = modern client interface
+Node.js = all business logic
+SQLite = local persistent storage
+```
+
+The final architecture should not contain C# code. The only non-TypeScript part should be the minimal Tauri native shell required to package and run the desktop application. Tauri can package the Node.js backend as a self-contained sidecar, so the client receives a normal desktop executable without needing to install Node.js manually. ([Tauri][2])
+
+[1]: https://v2.tauri.app/start/?utm_source=chatgpt.com "What is Tauri?"
+[2]: https://v2.tauri.app/learn/sidecar-nodejs/?utm_source=chatgpt.com "Node.js as a sidecar"
+[3]: https://v2.tauri.app/distribute/windows-installer/?utm_source=chatgpt.com "Windows Installer"
+[4]: https://v2.tauri.app/start/prerequisites/?utm_source=chatgpt.com "Prerequisites"

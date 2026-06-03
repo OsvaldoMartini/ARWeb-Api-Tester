@@ -1,0 +1,35 @@
+# dependencies
+node_modules/
+.pnp/
+.pnp.js
+
+# build output
+dist/
+build/
+*.tsbuildinfo
+packages/*/dist/
+server/dist/
+src-tauri/target/
+src-tauri/gen/
+
+# data (runtime, do not commit local DB)
+data/app.db
+data/app.db-*
+data/exports/*
+!data/exports/.gitkeep
+
+# env / secrets
+.env
+.env.*
+!.env.example
+
+# logs
+*.log
+logs/
+
+# editor / OS
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db

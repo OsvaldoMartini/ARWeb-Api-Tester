@@ -1,8 +1,8 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "node_modules/.bin/tsc -b packages/infrastructure packages/api-testing-engine packages/agents packages/mock-server packages/application packages/shared-ui && node_modules/.bin/vite build",
+  "buildCommand": "npx tsc -b packages/infrastructure packages/api-testing-engine packages/agents packages/mock-server packages/application packages/shared-ui && npx vite build",
   "outputDirectory": "dist",
-  "installCommand": "npm install --include=dev",
+  "installCommand": "npm install",
   "framework": null,
   "rewrites": [
     { "source": "/((?!.*\\.).*)", "destination": "/index.html" }

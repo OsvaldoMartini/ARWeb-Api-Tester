@@ -11,6 +11,7 @@ packages/*/dist/
 server/dist/
 src-tauri/target/
 src-tauri/gen/
+src-tauri/binaries/
 
 # data (runtime, do not commit local DB)
 data/app.db

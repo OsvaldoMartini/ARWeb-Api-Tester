@@ -22,7 +22,9 @@ use std::sync::Mutex;
 struct SidecarState(Mutex<Option<CommandChild>>);
 
 pub fn run() {
-    let builder = tauri::Builder::default().plugin(tauri_plugin_shell::init());
+    let builder = tauri::Builder::default()
+        .plugin(tauri_plugin_shell::init())
+        .plugin(tauri_plugin_dialog::init());
 
     #[cfg(not(debug_assertions))]
     let builder = builder

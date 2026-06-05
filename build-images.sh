@@ -3,7 +3,7 @@
 set -euo pipefail
 cd "$(dirname "$(readlink -f "$0")")"
 
-COMPOSE_FILE="docker-compose.codeva.yml"
+COMPOSE_FILE="docker-compose.ragstack.yml"
 
 echo ">>> Building ARWeb images..."
 docker compose -f "${COMPOSE_FILE}" build --progress=plain

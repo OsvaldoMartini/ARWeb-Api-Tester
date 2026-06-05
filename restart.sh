@@ -3,7 +3,7 @@
 set -euo pipefail
 cd "$(dirname "$(readlink -f "$0")")"
 
-COMPOSE_FILE="docker-compose.codeva.yml"
+COMPOSE_FILE="docker-compose.ragstack.yml"
 
 echo ">>> Restarting ARWeb containers..."
 docker compose -f "${COMPOSE_FILE}" up -d --force-recreate

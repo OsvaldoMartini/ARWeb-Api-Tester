@@ -19,7 +19,7 @@ services:
       DB_PATH: /app/data/app.db
     volumes:
       - ./data:/app/data
-    networks: [codeva-net]
+    networks: [ragstack-net]
 
   # nginx — serves React SPA + proxies /api → arweb-api
   arweb-web:
@@ -31,14 +31,14 @@ services:
     ports:
       - "0.0.0.0:30880:80"
     networks:
-      - codeva-net
+      - ragstack-net
       - mt-public
     depends_on:
       - arweb-api
 
 networks:
-  codeva-net:
-    name: codeva-net
+  ragstack-net:
+    name: ragstack-net
 
   mt-public:
     external: true

@@ -5,8 +5,11 @@ cd "$(dirname "$(readlink -f "$0")")"
 
 COMPOSE_FILE="docker-compose.ragstack.yml"
 
-echo ">>> Building ARWeb images..."
-docker compose -f "${COMPOSE_FILE}" build --progress=plain
+NO_CACHE=""
+[ "${1:-}" = "--no-cache" ] && NO_CACHE="--no-cache"
+
+echo ">>> Building ARWeb images${NO_CACHE:+ (no cache)}..."
+docker compose -f "${COMPOSE_FILE}" build --progress=plain ${NO_CACHE}
 
 echo
 echo ">>> Images built:"

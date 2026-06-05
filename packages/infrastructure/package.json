@@ -11,5 +11,13 @@
     "clean": "rm -rf dist *.tsbuildinfo",
     "typecheck": "tsc -b"
   },
-  "dependencies": { "@arweb/common": "*", "@arweb/domain": "*", "@arweb/application": "*" }
+  "dependencies": {
+    "@arweb/common": "*",
+    "@arweb/domain": "*",
+    "@arweb/application": "*",
+    "better-sqlite3": "^9.4.3"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.12"
+  }
 }

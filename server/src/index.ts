@@ -8,8 +8,9 @@ import { createSidecarServer } from './server.js';
 const ctx = buildContainer();
 const server = createSidecarServer(ctx);
 
-server.listen(ctx.config.sidecarPort, '127.0.0.1', () => {
-  ctx.logger.info('ARWEB sidecar listening', { port: ctx.config.sidecarPort });
+const sidecarHost = process.env['SIDECAR_HOST'] ?? '127.0.0.1';
+server.listen(ctx.config.sidecarPort, sidecarHost, () => {
+  ctx.logger.info('ARWEB sidecar listening', { port: ctx.config.sidecarPort, host: sidecarHost });
 });
 
 const shutdown = async (signal: string) => {

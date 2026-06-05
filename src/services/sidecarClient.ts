@@ -130,6 +130,12 @@ export const sidecar = {
       body: JSON.stringify({ question, mode, agentId }),
     }).then(assertNoError),
 
+  setEndpointCategory: (endpointId: string, categoryId: string | null) =>
+    request<{ ok: boolean }>(`/catalog/endpoints/${endpointId}/category`, {
+      method: 'PUT',
+      body: JSON.stringify({ categoryId }),
+    }),
+
   mockStatus: () => request<MockStatus>('/mock/status'),
   mockStart: () => request<MockStatus>('/mock/start', { method: 'POST' }),
   mockStop: () => request<MockStatus>('/mock/stop', { method: 'POST' }),

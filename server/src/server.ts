@@ -35,10 +35,27 @@ export function createSidecarServer(ctx: Container) {
       const folderPath = (body as { folderPath?: string })?.folderPath;
       if (!folderPath) return { error: 'folderPath required' };
       const result = await c.importUseCase.execute(folderPath);
-      return result.ok ? result.value : { error: result.error.message };
+      if (!result.ok) return { error: result.error.message };
+
+      // Auto-map endpoints that have no category yet.
+      const [endpoints, categories] = await Promise.all([
+        c.catalog.listEndpoints(),
+        c.taxonomyRepo.listCategories(),
+      ]);
+      for (const ep of endpoints) {
+        if (ep.categoryId) continue;
+        const matched = findBestCategory(ep, categories);
+        if (matched) await c.taxonomyRepo.setEndpointCategory(ep.id, matched.id);
+      }
+
+      return result.value;
     },
 
-    'GET /taxonomy': (c) => ({ categories: c.taxonomy.categories, subcategories: c.taxonomy.subcategories }),
+    // Phase 6: live taxonomy from SQLite (was static in-memory seed).
+    'GET /taxonomy': async (c) => ({
+      categories: await c.taxonomyRepo.listCategories(),
+      subcategories: await c.taxonomyRepo.listSubcategories(),
+    }),
 
     'GET /agents': (c) => c.router.list(),
 
@@ -69,28 +86,42 @@ export function createSidecarServer(ctx: Container) {
     'GET /mock/log': (c) => c.mockServer.getLog(),
   };
 
-  const server = createServer(async (req, res) => {
+  const server = createServer(async (req: IncomingMessage, res: ServerResponse) => {
     // CORS for the Vite dev server / Tauri webview.
     res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     if (req.method === 'OPTIONS') {
       res.writeHead(204);
       return res.end();
     }
 
-    const url = (req.url ?? '/').split('?')[0];
+    const url = (req.url ?? '/').split('?')[0] ?? '/';
     const key = `${req.method} ${url}`;
-    const handler = routes[key];
 
     res.setHeader('Content-Type', 'application/json');
-    if (!handler) {
-      res.writeHead(404);
-      return res.end(JSON.stringify({ error: `No route for ${key}` }));
-    }
 
     try {
       const body = await readJson(req);
+
+      // Parameterized route: PUT /catalog/endpoints/:id/category
+      const catMatch = req.method === 'PUT'
+        ? url.match(/^\/catalog\/endpoints\/([^/]+)\/category$/)
+        : null;
+      if (catMatch) {
+        const endpointId = catMatch[1]!;
+        const categoryId = (body as { categoryId?: string | null })?.categoryId ?? null;
+        await ctx.taxonomyRepo.setEndpointCategory(endpointId, categoryId);
+        res.writeHead(200);
+        return res.end(JSON.stringify({ ok: true }));
+      }
+
+      const handler = routes[key];
+      if (!handler) {
+        res.writeHead(404);
+        return res.end(JSON.stringify({ error: `No route for ${key}` }));
+      }
+
       const result = await handler(ctx, req, res, body);
       if (!res.headersSent) res.writeHead(200);
       res.end(JSON.stringify(result ?? null));
@@ -104,11 +135,42 @@ export function createSidecarServer(ctx: Container) {
   return server;
 }
 
+/**
+ * Score-based keyword matcher. Returns the category whose keywords best match
+ * the endpoint's tags and path segments. Returns null if nothing matches.
+ */
+function findBestCategory(
+  ep: { tags?: string[] | null; path: string },
+  categories: Array<{ id: string; keywords: string[] }>,
+): { id: string } | null {
+  const tokens = [
+    ...(ep.tags ?? []),
+    ...ep.path.split('/').filter((s) => s && !s.startsWith('{')),
+  ].map((s) => s.toLowerCase());
+
+  let best: { id: string } | null = null;
+  let bestScore = 0;
+
+  for (const cat of categories) {
+    let score = 0;
+    for (const kw of cat.keywords) {
+      const kwLower = kw.toLowerCase();
+      if (tokens.some((t) => t.includes(kwLower) || kwLower.includes(t))) score++;
+    }
+    if (score > bestScore) {
+      bestScore = score;
+      best = cat;
+    }
+  }
+
+  return bestScore > 0 ? best : null;
+}
+
 function readJson(req: IncomingMessage): Promise<unknown> {
   if (req.method === 'GET' || req.method === 'HEAD') return Promise.resolve(undefined);
   return new Promise((resolve) => {
     let data = '';
-    req.on('data', (chunk) => (data += chunk));
+    req.on('data', (chunk: Buffer | string) => (data += chunk));
     req.on('end', () => {
       if (!data) return resolve(undefined);
       try {

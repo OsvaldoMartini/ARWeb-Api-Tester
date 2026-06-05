@@ -1,0 +1,45 @@
+# ARWeb API Tester — Web deployment on multiserver
+# Domain:  ragstack.ch
+# Traffic: Traefik (mt-public) → arweb-web:30880 (nginx) → arweb-api:8787 (Node)
+# Storage: SQLite bind-mounted at ./data/app.db (persisted on host filesystem)
+
+services:
+
+  # Node sidecar — API only, internal network only
+  arweb-api:
+    build:
+      context: .
+      target: sidecar
+    container_name: arweb-api
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      SIDECAR_HOST: "0.0.0.0"
+      SIDECAR_PORT: "8787"
+      DB_PATH: /app/data/app.db
+    volumes:
+      - ./data:/app/data
+    networks: [codeva-net]
+
+  # nginx — serves React SPA + proxies /api → arweb-api
+  arweb-web:
+    build:
+      context: .
+      target: frontend
+    container_name: arweb-web
+    restart: unless-stopped
+    ports:
+      - "0.0.0.0:30880:80"
+    networks:
+      - codeva-net
+      - mt-public
+    depends_on:
+      - arweb-api
+
+networks:
+  codeva-net:
+    name: codeva-net
+
+  mt-public:
+    external: true
+    name: mt-public

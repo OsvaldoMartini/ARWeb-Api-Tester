@@ -1,0 +1,11 @@
+.git
+.gitignore
+src-tauri/
+specifications/
+scripts/
+node_modules
+*/node_modules
+dist/
+data/*.db
+data/exports/
+*.md

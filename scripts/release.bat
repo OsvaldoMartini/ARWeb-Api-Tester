@@ -84,15 +84,17 @@ if errorlevel 1 ( echo ERROR: tauri build failed & exit /b 1 )
 REM ── 5. collect artifacts ─────────────────────────────────────────────────────
 set "BUNDLE=%ROOT%\src-tauri\target\release\bundle"
 set "RELEASE_DIR=%ROOT%\releases\%TAG%"
-if not exist "%RELEASE_DIR%" mkdir "%RELEASE_DIR%"
+if not exist "%RELEASE_DIR%"       mkdir "%RELEASE_DIR%"
+if not exist "%RELEASE_DIR%\nsis"  mkdir "%RELEASE_DIR%\nsis"
+if not exist "%RELEASE_DIR%\msi"   mkdir "%RELEASE_DIR%\msi"
 
 echo    Collecting artifacts into releases\%TAG%\...
 
 REM NSIS installer (.exe) — the file clients double-click to install
 if exist "%BUNDLE%\nsis\*.exe" (
     for %%F in ("%BUNDLE%\nsis\*.exe") do (
-        copy /Y "%%F" "%RELEASE_DIR%\" >nul
-        echo    + %%~nxF   [NSIS installer]
+        copy /Y "%%F" "%RELEASE_DIR%\nsis\" >nul
+        echo    + nsis\%%~nxF   [NSIS installer]
     )
 ) else (
     echo    WARNING: no NSIS .exe found in %BUNDLE%\nsis\
@@ -101,8 +103,8 @@ if exist "%BUNDLE%\nsis\*.exe" (
 REM MSI installer — for enterprise / IT deployment
 if exist "%BUNDLE%\msi\*.msi" (
     for %%F in ("%BUNDLE%\msi\*.msi") do (
-        copy /Y "%%F" "%RELEASE_DIR%\" >nul
-        echo    + %%~nxF   [MSI installer]
+        copy /Y "%%F" "%RELEASE_DIR%\msi\" >nul
+        echo    + msi\%%~nxF   [MSI installer]
     )
 )
 
@@ -113,7 +115,7 @@ if errorlevel 1 ( echo WARNING: could not write release notes )
 REM ── 7. create client zip (NSIS exe + RELEASE.md) ─────────────────────────────
 set "ZIP=%RELEASE_DIR%\ARWEB-API-Tester-%TAG%-windows-x64.zip"
 echo    Creating client zip...
-powershell -NoProfile -Command "$files = @(Get-ChildItem '%RELEASE_DIR%' -Filter '*.exe') + @(Get-ChildItem '%RELEASE_DIR%' -Filter 'RELEASE.md'); if ($files.Count -gt 0) { Compress-Archive -Path $files.FullName -DestinationPath '%ZIP%' -Force; Write-Host '   created ARWEB-API-Tester-%TAG%-windows-x64.zip' } else { Write-Host '   WARNING: no files to zip' }"
+powershell -NoProfile -Command "$files = @(Get-ChildItem '%RELEASE_DIR%\nsis' -Filter '*.exe') + @(Get-ChildItem '%RELEASE_DIR%' -Filter 'RELEASE.md'); if ($files.Count -gt 0) { Compress-Archive -Path $files.FullName -DestinationPath '%ZIP%' -Force; Write-Host '   created ARWEB-API-Tester-%TAG%-windows-x64.zip' } else { Write-Host '   WARNING: no files to zip' }"
 
 REM ── 8. summary ───────────────────────────────────────────────────────────────
 echo.

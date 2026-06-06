@@ -39,6 +39,14 @@ exit /b 1
 
 :flags_done
 
+REM ── 0. sync with remote to avoid merge conflicts on package.json ─────────────
+echo    Syncing with remote...
+git pull --rebase
+if errorlevel 1 (
+    echo ERROR: git pull --rebase failed. Resolve conflicts manually, then retry.
+    exit /b 1
+)
+
 REM ── 1. bump version ──────────────────────────────────────────────────────────
 if "%SKIP_BUMP%"=="1" goto :after_bump
 echo == Bumping version [%BUMP%]...

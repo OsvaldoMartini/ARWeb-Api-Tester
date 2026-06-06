@@ -40,6 +40,7 @@
   },
   "devDependencies": {
     "@tauri-apps/cli": "^2.1.0",
+    "@yao-pkg/pkg": "^5.11.5",
     "@types/node": "^22.10.0",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
@@ -61,6 +62,9 @@
     "node": ">=20"
   },
   "overrides": {
-    "vite": "$vite"
+    "vite": "$vite",
+    "@yao-pkg/pkg": {
+      "into-stream": "6.0.0"
+    }
   }
 }

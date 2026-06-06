@@ -53,10 +53,14 @@ Write-Host "▶ Bundling with esbuild..."
 if ($LASTEXITCODE -ne 0) { throw "esbuild failed" }
 
 # ── Step 3: package into standalone exe ───────────────────────────────────────
-# --asset embeds the .node file in the exe and extracts it to %TEMP% at runtime.
-# @yao-pkg/pkg also patches dlopen so the native addon is found automatically.
-Write-Host "▶ Packaging with @yao-pkg/pkg..."
-& npx --yes "@yao-pkg/pkg" "$bundle" `
+# Uses the locally installed @yao-pkg/pkg (devDependency) to avoid npx cache
+# issues with into-stream ESM compatibility.
+$pkgCmd = Join-Path $root "node_modules\.bin\pkg.cmd"
+if (-not (Test-Path $pkgCmd)) {
+    throw "pkg not found. Run 'npm install' from the repo root first."
+}
+Write-Host "▶ Packaging with @yao-pkg/pkg (local)..."
+& $pkgCmd "$bundle" `
     --targets "node20-win-x64" `
     --output "$outputExe" `
     --asset "$addonPath"

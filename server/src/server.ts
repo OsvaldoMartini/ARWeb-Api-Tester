@@ -1,4 +1,5 @@
 import { createServer, type IncomingMessage, type ServerResponse } from 'node:http';
+import { uuid, nowIso } from '@arweb/common';
 import type { Container } from './bootstrap/container.js';
 
 type Handler = (
@@ -81,6 +82,33 @@ export function createSidecarServer(ctx: Container) {
       return { ok: true };
     },
 
+    // ── BotJob CRUD ──────────────────────────────────────────────────────────
+    'GET /botjobs': (c) => c.botJobRepo.list(),
+
+    'POST /botjobs': async (c, _req, _res, body) => {
+      const data = body as { name?: string; description?: string };
+      if (!data?.name?.trim()) return { error: 'name required' };
+      const job = {
+        id: uuid(),
+        name: data.name.trim(),
+        description: data.description ?? null,
+        categoryId: null,
+        createdAt: nowIso(),
+        updatedAt: nowIso(),
+      };
+      const block = { id: uuid(), botJobId: job.id, name: 'Main', order: 0 };
+      await c.botJobRepo.save(job, [block], [], []);
+      return { id: job.id };
+    },
+
+    // ── Execution history ────────────────────────────────────────────────────
+    'GET /executions': async (c, req) => {
+      const qs = (req.url ?? '').split('?')[1] ?? '';
+      const botJobId = new URLSearchParams(qs).get('botJobId') ?? undefined;
+      return c.executionRepo.listRuns(botJobId);
+    },
+
+    // ── Mock server ──────────────────────────────────────────────────────────
     'GET /mock/status': (c) => ({ running: c.mockServer.isRunning(), port: c.config.mockPort }),
 
     'POST /mock/start': async (c) => {
@@ -126,6 +154,83 @@ export function createSidecarServer(ctx: Container) {
         await ctx.taxonomyRepo.setEndpointCategory(endpointId, categoryId);
         res.writeHead(200);
         return res.end(JSON.stringify({ ok: true }));
+      }
+
+      // GET /botjobs/:id
+      const botJobGetMatch = req.method === 'GET'
+        ? url.match(/^\/botjobs\/([^/]+)$/)
+        : null;
+      if (botJobGetMatch) {
+        const id = botJobGetMatch[1]!;
+        const job = await ctx.botJobRepo.getById(id);
+        if (!job) { res.writeHead(404); return res.end(JSON.stringify({ error: 'not found' })); }
+        const blocks = await ctx.botJobRepo.getBlocks(id);
+        const commandsByBlock = await Promise.all(blocks.map((b) => ctx.botJobRepo.getCommands(b.id)));
+        const commands = commandsByBlock.flat().sort((a, b) => a.order - b.order);
+        const variables = await ctx.botJobRepo.getVariables(id);
+        res.writeHead(200);
+        return res.end(JSON.stringify({ job, blocks, commands, variables }));
+      }
+
+      // PUT /botjobs/:id  (full save: job + blocks + commands + vars)
+      const botJobPutMatch = req.method === 'PUT'
+        ? url.match(/^\/botjobs\/([^/]+)$/)
+        : null;
+      if (botJobPutMatch) {
+        const id = botJobPutMatch[1]!;
+        const d = body as { job?: Record<string, unknown>; blocks?: unknown[]; commands?: unknown[]; variables?: unknown[] };
+        if (!d?.job) { res.writeHead(400); return res.end(JSON.stringify({ error: 'job required' })); }
+        const existing = await ctx.botJobRepo.getById(id);
+        const now = nowIso();
+        const job = { ...existing, ...d.job, id, updatedAt: now } as import('@arweb/domain').BotJob;
+        await ctx.botJobRepo.save(
+          job,
+          (d.blocks ?? []) as import('@arweb/domain').BotJobBlock[],
+          (d.commands ?? []) as import('@arweb/domain').BotJobCommand[],
+          (d.variables ?? []) as import('@arweb/domain').BotVariable[],
+        );
+        res.writeHead(200);
+        return res.end(JSON.stringify({ ok: true }));
+      }
+
+      // DELETE /botjobs/:id
+      const botJobDeleteMatch = req.method === 'DELETE'
+        ? url.match(/^\/botjobs\/([^/]+)$/)
+        : null;
+      if (botJobDeleteMatch) {
+        await ctx.botJobRepo.remove(botJobDeleteMatch[1]!);
+        res.writeHead(200);
+        return res.end(JSON.stringify({ ok: true }));
+      }
+
+      // POST /botjobs/:id/execute
+      const executeMatch = req.method === 'POST'
+        ? url.match(/^\/botjobs\/([^/]+)\/execute$/)
+        : null;
+      if (executeMatch) {
+        const id = executeMatch[1]!;
+        const { target = 'mock' } = (body ?? {}) as { target?: 'real' | 'mock' };
+        const job = await ctx.botJobRepo.getById(id);
+        if (!job) { res.writeHead(404); return res.end(JSON.stringify({ error: 'BotJob not found' })); }
+        const blocks = await ctx.botJobRepo.getBlocks(id);
+        const commandsByBlock = await Promise.all(blocks.map((b) => ctx.botJobRepo.getCommands(b.id)));
+        const commands = commandsByBlock.flat().sort((a, b) => a.order - b.order);
+        const variables = await ctx.botJobRepo.getVariables(id);
+        const { run, steps } = await ctx.engine.run({ job, blocks, commands, variables }, target);
+        await ctx.executionRepo.createRun(run);
+        await Promise.all(steps.map((s) => ctx.executionRepo.addStepResult(s)));
+        res.writeHead(200);
+        return res.end(JSON.stringify({ run, steps }));
+      }
+
+      // GET /executions/:runId/steps
+      const stepsMatch = req.method === 'GET'
+        ? url.match(/^\/executions\/([^/]+)\/steps$/)
+        : null;
+      if (stepsMatch) {
+        const steps = await ctx.executionRepo.getStepResults(stepsMatch[1]!);
+        res.writeHead(200);
+        return res.end(JSON.stringify(steps));
       }
 
       const handler = routes[key];

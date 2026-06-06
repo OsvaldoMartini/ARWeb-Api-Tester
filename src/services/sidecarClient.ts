@@ -100,6 +100,83 @@ export interface MockLogEntry {
   ts: number;
 }
 
+// ── BotJob ───────────────────────────────────────────────────────────────────
+
+export interface BotJob {
+  id: string;
+  name: string;
+  description: string | null;
+  categoryId: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface BotJobBlock {
+  id: string;
+  botJobId: string;
+  name: string;
+  order: number;
+}
+
+export interface BotJobCommand {
+  id: string;
+  blockId: string;
+  order: number;
+  type: string;
+  config: Record<string, unknown>;
+  enabled: boolean;
+}
+
+export interface BotVariable {
+  id: string;
+  botJobId: string;
+  name: string;
+  initialValue: string | null;
+  secret: boolean;
+}
+
+export interface BotJobDetail {
+  job: BotJob;
+  blocks: BotJobBlock[];
+  commands: BotJobCommand[];
+  variables: BotVariable[];
+}
+
+// ── Execution ─────────────────────────────────────────────────────────────────
+
+export interface AssertionResult {
+  description: string;
+  passed: boolean;
+  expected?: unknown;
+  actual?: unknown;
+}
+
+export interface ExecutionRun {
+  id: string;
+  botJobId: string;
+  startedAt: string;
+  finishedAt: string | null;
+  status: string;
+  target: 'real' | 'mock';
+  totalSteps: number;
+  passedSteps: number;
+  failedSteps: number;
+}
+
+export interface ExecutionStep {
+  id: string;
+  runId: string;
+  stepId: string;
+  commandType: string;
+  status: string;
+  request: string | null;
+  response: string | null;
+  durationMs: number;
+  errorMessage: string | null;
+  assertionResults: AssertionResult[];
+  createdAt: string;
+}
+
 export interface AiProviderSetting {
   id: string;
   provider: string;
@@ -154,6 +231,41 @@ export const sidecar = {
       method: 'PUT',
       body: JSON.stringify({ categoryId }),
     }),
+
+  // ── BotJob CRUD ────────────────────────────────────────────────────────────
+  listBotJobs: () => request<BotJob[]>('/botjobs'),
+
+  getBotJob: (id: string) => request<BotJobDetail>(`/botjobs/${id}`),
+
+  createBotJob: (name: string, description?: string) =>
+    request<{ id: string }>('/botjobs', {
+      method: 'POST',
+      body: JSON.stringify({ name, description }),
+    }),
+
+  saveBotJob: (detail: BotJobDetail) =>
+    request<{ ok: boolean }>(`/botjobs/${detail.job.id}`, {
+      method: 'PUT',
+      body: JSON.stringify(detail),
+    }),
+
+  deleteBotJob: (id: string) =>
+    request<{ ok: boolean }>(`/botjobs/${id}`, { method: 'DELETE' }),
+
+  // ── Execution ───────────────────────────────────────────────────────────────
+  executeBotJob: (id: string, target: 'real' | 'mock') =>
+    request<{ run: ExecutionRun; steps: ExecutionStep[] }>(`/botjobs/${id}/execute`, {
+      method: 'POST',
+      body: JSON.stringify({ target }),
+    }),
+
+  listExecutions: (botJobId?: string) => {
+    const qs = botJobId ? `?botJobId=${encodeURIComponent(botJobId)}` : '';
+    return request<ExecutionRun[]>(`/executions${qs}`);
+  },
+
+  getExecutionSteps: (runId: string) =>
+    request<ExecutionStep[]>(`/executions/${runId}/steps`),
 
   mockStatus: () => request<MockStatus>('/mock/status'),
   mockStart: () => request<MockStatus>('/mock/start', { method: 'POST' }),

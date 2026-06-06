@@ -1,14 +1,20 @@
 /**
  * Thin typed client for the Node sidecar.
  *
- * In dev, Vite proxies `/api/*` -> `http://127.0.0.1:8787/*` (see vite.config.ts),
- * so the renderer never talks to the network directly and there are no CORS
- * surprises. Keeping every call behind this module means swapping the transport
- * later touches exactly one file. Response shapes here MUST mirror
- * server/src/server.ts.
+ * URL routing:
+ *  - Dev / preview : Vite proxies `/api/*` → `http://127.0.0.1:8787/*`
+ *  - Web (ragstack): nginx proxies `/api/*` → arweb-api container
+ *  - Tauri production: no proxy exists — the webview would serve index.html for
+ *    unknown paths, so we go direct to the sidecar on localhost.
+ *
+ * Keeping every call behind this module means swapping the transport later
+ * touches exactly one file. Response shapes MUST mirror server/src/server.ts.
  */
 
-const BASE = '/api';
+// __TAURI_INTERNALS__ is injected by the Tauri runtime (v2) into every webview.
+const isTauri =
+  typeof window !== 'undefined' && '__TAURI_INTERNALS__' in window;
+const BASE = isTauri ? 'http://127.0.0.1:8787' : '/api';
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const res = await fetch(`${BASE}${path}`, {

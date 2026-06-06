@@ -51,7 +51,7 @@ pub fn run() {
                 let state = window.state::<SidecarState>();
                 if let Some(child) = state.0.lock().unwrap().take() {
                     let _ = child.kill();
-                }
+                };
             }
         });
 

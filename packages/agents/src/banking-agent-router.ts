@@ -31,11 +31,20 @@ export class BankingAgentRouter {
 
   async ask(
     question: string,
-    opts: { mode: ConversationMode; validator: RealApiCatalogValidator; agentId?: string },
+    opts: {
+      mode: ConversationMode;
+      validator: RealApiCatalogValidator;
+      agentId?: string;
+      ai?: { ask: (system: string, prompt: string) => Promise<string> };
+    },
   ): Promise<AgentResult> {
     const agent = opts.agentId
       ? (this.agents.find((a) => a.id === opts.agentId) ?? this.route(question, opts.mode))
       : this.route(question, opts.mode);
-    return agent.handle(question, { mode: opts.mode, validator: opts.validator });
+    return agent.handle(question, {
+      mode:      opts.mode,
+      validator: opts.validator,
+      askAi:     opts.ai ? (s, p) => opts.ai!.ask(s, p) : undefined,
+    });
   }
 }

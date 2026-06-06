@@ -100,6 +100,17 @@ export interface MockLogEntry {
   ts: number;
 }
 
+export interface AiProviderSetting {
+  id: string;
+  provider: string;
+  label: string;
+  baseUrl?: string | null;
+  model?: string | null;
+  encryptedApiKey?: string | null;
+  isDefault: boolean;
+  enabled: boolean;
+}
+
 /** Error responses from the sidecar look like `{ error: string }`. */
 function assertNoError<T>(data: T | { error: string }): T {
   if (data && typeof data === 'object' && 'error' in data) {
@@ -129,6 +140,14 @@ export const sidecar = {
       method: 'POST',
       body: JSON.stringify({ question, mode, agentId }),
     }).then(assertNoError),
+
+  getAiProviders: () => request<{ providers: AiProviderSetting[] }>('/settings/ai-providers'),
+
+  saveAiProvider: (setting: AiProviderSetting) =>
+    request<{ ok: boolean }>('/settings/ai-providers', {
+      method: 'POST',
+      body: JSON.stringify(setting),
+    }),
 
   setEndpointCategory: (endpointId: string, categoryId: string | null) =>
     request<{ ok: boolean }>(`/catalog/endpoints/${endpointId}/category`, {

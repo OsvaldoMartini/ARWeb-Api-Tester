@@ -39,12 +39,12 @@ export interface Container {
   router: BankingAgentRouter;
   mockServer: MockServer;
   reporter: HtmlCsvReportExporter;
-  /** Static in-memory snapshot used by /taxonomy route (Phase 6 will query taxonomyRepo). */
   taxonomy: ReturnType<typeof bankingTaxonomySeed>;
   botJobRepo: SqliteBotJobRepository;
   executionRepo: SqliteExecutionRepository;
   taxonomyRepo: SqliteTaxonomyRepository;
   settingsRepo: SqliteSettingsRepository;
+  ai: AiProviderService;
   config: { sidecarPort: number; mockPort: number; realBaseUrl: string };
 }
 
@@ -85,8 +85,16 @@ export function buildContainer(): Container {
     resolveBaseUrl: (target) => (target === 'mock' ? `http://127.0.0.1:${mockPort}` : realBaseUrl),
   });
 
-  const _ai = new AiProviderService(logger, () => null);
-  void _ai; // wired into agents/use-cases as AI phase lands
+  const ai = new AiProviderService(logger);
+
+  // Load stored AI provider settings and configure the gateway at startup.
+  settingsRepo.listAiProviders().then((providers) => {
+    for (const p of providers) {
+      if (p.enabled) ai.configure(p.provider, p.encryptedApiKey, p.baseUrl, p.model);
+    }
+    const def = providers.find((p) => p.isDefault && p.enabled);
+    if (def) ai.setDefaultProvider(def.provider);
+  }).catch(() => {});
 
   const router   = new BankingAgentRouter(createAllAgents());
   const reporter = new HtmlCsvReportExporter();
@@ -106,6 +114,7 @@ export function buildContainer(): Container {
     executionRepo,
     taxonomyRepo,
     settingsRepo,
+    ai,
     config: { sidecarPort, mockPort, realBaseUrl },
   };
 }

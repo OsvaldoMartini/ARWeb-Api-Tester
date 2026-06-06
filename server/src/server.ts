@@ -66,7 +66,19 @@ export function createSidecarServer(ctx: Container) {
         agentId?: string;
       };
       if (!question) return { error: 'question required' };
-      return c.router.ask(question, { mode: mode ?? 'employee', validator: c.validator, agentId });
+      return c.router.ask(question, { mode: mode ?? 'employee', validator: c.validator, agentId, ai: c.ai });
+    },
+
+    'GET /settings/ai-providers': async (c) => ({
+      providers: await c.settingsRepo.listAiProviders(),
+    }),
+
+    'POST /settings/ai-providers': async (c, _req, _res, body) => {
+      const setting = body as import('@arweb/domain').AiProviderSetting;
+      await c.settingsRepo.upsertAiProvider(setting);
+      c.ai.configure(setting.provider, setting.encryptedApiKey, setting.baseUrl, setting.model);
+      if (setting.isDefault) c.ai.setDefaultProvider(setting.provider);
+      return { ok: true };
     },
 
     'GET /mock/status': (c) => ({ running: c.mockServer.isRunning(), port: c.config.mockPort }),

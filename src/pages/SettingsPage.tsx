@@ -1,55 +1,144 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { AI_PROVIDERS } from '@arweb/domain';
+import { sidecar, type AiProviderSetting } from '@/services/sidecarClient';
+
+const PROVIDER_LABELS: Record<string, string> = {
+  'openai':        'OpenAI',
+  'anthropic':     'Anthropic Claude',
+  'gemini':        'Google Gemini',
+  'azure-openai':  'Azure OpenAI',
+  'ollama':        'Ollama (local)',
+  'together':      'Together.ai',
+  'custom-openai': 'Custom OpenAI-compatible',
+};
+
+const DEFAULT_MODELS: Record<string, string> = {
+  'openai':        'gpt-4o-mini',
+  'anthropic':     'claude-3-5-haiku-20241022',
+  'gemini':        'gemini-1.5-flash',
+  'azure-openai':  'gpt-4o-mini',
+  'ollama':        'llama3.2',
+  'together':      'meta-llama/Llama-3-8b-chat-hf',
+  'custom-openai': 'gpt-4o-mini',
+};
+
+const NEEDS_BASE_URL = new Set(['ollama', 'azure-openai', 'custom-openai']);
 
 export function SettingsPage() {
   const [provider, setProvider] = useState<string>('openai');
-  const [apiKey, setApiKey] = useState('');
+  const [apiKey, setApiKey]     = useState('');
+  const [model, setModel]       = useState('');
+  const [baseUrl, setBaseUrl]   = useState('');
+  const [saving, setSaving]     = useState(false);
+  const [saved, setSaved]       = useState(false);
+  const [error, setError]       = useState<string | null>(null);
+
+  // Load the currently saved setting for the selected provider.
+  useEffect(() => {
+    sidecar.getAiProviders().then(({ providers }) => {
+      const existing = providers.find((p) => p.provider === provider);
+      setApiKey(''); // never pre-fill the key for security
+      setModel(existing?.model ?? '');
+      setBaseUrl(existing?.baseUrl ?? '');
+    }).catch(() => {});
+  }, [provider]);
+
+  const handleSave = async () => {
+    setSaving(true);
+    setError(null);
+    setSaved(false);
+    try {
+      const setting: AiProviderSetting = {
+        id:              `${provider}-default`,
+        provider,
+        label:           PROVIDER_LABELS[provider] ?? provider,
+        encryptedApiKey: apiKey || null,
+        model:           model || null,
+        baseUrl:         baseUrl || null,
+        isDefault:       true,
+        enabled:         true,
+      };
+      await sidecar.saveAiProvider(setting);
+      setSaved(true);
+      setApiKey(''); // clear after save
+      setTimeout(() => setSaved(false), 3000);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : String(e));
+    } finally {
+      setSaving(false);
+    }
+  };
 
   return (
     <div>
       <PageHeader
         title="Settings"
-        subtitle="Configure the AI provider and ports. The app works fully offline — an API key is optional and there is no account or login."
+        subtitle="Configure the AI provider. The app works fully offline — an API key is optional. Keys are stored locally and sent only to the chosen provider."
       />
 
       <div className="grid max-w-2xl grid-cols-1 gap-4">
         <div className="card">
           <div className="mb-3 font-medium">AI provider</div>
-          <label className="label" htmlFor="provider">
-            Provider
-          </label>
+
+          <label className="label" htmlFor="provider">Provider</label>
           <select
             id="provider"
             className="input"
             value={provider}
-            onChange={(e) => setProvider(e.target.value)}
+            onChange={(e) => { setProvider(e.target.value); setSaved(false); setError(null); }}
           >
             {AI_PROVIDERS.map((p) => (
-              <option key={p} value={p}>
-                {p}
-              </option>
+              <option key={p} value={p}>{PROVIDER_LABELS[p] ?? p}</option>
             ))}
           </select>
 
+          <label className="label mt-4" htmlFor="model">Model (optional)</label>
+          <input
+            id="model"
+            className="input"
+            placeholder={DEFAULT_MODELS[provider] ?? 'default'}
+            value={model}
+            onChange={(e) => setModel(e.target.value)}
+          />
+
+          {NEEDS_BASE_URL.has(provider) && (
+            <>
+              <label className="label mt-4" htmlFor="baseUrl">Base URL</label>
+              <input
+                id="baseUrl"
+                className="input"
+                placeholder={provider === 'ollama' ? 'http://localhost:11434' : 'https://your-endpoint'}
+                value={baseUrl}
+                onChange={(e) => setBaseUrl(e.target.value)}
+              />
+            </>
+          )}
+
           <label className="label mt-4" htmlFor="apiKey">
-            API key (optional)
+            API key{provider === 'ollama' ? ' (not required for local Ollama)' : ''}
           </label>
           <input
             id="apiKey"
             className="input"
             type="password"
-            placeholder="Leave empty to use the offline rule-based fallback"
+            placeholder="Leave empty to use offline rule-based fallback"
             value={apiKey}
-            onChange={(e) => setApiKey(e.target.value)}
+            onChange={(e) => { setApiKey(e.target.value); setSaved(false); }}
           />
           <p className="mt-2 text-xs text-text-muted">
-            Without a key, the AI Assistant uses a deterministic offline fallback so the app is
-            never blocked. Keys are kept locally and never sent anywhere except the chosen
-            provider.
+            Keys are never logged or sent anywhere except the chosen provider's API.
           </p>
-          <button className="btn btn-primary mt-4" disabled>
-            Save (Phase 11)
+
+          {error && <p className="mt-2 text-sm text-danger">{error}</p>}
+          {saved && <p className="mt-2 text-sm text-success">Saved — AI provider is active.</p>}
+
+          <button
+            className="btn btn-primary mt-4"
+            onClick={handleSave}
+            disabled={saving}
+          >
+            {saving ? 'Saving…' : 'Save'}
           </button>
         </div>
 
@@ -66,8 +155,7 @@ export function SettingsPage() {
             </div>
           </div>
           <p className="mt-3 text-xs text-text-muted">
-            Override via environment variables (<code>SIDECAR_PORT</code>,{' '}
-            <code>MOCK_SERVER_PORT</code>). See <code>.env.example</code>.
+            Override via environment variables (<code>SIDECAR_PORT</code>, <code>MOCK_SERVER_PORT</code>).
           </p>
         </div>
       </div>

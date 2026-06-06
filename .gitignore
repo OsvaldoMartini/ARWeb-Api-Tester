@@ -28,6 +28,10 @@ data/exports/*
 *.log
 logs/
 
+# releases — binary artifacts are ignored; only INDEX.md is tracked
+releases/v*/
+!releases/INDEX.md
+
 # editor / OS
 .vscode/*
 !.vscode/extensions.json

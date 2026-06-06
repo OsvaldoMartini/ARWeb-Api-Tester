@@ -34,11 +34,13 @@ pub fn run() {
             // Resolve the user-specific AppData path for the SQLite database.
             // Passed as DB_PATH so the sidecar does NOT fall back to the
             // dev-time repo-relative path (data/app.db).
-            let db_path = app
-                .path()
-                .app_data_dir()
-                .map(|d| d.join("arweb.db").to_string_lossy().into_owned())
-                .unwrap_or_default();
+            let db_path = match app.path().app_data_dir() {
+                Ok(dir) => {
+                    let p = dir.join("arweb.db");
+                    p.to_string_lossy().into_owned()
+                }
+                Err(_) => String::new(),
+            };
 
             match app.shell().sidecar("arweb-sidecar") {
                 Ok(cmd) => {

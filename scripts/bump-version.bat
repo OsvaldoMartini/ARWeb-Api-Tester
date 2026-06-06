@@ -26,8 +26,13 @@ REM ── git commit + tag ─────────────────�
 cd /d "%ROOT%"
 git add package.json src-tauri\tauri.conf.json src-tauri\Cargo.toml
 git commit -m "chore: bump version to %NEW%"
-git tag -a "v%NEW%" -m "Release v%NEW%"
-echo git commit + tag v%NEW% created
+git rev-parse "v%NEW%" >nul 2>&1
+if errorlevel 1 (
+    git tag -a "v%NEW%" -m "Release v%NEW%"
+    echo git commit + tag v%NEW% created
+) else (
+    echo git commit created  ^(tag v%NEW% already exists -- skipped^)
+)
 
 echo.
 echo Version is now %NEW%. Run scripts\release.bat to build and package.

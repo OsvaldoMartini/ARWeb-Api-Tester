@@ -1,28 +1,30 @@
 @echo off
-REM release.bat — bump version, build Tauri Windows exe, copy to releases\
+REM release.bat — bump version, build Tauri Windows exe, collect to releases\, zip for clients
 REM Run as Administrator (required for some Rust build steps).
 REM
 REM Usage:
-REM   scripts\release.bat patch
-REM   scripts\release.bat minor
-REM   scripts\release.bat major
-REM   scripts\release.bat 1.2.3
-REM   scripts\release.bat --skip-bump
+REM   scripts\release.bat patch              — bump patch, full build, collect, zip
+REM   scripts\release.bat minor              — bump minor, full build, collect, zip
+REM   scripts\release.bat major              — bump major, full build, collect, zip
+REM   scripts\release.bat 1.2.3              — set exact version, full build, collect, zip
+REM   scripts\release.bat --skip-bump        — no version bump, full build, collect, zip
+REM   scripts\release.bat --collect-only     — no build at all; just collect existing artifacts + zip
 
 setlocal
 set "ROOT=%~dp0.."
 set "BUMP=%~1"
 set "SKIP_BUMP=0"
+set "COLLECT_ONLY=0"
 
-if "%BUMP%"=="--skip-bump" (
-    set "SKIP_BUMP=1"
-    set "BUMP="
-)
+if "%BUMP%"=="--skip-bump"    ( set "SKIP_BUMP=1"    & set "BUMP=" )
+if "%BUMP%"=="--collect-only" ( set "COLLECT_ONLY=1" & set "SKIP_BUMP=1" & set "BUMP=" )
 
-if "%SKIP_BUMP%"=="0" (
-    if "%BUMP%"=="" (
-        echo Usage: release.bat [patch^|minor^|major^|x.y.z^|--skip-bump]
-        exit /b 1
+if "%COLLECT_ONLY%"=="0" (
+    if "%SKIP_BUMP%"=="0" (
+        if "%BUMP%"=="" (
+            echo Usage: release.bat [patch^|minor^|major^|x.y.z^|--skip-bump^|--collect-only]
+            exit /b 1
+        )
     )
 )
 
@@ -37,51 +39,71 @@ REM ── 2. read current version ───────────────
 for /f "delims=" %%V in ('python -c "import json; print(json.load(open(r'%ROOT%\package.json'))['version'])"') do set "VERSION=%%V"
 if "%VERSION%"=="" ( echo ERROR: could not read version & exit /b 1 )
 set "TAG=v%VERSION%"
-echo == Building %TAG%...
+echo == Version: %TAG%
 
 REM ── 3. build Node sidecar ────────────────────────────────────────────────────
-echo    Building Node sidecar...
-cd /d "%ROOT%"
-powershell -ExecutionPolicy Bypass -File "%~dp0build-sidecar.ps1"
-if errorlevel 1 ( echo ERROR: sidecar build failed & exit /b 1 )
+if "%COLLECT_ONLY%"=="0" (
+    echo    Building Node sidecar...
+    cd /d "%ROOT%"
+    powershell -ExecutionPolicy Bypass -File "%~dp0build-sidecar.ps1"
+    if errorlevel 1 ( echo ERROR: sidecar build failed & exit /b 1 )
+)
 
 REM ── 4. tauri build ───────────────────────────────────────────────────────────
-echo    Running tauri build...
-npm run tauri:build
-if errorlevel 1 ( echo ERROR: tauri build failed & exit /b 1 )
+if "%COLLECT_ONLY%"=="0" (
+    echo    Running tauri build...
+    npm run tauri:build
+    if errorlevel 1 ( echo ERROR: tauri build failed & exit /b 1 )
+)
 
-REM ── 5. collect artifacts + write release notes + update index ─────────────────
+REM ── 5. collect artifacts ─────────────────────────────────────────────────────
 set "BUNDLE=%ROOT%\src-tauri\target\release\bundle"
 set "RELEASE_DIR=%ROOT%\releases\%TAG%"
 if not exist "%RELEASE_DIR%" mkdir "%RELEASE_DIR%"
 
-echo    Copying artifacts...
+echo    Collecting artifacts into releases\%TAG%\...
 
-REM Windows NSIS installer (.exe)
+REM NSIS installer (.exe) — the file clients double-click to install
 if exist "%BUNDLE%\nsis\*.exe" (
     for %%F in ("%BUNDLE%\nsis\*.exe") do (
         copy /Y "%%F" "%RELEASE_DIR%\" >nul
-        echo    copied %%~nxF
+        echo    + %%~nxF   [NSIS installer]
     )
+) else (
+    echo    WARNING: no NSIS .exe found in %BUNDLE%\nsis\
 )
 
-REM Windows MSI installer
+REM MSI installer — for enterprise / IT deployment
 if exist "%BUNDLE%\msi\*.msi" (
     for %%F in ("%BUNDLE%\msi\*.msi") do (
         copy /Y "%%F" "%RELEASE_DIR%\" >nul
-        echo    copied %%~nxF
+        echo    + %%~nxF   [MSI installer]
     )
 )
 
 REM ── 6. write RELEASE.md and update INDEX.md ──────────────────────────────────
 python "%~dp0_release_finalize.py" "%TAG%" "%RELEASE_DIR%" "%ROOT%\releases\INDEX.md"
-if errorlevel 1 ( echo WARNING: could not write release notes & )
+if errorlevel 1 ( echo WARNING: could not write release notes )
 
-REM ── 7. done ──────────────────────────────────────────────────────────────────
+REM ── 7. create client zip (NSIS exe + RELEASE.md only) ────────────────────────
+set "ZIP=%RELEASE_DIR%\ARWEB-API-Tester-%TAG%-windows-x64.zip"
+echo    Creating client zip...
+powershell -NoProfile -Command ^
+  "$src = '%RELEASE_DIR%'; $zip = '%ZIP%'; $files = @(Get-ChildItem $src -Filter '*.exe') + @(Get-ChildItem $src -Filter 'RELEASE.md'); if ($files.Count -gt 0) { Compress-Archive -Path ($files.FullName) -DestinationPath $zip -Force; Write-Host '   created ' + (Split-Path $zip -Leaf) } else { Write-Host '   WARNING: no files to zip' }"
+
+REM ── 8. done ──────────────────────────────────────────────────────────────────
 echo.
-echo Release %TAG% ready in releases\%TAG%\
+echo == Release %TAG% ready ==
+echo.
+echo   Folder:          releases\%TAG%\
+echo   Client zip:      releases\%TAG%\ARWEB-API-Tester-%TAG%-windows-x64.zip
+echo.
+echo   Contents:
+for %%F in ("%RELEASE_DIR%\*") do echo     %%~nxF
 echo.
 echo Next steps:
+echo   git add releases\
+echo   git commit -m "release: %TAG%"
 echo   git push --follow-tags
-echo   gh release create %TAG% releases\%TAG%\* --title "%TAG%" --notes-file releases\%TAG%\RELEASE.md
+echo   gh release create %TAG% "%RELEASE_DIR%\*.zip" --title "%TAG%" --notes-file "%RELEASE_DIR%\RELEASE.md"
 endlocal

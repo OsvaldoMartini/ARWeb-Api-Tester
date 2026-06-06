@@ -45,6 +45,10 @@ export class MockServer {
     return this.log.slice(-200);
   }
 
+  clearLog(): void {
+    this.log = [];
+  }
+
   isRunning(): boolean {
     return this.server !== null;
   }

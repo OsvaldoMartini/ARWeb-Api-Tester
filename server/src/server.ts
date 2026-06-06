@@ -124,6 +124,8 @@ export function createSidecarServer(ctx: Container) {
     },
 
     'GET /mock/log': (c) => c.mockServer.getLog(),
+
+    'POST /mock/log/clear': (c) => { c.mockServer.clearLog(); return { ok: true }; },
   };
 
   const server = createServer(async (req: IncomingMessage, res: ServerResponse) => {

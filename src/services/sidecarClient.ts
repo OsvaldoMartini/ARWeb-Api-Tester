@@ -93,11 +93,12 @@ export interface MockStatus {
 }
 
 export interface MockLogEntry {
+  id: number;
+  at: string;
   method: string;
   path: string;
-  matchedEndpointId?: string;
+  matched: boolean;
   status: number;
-  ts: number;
 }
 
 // ── BotJob ───────────────────────────────────────────────────────────────────
@@ -272,4 +273,5 @@ export const sidecar = {
   mockStop: () => request<MockStatus>('/mock/stop', { method: 'POST' }),
   // The route returns a bare array of log entries.
   mockLog: () => request<MockLogEntry[]>('/mock/log'),
+  mockClearLog: () => request<{ ok: boolean }>('/mock/log/clear', { method: 'POST' }),
 };

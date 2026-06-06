@@ -99,6 +99,11 @@ export function buildContainer(): Container {
   const router   = new BankingAgentRouter(createAllAgents());
   const reporter = new HtmlCsvReportExporter();
 
+  // Populate agent capability maps from the existing catalog at startup.
+  catalog.listEndpoints().then((eps) => {
+    if (eps.length > 0) router.populateFromCatalog(eps);
+  }).catch(() => {});
+
   return {
     logger,
     catalog,

@@ -76,6 +76,13 @@ export interface AgentInfo {
   name: string;
   description: string;
   mode: string;
+  capabilityCount: number;
+}
+
+export interface AgentCapability {
+  agentId: string;
+  agentName: string;
+  endpointCount: number;
 }
 
 /** Mirrors `AgentResult`. */
@@ -212,6 +219,8 @@ export const sidecar = {
   getTaxonomy: () => request<TaxonomyResponse>('/taxonomy'),
 
   getAgents: () => request<AgentInfo[]>('/agents'),
+
+  getCapabilities: () => request<AgentCapability[]>('/agents/capabilities'),
 
   ask: (question: string, mode: 'employee' | 'client', agentId?: string) =>
     request<AgentAnswer | { error: string }>('/agents/ask', {

@@ -32,6 +32,11 @@ export abstract class BaseAgent {
   abstract readonly keywords: string[];
   abstract readonly capabilityEndpointIds: string[];
 
+  /** Called by the router after catalog import to wire real endpoint IDs. */
+  setCapabilityEndpoints(ids: string[]): void {
+    this.capabilityEndpointIds.splice(0, this.capabilityEndpointIds.length, ...ids);
+  }
+
   protected buildPlan(_question: string): AgentPlan {
     return { steps: this.capabilityEndpointIds.map((endpointId) => ({ endpointId })) };
   }

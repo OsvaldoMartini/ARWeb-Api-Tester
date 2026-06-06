@@ -1,4 +1,4 @@
-import type { ConversationMode } from '@arweb/domain';
+import type { ConversationMode, ApiEndpoint } from '@arweb/domain';
 import type { RealApiCatalogValidator } from '@arweb/application';
 import type { BaseAgent, AgentResult } from './base-agent.js';
 
@@ -10,8 +10,46 @@ import type { BaseAgent, AgentResult } from './base-agent.js';
 export class BankingAgentRouter {
   constructor(private readonly agents: BaseAgent[]) {}
 
-  list(): { id: string; name: string; description: string; mode: string }[] {
-    return this.agents.map((a) => ({ id: a.id, name: a.name, description: a.description, mode: a.mode }));
+  list(): { id: string; name: string; description: string; mode: string; capabilityCount: number }[] {
+    return this.agents.map((a) => ({
+      id: a.id,
+      name: a.name,
+      description: a.description,
+      mode: a.mode,
+      capabilityCount: a.capabilityEndpointIds.length,
+    }));
+  }
+
+  /**
+   * Auto-wire each agent's capabilityEndpointIds from an imported catalog.
+   * An endpoint is assigned to an agent when any of the agent's keywords match
+   * the endpoint's tags, path segments, or summary — same scorer as Phase 6.
+   * One endpoint may be assigned to multiple agents.
+   */
+  populateFromCatalog(endpoints: ApiEndpoint[]): void {
+    for (const agent of this.agents) {
+      const matched = endpoints.filter((ep) => {
+        const tokens = [
+          ...(ep.tags ?? []),
+          ...ep.path.split('/').filter((s) => s && !s.startsWith('{')),
+          ...(ep.summary ?? '').split(/\s+/),
+        ].map((s) => s.toLowerCase());
+        return agent.keywords.some((kw) => {
+          const kl = kw.toLowerCase();
+          return tokens.some((t) => t.includes(kl) || kl.includes(t));
+        });
+      });
+      agent.setCapabilityEndpoints(matched.map((ep) => ep.id));
+    }
+  }
+
+  /** Returns a summary of which endpoints each agent owns — for the UI. */
+  capabilitySummary(): { agentId: string; agentName: string; endpointCount: number }[] {
+    return this.agents.map((a) => ({
+      agentId: a.id,
+      agentName: a.name,
+      endpointCount: a.capabilityEndpointIds.length,
+    }));
   }
 
   route(question: string, mode: ConversationMode): BaseAgent {

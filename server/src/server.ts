@@ -38,7 +38,7 @@ export function createSidecarServer(ctx: Container) {
       const result = await c.importUseCase.execute(folderPath);
       if (!result.ok) return { error: result.error.message };
 
-      // Auto-map endpoints that have no category yet.
+      // Auto-map endpoints that have no category yet, then refresh agent capabilities.
       const [endpoints, categories] = await Promise.all([
         c.catalog.listEndpoints(),
         c.taxonomyRepo.listCategories(),
@@ -48,6 +48,7 @@ export function createSidecarServer(ctx: Container) {
         const matched = findBestCategory(ep, categories);
         if (matched) await c.taxonomyRepo.setEndpointCategory(ep.id, matched.id);
       }
+      c.router.populateFromCatalog(endpoints);
 
       return result.value;
     },
@@ -60,6 +61,8 @@ export function createSidecarServer(ctx: Container) {
 
     'GET /agents': (c) => c.router.list(),
 
+    'GET /agents/capabilities': (c) => c.router.capabilitySummary(),
+
     'POST /agents/ask': async (c, _req, _res, body) => {
       const { question, mode, agentId } = (body ?? {}) as {
         question?: string;
@@ -67,7 +70,15 @@ export function createSidecarServer(ctx: Container) {
         agentId?: string;
       };
       if (!question) return { error: 'question required' };
-      return c.router.ask(question, { mode: mode ?? 'employee', validator: c.validator, agentId, ai: c.ai });
+      const result = await c.router.ask(question, { mode: mode ?? 'employee', validator: c.validator, agentId, ai: c.ai });
+      // Enrich evidence with real method + path from the catalog.
+      const evidence = await Promise.all(
+        result.evidence.map(async (e) => {
+          const ep = await c.catalog.getEndpointById(e.endpointId);
+          return ep ? { endpointId: e.endpointId, method: ep.method, path: ep.path } : e;
+        }),
+      );
+      return { ...result, evidence };
     },
 
     'GET /settings/ai-providers': async (c) => ({

@@ -27,7 +27,7 @@ art_str   = ', '.join(artifacts) if artifacts else '—'
 client_zip = f'ARWEB-API-Tester-{tag}-windows-x64.zip'
 
 release_md = os.path.join(release_dir, 'RELEASE.md')
-with open(release_md, 'w') as f:
+with open(release_md, 'w', encoding='utf-8') as f:
     f.write(f"""# Release {tag}  ({today})
 
 ## Client distribution
@@ -40,7 +40,7 @@ No separate server or runtime setup is required; the Node.js sidecar is bundled 
 ## Artifacts in this folder
 
 {art_lines}
-- `{client_zip}`  ← **zip to send to clients** (contains the installer + this README)
+- `{client_zip}`  **<-- zip to send to clients** (contains the installer + this README)
 
 ## Installation (Windows)
 {f'Run `{nsis}` — double-click, follow the wizard.' if nsis else 'Run the `-setup.exe` installer.'}
@@ -63,14 +63,14 @@ print(f'   wrote {release_md}')
 # ── update INDEX.md ───────────────────────────────────────────────────────────
 entry = f'| {tag} | {today} | {art_str} |'
 if os.path.exists(index_path):
-    content = open(index_path).read()
+    content = open(index_path, encoding='utf-8').read()
     if tag not in content:
         content = re.sub(r'(\|[-| ]+\|\n)', r'\1' + entry + '\n', content, count=1)
-        open(index_path, 'w').write(content)
+        open(index_path, 'w', encoding='utf-8').write(content)
         print(f'   updated {index_path}')
     else:
-        print(f'   {tag} already in INDEX.md — skipped')
+        print(f'   {tag} already in INDEX.md -- skipped')
 else:
-    with open(index_path, 'w') as f:
+    with open(index_path, 'w', encoding='utf-8') as f:
         f.write('# Release Index\n\n| Version | Date | Artifacts |\n|---------|------|---|\n' + entry + '\n')
     print(f'   created {index_path}')

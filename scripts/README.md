@@ -64,11 +64,13 @@ The sidecar is built with `@yao-pkg/pkg` (installed locally) which:
 ```
 releases\
   v0.1.2\
-    ARWEB API Tester_0.1.2_x64-setup.exe      ← NSIS installer (send to clients via zip)
-    ARWEB API Tester_0.1.2_x64_en-US.msi      ← MSI for IT/silent deployment
-    ARWEB-API-Tester-v0.1.2-windows-x64.zip   ← zip this and send to clients
-    RELEASE.md                                 ← fill in release notes before sharing
-  INDEX.md                                     ← auto-updated, committed to git
+    nsis\
+      ARWEB API Tester_0.1.2_x64-setup.exe    ← NSIS installer (end users, double-click)
+    msi\
+      ARWEB API Tester_0.1.2_x64_en-US.msi   ← MSI installer (IT/silent deployment)
+    ARWEB-API-Tester-v0.1.2-windows-x64.zip  ← zip this and send to clients (contains NSIS .exe)
+    RELEASE.md                                ← fill in release notes before sharing
+  INDEX.md                                    ← auto-updated, committed to git
 ```
 
 Binary artifacts in `releases\v*\` are gitignored. Only `releases\INDEX.md` is tracked.

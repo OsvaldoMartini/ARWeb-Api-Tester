@@ -31,16 +31,30 @@ pub fn run() {
     let builder = builder
         .manage(SidecarState::default())
         .setup(|app| {
-            // `arweb-sidecar` is declared in tauri.conf.json -> bundle.externalBin.
-            // The actual binary is produced from server/ (see README).
+            // Resolve the user-specific AppData path for the SQLite database.
+            // Passed as DB_PATH so the sidecar does NOT fall back to the
+            // dev-time repo-relative path (data/app.db).
+            let db_path = app
+                .path()
+                .app_data_dir()
+                .map(|d| d.join("arweb.db").to_string_lossy().into_owned())
+                .unwrap_or_default();
+
             match app.shell().sidecar("arweb-sidecar") {
-                Ok(cmd) => match cmd.spawn() {
-                    Ok((_rx, child)) => {
-                        let state = app.state::<SidecarState>();
-                        *state.0.lock().unwrap() = Some(child);
+                Ok(cmd) => {
+                    let cmd = if db_path.is_empty() {
+                        cmd
+                    } else {
+                        cmd.env("DB_PATH", &db_path)
+                    };
+                    match cmd.spawn() {
+                        Ok((_rx, child)) => {
+                            let state = app.state::<SidecarState>();
+                            *state.0.lock().unwrap() = Some(child);
+                        }
+                        Err(e) => eprintln!("[arweb] failed to spawn sidecar: {e}"),
                     }
-                    Err(e) => eprintln!("[arweb] failed to spawn sidecar: {e}"),
-                },
+                }
                 Err(e) => eprintln!("[arweb] sidecar binary not found ({e}); \
                     expecting an externally-running sidecar"),
             }

@@ -41,9 +41,10 @@ exit /b 1
 
 REM ── 0. sync with remote to avoid merge conflicts on package.json ─────────────
 echo    Syncing with remote...
-REM Restore auto-modified lock files so git pull --rebase doesn't abort
+REM Restore auto-modified files so git pull --rebase doesn't abort
 git restore package-lock.json >nul 2>&1
 git restore src-tauri\Cargo.lock >nul 2>&1
+git restore src-tauri\Cargo.toml >nul 2>&1
 git pull --rebase
 if errorlevel 1 (
     echo ERROR: git pull --rebase failed. Resolve conflicts manually, then retry.

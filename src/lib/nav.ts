@@ -33,7 +33,7 @@ export const NAV_ITEMS: NavItem[] = [
   { path: '/import', label: 'Import APIs', description: 'Scan folders / OpenAPI specs into the catalog.', icon: Upload },
   { path: '/catalog', label: 'API Catalog', description: 'Browse imported endpoints, params and fields.', icon: BookOpen },
   { path: '/categories', label: 'Business Categories', description: '25 banking categories mapped to real endpoints.', icon: Layers },
-  { path: '/assistant', label: 'AI Assistant', description: 'Ask the multi-agent banking router.', icon: Bot },
+  { path: '/assistant', label: 'AR Conversational Banking', description: 'Simulate banking conversations from employee and client perspectives.', icon: Bot },
   { path: '/test-cases', label: 'Test Cases', description: 'Manage reusable test definitions.', icon: ClipboardList },
   { path: '/designer', label: 'BotJob Designer', description: 'Compose command sequences visually.', icon: Workflow },
   { path: '/execute', label: 'Execute Tests', description: 'Run BotJobs and inspect the audit trail.', icon: PlayCircle },

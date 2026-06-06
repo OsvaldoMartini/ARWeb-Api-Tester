@@ -73,6 +73,18 @@ releases\
 
 Binary artifacts in `releases\v*\` are gitignored. Only `releases\INDEX.md` is tracked.
 
+### NSIS vs MSI — which file to use
+
+| | NSIS `.exe` | MSI `.msi` |
+|---|---|---|
+| Who uses it | End users / testers | IT admins |
+| How to install | Double-click | `msiexec /i` or Group Policy |
+| What to send | Put in the ZIP | Only on request |
+| Admin rights | Usually not needed | Often required |
+
+Tauri builds both automatically — you only need to include the NSIS `.exe` in the client ZIP.
+The MSI sits in `releases\v<ver>\` in case an IT team ever asks for it.
+
 ---
 
 ## After the build

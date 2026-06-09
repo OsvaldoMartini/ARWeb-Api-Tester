@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { CheckCircle2, XCircle, Loader2, Star, StarOff, FlaskConical, Key, ChevronDown, ChevronUp } from 'lucide-react';
+import { CheckCircle2, XCircle, Loader2, FlaskConical, Key, ChevronDown, ChevronUp, AlertTriangle } from 'lucide-react';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { ErrorAlert } from '@/components/ui/ErrorAlert';
 import { AI_PROVIDERS } from '@arweb/domain';
@@ -27,8 +27,6 @@ const DEFAULT_MODELS: Record<string, string> = {
 
 const NEEDS_BASE_URL = new Set(['ollama', 'azure-openai', 'custom-openai']);
 
-// ── per-provider state ────────────────────────────────────────────────────────
-
 interface ProviderState {
   hasKey:    boolean;
   isDefault: boolean;
@@ -38,6 +36,52 @@ interface ProviderState {
 }
 
 type TestResult = { ok: boolean; ms: number; text?: string; error?: string } | null;
+
+// ── Default toggle switch ─────────────────────────────────────────────────────
+
+function DefaultToggle({
+  isDefault,
+  hasKey,
+  busy,
+  onToggle,
+}: {
+  isDefault: boolean;
+  hasKey: boolean;
+  busy: boolean;
+  onToggle: () => void;
+}) {
+  const canToggle = hasKey && !isDefault && !busy;
+
+  return (
+    <button
+      type="button"
+      onClick={canToggle ? onToggle : undefined}
+      disabled={!canToggle}
+      title={
+        !hasKey      ? 'Add an API key first to enable this provider'
+        : isDefault  ? 'This provider is the active default for the whole app'
+        : 'Set as the default AI provider for the whole app'
+      }
+      className={`flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-semibold transition-all select-none
+        ${isDefault
+          ? 'border-success/40 bg-success text-white cursor-default shadow-sm'
+          : !hasKey
+            ? 'border-destructive/30 bg-destructive/10 text-destructive cursor-not-allowed'
+            : 'border-border bg-surface text-text-muted hover:border-success/50 hover:bg-success/10 hover:text-success cursor-pointer'
+        }
+      `}
+    >
+      {/* pill indicator */}
+      <span className={`inline-block h-2.5 w-2.5 rounded-full transition-colors ${
+        isDefault ? 'bg-white' : !hasKey ? 'bg-destructive/60' : 'bg-text-muted/40'
+      }`} />
+      {busy
+        ? <Loader2 size={11} className="animate-spin" />
+        : isDefault ? 'DEFAULT' : !hasKey ? 'NO KEY' : 'SET DEFAULT'
+      }
+    </button>
+  );
+}
 
 // ── Provider card ─────────────────────────────────────────────────────────────
 
@@ -52,28 +96,23 @@ function ProviderCard({
   onSaved: (p: string, updated: Partial<ProviderState>) => void;
   onSetDefault: (p: string) => void;
 }) {
-  const [open,    setOpen]    = useState(false);
-  const [apiKey,  setApiKey]  = useState('');
-  const [model,   setModel]   = useState(state.model);
-  const [baseUrl, setBaseUrl] = useState(state.baseUrl);
-  const [saving,  setSaving]  = useState(false);
-  const [saveMsg, setSaveMsg] = useState<string | null>(null);
-  const [saveErr, setSaveErr] = useState<string | null>(null);
-  const [testing, setTesting] = useState(false);
+  const [open,       setOpen]       = useState(false);
+  const [apiKey,     setApiKey]     = useState('');
+  const [model,      setModel]      = useState(state.model);
+  const [baseUrl,    setBaseUrl]    = useState(state.baseUrl);
+  const [saving,     setSaving]     = useState(false);
+  const [saveMsg,    setSaveMsg]    = useState<string | null>(null);
+  const [saveErr,    setSaveErr]    = useState<string | null>(null);
+  const [testing,    setTesting]    = useState(false);
   const [testResult, setTestResult] = useState<TestResult>(null);
-  const [settingDefault, setSettingDefault] = useState(false);
+  const [settingDef, setSettingDef] = useState(false);
 
-  // Sync if parent state changes (e.g. default toggled on another card).
-  useEffect(() => {
-    setModel(state.model);
-    setBaseUrl(state.baseUrl);
-  }, [state.model, state.baseUrl]);
+  useEffect(() => { setModel(state.model); setBaseUrl(state.baseUrl); }, [state.model, state.baseUrl]);
 
   async function handleSave() {
-    setSaving(true);
-    setSaveErr(null);
-    setSaveMsg(null);
+    setSaving(true); setSaveErr(null); setSaveMsg(null);
     try {
+      const willHaveKey = state.hasKey || !!apiKey;
       const setting: AiProviderSetting = {
         id:              `${provider}-default`,
         provider,
@@ -87,7 +126,7 @@ function ProviderCard({
       await sidecar.saveAiProvider(setting);
       setSaveMsg('Saved.');
       setApiKey('');
-      onSaved(provider, { hasKey: state.hasKey || !!apiKey, model, baseUrl, enabled: true });
+      onSaved(provider, { hasKey: willHaveKey, model, baseUrl, enabled: true });
       setTimeout(() => setSaveMsg(null), 3000);
     } catch (e) {
       setSaveErr(e instanceof Error ? e.message : String(e));
@@ -97,8 +136,7 @@ function ProviderCard({
   }
 
   async function handleTest() {
-    setTesting(true);
-    setTestResult(null);
+    setTesting(true); setTestResult(null);
     try {
       const r = await sidecar.testAiProvider(provider);
       setTestResult(r);
@@ -110,98 +148,85 @@ function ProviderCard({
   }
 
   async function handleSetDefault() {
-    if (state.isDefault) return;
-    setSettingDefault(true);
+    setSettingDef(true);
     try {
       await sidecar.setDefaultAiProvider(`${provider}-default`);
       onSetDefault(provider);
     } finally {
-      setSettingDefault(false);
+      setSettingDef(false);
     }
   }
 
   return (
-    <div className={`card transition-shadow ${state.isDefault ? 'ring-2 ring-primary/40' : ''}`}>
-      {/* header row */}
+    <div className={`card transition-all ${
+      state.isDefault
+        ? 'ring-2 ring-success/50 shadow-sm'
+        : !state.hasKey
+          ? 'opacity-80'
+          : ''
+    }`}>
+      {/* ── header row ── */}
       <div className="flex items-center gap-3">
-        <div className="flex-1">
-          <div className="flex items-center gap-2">
-            <span className="font-semibold">{PROVIDER_LABELS[provider] ?? provider}</span>
-            {state.isDefault && (
-              <span className="rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
-                Default
-              </span>
-            )}
-          </div>
-          <div className="mt-0.5 flex items-center gap-2 text-xs text-text-muted">
-            {state.hasKey ? (
-              <span className="flex items-center gap-1 text-success"><CheckCircle2 size={11} /> Key configured</span>
-            ) : (
-              <span className="flex items-center gap-1"><Key size={11} /> No key</span>
-            )}
-            {state.model && <span>· {state.model}</span>}
-          </div>
+        <div className="flex-1 min-w-0">
+          <span className="font-semibold">{PROVIDER_LABELS[provider] ?? provider}</span>
+          {state.model && (
+            <span className="ml-2 text-xs text-text-muted">{state.model}</span>
+          )}
+          {state.hasKey && !state.isDefault && (
+            <span className="ml-2 inline-flex items-center gap-1 text-xs text-text-muted">
+              <Key size={10} /> key configured
+            </span>
+          )}
         </div>
 
-        {/* Default toggle */}
-        <button
-          title={state.isDefault ? 'This is the default provider' : 'Set as default provider'}
-          onClick={handleSetDefault}
-          disabled={state.isDefault || settingDefault}
-          className={`rounded-full p-1.5 transition-colors ${
-            state.isDefault
-              ? 'text-primary cursor-default'
-              : 'text-text-muted hover:text-primary hover:bg-primary/10'
-          }`}
-        >
-          {settingDefault
-            ? <Loader2 size={16} className="animate-spin" />
-            : state.isDefault
-              ? <Star size={16} className="fill-primary" />
-              : <StarOff size={16} />
-          }
-        </button>
-
-        {/* Test button */}
+        {/* test button — only when key exists */}
         {state.hasKey && (
           <button
-            title="Test connection"
+            type="button"
             onClick={handleTest}
             disabled={testing}
             className="flex items-center gap-1.5 rounded border border-border px-2.5 py-1 text-xs hover:bg-surface-alt disabled:opacity-50"
+            title="Test connection"
           >
             {testing ? <Loader2 size={12} className="animate-spin" /> : <FlaskConical size={12} />}
             Test
           </button>
         )}
 
-        {/* Expand / collapse edit form */}
+        {/* DEFAULT toggle */}
+        <DefaultToggle
+          isDefault={state.isDefault}
+          hasKey={state.hasKey}
+          busy={settingDef}
+          onToggle={handleSetDefault}
+        />
+
+        {/* expand / collapse */}
         <button
           className="rounded p-1.5 text-text-muted hover:bg-surface-alt"
-          onClick={() => { setOpen((v) => !v); setTestResult(null); setSaveMsg(null); setSaveErr(null); }}
+          onClick={() => { setOpen(v => !v); setTestResult(null); setSaveMsg(null); setSaveErr(null); }}
           title={open ? 'Collapse' : 'Edit key / model'}
         >
           {open ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
         </button>
       </div>
 
-      {/* test result inline */}
+      {/* ── test result ── */}
       {testResult && (
         <div className={`mt-3 flex items-center gap-2 rounded border px-3 py-2 text-xs ${
-          testResult.ok ? 'border-success/30 bg-success/5 text-success' : 'border-destructive/30 bg-destructive/5 text-destructive'
+          testResult.ok
+            ? 'border-success/30 bg-success/5 text-success'
+            : 'border-destructive/30 bg-destructive/5 text-destructive'
         }`}>
+          {testResult.ok ? <CheckCircle2 size={13} /> : <XCircle size={13} />}
           {testResult.ok
-            ? <CheckCircle2 size={13} />
-            : <XCircle      size={13} />
-          }
-          {testResult.ok
-            ? `Connected — response in ${testResult.ms} ms${testResult.text ? ` · "${testResult.text.slice(0, 60)}"` : ''}`
+            ? `Connected — ${testResult.ms} ms${testResult.text ? ` · "${testResult.text.slice(0, 60)}"` : ''}`
             : `Failed — ${testResult.error ?? 'unknown error'} (${testResult.ms} ms)`
           }
         </div>
       )}
 
-      {/* edit form */}
+      {/* ── edit form ── */}
       {open && (
         <div className="mt-4 space-y-3 border-t border-border pt-4">
           <div>
@@ -210,7 +235,7 @@ function ProviderCard({
               className="input"
               placeholder={DEFAULT_MODELS[provider] ?? 'default'}
               value={model}
-              onChange={(e) => setModel(e.target.value)}
+              onChange={e => setModel(e.target.value)}
             />
           </div>
 
@@ -221,7 +246,7 @@ function ProviderCard({
                 className="input"
                 placeholder={provider === 'ollama' ? 'http://localhost:11434' : 'https://your-endpoint'}
                 value={baseUrl}
-                onChange={(e) => setBaseUrl(e.target.value)}
+                onChange={e => setBaseUrl(e.target.value)}
               />
             </div>
           )}
@@ -235,7 +260,7 @@ function ProviderCard({
               type="password"
               placeholder={state.hasKey ? '••••••••  (key saved — enter new key to replace)' : 'Enter API key'}
               value={apiKey}
-              onChange={(e) => setApiKey(e.target.value)}
+              onChange={e => { setApiKey(e.target.value); setSaveMsg(null); }}
             />
             <p className="mt-1 text-xs text-text-muted">
               Encrypted at rest (AES-256-GCM) — never returned to the browser.
@@ -257,95 +282,110 @@ function ProviderCard({
 // ── Main page ─────────────────────────────────────────────────────────────────
 
 export function SettingsPage() {
-  const [providerStates, setProviderStates] = useState<Record<string, ProviderState>>({});
+  const [states,  setStates]  = useState<Record<string, ProviderState>>({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     sidecar.getAiProviders().then(({ providers }) => {
       const map: Record<string, ProviderState> = {};
       for (const p of AI_PROVIDERS) {
-        const existing = providers.find((x) => x.provider === p);
+        const existing = providers.find(x => x.provider === p);
         map[p] = {
-          hasKey:    existing?.hasApiKey ?? false,
-          isDefault: existing?.isDefault ?? false,
-          enabled:   existing?.enabled ?? false,
-          model:     existing?.model ?? '',
-          baseUrl:   existing?.baseUrl ?? '',
+          hasKey:    existing?.hasApiKey  ?? false,
+          isDefault: existing?.isDefault  ?? false,
+          enabled:   existing?.enabled    ?? false,
+          model:     existing?.model      ?? '',
+          baseUrl:   existing?.baseUrl    ?? '',
         };
       }
-      setProviderStates(map);
+      // Auto-set default if exactly one key exists and none is marked default.
+      const withKey = AI_PROVIDERS.filter(p => map[p]!.hasKey);
+      const hasDefault = AI_PROVIDERS.some(p => map[p]!.isDefault);
+      if (withKey.length === 1 && !hasDefault) {
+        map[withKey[0]!]!.isDefault = true;
+        sidecar.setDefaultAiProvider(`${withKey[0]}-default`).catch(() => {});
+      }
+      setStates(map);
     }).catch(() => {}).finally(() => setLoading(false));
   }, []);
 
   function handleSaved(provider: string, updated: Partial<ProviderState>) {
-    setProviderStates((prev) => ({
-      ...prev,
-      [provider]: { ...prev[provider]!, ...updated },
-    }));
+    setStates(prev => {
+      const next = { ...prev, [provider]: { ...prev[provider]!, ...updated } };
+      // Auto-promote to default when this is now the only key.
+      const withKey = AI_PROVIDERS.filter(p => next[p]!.hasKey);
+      const hasDefault = AI_PROVIDERS.some(p => next[p]!.isDefault);
+      if (withKey.length === 1 && !hasDefault) {
+        const only = withKey[0]!;
+        next[only] = { ...next[only]!, isDefault: true };
+        sidecar.setDefaultAiProvider(`${only}-default`).catch(() => {});
+      }
+      return next;
+    });
   }
 
   function handleSetDefault(provider: string) {
-    setProviderStates((prev) => {
+    setStates(prev => {
       const next = { ...prev };
-      for (const p of Object.keys(next)) {
-        next[p] = { ...next[p]!, isDefault: p === provider };
-      }
+      for (const p of AI_PROVIDERS) next[p] = { ...next[p]!, isDefault: p === provider };
       return next;
     });
   }
 
   if (loading) return <div className="p-6 text-sm text-text-muted">Loading…</div>;
 
-  const configured = AI_PROVIDERS.filter((p) => providerStates[p]?.hasKey || providerStates[p]?.enabled);
-  const unconfigured = AI_PROVIDERS.filter((p) => !configured.includes(p));
+  const activeDefault = AI_PROVIDERS.find(p => states[p]?.isDefault && states[p]?.hasKey);
+  const anyKey        = AI_PROVIDERS.some(p => states[p]?.hasKey);
 
   return (
     <div>
       <PageHeader
         title="Settings"
-        subtitle="Configure AI providers. The app works fully offline — a key is optional. Click ★ to set the active default; click Test to verify connectivity."
+        subtitle="Configure AI providers. The DEFAULT toggle sets which provider is used across the whole app — it turns green automatically when a key is added."
       />
 
-      <div className="max-w-2xl space-y-6">
-        {/* configured providers */}
-        {configured.length > 0 && (
-          <section>
-            <h3 className="mb-2 text-sm font-medium text-text-muted">Configured providers</h3>
-            <div className="space-y-3">
-              {configured.map((p) => (
-                <ProviderCard
-                  key={p}
-                  provider={p}
-                  state={providerStates[p]!}
-                  onSaved={handleSaved}
-                  onSetDefault={handleSetDefault}
-                />
-              ))}
-            </div>
-          </section>
+      <div className="max-w-2xl space-y-5">
+
+        {/* ── global status banner ── */}
+        {!anyKey ? (
+          <div className="flex items-center gap-3 rounded-lg border border-destructive/40 bg-destructive/8 px-4 py-3 text-sm text-destructive">
+            <AlertTriangle size={18} className="flex-shrink-0" />
+            <span>
+              <strong>No AI provider configured.</strong> Expand any provider below, enter your API key, and click Save.
+              The DEFAULT toggle will turn green automatically.
+            </span>
+          </div>
+        ) : activeDefault ? (
+          <div className="flex items-center gap-3 rounded-lg border border-success/40 bg-success/8 px-4 py-3 text-sm text-success">
+            <CheckCircle2 size={18} className="flex-shrink-0" />
+            <span>
+              <strong>{PROVIDER_LABELS[activeDefault] ?? activeDefault}</strong> is the active default —
+              all AI features across the app use this provider.
+            </span>
+          </div>
+        ) : (
+          <div className="flex items-center gap-3 rounded-lg border border-warning/40 bg-warning/8 px-4 py-3 text-sm text-warning">
+            <AlertTriangle size={18} className="flex-shrink-0" />
+            <span>
+              A key is configured but no provider is set as default. Click <strong>SET DEFAULT</strong> on one of the providers below.
+            </span>
+          </div>
         )}
 
-        {/* unconfigured providers */}
-        {unconfigured.length > 0 && (
-          <section>
-            <h3 className="mb-2 text-sm font-medium text-text-muted">
-              {configured.length > 0 ? 'Add another provider' : 'Available providers'}
-            </h3>
-            <div className="space-y-3">
-              {unconfigured.map((p) => (
-                <ProviderCard
-                  key={p}
-                  provider={p}
-                  state={providerStates[p]!}
-                  onSaved={handleSaved}
-                  onSetDefault={handleSetDefault}
-                />
-              ))}
-            </div>
-          </section>
-        )}
+        {/* ── provider cards ── */}
+        <div className="space-y-3">
+          {AI_PROVIDERS.map(p => (
+            <ProviderCard
+              key={p}
+              provider={p}
+              state={states[p]!}
+              onSaved={handleSaved}
+              onSetDefault={handleSetDefault}
+            />
+          ))}
+        </div>
 
-        {/* local services */}
+        {/* ── local services ── */}
         <div className="card">
           <div className="mb-3 font-medium">Local services</div>
           <div className="grid grid-cols-2 gap-4 text-sm">
@@ -353,7 +393,7 @@ export function SettingsPage() {
             <div><div className="label">Mock server port</div><code>8855</code></div>
           </div>
           <p className="mt-3 text-xs text-text-muted">
-            Override via environment variables (<code>SIDECAR_PORT</code>, <code>MOCK_SERVER_PORT</code>).
+            Override via <code>SIDECAR_PORT</code> and <code>MOCK_SERVER_PORT</code> environment variables.
           </p>
         </div>
       </div>

@@ -11,6 +11,7 @@ const PAGES = [
   { path: '/categories', title: 'Business Categories' },
   { path: '/assistant',  title: 'AR Conversational Banking' },
   { path: '/test-cases', title: 'Test Cases' },
+  { path: '/builder',        title: 'Bot Builder' },
   { path: '/designer',      title: 'BotJob Designer' },
   { path: '/environments',  title: 'Environments' },
   { path: '/execute',       title: 'Execute Tests' },

@@ -56,6 +56,56 @@ export class AiProviderService implements AiGateway {
     this.defaultProvider = provider;
   }
 
+  /** Expose the current default provider credentials for tool-use callers. */
+  getDefaultConfig(): { provider: AiProvider; key: string | null; model: string; baseUrl?: string } {
+    return {
+      provider: this.defaultProvider,
+      key:      this.keys.get(this.defaultProvider) ?? null,
+      model:    this.models.get(this.defaultProvider) ?? DEFAULT_MODELS[this.defaultProvider] ?? 'gpt-4o-mini',
+      baseUrl:  this.baseUrls.get(this.defaultProvider),
+    };
+  }
+
+  /**
+   * Return the best available provider that has a key configured.
+   * Prefers the default provider; falls back to the first one with a key.
+   * Returns null if nothing is configured.
+   */
+  getActiveProvider(): { provider: AiProvider; key: string; model: string; baseUrl?: string } | null {
+    const tryProvider = (p: AiProvider) => {
+      const key = this.keys.get(p);
+      if (!key) return null;
+      return { provider: p, key, model: this.models.get(p) ?? DEFAULT_MODELS[p] ?? 'gpt-4o-mini', baseUrl: this.baseUrls.get(p) };
+    };
+
+    // 1. Prefer the configured default.
+    const fromDefault = tryProvider(this.defaultProvider);
+    if (fromDefault) return fromDefault;
+
+    // 2. Fall back to any provider that has a key.
+    for (const [p] of this.keys) {
+      const found = tryProvider(p as AiProvider);
+      if (found) return found;
+    }
+
+    // 3. Ollama never needs a key — if it's reachable it should be first in line.
+    if (!this.keys.size) return null;
+    return null;
+  }
+
+  /** Test a specific provider with a simple prompt. Throws on failure. */
+  async completeForProvider(provider: AiProvider, prompt: string): Promise<string> {
+    const key = this.keys.get(provider) ?? null;
+    if (!key && provider !== 'ollama') throw new Error(`No API key configured for ${provider}`);
+    return this.complete({
+      provider,
+      model:   this.models.get(provider) ?? DEFAULT_MODELS[provider] ?? 'gpt-4o-mini',
+      baseUrl: this.baseUrls.get(provider),
+      system:  'You are a test assistant.',
+      prompt,
+    });
+  }
+
   /** Convenience: ask using the default provider. */
   async ask(system: string, prompt: string): Promise<string> {
     return this.complete({

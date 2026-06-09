@@ -203,6 +203,18 @@ export interface Environment {
   updatedAt: string;
 }
 
+export interface AppAction {
+  type: 'catalog_search' | 'botjob_created' | 'botjobs_listed' | 'botjob_executed' | 'envs_listed';
+  label: string;
+  data: Record<string, unknown>;
+}
+
+export interface AppAssistantResponse {
+  answer: string;
+  actions: AppAction[];
+  provider: string | null;
+}
+
 export interface AiProviderSetting {
   id: string;
   provider: string;
@@ -262,6 +274,18 @@ export const sidecar = {
       body: JSON.stringify(setting),
     }),
 
+  setDefaultAiProvider: (id: string) =>
+    request<{ ok: boolean }>('/settings/ai-providers/set-default', {
+      method: 'POST',
+      body: JSON.stringify({ id }),
+    }),
+
+  testAiProvider: (provider: string) =>
+    request<{ ok: boolean; ms: number; text?: string; error?: string }>('/settings/ai-providers/test', {
+      method: 'POST',
+      body: JSON.stringify({ provider }),
+    }),
+
   setEndpointCategory: (endpointId: string, categoryId: string | null) =>
     request<{ ok: boolean }>(`/catalog/endpoints/${endpointId}/category`, {
       method: 'PUT',
@@ -312,6 +336,13 @@ export const sidecar = {
 
   deleteEnvironment: (id: string) =>
     request<{ ok: boolean }>(`/environments/${id}`, { method: 'DELETE' }),
+
+  // ── App-level agentic assistant (Phase 19) ─────────────────────────────────
+  appChat: (messages: { role: 'user' | 'assistant'; content: string }[]) =>
+    request<AppAssistantResponse>('/app-assistant/chat', {
+      method: 'POST',
+      body:   JSON.stringify({ messages }),
+    }),
 
   listExecutions: (botJobId?: string) => {
     const qs = botJobId ? `?botJobId=${encodeURIComponent(botJobId)}` : '';

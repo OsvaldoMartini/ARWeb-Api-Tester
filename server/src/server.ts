@@ -2,6 +2,7 @@ import { createServer, type IncomingMessage, type ServerResponse } from 'node:ht
 import { uuid, nowIso } from '@arweb/common';
 import { endpointsToBashScript, endpointsToPostmanCollection } from '@arweb/infrastructure';
 import type { Container } from './bootstrap/container.js';
+import { runAppAssistant, type ChatMessage } from './app-assistant.js';
 
 type Handler = (
   ctx: Container,
@@ -47,20 +48,40 @@ export function createSidecarServer(ctx: Container) {
       const data = body as { files?: { name: string; content: string }[] };
       if (!data?.files?.length) return { error: 'files array required' };
 
-      const { mkdtempSync, writeFileSync, rmSync } = await import('node:fs');
+      const { mkdtempSync, mkdirSync, writeFileSync, rmSync } = await import('node:fs');
       const { tmpdir } = await import('node:os');
-      const { join: pjoin } = await import('node:path');
+      const { join: pjoin, dirname, posix } = await import('node:path');
 
       const tempDir = mkdtempSync(pjoin(tmpdir(), 'arweb-import-'));
+      const writeFailures: { file: string; error: string }[] = [];
       try {
         for (const file of data.files) {
-          const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
-          writeFileSync(pjoin(tempDir, safeName), file.content, 'utf8');
+          // Sanitise each path segment but preserve folder structure so the
+          // recursive importer finds files across subfolders.
+          const safePath = posix
+            .normalize(file.name.replace(/\\/g, '/'))
+            .split('/')
+            .map((seg) => seg.replace(/[^a-zA-Z0-9._-]/g, '_') || '_')
+            .join('/');
+          const fullPath = pjoin(tempDir, safePath);
+          try {
+            const dir = dirname(fullPath);
+            if (dir !== tempDir) mkdirSync(dir, { recursive: true });
+            writeFileSync(fullPath, file.content, 'utf8');
+          } catch (writeErr) {
+            const msg = writeErr instanceof Error ? writeErr.message : String(writeErr);
+            console.error(`[upload] failed to write "${file.name}": ${msg}`);
+            writeFailures.push({ file: file.name, error: msg });
+          }
         }
         const result = await c.importUseCase.execute(tempDir);
         if (!result.ok) return { error: result.error.message };
         await autoMapAndPopulate(c);
-        return result.value;
+        // Merge write-stage failures with parse-stage failures from the importer.
+        return {
+          ...result.value,
+          failures: [...writeFailures, ...(result.value.failures ?? [])],
+        };
       } finally {
         rmSync(tempDir, { recursive: true, force: true });
       }
@@ -94,6 +115,13 @@ export function createSidecarServer(ctx: Container) {
       return { ...result, evidence };
     },
 
+    // Phase 19: App-level agentic assistant (BotJob builder, catalog search, test runner).
+    'POST /app-assistant/chat': async (c, _req, _res, body) => {
+      const { messages } = (body ?? {}) as { messages?: ChatMessage[] };
+      if (!messages?.length) return { error: 'messages array required' };
+      return runAppAssistant(messages, c);
+    },
+
     'GET /settings/ai-providers': async (c) => {
       const providers = await c.settingsRepo.listAiProviders();
       // Never return key material to the UI — replace with a boolean flag.
@@ -112,6 +140,37 @@ export function createSidecarServer(ctx: Container) {
       c.ai.configure(setting.provider, setting.encryptedApiKey, setting.baseUrl, setting.model);
       if (setting.isDefault) c.ai.setDefaultProvider(setting.provider);
       return { ok: true };
+    },
+
+    // Set one provider as default; all others are cleared atomically.
+    'POST /settings/ai-providers/set-default': async (c, _req, _res, body) => {
+      const { id } = (body ?? {}) as { id?: string };
+      if (!id) return { error: 'id required' };
+      c.settingsRepo.setAsDefault(id);
+      // Reload providers so the in-memory AI service reflects the change.
+      const providers = await c.settingsRepo.listAiProviders();
+      for (const p of providers) {
+        c.ai.configure(p.provider, p.encryptedApiKey, p.baseUrl, p.model);
+      }
+      const def = providers.find((p) => p.isDefault && p.enabled);
+      if (def) c.ai.setDefaultProvider(def.provider);
+      return { ok: true };
+    },
+
+    // Test an AI provider: make a lightweight completion call and return latency.
+    'POST /settings/ai-providers/test': async (c, _req, _res, body) => {
+      const { provider } = (body ?? {}) as { provider?: string };
+      if (!provider) return { error: 'provider required' };
+      const start = Date.now();
+      try {
+        const text = await c.ai.completeForProvider(
+          provider as import('@arweb/domain').AiProvider,
+          'Say exactly: "OK"',
+        );
+        return { ok: true, ms: Date.now() - start, text };
+      } catch (e) {
+        return { ok: false, ms: Date.now() - start, error: e instanceof Error ? e.message : String(e) };
+      }
     },
 
     // ── Environments ─────────────────────────────────────────────────────────

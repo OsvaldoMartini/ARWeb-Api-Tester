@@ -61,6 +61,21 @@ export class SqliteSettingsRepository implements SettingsRepository {
       setting.id, setting.provider, setting.label, setting.baseUrl, setting.model,
       keyToStore, setting.isDefault ? 1 : 0, setting.enabled ? 1 : 0,
     );
+    // Enforce exclusive default: clear other rows when this one is the default.
+    if (setting.isDefault) {
+      this.db.prepare(
+        'UPDATE ai_provider_settings SET is_default = 0 WHERE id != ?',
+      ).run(setting.id);
+    }
+  }
+
+  /** Atomically make one provider the default and clear all others. */
+  setAsDefault(id: string): void {
+    const update = this.db.transaction(() => {
+      this.db.prepare('UPDATE ai_provider_settings SET is_default = 0').run();
+      this.db.prepare('UPDATE ai_provider_settings SET is_default = 1 WHERE id = ?').run(id);
+    });
+    update();
   }
 
   private toAiProvider(r: AiProviderRow): AiProviderSetting {

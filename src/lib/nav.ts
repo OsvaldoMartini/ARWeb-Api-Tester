@@ -11,6 +11,7 @@ import {
   BarChart3,
   Settings,
   Globe,
+  Sparkles,
   type LucideIcon,
 } from 'lucide-react';
 
@@ -36,6 +37,7 @@ export const NAV_ITEMS: NavItem[] = [
   { path: '/categories', label: 'Business Categories', description: '25 banking categories mapped to real endpoints.', icon: Layers },
   { path: '/assistant', label: 'AR Conversational Banking', description: 'Simulate banking conversations from employee and client perspectives.', icon: Bot },
   { path: '/test-cases', label: 'Test Cases', description: 'Manage reusable test definitions.', icon: ClipboardList },
+  { path: '/builder', label: 'Bot Builder', description: 'Ask AI to create BotJobs, search the catalog, and run tests.', icon: Sparkles },
   { path: '/designer', label: 'BotJob Designer', description: 'Compose command sequences visually.', icon: Workflow },
   { path: '/environments', label: 'Environments', description: 'Named targets: dev, staging, prod — pick one when running BotJobs.', icon: Globe },
   { path: '/execute', label: 'Execute Tests', description: 'Run BotJobs and inspect the audit trail.', icon: PlayCircle },

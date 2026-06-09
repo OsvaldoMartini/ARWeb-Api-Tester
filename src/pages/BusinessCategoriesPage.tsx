@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react';
 import { PageHeader } from '@/components/ui/PageHeader';
+import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
+import { ErrorAlert } from '@/components/ui/ErrorAlert';
+import { EmptyState } from '@/components/ui/EmptyState';
 import { sidecar, type TaxonomyResponse } from '@/services/sidecarClient';
 
 export function BusinessCategoriesPage() {
   const [taxonomy, setTaxonomy] = useState<TaxonomyResponse | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading]   = useState(true);
+  const [error, setError]       = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -19,9 +22,7 @@ export function BusinessCategoriesPage() {
         if (!cancelled) setLoading(false);
       }
     })();
-    return () => {
-      cancelled = true;
-    };
+    return () => { cancelled = true; };
   }, []);
 
   const subsFor = (categoryId: string) =>
@@ -35,12 +36,18 @@ export function BusinessCategoriesPage() {
       />
 
       {loading ? (
-        <p className="text-sm text-text-muted">Loading taxonomy…</p>
+        <LoadingSpinner text="Loading taxonomy…" />
       ) : error ? (
-        <p className="text-sm text-danger">{error}</p>
+        <ErrorAlert message={error} />
+      ) : !taxonomy || taxonomy.categories.length === 0 ? (
+        <EmptyState
+          icon="🗂️"
+          title="No categories found"
+          body="Import an OpenAPI spec first — categories are built from the catalog."
+        />
       ) : (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {taxonomy?.categories.map((cat) => (
+          {taxonomy.categories.map((cat) => (
             <div key={cat.id} className="card">
               <div className="mb-2 font-medium">{cat.name}</div>
               <ul className="space-y-1 text-sm text-text-muted">

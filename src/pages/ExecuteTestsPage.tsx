@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { PageHeader } from '@/components/ui/PageHeader';
+import { ErrorAlert } from '@/components/ui/ErrorAlert';
+import { EmptyState } from '@/components/ui/EmptyState';
 import {
   sidecar,
   type BotJob,
@@ -130,11 +132,15 @@ function RunSummary({ run }: { run: ExecutionRun }) {
 // ── history list ──────────────────────────────────────────────────────────────
 
 function HistoryList({ jobs, onSelect }: { jobs: BotJob[]; onSelect: (runId: string, run: ExecutionRun, steps: ExecutionStep[]) => void }) {
-  const [runs, setRuns] = useState<ExecutionRun[]>([]);
+  const [runs, setRuns]         = useState<ExecutionRun[]>([]);
   const [filterJobId, setFilterJobId] = useState('');
+  const [histError, setHistError] = useState<string | null>(null);
 
   useEffect(() => {
-    sidecar.listExecutions(filterJobId || undefined).then(setRuns).catch(() => {});
+    setHistError(null);
+    sidecar.listExecutions(filterJobId || undefined)
+      .then(setRuns)
+      .catch((e) => setHistError(e instanceof Error ? e.message : String(e)));
   }, [filterJobId]);
 
   const loadRun = async (run: ExecutionRun) => {
@@ -155,7 +161,8 @@ function HistoryList({ jobs, onSelect }: { jobs: BotJob[]; onSelect: (runId: str
           {jobs.map((j) => <option key={j.id} value={j.id}>{j.name}</option>)}
         </select>
       </div>
-      {runs.length === 0 ? (
+      {histError && <ErrorAlert message={histError} />}
+      {!histError && runs.length === 0 ? (
         <p className="text-xs text-text-muted">No executions yet.</p>
       ) : (
         <ul className="space-y-1">
@@ -185,6 +192,7 @@ function HistoryList({ jobs, onSelect }: { jobs: BotJob[]; onSelect: (runId: str
 
 export function ExecuteTestsPage() {
   const [jobs, setJobs]         = useState<BotJob[]>([]);
+  const [jobsError, setJobsError] = useState<string | null>(null);
   const [selectedJobId, setSelectedJobId] = useState('');
   const [target, setTarget]     = useState<'mock' | 'real'>('mock');
   const [running, setRunning]   = useState(false);
@@ -194,7 +202,9 @@ export function ExecuteTestsPage() {
   const [showHistory, setShowHistory] = useState(false);
 
   useEffect(() => {
-    sidecar.listBotJobs().then(setJobs).catch(() => {});
+    sidecar.listBotJobs()
+      .then(setJobs)
+      .catch((e) => setJobsError(e instanceof Error ? e.message : String(e)));
   }, []);
 
   const handleRun = async () => {
@@ -253,7 +263,8 @@ export function ExecuteTestsPage() {
         }
       />
 
-      {error && <p className="mb-3 text-sm text-danger">{error}</p>}
+      {error     && <div className="mb-3"><ErrorAlert message={error} /></div>}
+      {jobsError && <div className="mb-3"><ErrorAlert message={`Could not load BotJobs: ${jobsError}`} /></div>}
 
       {/* job selector */}
       <div className="mb-4 flex items-center gap-3">
@@ -293,15 +304,17 @@ export function ExecuteTestsPage() {
       )}
 
       {!run && !running && !showHistory && (
-        <div className="card text-sm text-text-muted">
-          {selectedJobId
-            ? 'Press Run to execute this BotJob. Every step records request, response, assertions, and timing into an immutable audit trail.'
+        <EmptyState
+          icon={selectedJobId ? '▶' : '🤖'}
+          title={selectedJobId ? 'Ready to run' : 'No BotJob selected'}
+          body={selectedJobId
+            ? 'Press Run to execute. Every step records request, response, assertions, and timing.'
             : 'Select a BotJob above, then press Run. Create BotJobs in the Designer page first.'}
-        </div>
+        />
       )}
 
       {running && (
-        <div className="card text-sm text-text-muted">Running… each step executes sequentially.</div>
+        <EmptyState icon="⏳" title="Running…" body="Steps execute sequentially. Results will appear here." />
       )}
     </div>
   );

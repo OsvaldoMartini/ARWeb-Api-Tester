@@ -1,5 +1,6 @@
 import { createServer, type IncomingMessage, type ServerResponse } from 'node:http';
 import { uuid, nowIso } from '@arweb/common';
+import { endpointsToBashScript, endpointsToPostmanCollection } from '@arweb/infrastructure';
 import type { Container } from './bootstrap/container.js';
 
 type Handler = (
@@ -244,6 +245,60 @@ export function createSidecarServer(ctx: Container) {
         const steps = await ctx.executionRepo.getStepResults(stepsMatch[1]!);
         res.writeHead(200);
         return res.end(JSON.stringify(steps));
+      }
+
+      // GET /executions/:runId/report.html
+      const reportHtmlMatch = req.method === 'GET'
+        ? url.match(/^\/executions\/([^/]+)\/report\.html$/)
+        : null;
+      if (reportHtmlMatch) {
+        const runId = reportHtmlMatch[1]!;
+        const [run, steps] = await Promise.all([
+          ctx.executionRepo.listRuns().then((runs) => runs.find((r) => r.id === runId) ?? null),
+          ctx.executionRepo.getStepResults(runId),
+        ]);
+        if (!run) { res.writeHead(404); return res.end(JSON.stringify({ error: 'run not found' })); }
+        const html = ctx.reporter.executionRunHtml(run, steps);
+        res.setHeader('Content-Type', 'text/html; charset=utf-8');
+        res.setHeader('Content-Disposition', `attachment; filename="run-${runId.slice(0, 8)}.html"`);
+        res.writeHead(200);
+        return res.end(html);
+      }
+
+      // GET /executions/:runId/report.csv
+      const reportCsvMatch = req.method === 'GET'
+        ? url.match(/^\/executions\/([^/]+)\/report\.csv$/)
+        : null;
+      if (reportCsvMatch) {
+        const runId = reportCsvMatch[1]!;
+        const steps = await ctx.executionRepo.getStepResults(runId);
+        const csv = ctx.reporter.executionRunCsv(steps);
+        res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+        res.setHeader('Content-Disposition', `attachment; filename="run-${runId.slice(0, 8)}.csv"`);
+        res.writeHead(200);
+        return res.end(csv);
+      }
+
+      // GET /catalog/export/postman
+      if (req.method === 'GET' && url === '/catalog/export/postman') {
+        const endpoints = await ctx.catalog.listEndpoints();
+        const json = endpointsToPostmanCollection('ARWeb API Catalog', endpoints);
+        res.setHeader('Content-Type', 'application/json; charset=utf-8');
+        res.setHeader('Content-Disposition', 'attachment; filename="arweb-postman-collection.json"');
+        res.writeHead(200);
+        return res.end(json);
+      }
+
+      // GET /catalog/export/bash
+      if (req.method === 'GET' && url === '/catalog/export/bash') {
+        const qs = (req.url ?? '').split('?')[1] ?? '';
+        const baseUrl = new URLSearchParams(qs).get('baseUrl') ?? 'http://localhost';
+        const endpoints = await ctx.catalog.listEndpoints();
+        const script = endpointsToBashScript(baseUrl, endpoints);
+        res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+        res.setHeader('Content-Disposition', 'attachment; filename="arweb-catalog.sh"');
+        res.writeHead(200);
+        return res.end(script);
       }
 
       const handler = routes[key];

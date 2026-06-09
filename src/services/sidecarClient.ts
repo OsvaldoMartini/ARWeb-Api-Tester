@@ -290,3 +290,9 @@ export const sidecar = {
   mockLog: () => request<MockLogEntry[]>('/mock/log'),
   mockClearLog: () => request<{ ok: boolean }>('/mock/log/clear', { method: 'POST' }),
 };
+
+/** Absolute URL for a sidecar path — works in dev (Vite proxy), web (nginx), and Tauri (direct). */
+export function downloadUrl(path: string): string {
+  return `${BASE}${path}`;
+}
+

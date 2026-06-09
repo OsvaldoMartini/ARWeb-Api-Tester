@@ -11,6 +11,7 @@ import { ExecuteTestsPage } from '@/pages/ExecuteTestsPage';
 import { MockServerPage } from '@/pages/MockServerPage';
 import { ReportsPage } from '@/pages/ReportsPage';
 import { SettingsPage } from '@/pages/SettingsPage';
+import { EnvironmentsPage } from '@/pages/EnvironmentsPage';
 
 export function App() {
   return (
@@ -23,6 +24,7 @@ export function App() {
         <Route path="assistant" element={<AiAssistantPage />} />
         <Route path="test-cases" element={<TestCasesPage />} />
         <Route path="designer" element={<BotJobDesignerPage />} />
+        <Route path="environments" element={<EnvironmentsPage />} />
         <Route path="execute" element={<ExecuteTestsPage />} />
         <Route path="mock" element={<MockServerPage />} />
         <Route path="reports" element={<ReportsPage />} />

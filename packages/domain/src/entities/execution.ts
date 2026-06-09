@@ -8,7 +8,7 @@ export interface ExecutionRun {
   startedAt: string;
   finishedAt: string | null;
   status: ExecutionStatus;
-  target: 'real' | 'mock';
+  target: string;  // environment name (e.g. 'Mock Server', 'Production')
   totalSteps: number;
   passedSteps: number;
   failedSteps: number;

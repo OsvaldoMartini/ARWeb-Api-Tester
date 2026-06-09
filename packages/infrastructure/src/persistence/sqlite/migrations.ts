@@ -197,5 +197,33 @@ export function runMigrations(db: Database.Database): void {
       template   TEXT NOT NULL,
       updated_at TEXT NOT NULL
     );
+
+    -- ── Environments (Phase 18) ───────────────────────────────────────────────
+
+    CREATE TABLE IF NOT EXISTS environments (
+      id          TEXT PRIMARY KEY,
+      name        TEXT NOT NULL,
+      base_url    TEXT NOT NULL,
+      description TEXT,
+      headers     TEXT NOT NULL DEFAULT '{}',
+      is_default  INTEGER NOT NULL DEFAULT 0,
+      is_built_in INTEGER NOT NULL DEFAULT 0,
+      created_at  TEXT NOT NULL,
+      updated_at  TEXT NOT NULL
+    );
+
+    -- Seed the built-in Mock environment if it doesn't exist yet.
+    INSERT OR IGNORE INTO environments (id, name, base_url, description, headers, is_default, is_built_in, created_at, updated_at)
+    VALUES (
+      'mock',
+      'Mock Server',
+      'http://127.0.0.1:8855',
+      'Local mock server — replays imported catalog endpoints without a live backend.',
+      '{}',
+      1,
+      1,
+      datetime('now'),
+      datetime('now')
+    );
   `);
 }

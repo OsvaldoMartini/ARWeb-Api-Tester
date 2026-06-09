@@ -24,8 +24,8 @@ export interface EngineDeps {
   validator: RealApiCatalogValidator;
   catalog: CatalogReadPort;
   logger: Logger;
-  /** base URL used for API_CALL; 'real' uses the catalog server, 'mock' the local mock server */
-  resolveBaseUrl: (target: 'real' | 'mock') => string;
+  /** Fallback base URL when none is supplied per-run (kept for backward compat). */
+  resolveBaseUrl: (target: string) => string;
 }
 
 /**
@@ -40,7 +40,8 @@ export interface EngineDeps {
 export class BotJobExecutionEngine {
   constructor(private readonly deps: EngineDeps) {}
 
-  async run(bundle: BotJobBundle, target: 'real' | 'mock'): Promise<{ run: ExecutionRun; steps: ExecutionStepResult[] }> {
+  async run(bundle: BotJobBundle, target: string, baseUrl?: string): Promise<{ run: ExecutionRun; steps: ExecutionStepResult[] }> {
+    const resolvedBaseUrl = baseUrl ?? this.deps.resolveBaseUrl(target);
     const { logger, validator } = this.deps;
     const run: ExecutionRun = {
       id: uuid(),
@@ -94,7 +95,7 @@ export class BotJobExecutionEngine {
 
       const started = Date.now();
       try {
-        const step = await this.executeCommand(cmd, resolver, run.id, target);
+        const step = await this.executeCommand(cmd, resolver, run.id, resolvedBaseUrl);
         steps.push(step);
         if (step.status === 'passed') run.passedSteps++;
         else if (step.status === 'failed' || step.status === 'error') {
@@ -128,7 +129,7 @@ export class BotJobExecutionEngine {
     cmd: BotJobCommand,
     resolver: VariableResolver,
     runId: string,
-    target: 'real' | 'mock',
+    baseUrl: string,
   ): Promise<ExecutionStepResult> {
     const started = Date.now();
     const base = (status: ExecutionStepResult['status'], extra: Partial<ExecutionStepResult> = {}): ExecutionStepResult => ({
@@ -165,7 +166,7 @@ export class BotJobExecutionEngine {
         const endpoint = await this.deps.catalog.getEndpointById(endpointId);
         if (!endpoint) return base('error', { errorMessage: `Endpoint ${endpointId} missing at runtime` });
 
-        const url = this.deps.resolveBaseUrl(target) + resolver.resolve(endpoint.path);
+        const url = baseUrl + resolver.resolve(endpoint.path);
         const req: HttpRequest = {
           method: endpoint.method,
           url,

@@ -191,6 +191,18 @@ export interface ExecutionStep {
   createdAt: string;
 }
 
+export interface Environment {
+  id: string;
+  name: string;
+  baseUrl: string;
+  description: string | null;
+  headers: Record<string, string>;
+  isDefault: boolean;
+  isBuiltIn: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface AiProviderSetting {
   id: string;
   provider: string;
@@ -270,11 +282,29 @@ export const sidecar = {
     request<{ ok: boolean }>(`/botjobs/${id}`, { method: 'DELETE' }),
 
   // ── Execution ───────────────────────────────────────────────────────────────
-  executeBotJob: (id: string, target: 'real' | 'mock') =>
+  executeBotJob: (id: string, environmentId: string) =>
     request<{ run: ExecutionRun; steps: ExecutionStep[] }>(`/botjobs/${id}/execute`, {
       method: 'POST',
-      body: JSON.stringify({ target }),
+      body: JSON.stringify({ environmentId }),
     }),
+
+  // ── Environments ────────────────────────────────────────────────────────────
+  listEnvironments: () => request<Environment[]>('/environments'),
+
+  createEnvironment: (env: Omit<Environment, 'id' | 'createdAt' | 'updatedAt' | 'isBuiltIn'>) =>
+    request<Environment>('/environments', {
+      method: 'POST',
+      body: JSON.stringify(env),
+    }),
+
+  updateEnvironment: (id: string, patch: Partial<Environment>) =>
+    request<{ ok: boolean }>(`/environments/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(patch),
+    }),
+
+  deleteEnvironment: (id: string) =>
+    request<{ ok: boolean }>(`/environments/${id}`, { method: 'DELETE' }),
 
   listExecutions: (botJobId?: string) => {
     const qs = botJobId ? `?botJobId=${encodeURIComponent(botJobId)}` : '';

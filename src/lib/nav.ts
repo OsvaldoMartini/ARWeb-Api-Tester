@@ -10,6 +10,7 @@ import {
   Server,
   BarChart3,
   Settings,
+  Globe,
   type LucideIcon,
 } from 'lucide-react';
 
@@ -36,6 +37,7 @@ export const NAV_ITEMS: NavItem[] = [
   { path: '/assistant', label: 'AR Conversational Banking', description: 'Simulate banking conversations from employee and client perspectives.', icon: Bot },
   { path: '/test-cases', label: 'Test Cases', description: 'Manage reusable test definitions.', icon: ClipboardList },
   { path: '/designer', label: 'BotJob Designer', description: 'Compose command sequences visually.', icon: Workflow },
+  { path: '/environments', label: 'Environments', description: 'Named targets: dev, staging, prod — pick one when running BotJobs.', icon: Globe },
   { path: '/execute', label: 'Execute Tests', description: 'Run BotJobs and inspect the audit trail.', icon: PlayCircle },
   { path: '/mock', label: 'Mock Server', description: 'Local mock server for offline testing.', icon: Server },
   { path: '/reports', label: 'Reports', description: 'Export HTML / CSV / Bash artifacts.', icon: BarChart3 },

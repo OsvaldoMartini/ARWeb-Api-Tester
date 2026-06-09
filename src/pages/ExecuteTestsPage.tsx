@@ -8,6 +8,7 @@ import {
   type ExecutionRun,
   type ExecutionStep,
   type AssertionResult,
+  type Environment,
 } from '@/services/sidecarClient';
 
 // ── status badge ──────────────────────────────────────────────────────────────
@@ -193,8 +194,9 @@ function HistoryList({ jobs, onSelect }: { jobs: BotJob[]; onSelect: (runId: str
 export function ExecuteTestsPage() {
   const [jobs, setJobs]         = useState<BotJob[]>([]);
   const [jobsError, setJobsError] = useState<string | null>(null);
+  const [envs, setEnvs]         = useState<Environment[]>([]);
   const [selectedJobId, setSelectedJobId] = useState('');
-  const [target, setTarget]     = useState<'mock' | 'real'>('mock');
+  const [environmentId, setEnvironmentId] = useState('mock');
   const [running, setRunning]   = useState(false);
   const [run, setRun]           = useState<ExecutionRun | null>(null);
   const [steps, setSteps]       = useState<ExecutionStep[]>([]);
@@ -205,6 +207,13 @@ export function ExecuteTestsPage() {
     sidecar.listBotJobs()
       .then(setJobs)
       .catch((e) => setJobsError(e instanceof Error ? e.message : String(e)));
+    sidecar.listEnvironments()
+      .then((list) => {
+        setEnvs(list);
+        const def = list.find((e) => e.isDefault);
+        if (def) setEnvironmentId(def.id);
+      })
+      .catch(() => {});
   }, []);
 
   const handleRun = async () => {
@@ -214,7 +223,7 @@ export function ExecuteTestsPage() {
     setRun(null);
     setSteps([]);
     try {
-      const result = await sidecar.executeBotJob(selectedJobId, target);
+      const result = await sidecar.executeBotJob(selectedJobId, environmentId);
       setRun(result.run);
       setSteps(result.steps);
     } catch (e) {
@@ -245,13 +254,19 @@ export function ExecuteTestsPage() {
             >
               {showHistory ? 'Hide History' : 'History'}
             </button>
-            <button
-              className={`btn ${target === 'mock' ? 'btn-primary' : ''}`}
-              onClick={() => setTarget(target === 'mock' ? 'real' : 'mock')}
-              title="Toggle execution target"
+            <select
+              className="input w-44 text-sm"
+              value={environmentId}
+              onChange={(e) => setEnvironmentId(e.target.value)}
+              title="Execution environment"
             >
-              Target: {target === 'mock' ? 'Mock' : 'Real API'}
-            </button>
+              {envs.map((e) => (
+                <option key={e.id} value={e.id}>
+                  {e.name}{e.isDefault ? ' ★' : ''}
+                </option>
+              ))}
+              {envs.length === 0 && <option value="mock">Mock Server</option>}
+            </select>
             <button
               className="btn btn-primary"
               onClick={handleRun}
@@ -277,11 +292,15 @@ export function ExecuteTestsPage() {
           <option value="">— select a BotJob —</option>
           {jobs.map((j) => <option key={j.id} value={j.id}>{j.name}</option>)}
         </select>
-        {selectedJob && (
-          <span className="text-xs text-text-muted">
-            Target: <strong>{target}</strong>{target === 'real' ? ' (uses REAL_API_BASE_URL from server config)' : ' (local mock server)'}
-          </span>
-        )}
+        {selectedJob && (() => {
+          const env = envs.find((e) => e.id === environmentId);
+          return env ? (
+            <span className="text-xs text-text-muted">
+              Environment: <strong>{env.name}</strong>
+              {' · '}<code className="text-[11px]">{env.baseUrl}</code>
+            </span>
+          ) : null;
+        })()}
       </div>
 
       {/* history panel */}

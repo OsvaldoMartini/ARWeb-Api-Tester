@@ -15,6 +15,7 @@ import {
   SqliteExecutionRepository,
   SqliteTaxonomyRepository,
   SqliteSettingsRepository,
+  SqliteEnvironmentRepository,
 } from '@arweb/infrastructure';
 import { resolveMasterKey } from './crypto-key.js';
 import { BotJobExecutionEngine } from '@arweb/api-testing-engine';
@@ -46,6 +47,7 @@ export interface Container {
   executionRepo: SqliteExecutionRepository;
   taxonomyRepo: SqliteTaxonomyRepository;
   settingsRepo: SqliteSettingsRepository;
+  envRepo: SqliteEnvironmentRepository;
   ai: AiProviderService;
   config: { sidecarPort: number; mockPort: number; realBaseUrl: string };
 }
@@ -73,6 +75,7 @@ export function buildContainer(): Container {
   const executionRepo = new SqliteExecutionRepository(db);
   const taxonomyRepo = new SqliteTaxonomyRepository(db);
   const settingsRepo = new SqliteSettingsRepository(db, cryptoSvc);
+  const envRepo      = new SqliteEnvironmentRepository(db);
 
   // Seed banking taxonomy on first run (idempotent — no-op if rows exist)
   const seed = bankingTaxonomySeed();
@@ -89,7 +92,8 @@ export function buildContainer(): Container {
     validator,
     catalog,
     logger,
-    resolveBaseUrl: (target) => (target === 'mock' ? `http://127.0.0.1:${mockPort}` : realBaseUrl),
+    // Fallback resolver: used only when no baseUrl override is supplied to run().
+    resolveBaseUrl: (envId) => envRepo.resolveBaseUrl(envId) ?? realBaseUrl,
   });
 
   const ai = new AiProviderService(logger);
@@ -126,6 +130,7 @@ export function buildContainer(): Container {
     executionRepo,
     taxonomyRepo,
     settingsRepo,
+    envRepo,
     ai,
     config: { sidecarPort, mockPort, realBaseUrl },
   };

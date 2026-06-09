@@ -4,3 +4,4 @@ export { SqliteBotJobRepository } from './botjob.repository.js';
 export { SqliteExecutionRepository } from './execution.repository.js';
 export { SqliteTaxonomyRepository } from './taxonomy.repository.js';
 export { SqliteSettingsRepository } from './settings.repository.js';
+export { SqliteEnvironmentRepository } from './environment.repository.js';

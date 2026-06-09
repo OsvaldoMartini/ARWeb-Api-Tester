@@ -102,6 +102,9 @@ export function createSidecarServer(ctx: Container) {
       return { ok: true };
     },
 
+    // ── Environments ─────────────────────────────────────────────────────────
+    'GET /environments': (c) => c.envRepo.list(),
+
     // ── BotJob CRUD ──────────────────────────────────────────────────────────
     'GET /botjobs': (c) => c.botJobRepo.list(),
 
@@ -178,6 +181,46 @@ export function createSidecarServer(ctx: Container) {
         return res.end(JSON.stringify({ ok: true }));
       }
 
+      // POST /environments  (create)
+      if (req.method === 'POST' && url === '/environments') {
+        const data = body as Partial<import('@arweb/domain').Environment>;
+        if (!data?.name?.trim() || !data?.baseUrl?.trim()) {
+          res.writeHead(400); return res.end(JSON.stringify({ error: 'name and baseUrl required' }));
+        }
+        const { uuid: u, nowIso: n } = await import('@arweb/common');
+        const env: import('@arweb/domain').Environment = {
+          id:          u(),
+          name:        data.name.trim(),
+          baseUrl:     data.baseUrl.trim(),
+          description: data.description ?? null,
+          headers:     data.headers ?? {},
+          isDefault:   data.isDefault ?? false,
+          isBuiltIn:   false,
+          createdAt:   n(),
+          updatedAt:   n(),
+        };
+        ctx.envRepo.upsert(env);
+        res.writeHead(201); return res.end(JSON.stringify(env));
+      }
+
+      // PUT /environments/:id
+      const envPutMatch = req.method === 'PUT' ? url.match(/^\/environments\/([^/]+)$/) : null;
+      if (envPutMatch) {
+        const id = envPutMatch[1]!;
+        const existing = ctx.envRepo.getById(id);
+        if (!existing) { res.writeHead(404); return res.end(JSON.stringify({ error: 'not found' })); }
+        const data = body as Partial<import('@arweb/domain').Environment>;
+        ctx.envRepo.upsert({ ...existing, ...data, id, isBuiltIn: existing.isBuiltIn });
+        res.writeHead(200); return res.end(JSON.stringify({ ok: true }));
+      }
+
+      // DELETE /environments/:id
+      const envDelMatch = req.method === 'DELETE' ? url.match(/^\/environments\/([^/]+)$/) : null;
+      if (envDelMatch) {
+        ctx.envRepo.remove(envDelMatch[1]!);
+        res.writeHead(200); return res.end(JSON.stringify({ ok: true }));
+      }
+
       // GET /botjobs/:id
       const botJobGetMatch = req.method === 'GET'
         ? url.match(/^\/botjobs\/([^/]+)$/)
@@ -231,14 +274,16 @@ export function createSidecarServer(ctx: Container) {
         : null;
       if (executeMatch) {
         const id = executeMatch[1]!;
-        const { target = 'mock' } = (body ?? {}) as { target?: 'real' | 'mock' };
+        const { environmentId = 'mock' } = (body ?? {}) as { environmentId?: string };
+        const env = ctx.envRepo.getById(environmentId);
+        if (!env) { res.writeHead(404); return res.end(JSON.stringify({ error: `Environment "${environmentId}" not found` })); }
         const job = await ctx.botJobRepo.getById(id);
         if (!job) { res.writeHead(404); return res.end(JSON.stringify({ error: 'BotJob not found' })); }
         const blocks = await ctx.botJobRepo.getBlocks(id);
         const commandsByBlock = await Promise.all(blocks.map((b) => ctx.botJobRepo.getCommands(b.id)));
         const commands = commandsByBlock.flat().sort((a, b) => a.order - b.order);
         const variables = await ctx.botJobRepo.getVariables(id);
-        const { run, steps } = await ctx.engine.run({ job, blocks, commands, variables }, target);
+        const { run, steps } = await ctx.engine.run({ job, blocks, commands, variables }, env.name, env.baseUrl);
         await ctx.executionRepo.createRun(run);
         await Promise.all(steps.map((s) => ctx.executionRepo.addStepResult(s)));
         res.writeHead(200);

@@ -1,18 +1,25 @@
 import { useEffect, useState, useCallback } from 'react';
+import {
+  DndContext, closestCenter, KeyboardSensor, PointerSensor,
+  useSensor, useSensors, type DragEndEvent,
+} from '@dnd-kit/core';
+import {
+  arrayMove, SortableContext, sortableKeyboardCoordinates,
+  useSortable, verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+import { GripVertical } from 'lucide-react';
 import { PageHeader } from '@/components/ui/PageHeader';
-import { sidecar, type BotJob, type BotJobDetail, type BotJobCommand, type BotVariable, type CatalogEndpoint } from '@/services/sidecarClient';
+import {
+  sidecar,
+  type BotJob, type BotJobDetail, type BotJobCommand, type BotVariable, type CatalogEndpoint,
+} from '@/services/sidecarClient';
 
 // ── helpers ───────────────────────────────────────────────────────────────────
 
 function uid() {
   return Math.random().toString(36).slice(2) + Date.now().toString(36);
 }
-
-const MVP_RUNNABLE = ['API_CALL', 'SET_VARIABLE', 'ASSERT_STATUS_CODE', 'ASSERT_FIELD_VALUE', 'ASSERT_JSON_PATH_EXISTS', 'EXTRACT_JSON_PATH', 'WAIT', 'STOP_ON_FAILURE'] as const;
-const ALL_TYPES = [
-  ...MVP_RUNNABLE,
-  'IF', 'ELSE', 'LOOP', 'FOR_EACH', 'READ_CSV', 'READ_EXCEL', 'AI_GENERATE_DATA', 'CALL_COMPONENT',
-];
 
 const TYPE_LABELS: Record<string, string> = {
   API_CALL: 'API Call',
@@ -23,15 +30,59 @@ const TYPE_LABELS: Record<string, string> = {
   EXTRACT_JSON_PATH: 'Extract JSON Path',
   WAIT: 'Wait',
   STOP_ON_FAILURE: 'Stop on Failure',
-  IF: 'IF (Phase 9)',
-  ELSE: 'ELSE (Phase 9)',
-  LOOP: 'Loop (Phase 9)',
-  FOR_EACH: 'For Each (Phase 9)',
-  READ_CSV: 'Read CSV (Phase 9)',
-  READ_EXCEL: 'Read Excel (Phase 9)',
-  AI_GENERATE_DATA: 'AI Generate Data (Phase 9)',
-  CALL_COMPONENT: 'Call Component (Phase 9)',
+  IF: 'IF',
+  ELSE: 'ELSE',
+  LOOP: 'Loop',
+  FOR_EACH: 'For Each',
+  READ_CSV: 'Read CSV',
+  READ_EXCEL: 'Read Excel',
+  AI_GENERATE_DATA: 'AI Generate Data',
+  CALL_COMPONENT: 'Call Component',
 };
+
+// left-border + bg tint per command category
+const TYPE_STYLE: Record<string, string> = {
+  API_CALL:                'border-l-blue-500 bg-blue-500/5',
+  SET_VARIABLE:            'border-l-purple-500 bg-purple-500/5',
+  EXTRACT_JSON_PATH:       'border-l-teal-500 bg-teal-500/5',
+  ASSERT_STATUS_CODE:      'border-l-green-500 bg-green-500/5',
+  ASSERT_FIELD_VALUE:      'border-l-green-500 bg-green-500/5',
+  ASSERT_JSON_PATH_EXISTS: 'border-l-green-500 bg-green-500/5',
+  WAIT:                    'border-l-slate-400 bg-slate-500/5',
+  STOP_ON_FAILURE:         'border-l-red-500 bg-red-500/5',
+  IF:                      'border-l-orange-500 bg-orange-500/5',
+  ELSE:                    'border-l-orange-400 bg-orange-400/5',
+  LOOP:                    'border-l-orange-500 bg-orange-500/5',
+  FOR_EACH:                'border-l-orange-500 bg-orange-500/5',
+  READ_CSV:                'border-l-yellow-500 bg-yellow-500/5',
+  READ_EXCEL:              'border-l-yellow-500 bg-yellow-500/5',
+  AI_GENERATE_DATA:        'border-l-pink-500 bg-pink-500/5',
+  CALL_COMPONENT:          'border-l-indigo-500 bg-indigo-500/5',
+};
+
+const TYPE_DOT: Record<string, string> = {
+  API_CALL: 'bg-blue-500', SET_VARIABLE: 'bg-purple-500',
+  EXTRACT_JSON_PATH: 'bg-teal-500',
+  ASSERT_STATUS_CODE: 'bg-green-500', ASSERT_FIELD_VALUE: 'bg-green-500', ASSERT_JSON_PATH_EXISTS: 'bg-green-500',
+  WAIT: 'bg-slate-400', STOP_ON_FAILURE: 'bg-red-500',
+  IF: 'bg-orange-500', ELSE: 'bg-orange-400', LOOP: 'bg-orange-500', FOR_EACH: 'bg-orange-500',
+  READ_CSV: 'bg-yellow-500', READ_EXCEL: 'bg-yellow-500',
+  AI_GENERATE_DATA: 'bg-pink-500', CALL_COMPONENT: 'bg-indigo-500',
+};
+
+// palette: grouped command types shown in the right panel
+const PALETTE_GROUPS = [
+  { label: 'API', color: 'text-blue-400',   types: ['API_CALL'] },
+  { label: 'Variables', color: 'text-purple-400', types: ['SET_VARIABLE', 'EXTRACT_JSON_PATH'] },
+  { label: 'Assertions', color: 'text-green-400', types: ['ASSERT_STATUS_CODE', 'ASSERT_FIELD_VALUE', 'ASSERT_JSON_PATH_EXISTS'] },
+  { label: 'Control', color: 'text-orange-400',  types: ['IF', 'ELSE', 'LOOP', 'FOR_EACH', 'WAIT', 'STOP_ON_FAILURE'] },
+  { label: 'Data', color: 'text-yellow-400', types: ['READ_CSV', 'READ_EXCEL', 'AI_GENERATE_DATA', 'CALL_COMPONENT'] },
+];
+
+const MVP_RUNNABLE = new Set([
+  'API_CALL', 'SET_VARIABLE', 'ASSERT_STATUS_CODE', 'ASSERT_FIELD_VALUE',
+  'ASSERT_JSON_PATH_EXISTS', 'EXTRACT_JSON_PATH', 'WAIT', 'STOP_ON_FAILURE',
+]);
 
 // ── command config editors ────────────────────────────────────────────────────
 
@@ -52,9 +103,7 @@ function ApiCallConfig({ config, onChange, endpoints }: {
         >
           <option value="">— select —</option>
           {endpoints.map((e) => (
-            <option key={e.id} value={e.id}>
-              {e.method} {e.path}
-            </option>
+            <option key={e.id} value={e.id}>{e.method} {e.path}</option>
           ))}
         </select>
         {ep && <p className="mt-1 text-xs text-text-muted">{ep.summary ?? ''}</p>}
@@ -62,8 +111,7 @@ function ApiCallConfig({ config, onChange, endpoints }: {
       <div>
         <label className="label">Body (JSON, optional — supports ${'{'}varName{'}'} tokens)</label>
         <textarea
-          className="input font-mono text-xs"
-          rows={3}
+          className="input font-mono text-xs" rows={3}
           placeholder='{"key": "${myVar}"}'
           value={(config['body'] as string) ?? ''}
           onChange={(e) => {
@@ -77,8 +125,7 @@ function ApiCallConfig({ config, onChange, endpoints }: {
       <div>
         <label className="label">Headers (JSON object, optional)</label>
         <textarea
-          className="input font-mono text-xs"
-          rows={2}
+          className="input font-mono text-xs" rows={2}
           placeholder='{"Authorization": "Bearer ${token}"}'
           value={config['headers'] ? JSON.stringify(config['headers'], null, 2) : ''}
           onChange={(e) => {
@@ -174,32 +221,165 @@ function CommandConfigEditor({ cmd, onChange, endpoints }: {
   onChange: (c: Record<string, unknown>) => void;
   endpoints: CatalogEndpoint[];
 }) {
-  if (!MVP_RUNNABLE.includes(cmd.type as typeof MVP_RUNNABLE[number])) {
-    return <p className="text-xs text-warning">This command type is not available in the Phase 8 MVP. It will be recorded as skipped during execution.</p>;
+  if (!MVP_RUNNABLE.has(cmd.type)) {
+    return <p className="text-xs text-warning">Control flow / data commands are not yet executed (recorded as skipped). Configuration coming in a future phase.</p>;
   }
   switch (cmd.type) {
-    case 'API_CALL':          return <ApiCallConfig config={cmd.config} onChange={onChange} endpoints={endpoints} />;
-    case 'SET_VARIABLE':      return <SetVariableConfig config={cmd.config} onChange={onChange} />;
-    case 'ASSERT_STATUS_CODE':return <AssertStatusConfig config={cmd.config} onChange={onChange} />;
-    case 'ASSERT_FIELD_VALUE':return <AssertFieldConfig config={cmd.config} onChange={onChange} />;
-    case 'ASSERT_JSON_PATH_EXISTS': return <AssertExistsConfig config={cmd.config} onChange={onChange} />;
-    case 'EXTRACT_JSON_PATH': return <ExtractConfig config={cmd.config} onChange={onChange} />;
-    case 'WAIT':              return <WaitConfig config={cmd.config} onChange={onChange} />;
-    case 'STOP_ON_FAILURE':   return <p className="text-xs text-text-muted">Stops the run if any previous step failed. No configuration needed.</p>;
-    default:                  return null;
+    case 'API_CALL':               return <ApiCallConfig config={cmd.config} onChange={onChange} endpoints={endpoints} />;
+    case 'SET_VARIABLE':           return <SetVariableConfig config={cmd.config} onChange={onChange} />;
+    case 'ASSERT_STATUS_CODE':     return <AssertStatusConfig config={cmd.config} onChange={onChange} />;
+    case 'ASSERT_FIELD_VALUE':     return <AssertFieldConfig config={cmd.config} onChange={onChange} />;
+    case 'ASSERT_JSON_PATH_EXISTS':return <AssertExistsConfig config={cmd.config} onChange={onChange} />;
+    case 'EXTRACT_JSON_PATH':      return <ExtractConfig config={cmd.config} onChange={onChange} />;
+    case 'WAIT':                   return <WaitConfig config={cmd.config} onChange={onChange} />;
+    case 'STOP_ON_FAILURE':        return <p className="text-xs text-text-muted">Stops the run if any previous step failed. No configuration needed.</p>;
+    default:                       return null;
   }
+}
+
+// ── sortable command node ─────────────────────────────────────────────────────
+
+function SortableCommandNode({
+  cmd, idx, isFirst, isLast, isExpanded,
+  onToggle, onUpdate, onRemove, endpoints,
+}: {
+  cmd: BotJobCommand;
+  idx: number;
+  isFirst: boolean;
+  isLast: boolean;
+  isExpanded: boolean;
+  onToggle: () => void;
+  onUpdate: (patch: Partial<BotJobCommand>) => void;
+  onRemove: () => void;
+  endpoints: CatalogEndpoint[];
+}) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: cmd.id });
+  const style = { transform: CSS.Transform.toString(transform), transition };
+  const colorStyle = TYPE_STYLE[cmd.type] ?? 'border-l-slate-400 bg-slate-500/5';
+  const dotColor   = TYPE_DOT[cmd.type] ?? 'bg-slate-400';
+
+  return (
+    <div ref={setNodeRef} style={style} className={isDragging ? 'z-50 opacity-60' : ''}>
+      {/* connector line above (except first node) */}
+      {!isFirst && (
+        <div className="flex justify-center">
+          <div className="h-3 w-px bg-border" />
+        </div>
+      )}
+
+      {/* node card */}
+      <div className={`rounded-lg border border-border border-l-4 ${colorStyle} ${!cmd.enabled ? 'opacity-40' : ''}`}>
+        {/* header */}
+        <div className="flex items-center gap-2 px-2 py-2">
+          {/* drag handle */}
+          <button
+            {...listeners} {...attributes}
+            className="cursor-grab touch-none text-text-muted hover:text-text active:cursor-grabbing"
+            title="Drag to reorder"
+          >
+            <GripVertical size={14} />
+          </button>
+
+          <span className="w-5 text-center text-xs text-text-muted">{idx + 1}</span>
+          <span className={`h-2 w-2 flex-shrink-0 rounded-full ${dotColor}`} />
+          <span className="flex-1 text-xs font-medium">{TYPE_LABELS[cmd.type] ?? cmd.type}</span>
+
+          <input
+            type="checkbox" title="Enabled"
+            checked={cmd.enabled}
+            onChange={(e) => onUpdate({ enabled: e.target.checked })}
+          />
+          <button
+            className="btn text-xs"
+            onClick={onToggle}
+            title={isExpanded ? 'Collapse' : 'Expand'}
+          >
+            {isExpanded ? '▲' : '▼'}
+          </button>
+          <button className="btn text-xs text-danger" onClick={onRemove} title="Delete">✕</button>
+        </div>
+
+        {/* config panel */}
+        {isExpanded && (
+          <div className="border-t border-border px-3 py-3">
+            <CommandConfigEditor
+              cmd={cmd}
+              onChange={(config) => onUpdate({ config })}
+              endpoints={endpoints}
+            />
+          </div>
+        )}
+      </div>
+
+      {/* connector arrow at bottom of last node */}
+      {isLast && cmd.type !== 'STOP_ON_FAILURE' && (
+        <div className="flex flex-col items-center">
+          <div className="h-3 w-px bg-border" />
+          <div className="text-xs text-text-muted">end</div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ── palette panel ─────────────────────────────────────────────────────────────
+
+function CommandPalette({ onAdd, disabled }: { onAdd: (type: string) => void; disabled: boolean }) {
+  const [open, setOpen] = useState<Set<string>>(new Set(PALETTE_GROUPS.map((g) => g.label)));
+
+  const toggleGroup = (label: string) =>
+    setOpen((prev) => { const s = new Set(prev); s.has(label) ? s.delete(label) : s.add(label); return s; });
+
+  return (
+    <div className="card h-fit">
+      <div className="mb-2 text-xs font-medium uppercase tracking-wide text-text-muted">Command Palette</div>
+      <div className="space-y-2">
+        {PALETTE_GROUPS.map((group) => (
+          <div key={group.label}>
+            <button
+              className={`flex w-full items-center justify-between text-xs font-semibold ${group.color} hover:opacity-80`}
+              onClick={() => toggleGroup(group.label)}
+            >
+              <span>{group.label}</span>
+              <span>{open.has(group.label) ? '▾' : '▸'}</span>
+            </button>
+            {open.has(group.label) && (
+              <div className="mt-1 space-y-0.5 pl-1">
+                {group.types.map((type) => (
+                  <button
+                    key={type}
+                    disabled={disabled}
+                    onClick={() => onAdd(type)}
+                    className="flex w-full items-center gap-1.5 rounded px-2 py-1 text-left text-xs hover:bg-surface-alt disabled:cursor-not-allowed disabled:opacity-40"
+                  >
+                    <span className={`h-1.5 w-1.5 rounded-full flex-shrink-0 ${TYPE_DOT[type] ?? 'bg-slate-400'}`} />
+                    {TYPE_LABELS[type] ?? type}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }
 
 // ── main component ────────────────────────────────────────────────────────────
 
 export function BotJobDesignerPage() {
-  const [jobs, setJobs]         = useState<BotJob[]>([]);
-  const [detail, setDetail]     = useState<BotJobDetail | null>(null);
-  const [endpoints, setEndpoints] = useState<CatalogEndpoint[]>([]);
-  const [saving, setSaving]     = useState(false);
-  const [saved, setSaved]       = useState(false);
-  const [error, setError]       = useState<string | null>(null);
-  const [expanded, setExpanded] = useState<Set<string>>(new Set());
+  const [jobs, setJobs]             = useState<BotJob[]>([]);
+  const [detail, setDetail]         = useState<BotJobDetail | null>(null);
+  const [endpoints, setEndpoints]   = useState<CatalogEndpoint[]>([]);
+  const [saving, setSaving]         = useState(false);
+  const [saved, setSaved]           = useState(false);
+  const [error, setError]           = useState<string | null>(null);
+  const [expanded, setExpanded]     = useState<Set<string>>(new Set());
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
+  );
 
   const refreshJobs = useCallback(() => {
     sidecar.listBotJobs().then(setJobs).catch(() => {});
@@ -261,17 +441,13 @@ export function BotJobDesignerPage() {
     }
   };
 
-  // ── command list helpers ─────────────────────────────────────────────────────
+  // ── command helpers ─────────────────────────────────────────────────────────
 
   const addCommand = (type: string) => {
     if (!detail) return;
     const newCmd: BotJobCommand = {
-      id: uid(),
-      blockId,
-      order: detail.commands.length,
-      type,
-      config: {},
-      enabled: true,
+      id: uid(), blockId, order: detail.commands.length,
+      type, config: {}, enabled: true,
     };
     setDetail({ ...detail, commands: [...detail.commands, newCmd] });
     setExpanded((prev) => new Set([...prev, newCmd.id]));
@@ -280,18 +456,7 @@ export function BotJobDesignerPage() {
 
   const updateCommand = (idx: number, patch: Partial<BotJobCommand>) => {
     if (!detail) return;
-    const cmds = detail.commands.map((c, i) => (i === idx ? { ...c, ...patch } : c));
-    setDetail({ ...detail, commands: cmds });
-    setSaved(false);
-  };
-
-  const moveCommand = (idx: number, dir: -1 | 1) => {
-    if (!detail) return;
-    const cmds = [...detail.commands];
-    const target = idx + dir;
-    if (target < 0 || target >= cmds.length) return;
-    [cmds[idx], cmds[target]] = [cmds[target]!, cmds[idx]!];
-    setDetail({ ...detail, commands: cmds.map((c, i) => ({ ...c, order: i })) });
+    setDetail({ ...detail, commands: detail.commands.map((c, i) => (i === idx ? { ...c, ...patch } : c)) });
     setSaved(false);
   };
 
@@ -300,6 +465,19 @@ export function BotJobDesignerPage() {
     setDetail({ ...detail, commands: detail.commands.filter((_, i) => i !== idx).map((c, i) => ({ ...c, order: i })) });
     setSaved(false);
   };
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    if (!over || active.id === over.id || !detail) return;
+    const oldIdx = detail.commands.findIndex((c) => c.id === active.id);
+    const newIdx = detail.commands.findIndex((c) => c.id === over.id);
+    const reordered = arrayMove(detail.commands, oldIdx, newIdx).map((c, i) => ({ ...c, order: i }));
+    setDetail({ ...detail, commands: reordered });
+    setSaved(false);
+  };
+
+  const toggleExpanded = (id: string) =>
+    setExpanded((prev) => { const s = new Set(prev); s.has(id) ? s.delete(id) : s.add(id); return s; });
 
   // ── variable helpers ─────────────────────────────────────────────────────────
 
@@ -328,7 +506,7 @@ export function BotJobDesignerPage() {
     <div>
       <PageHeader
         title="BotJob Designer"
-        subtitle="Compose ordered command sequences from the palette. Every job is validated against the imported catalog before it can run."
+        subtitle="Drag commands to reorder. Click a type in the palette to add it to the canvas."
         actions={
           <>
             {detail && (
@@ -346,12 +524,13 @@ export function BotJobDesignerPage() {
 
       {error && <p className="mb-3 text-sm text-danger">{error}</p>}
 
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-[260px_1fr]">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-[220px_1fr_190px]">
+
         {/* ── Job list ── */}
-        <div className="card">
+        <div className="card h-fit">
           <div className="mb-2 text-xs font-medium uppercase tracking-wide text-text-muted">Saved BotJobs</div>
           {jobs.length === 0 ? (
-            <p className="text-xs text-text-muted">No BotJobs yet. Click "+ New BotJob" to create one.</p>
+            <p className="text-xs text-text-muted">No BotJobs yet.</p>
           ) : (
             <ul className="space-y-1">
               {jobs.map((j) => (
@@ -361,7 +540,9 @@ export function BotJobDesignerPage() {
                     onClick={() => handleSelect(j.id)}
                   >
                     {j.name}
-                    <span className="ml-1 text-xs text-text-muted">({(j as unknown as { commands?: unknown[] }).commands?.length ?? '?'} cmds)</span>
+                    <span className="ml-1 text-xs text-text-muted">
+                      ({(j as unknown as { commands?: unknown[] }).commands?.length ?? '?'} cmds)
+                    </span>
                   </button>
                 </li>
               ))}
@@ -369,17 +550,17 @@ export function BotJobDesignerPage() {
           )}
         </div>
 
-        {/* ── Editor ── */}
+        {/* ── Canvas ── */}
         {!detail ? (
           <div className="card grid place-items-center text-center text-sm text-text-muted">
             <div>
-              <p>Select a BotJob from the list or create a new one.</p>
-              <p className="mt-1 text-xs">Each BotJob is a flat sequence of commands executed top-to-bottom.</p>
+              <p>Select a BotJob or create a new one.</p>
+              <p className="mt-1 text-xs">Commands appear as a visual flow. Drag to reorder.</p>
             </div>
           </div>
         ) : (
           <div className="space-y-4">
-            {/* Job name / description */}
+            {/* job name / description */}
             <div className="card space-y-3">
               <div>
                 <label className="label">Name</label>
@@ -400,14 +581,14 @@ export function BotJobDesignerPage() {
               </div>
             </div>
 
-            {/* Variables */}
+            {/* variables */}
             <div className="card">
               <div className="mb-2 flex items-center justify-between">
                 <span className="text-sm font-medium">Variables</span>
                 <button className="btn text-xs" onClick={addVariable}>+ Add</button>
               </div>
               {detail.variables.length === 0 ? (
-                <p className="text-xs text-text-muted">No variables. Use ${'{'}varName{'}'} tokens in command configs to reference them.</p>
+                <p className="text-xs text-text-muted">No variables. Use ${'{'}varName{'}'} tokens in command configs.</p>
               ) : (
                 <div className="space-y-2">
                   {detail.variables.map((v, i) => (
@@ -433,70 +614,45 @@ export function BotJobDesignerPage() {
               )}
             </div>
 
-            {/* Commands */}
+            {/* command canvas */}
             <div className="card">
               <div className="mb-3 flex items-center justify-between">
-                <span className="text-sm font-medium">Commands ({detail.commands.length})</span>
-                <div className="flex items-center gap-2">
-                  <select
-                    className="input text-xs"
-                    defaultValue=""
-                    onChange={(e) => { if (e.target.value) { addCommand(e.target.value); e.target.value = ''; } }}
-                  >
-                    <option value="" disabled>+ Add command…</option>
-                    {ALL_TYPES.map((t) => (
-                      <option key={t} value={t}>{TYPE_LABELS[t] ?? t}</option>
-                    ))}
-                  </select>
-                </div>
+                <span className="text-sm font-medium">Flow Canvas</span>
+                <span className="text-xs text-text-muted">{detail.commands.length} command{detail.commands.length !== 1 ? 's' : ''} — drag to reorder</span>
               </div>
 
               {detail.commands.length === 0 ? (
-                <p className="text-xs text-text-muted">No commands yet. Use the "+ Add command…" dropdown above to add the first step.</p>
-              ) : (
-                <div className="space-y-2">
-                  {detail.commands.map((cmd, idx) => {
-                    const isOpen = expanded.has(cmd.id);
-                    return (
-                      <div key={cmd.id} className={`rounded border ${cmd.enabled ? 'border-border' : 'border-border opacity-50'} bg-surface-alt`}>
-                        {/* header row */}
-                        <div className="flex items-center gap-2 px-3 py-2">
-                          <span className="w-5 text-center text-xs text-text-muted">{idx + 1}</span>
-                          <input
-                            type="checkbox"
-                            title="enabled"
-                            checked={cmd.enabled}
-                            onChange={(e) => updateCommand(idx, { enabled: e.target.checked })}
-                          />
-                          <span className="flex-1 font-mono text-xs">{TYPE_LABELS[cmd.type] ?? cmd.type}</span>
-                          <button className="btn text-xs" onClick={() => moveCommand(idx, -1)} disabled={idx === 0}>↑</button>
-                          <button className="btn text-xs" onClick={() => moveCommand(idx, 1)} disabled={idx === detail.commands.length - 1}>↓</button>
-                          <button
-                            className="btn text-xs"
-                            onClick={() => setExpanded((prev) => { const s = new Set(prev); s.has(cmd.id) ? s.delete(cmd.id) : s.add(cmd.id); return s; })}
-                          >
-                            {isOpen ? '▲' : '▼'}
-                          </button>
-                          <button className="btn text-xs text-danger" onClick={() => removeCommand(idx)}>✕</button>
-                        </div>
-                        {/* config panel */}
-                        {isOpen && (
-                          <div className="border-t border-border px-3 py-3">
-                            <CommandConfigEditor
-                              cmd={cmd}
-                              onChange={(config) => updateCommand(idx, { config })}
-                              endpoints={endpoints}
-                            />
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
+                <div className="rounded-lg border border-dashed border-border py-10 text-center text-xs text-text-muted">
+                  Click a command type in the palette →<br />to add the first step
                 </div>
+              ) : (
+                <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+                  <SortableContext items={detail.commands.map((c) => c.id)} strategy={verticalListSortingStrategy}>
+                    <div className="space-y-0">
+                      {detail.commands.map((cmd, idx) => (
+                        <SortableCommandNode
+                          key={cmd.id}
+                          cmd={cmd}
+                          idx={idx}
+                          isFirst={idx === 0}
+                          isLast={idx === detail.commands.length - 1}
+                          isExpanded={expanded.has(cmd.id)}
+                          onToggle={() => toggleExpanded(cmd.id)}
+                          onUpdate={(patch) => updateCommand(idx, patch)}
+                          onRemove={() => removeCommand(idx)}
+                          endpoints={endpoints}
+                        />
+                      ))}
+                    </div>
+                  </SortableContext>
+                </DndContext>
               )}
             </div>
           </div>
         )}
+
+        {/* ── Palette ── */}
+        <CommandPalette onAdd={addCommand} disabled={!detail} />
       </div>
     </div>
   );

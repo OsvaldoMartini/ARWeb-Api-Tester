@@ -38,20 +38,32 @@ export function createSidecarServer(ctx: Container) {
       if (!folderPath) return { error: 'folderPath required' };
       const result = await c.importUseCase.execute(folderPath);
       if (!result.ok) return { error: result.error.message };
-
-      // Auto-map endpoints that have no category yet, then refresh agent capabilities.
-      const [endpoints, categories] = await Promise.all([
-        c.catalog.listEndpoints(),
-        c.taxonomyRepo.listCategories(),
-      ]);
-      for (const ep of endpoints) {
-        if (ep.categoryId) continue;
-        const matched = findBestCategory(ep, categories);
-        if (matched) await c.taxonomyRepo.setEndpointCategory(ep.id, matched.id);
-      }
-      c.router.populateFromCatalog(endpoints);
-
+      await autoMapAndPopulate(c);
       return result.value;
+    },
+
+    // Web upload: client sends file contents as JSON, server writes to a temp dir.
+    'POST /import/upload': async (c, _req, _res, body) => {
+      const data = body as { files?: { name: string; content: string }[] };
+      if (!data?.files?.length) return { error: 'files array required' };
+
+      const { mkdtempSync, writeFileSync, rmSync } = await import('node:fs');
+      const { tmpdir } = await import('node:os');
+      const { join: pjoin } = await import('node:path');
+
+      const tempDir = mkdtempSync(pjoin(tmpdir(), 'arweb-import-'));
+      try {
+        for (const file of data.files) {
+          const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+          writeFileSync(pjoin(tempDir, safeName), file.content, 'utf8');
+        }
+        const result = await c.importUseCase.execute(tempDir);
+        if (!result.ok) return { error: result.error.message };
+        await autoMapAndPopulate(c);
+        return result.value;
+      } finally {
+        rmSync(tempDir, { recursive: true, force: true });
+      }
     },
 
     // Phase 6: live taxonomy from SQLite (was static in-memory seed).
@@ -371,6 +383,19 @@ export function createSidecarServer(ctx: Container) {
   });
 
   return server;
+}
+
+async function autoMapAndPopulate(ctx: Container) {
+  const [endpoints, categories] = await Promise.all([
+    ctx.catalog.listEndpoints(),
+    ctx.taxonomyRepo.listCategories(),
+  ]);
+  for (const ep of endpoints) {
+    if (ep.categoryId) continue;
+    const matched = findBestCategory(ep, categories);
+    if (matched) await ctx.taxonomyRepo.setEndpointCategory(ep.id, matched.id);
+  }
+  ctx.router.populateFromCatalog(endpoints);
 }
 
 /**

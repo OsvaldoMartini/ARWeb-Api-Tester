@@ -235,6 +235,13 @@ export const sidecar = {
       body: JSON.stringify({ folderPath }),
     }).then(assertNoError),
 
+  /** Web mode: upload file contents from the browser, server parses on its side. */
+  uploadSpecs: (files: { name: string; content: string }[]) =>
+    request<ImportResult | { error: string }>('/import/upload', {
+      method: 'POST',
+      body: JSON.stringify({ files }),
+    }).then(assertNoError),
+
   getTaxonomy: () => request<TaxonomyResponse>('/taxonomy'),
 
   getAgents: () => request<AgentInfo[]>('/agents'),

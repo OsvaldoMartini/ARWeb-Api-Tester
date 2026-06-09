@@ -125,6 +125,7 @@ export function createSidecarServer(ctx: Container) {
     // Phase 19: App-level agentic assistant (BotJob builder, catalog search, test runner).
     'POST /app-assistant/chat': async (c, _req, _res, body) => {
       const { messages } = (body ?? {}) as { messages?: ChatMessage[] };
+      c.logger.info('[route] POST /app-assistant/chat received', { messageCount: messages?.length ?? 0 });
       if (!messages?.length) return { error: 'messages array required' };
       return runAppAssistant(messages, c);
     },

@@ -243,11 +243,21 @@ export async function runAppAssistant(
   messages: ChatMessage[],
   ctx: Container,
 ): Promise<AppAssistantResponse> {
+  ctx.logger.info('[app-assistant] ── START ──────────────────────────────────');
+  ctx.logger.info('[app-assistant] incoming messages', { count: messages.length, last: messages.at(-1)?.content?.slice(0, 120) });
+
   const active  = ctx.ai.getActiveProvider();
   const actions: AppAction[] = [];
 
+  ctx.logger.info('[app-assistant] getActiveProvider() →', {
+    provider: active?.provider ?? 'NULL',
+    model:    active?.model    ?? 'NULL',
+    hasKey:   active ? 'YES' : 'NO',
+  });
+
   // No provider configured at all.
   if (!active) {
+    ctx.logger.warn('[app-assistant] NO active provider — returning offline message');
     return {
       answer: 'No AI provider is configured. Open Settings → AI Providers and add an API key to enable the Bot Builder.',
       actions,
@@ -260,21 +270,46 @@ export async function runAppAssistant(
   // internal defaultProvider field (may still be 'openai' at startup).
   if (active.provider !== 'anthropic') {
     const lastMsg = messages[messages.length - 1]?.content ?? '';
+    ctx.logger.info('[app-assistant] BRANCH: text-completion (no tool use)', {
+      provider: active.provider,
+      model:    active.model,
+      promptLength: lastMsg.length,
+    });
+
     const answer  = await ctx.ai.complete({
       provider: active.provider,
       model:    active.model,
       baseUrl:  active.baseUrl,
       system:   SYSTEM_PROMPT,
       prompt:   lastMsg,
-    }).catch((e) => `AI error: ${e instanceof Error ? e.message : String(e)}`);
+    }).catch((e) => {
+      const msg = e instanceof Error ? e.message : String(e);
+      ctx.logger.error('[app-assistant] complete() FAILED', { error: msg });
+      return `AI error: ${msg}`;
+    });
+
+    ctx.logger.info('[app-assistant] text-completion answer', { length: answer.length, preview: answer.slice(0, 120) });
     return { answer, actions, provider: active.provider };
   }
 
   // Anthropic — full agentic loop with tool use.
+  ctx.logger.info('[app-assistant] BRANCH: Anthropic agentic loop', { model: active.model });
   const apiMessages: ApiMessage[] = messages.map((m) => ({ role: m.role, content: m.content }));
   const MAX_ITER = 8;
 
   for (let iter = 0; iter < MAX_ITER; iter++) {
+    const requestBody = {
+      model:      active.model,
+      max_tokens: 2048,
+      system:     SYSTEM_PROMPT,
+      tools:      TOOLS,
+      messages:   apiMessages,
+    };
+    ctx.logger.info(`[app-assistant] Anthropic call iter=${iter}`, {
+      messageCount: apiMessages.length,
+      model: active.model,
+    });
+
     const res = await fetch('https://api.anthropic.com/v1/messages', {
       method:  'POST',
       headers: {
@@ -282,22 +317,24 @@ export async function runAppAssistant(
         'x-api-key':         active.key,
         'anthropic-version': '2023-06-01',
       },
-      body: JSON.stringify({
-        model:      active.model,
-        max_tokens: 2048,
-        system:     SYSTEM_PROMPT,
-        tools:      TOOLS,
-        messages:   apiMessages,
-      }),
+      body: JSON.stringify(requestBody),
     });
+
+    ctx.logger.info(`[app-assistant] Anthropic response status=${res.status}`);
 
     if (!res.ok) {
       const err = await res.text().catch(() => '');
+      ctx.logger.error('[app-assistant] Anthropic HTTP error', { status: res.status, body: err.slice(0, 300) });
       return { answer: `AI error ${res.status}: ${err}`, actions, provider: 'anthropic' };
     }
 
     const data      = await res.json() as AnthropicApiResponse;
     const toolCalls = data.content.filter((b): b is AnthropicToolBlock => b.type === 'tool_use');
+
+    ctx.logger.info(`[app-assistant] Anthropic stop_reason=${data.stop_reason}`, {
+      contentTypes: data.content.map((b) => b.type),
+      toolCallCount: toolCalls.length,
+    });
 
     // No more tool calls or end of turn → return the final text.
     if (data.stop_reason === 'end_turn' || toolCalls.length === 0) {
@@ -305,6 +342,7 @@ export async function runAppAssistant(
         .filter((b): b is AnthropicTextBlock => b.type === 'text')
         .map((b) => b.text)
         .join('');
+      ctx.logger.info('[app-assistant] ── END (final answer) ──', { length: text.length });
       return { answer: text.trim(), actions, provider: 'anthropic' };
     }
 
@@ -314,10 +352,11 @@ export async function runAppAssistant(
     // Execute all tool calls and collect results.
     const toolResults: AnthropicToolResult[] = await Promise.all(
       toolCalls.map(async (block) => {
+        ctx.logger.info('[app-assistant] executing tool', { name: block.name, input: block.input });
         const result = await executeTool(block.name, block.input, ctx, actions).catch((e) => ({
           error: e instanceof Error ? e.message : String(e),
         }));
-        ctx.logger.info('[app-assistant] tool', { name: block.name, result });
+        ctx.logger.info('[app-assistant] tool result', { name: block.name, result });
         return { type: 'tool_result' as const, tool_use_id: block.id, content: JSON.stringify(result) };
       }),
     );
@@ -326,5 +365,6 @@ export async function runAppAssistant(
     apiMessages.push({ role: 'user', content: toolResults });
   }
 
+  ctx.logger.warn('[app-assistant] reached MAX_ITER — aborting');
   return { answer: 'Reached the maximum reasoning steps. Please try a more specific question.', actions, provider: 'anthropic' };
 }

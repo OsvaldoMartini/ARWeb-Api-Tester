@@ -198,16 +198,30 @@ export function BotBuilderPage() {
     setInput('');
     setBusy(true);
 
+    const payload = next.map((m) => ({ role: m.role, content: m.content }));
+
+    console.group('%c[Bot Builder] handleSend', 'color:#6366f1;font-weight:bold');
+    console.log('user message :', content);
+    console.log('full history sent to server:', payload);
+    console.groupEnd();
+
     try {
-      const r = await sidecar.appChat(next.map((m) => ({ role: m.role, content: m.content })));
+      console.time('[Bot Builder] appChat round-trip');
+      const r = await sidecar.appChat(payload);
+      console.timeEnd('[Bot Builder] appChat round-trip');
+
+      console.group('%c[Bot Builder] response received', 'color:#22c55e;font-weight:bold');
+      console.log('provider used :', r.provider ?? '(none)');
+      console.log('answer        :', r.answer);
+      console.log('actions       :', r.actions);
+      console.groupEnd();
+
       if (r.provider && activeProvider === undefined) setActiveProvider(r.provider);
       setMessages([...next, { role: 'assistant', content: r.answer, actions: r.actions }]);
     } catch (e) {
-      setMessages([...next, {
-        role: 'assistant',
-        content: `Error: ${e instanceof Error ? e.message : String(e)}`,
-        actions: [],
-      }]);
+      const errMsg = e instanceof Error ? e.message : String(e);
+      console.error('[Bot Builder] appChat FAILED:', errMsg);
+      setMessages([...next, { role: 'assistant', content: `Error: ${errMsg}`, actions: [] }]);
     } finally {
       setBusy(false);
       setTimeout(() => inputRef.current?.focus(), 50);

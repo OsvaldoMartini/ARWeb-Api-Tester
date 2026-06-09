@@ -100,12 +100,31 @@ export function buildContainer(): Container {
 
   // Load stored AI provider settings and configure the gateway at startup.
   settingsRepo.listAiProviders().then((providers) => {
+    logger.info('[container] AI providers loaded from DB', {
+      total: providers.length,
+      rows: providers.map((p) => ({
+        provider:  p.provider,
+        enabled:   p.enabled,
+        isDefault: p.isDefault,
+        hasKey:    p.encryptedApiKey != null,
+      })),
+    });
     for (const p of providers) {
-      if (p.enabled) ai.configure(p.provider, p.encryptedApiKey, p.baseUrl, p.model);
+      if (p.enabled) {
+        ai.configure(p.provider, p.encryptedApiKey, p.baseUrl, p.model);
+        logger.info('[container] configured AI provider', { provider: p.provider, hasKey: !!p.encryptedApiKey });
+      }
     }
     const def = providers.find((p) => p.isDefault && p.enabled);
-    if (def) ai.setDefaultProvider(def.provider);
-  }).catch(() => {});
+    if (def) {
+      ai.setDefaultProvider(def.provider);
+      logger.info('[container] defaultProvider set to', { provider: def.provider });
+    } else {
+      logger.warn('[container] NO default provider found in DB');
+    }
+  }).catch((e) => {
+    logger.error('[container] FAILED to load AI providers', { error: e instanceof Error ? e.message : String(e) });
+  });
 
   const router   = new BankingAgentRouter(createAllAgents());
   const reporter = new HtmlCsvReportExporter();

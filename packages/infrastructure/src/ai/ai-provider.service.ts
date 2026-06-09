@@ -72,6 +72,13 @@ export class AiProviderService implements AiGateway {
    * Returns null if nothing is configured.
    */
   getActiveProvider(): { provider: AiProvider; key: string; model: string; baseUrl?: string } | null {
+    const configuredProviders = Array.from(this.keys.keys());
+    this.logger.info('[ai-service] getActiveProvider()', {
+      defaultProvider:     this.defaultProvider,
+      configuredProviders,
+      defaultHasKey:       this.keys.has(this.defaultProvider),
+    });
+
     const tryProvider = (p: AiProvider) => {
       const key = this.keys.get(p);
       if (!key) return null;
@@ -80,16 +87,21 @@ export class AiProviderService implements AiGateway {
 
     // 1. Prefer the configured default.
     const fromDefault = tryProvider(this.defaultProvider);
-    if (fromDefault) return fromDefault;
+    if (fromDefault) {
+      this.logger.info('[ai-service] → using default provider', { provider: this.defaultProvider });
+      return fromDefault;
+    }
 
     // 2. Fall back to any provider that has a key.
     for (const [p] of this.keys) {
       const found = tryProvider(p as AiProvider);
-      if (found) return found;
+      if (found) {
+        this.logger.info('[ai-service] → fallback to first available provider', { provider: p });
+        return found;
+      }
     }
 
-    // 3. Ollama never needs a key — if it's reachable it should be first in line.
-    if (!this.keys.size) return null;
+    this.logger.warn('[ai-service] → NO provider available (keys map is empty)');
     return null;
   }
 
@@ -119,12 +131,19 @@ export class AiProviderService implements AiGateway {
 
   async complete(req: AiCompletionRequest): Promise<string> {
     const key = this.keys.get(req.provider) ?? null;
+    this.logger.info('[ai-service] complete() called', {
+      provider:            req.provider,
+      model:               req.model,
+      keyPresent:          !!key,
+      configuredProviders: Array.from(this.keys.keys()),
+      promptPreview:       req.prompt.slice(0, 80),
+    });
     if (!key && req.provider !== 'ollama') {
-      this.logger.info('AI provider not configured; using rule-based fallback', { provider: req.provider });
+      this.logger.warn('[ai-service] complete() → NO KEY → ruleBasedFallback', { provider: req.provider });
       return this.ruleBasedFallback(req.prompt);
     }
     try {
-      this.logger.info('AI completion', { provider: req.provider, model: req.model });
+      this.logger.info('[ai-service] complete() → calling provider', { provider: req.provider, model: req.model });
       switch (req.provider) {
         case 'anthropic':    return await this.callAnthropic(req, key!);
         case 'gemini':       return await this.callGemini(req, key!);

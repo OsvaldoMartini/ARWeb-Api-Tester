@@ -255,11 +255,18 @@ export async function runAppAssistant(
     };
   }
 
-  // Non-Anthropic providers: use text completion (no tool use).
-  // Tool use is Anthropic-specific in this implementation.
+  // Non-Anthropic providers: text completion using the EXACT provider found
+  // by getActiveProvider() — never rely on ctx.ai.ask() which uses the
+  // internal defaultProvider field (may still be 'openai' at startup).
   if (active.provider !== 'anthropic') {
     const lastMsg = messages[messages.length - 1]?.content ?? '';
-    const answer  = await ctx.ai.ask(SYSTEM_PROMPT, lastMsg).catch((e) => `AI error: ${e instanceof Error ? e.message : String(e)}`);
+    const answer  = await ctx.ai.complete({
+      provider: active.provider,
+      model:    active.model,
+      baseUrl:  active.baseUrl,
+      system:   SYSTEM_PROMPT,
+      prompt:   lastMsg,
+    }).catch((e) => `AI error: ${e instanceof Error ? e.message : String(e)}`);
     return { answer, actions, provider: active.provider };
   }
 

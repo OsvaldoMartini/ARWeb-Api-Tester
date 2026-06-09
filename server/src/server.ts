@@ -104,7 +104,14 @@ export function createSidecarServer(ctx: Container) {
         agentId?: string;
       };
       if (!question) return { error: 'question required' };
-      const result = await c.router.ask(question, { mode: mode ?? 'employee', validator: c.validator, agentId, ai: c.ai });
+      // Use getActiveProvider() so we always call the provider that actually has
+      // a key, regardless of which provider is stored in defaultProvider at this
+      // moment (the async startup loader may not have set it yet).
+      const activeForBanking = c.ai.getActiveProvider();
+      const aiForBanking = activeForBanking
+        ? { ask: (sys: string, pmt: string) => c.ai.complete({ provider: activeForBanking.provider, model: activeForBanking.model, baseUrl: activeForBanking.baseUrl, system: sys, prompt: pmt }) }
+        : undefined;
+      const result = await c.router.ask(question, { mode: mode ?? 'employee', validator: c.validator, agentId, ai: aiForBanking });
       // Enrich evidence with real method + path from the catalog.
       const evidence = await Promise.all(
         result.evidence.map(async (e) => {

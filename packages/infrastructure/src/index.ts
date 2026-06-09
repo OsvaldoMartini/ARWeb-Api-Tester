@@ -12,3 +12,4 @@ export * from './ai/ai-provider.service.js';
 export * from './reports/report-exporter.js';
 export * from './export/bash-export.js';
 export * from './export/postman-export.js';
+export * from './crypto/crypto-service.js';

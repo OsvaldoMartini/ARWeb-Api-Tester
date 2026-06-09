@@ -198,6 +198,7 @@ export interface AiProviderSetting {
   baseUrl?: string | null;
   model?: string | null;
   encryptedApiKey?: string | null;
+  hasApiKey?: boolean;
   isDefault: boolean;
   enabled: boolean;
 }

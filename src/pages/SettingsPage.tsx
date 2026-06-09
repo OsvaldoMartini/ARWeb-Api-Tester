@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { PageHeader } from '@/components/ui/PageHeader';
+import { ErrorAlert } from '@/components/ui/ErrorAlert';
 import { AI_PROVIDERS } from '@arweb/domain';
 import { sidecar, type AiProviderSetting } from '@/services/sidecarClient';
 
@@ -26,19 +27,21 @@ const DEFAULT_MODELS: Record<string, string> = {
 const NEEDS_BASE_URL = new Set(['ollama', 'azure-openai', 'custom-openai']);
 
 export function SettingsPage() {
-  const [provider, setProvider] = useState<string>('openai');
-  const [apiKey, setApiKey]     = useState('');
-  const [model, setModel]       = useState('');
-  const [baseUrl, setBaseUrl]   = useState('');
-  const [saving, setSaving]     = useState(false);
-  const [saved, setSaved]       = useState(false);
-  const [error, setError]       = useState<string | null>(null);
+  const [provider, setProvider]   = useState<string>('openai');
+  const [apiKey, setApiKey]       = useState('');
+  const [model, setModel]         = useState('');
+  const [baseUrl, setBaseUrl]     = useState('');
+  const [hasKey, setHasKey]       = useState(false);
+  const [saving, setSaving]       = useState(false);
+  const [saved, setSaved]         = useState(false);
+  const [error, setError]         = useState<string | null>(null);
 
   // Load the currently saved setting for the selected provider.
   useEffect(() => {
     sidecar.getAiProviders().then(({ providers }) => {
       const existing = providers.find((p) => p.provider === provider);
-      setApiKey(''); // never pre-fill the key for security
+      setApiKey(''); // never pre-fill the key
+      setHasKey(existing?.hasApiKey ?? false);
       setModel(existing?.model ?? '');
       setBaseUrl(existing?.baseUrl ?? '');
     }).catch(() => {});
@@ -61,6 +64,7 @@ export function SettingsPage() {
       };
       await sidecar.saveAiProvider(setting);
       setSaved(true);
+      setHasKey(true);
       setApiKey(''); // clear after save
       setTimeout(() => setSaved(false), 3000);
     } catch (e) {
@@ -122,15 +126,15 @@ export function SettingsPage() {
             id="apiKey"
             className="input"
             type="password"
-            placeholder="Leave empty to use offline rule-based fallback"
+            placeholder={hasKey ? '••••••••  (key saved — enter new key to replace)' : 'Leave empty to use offline rule-based fallback'}
             value={apiKey}
             onChange={(e) => { setApiKey(e.target.value); setSaved(false); }}
           />
           <p className="mt-2 text-xs text-text-muted">
-            Keys are never logged or sent anywhere except the chosen provider's API.
+            Keys are encrypted at rest (AES-256-GCM) and never returned to the browser.
           </p>
 
-          {error && <p className="mt-2 text-sm text-danger">{error}</p>}
+          {error && <div className="mt-2"><ErrorAlert message={error} /></div>}
           {saved && <p className="mt-2 text-sm text-success">Saved — AI provider is active.</p>}
 
           <button

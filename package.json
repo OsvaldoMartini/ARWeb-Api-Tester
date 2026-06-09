@@ -1,9 +1,9 @@
 {
   "name": "arweb-api-tester",
-  "version": "0.1.3",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "ARWEB API Tester â€” no-code banking API testing tool. React web app (src/) + Tauri shell (src-tauri/) + Node engine (server/). No C#.",
+  "description": "ARWEB API Tester \u00e2\u20ac\u201d no-code banking API testing tool. React web app (src/) + Tauri shell (src-tauri/) + Node engine (server/). No C#.",
   "license": "UNLICENSED",
   "workspaces": [
     "packages/*",

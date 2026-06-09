@@ -6,6 +6,7 @@ import {
   OpenApiCatalogImporter,
   FetchHttpExecutor,
   AiProviderService,
+  CryptoService,
   bankingTaxonomySeed,
   HtmlCsvReportExporter,
   openDatabase,
@@ -15,6 +16,7 @@ import {
   SqliteTaxonomyRepository,
   SqliteSettingsRepository,
 } from '@arweb/infrastructure';
+import { resolveMasterKey } from './crypto-key.js';
 import { BotJobExecutionEngine } from '@arweb/api-testing-engine';
 import { BankingAgentRouter, createAllAgents } from '@arweb/agents';
 import { MockServer } from '@arweb/mock-server';
@@ -60,12 +62,17 @@ export function buildContainer(): Container {
   const db = openDatabase(dbPath);
   logger.info('SQLite database ready', { path: dbPath });
 
+  // ── Encryption (AES-256-GCM for API keys at rest) ─────────────────────────
+  const masterKey  = resolveMasterKey(dirname(dbPath));
+  const cryptoSvc  = new CryptoService(masterKey);
+  logger.info('Encryption ready');
+
   // ── Repositories ──────────────────────────────────────────────────────────
   const catalog      = new SqliteCatalogRepository(db);
   const botJobRepo   = new SqliteBotJobRepository(db);
   const executionRepo = new SqliteExecutionRepository(db);
   const taxonomyRepo = new SqliteTaxonomyRepository(db);
-  const settingsRepo = new SqliteSettingsRepository(db);
+  const settingsRepo = new SqliteSettingsRepository(db, cryptoSvc);
 
   // Seed banking taxonomy on first run (idempotent — no-op if rows exist)
   const seed = bankingTaxonomySeed();

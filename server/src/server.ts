@@ -82,9 +82,17 @@ export function createSidecarServer(ctx: Container) {
       return { ...result, evidence };
     },
 
-    'GET /settings/ai-providers': async (c) => ({
-      providers: await c.settingsRepo.listAiProviders(),
-    }),
+    'GET /settings/ai-providers': async (c) => {
+      const providers = await c.settingsRepo.listAiProviders();
+      // Never return key material to the UI — replace with a boolean flag.
+      return {
+        providers: providers.map((p) => ({
+          ...p,
+          encryptedApiKey: null,
+          hasApiKey: p.encryptedApiKey != null,
+        })),
+      };
+    },
 
     'POST /settings/ai-providers': async (c, _req, _res, body) => {
       const setting = body as import('@arweb/domain').AiProviderSetting;

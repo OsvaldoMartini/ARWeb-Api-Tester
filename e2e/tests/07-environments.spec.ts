@@ -15,9 +15,12 @@ test.describe('Environments', () => {
   });
 
   test('shows built-in Mock Server environment', async ({ page }) => {
-    await expect(page.getByText('Mock Server')).toBeVisible({ timeout: 8_000 });
-    await expect(page.getByText('built-in')).toBeVisible();
-    await expect(page.getByText(/127\.0\.0\.1:8855/)).toBeVisible();
+    // Scope to the <main> element to avoid matching the sidebar nav link.
+    const main = page.locator('main');
+    await expect(main.getByText('Mock Server', { exact: true }).first()).toBeVisible({ timeout: 8_000 });
+    // 'built-in' badge — scope to main to avoid matching the page subtitle.
+    await expect(main.getByText('built-in', { exact: true }).first()).toBeVisible();
+    await expect(main.getByText(/127\.0\.0\.1:8855/).first()).toBeVisible();
   });
 
   test('built-in Mock Server cannot be deleted', async ({ page }) => {
@@ -36,11 +39,13 @@ test.describe('Environments', () => {
     await page.locator('input[placeholder="Production"]').fill(TEST_ENV_NAME);
     await page.locator('input[placeholder="https://api.example.com"]').fill(TEST_ENV_URL);
 
-    await page.getByRole('button', { name: 'Save' }).click();
+    // Save button contains an SVG icon + text — match by text content.
+    await page.locator('button').filter({ hasText: /^Save$/ }).click();
 
-    // Card should appear in the list.
-    await expect(page.getByText(TEST_ENV_NAME)).toBeVisible({ timeout: 8_000 });
-    await expect(page.getByText(TEST_ENV_URL)).toBeVisible();
+    // Card should appear in the list — scope to main to avoid dropdown matches.
+    const main = page.locator('main');
+    await expect(main.getByText(TEST_ENV_NAME, { exact: true }).first()).toBeVisible({ timeout: 8_000 });
+    await expect(main.locator('code').filter({ hasText: TEST_ENV_URL }).first()).toBeVisible();
   });
 
   test('new environment appears in Execute Tests dropdown', async ({ page }) => {

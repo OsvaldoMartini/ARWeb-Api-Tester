@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "ARWEB API Tester \u00e2\u20ac\u201d no-code banking API testing tool. React web app (src/) + Tauri shell (src-tauri/) + Node engine (server/). No C#.",
+  "description": "ARWEB API Tester â€” no-code banking API testing tool. React web app (src/) + Tauri shell (src-tauri/) + Node engine (server/). No C#.",
   "license": "UNLICENSED",
   "workspaces": [
     "packages/*",
@@ -25,7 +25,11 @@
     "lint": "eslint . --ext .ts,.tsx",
     "format": "prettier --write \"**/*.{ts,tsx,json,md,css}\"",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "test:e2e": "playwright test --config e2e/playwright.config.ts",
+    "test:e2e:ui": "playwright test --config e2e/playwright.config.ts --ui",
+    "test:e2e:report": "playwright show-report e2e/playwright-report",
+    "test:e2e:docker": "docker run --rm -v \"$(pwd)\":/app -w /app -e BASE_URL=${BASE_URL:-https://ragstack.ch} mcr.microsoft.com/playwright:v1.60.0-noble npx playwright test --config e2e/playwright.config.ts"
   },
   "dependencies": {
     "@arweb/domain": "*",
@@ -42,6 +46,7 @@
     "zustand": "^5.0.2"
   },
   "devDependencies": {
+    "@playwright/test": "^1.60.0",
     "@tauri-apps/cli": "^2.1.0",
     "@types/node": "^22.10.0",
     "@types/react": "^18.3.12",

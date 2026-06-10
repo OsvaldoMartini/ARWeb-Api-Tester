@@ -21,8 +21,16 @@ const DEFAULT_MODELS: Record<string, string> = {
   'gemini':        'gemini-1.5-flash',
   'azure-openai':  'gpt-4o-mini',
   'ollama':        'llama3.2',
-  'together':      'meta-llama/Llama-3-8b-chat-hf',
+  'together':      'meta-llama/Llama-3.3-70B-Instruct-Turbo',
   'custom-openai': 'gpt-4o-mini',
+};
+
+const DEFAULT_BASE_URLS: Record<string, string> = {
+  'openai':        'https://api.openai.com',
+  'together':      'https://api.together.ai',
+  'azure-openai':  'https://api.openai.com',
+  'custom-openai': 'https://api.openai.com',
+  'ollama':        'http://localhost:11434',
 };
 
 /**
@@ -142,24 +150,33 @@ export class AiProviderService implements AiGateway {
       this.logger.warn('[ai-service] complete() → NO KEY → ruleBasedFallback', { provider: req.provider });
       return this.ruleBasedFallback(req.prompt);
     }
-    try {
+    const call = () => {
       this.logger.info('[ai-service] complete() → calling provider', { provider: req.provider, model: req.model });
       switch (req.provider) {
-        case 'anthropic':    return await this.callAnthropic(req, key!);
-        case 'gemini':       return await this.callGemini(req, key!);
-        case 'ollama':       return await this.callOllama(req);
-        default:             return await this.callOpenAiCompatible(req, key!);
+        case 'anthropic': return this.callAnthropic(req, key!);
+        case 'gemini':    return this.callGemini(req, key!);
+        case 'ollama':    return this.callOllama(req);
+        default:          return this.callOpenAiCompatible(req, key!);
       }
+    };
+    try {
+      return await call();
     } catch (e) {
-      this.logger.error('AI call failed', { provider: req.provider, error: e instanceof Error ? e.message : String(e) });
-      return this.ruleBasedFallback(req.prompt);
+      const msg = e instanceof Error ? e.message : String(e);
+      // Retry once on transient 5xx / rate-limit errors.
+      if (/50[0-9]|429/.test(msg)) {
+        this.logger.warn('[ai-service] transient error — retrying once', { provider: req.provider, error: msg });
+        try { return await call(); } catch { /* fall through to error message */ }
+      }
+      this.logger.error('AI call failed', { provider: req.provider, error: msg });
+      return `AI service error (${req.provider}): ${msg.slice(0, 200)}. Please try again.`;
     }
   }
 
   // ── Provider implementations ──────────────────────────────────────────────
 
   private async callOpenAiCompatible(req: AiCompletionRequest, key: string): Promise<string> {
-    const base = req.baseUrl ?? this.baseUrls.get(req.provider) ?? 'https://api.openai.com';
+    const base = req.baseUrl ?? this.baseUrls.get(req.provider) ?? DEFAULT_BASE_URLS[req.provider] ?? 'https://api.openai.com';
     const res = await fetch(`${base}/v1/chat/completions`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${key}` },
@@ -211,7 +228,7 @@ export class AiProviderService implements AiGateway {
   }
 
   private async callOllama(req: AiCompletionRequest): Promise<string> {
-    const base = req.baseUrl ?? this.baseUrls.get('ollama') ?? 'http://localhost:11434';
+    const base = req.baseUrl ?? this.baseUrls.get('ollama') ?? DEFAULT_BASE_URLS['ollama'];
     const res = await fetch(`${base}/api/chat`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

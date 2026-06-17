@@ -4,9 +4,9 @@
   "version": "1.0.0",
   "identifier": "com.arweb.arapi-tester",
   "build": {
-    "beforeDevCommand": "npm run dev",
+    "beforeDevCommand": "npm --prefix .. run dev",
     "devUrl": "http://localhost:5173",
-    "beforeBuildCommand": "npm run build",
+    "beforeBuildCommand": "npm --prefix .. run build",
     "frontendDist": "../dist"
   },
   "app": {

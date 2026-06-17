@@ -11,7 +11,7 @@ param([string]$TargetTriple = "x86_64-pc-windows-msvc")
 
 $ErrorActionPreference = "Stop"
 $root      = Split-Path $PSScriptRoot -Parent
-$outDir    = Join-Path $root "server\dist"
+$outDir    = Join-Path $root "server-arapi\dist"
 $binDir    = Join-Path $root "src-arapi\binaries"
 $bundle    = Join-Path $outDir "sidecar.cjs"
 $outputExe = Join-Path $binDir "arweb-sidecar-$TargetTriple.exe"
@@ -43,7 +43,7 @@ Write-Host "   native addon: $addonPath"
 # @yao-pkg/pkg then follows it to the installed node_modules and packages the
 # native addon alongside the JS bundle.
 Write-Host "▶ Bundling with esbuild..."
-& $esbuild "$root\server\src\index.ts" `
+& $esbuild "$root\server-arapi\src\index.ts" `
     --bundle `
     --platform=node `
     --format=cjs `

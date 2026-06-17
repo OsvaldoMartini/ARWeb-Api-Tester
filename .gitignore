@@ -8,7 +8,8 @@ dist/
 build/
 *.tsbuildinfo
 packages/*/dist/
-server/dist/
+server-arapi/dist/
+server-ar/dist/
 src-arapi/target/
 src-arapi/gen/
 src-arapi/binaries/

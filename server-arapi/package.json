@@ -1,5 +1,5 @@
 {
-  "name": "@arweb/server",
+  "name": "@arweb/server-arapi",
   "version": "0.1.0",
   "private": true,
   "type": "module",

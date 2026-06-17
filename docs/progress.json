@@ -3,7 +3,7 @@
   "phases": [
     { "id": 0, "name": "Progress Tracker Page",         "status": "done", "note": "Page at /separation, sidecar route GET /separation/progress, auto-refreshes every 10s" },
     { "id": 1, "name": "Rename src-tauri → src-arapi",  "status": "done", "note": "Folder renamed, package.json scripts updated, all build scripts patched" },
-    { "id": 2, "name": "Split Node sidecar server",      "status": "pending", "note": "server-arapi (8787) + server-ar (8788)" },
+    { "id": 2, "name": "Split Node sidecar server",      "status": "done", "note": "server-arapi (8787) full stack, server-ar (8788) agents+AI only, shared SQLite DB" },
     { "id": 3, "name": "Split React frontend",           "status": "pending", "note": "src/ stays ARAPI, create src-ar-web/" },
     { "id": 4, "name": "Create src-ar Tauri shell",      "status": "pending", "note": "New Tauri project for AR Conversational" },
     { "id": 5, "name": "Update src-arapi Tauri shell",   "status": "pending", "note": "Point to renamed server-arapi sidecar" },

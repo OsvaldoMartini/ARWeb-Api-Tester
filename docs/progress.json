@@ -1,0 +1,13 @@
+{
+  "updated": "2026-06-17",
+  "phases": [
+    { "id": 0, "name": "Progress Tracker Page",         "status": "pending", "note": "Build the live /separation page first" },
+    { "id": 1, "name": "Rename src-tauri → src-arapi",  "status": "pending", "note": "" },
+    { "id": 2, "name": "Split Node sidecar server",      "status": "pending", "note": "server-arapi (8787) + server-ar (8788)" },
+    { "id": 3, "name": "Split React frontend",           "status": "pending", "note": "src/ stays ARAPI, create src-ar-web/" },
+    { "id": 4, "name": "Create src-ar Tauri shell",      "status": "pending", "note": "New Tauri project for AR Conversational" },
+    { "id": 5, "name": "Update src-arapi Tauri shell",   "status": "pending", "note": "Point to renamed server-arapi sidecar" },
+    { "id": 6, "name": "Clean up root package.json",     "status": "pending", "note": "Unambiguous scripts per app" },
+    { "id": 7, "name": "Windows build & smoke test",     "status": "pending", "note": "Two .exe installers, no port conflicts" }
+  ]
+}

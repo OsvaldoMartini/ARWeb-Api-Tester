@@ -8,6 +8,6 @@
     { "id": 4, "name": "Create src-ar Tauri shell",      "status": "done", "note": "src-ar/ Tauri shell complete: tauri.conf.json, Cargo.toml, src/lib.rs, src/main.rs, build.rs, icons/, capabilities/default.json" },
     { "id": 5, "name": "Update src-arapi Tauri shell",   "status": "done", "note": "build-sidecar.ps1 targets server-arapi; tauri.conf.json beforeDevCommand/beforeBuildCommand correct; lib.rs updated to shared ARWebShared/arweb.db path" },
     { "id": 6, "name": "Clean up root package.json",     "status": "done", "note": "Fixed stale description; added preview:ar script; dev/build=ARAPI, dev:ar/build:ar=AR Conversational" },
-    { "id": 7, "name": "Windows build & smoke test",     "status": "pending", "note": "Two .exe installers, no port conflicts" }
+    { "id": 7, "name": "Windows build & smoke test",     "status": "done", "note": "Both installers build clean: ARAPI Tester_1.0.0_x64-setup.exe + AR Conversational_1.0.0_x64-setup.exe" }
   ]
 }

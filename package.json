@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  “description”: “Monorepo: ARAPI Tester (src/ + src-arapi/ + server-arapi/) and AR Conversational (src-ar-web/ + src-ar/ + server-ar/). No C#.”,
+  "description": "Monorepo: ARAPI Tester (src/ + src-arapi/ + server-arapi/) and AR Conversational (src-ar-web/ + src-ar/ + server-ar/). No C#.",
   "license": "UNLICENSED",
   "workspaces": [
     "packages/*",

@@ -1,7 +1,7 @@
 {
   "updated": "2026-06-17",
   "phases": [
-    { "id": 0, "name": "Progress Tracker Page",         "status": "pending", "note": "Build the live /separation page first" },
+    { "id": 0, "name": "Progress Tracker Page",         "status": "done", "note": "Page at /separation, sidecar route GET /separation/progress, auto-refreshes every 10s" },
     { "id": 1, "name": "Rename src-tauri → src-arapi",  "status": "pending", "note": "" },
     { "id": 2, "name": "Split Node sidecar server",      "status": "pending", "note": "server-arapi (8787) + server-ar (8788)" },
     { "id": 3, "name": "Split React frontend",           "status": "pending", "note": "src/ stays ARAPI, create src-ar-web/" },

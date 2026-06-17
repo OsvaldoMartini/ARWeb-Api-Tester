@@ -228,6 +228,12 @@ export function createSidecarServer(ctx: Container) {
     'GET /mock/log': (c) => c.mockServer.getLog(),
 
     'POST /mock/log/clear': (c) => { c.mockServer.clearLog(); return { ok: true }; },
+
+    'GET /separation/progress': async () => {
+      const { readFileSync } = await import('node:fs');
+      const { join } = await import('node:path');
+      return JSON.parse(readFileSync(join(process.cwd(), 'docs', 'progress.json'), 'utf8'));
+    },
   };
 
   const server = createServer(async (req: IncomingMessage, res: ServerResponse) => {

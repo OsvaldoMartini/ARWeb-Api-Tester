@@ -1,14 +1,14 @@
-//! Minimal Tauri shell for ARWEB API Tester.
+//! Minimal Tauri shell for AR Conversational.
 //!
-//! Design rule (from the roadmap): **Rust holds no business logic.** All testing,
-//! catalog, agent and mock-server logic lives in the TypeScript Node sidecar.
+//! Design rule: Rust holds no business logic. All agent/AI logic lives in the
+//! TypeScript Node sidecar (server-ar, port 8788).
 //! This file does exactly two things:
-//!   1. Create the application window (the React frontend).
+//!   1. Create the application window (the React frontend at dist-ar/).
 //!   2. In a packaged build, launch the bundled Node sidecar and stop it on exit.
 //!
-//! In development the sidecar is started by `npm run dev` (concurrently with
-//! Vite), so the spawn here is intentionally best-effort: if the sidecar binary
-//! isn't bundled (dev), we log and carry on rather than failing to open.
+//! Both ARAPI Tester and AR Conversational share the same SQLite database.
+//! We use data_dir()/ARWebShared/arweb.db so both apps resolve to the same path
+//! regardless of their bundle identifiers.
 
 #[cfg(not(debug_assertions))]
 use tauri::Manager;
@@ -31,9 +31,6 @@ pub fn run() {
     let builder = builder
         .manage(SidecarState::default())
         .setup(|app| {
-            // Resolve the user-specific AppData path for the SQLite database.
-            // Passed as DB_PATH so the sidecar does NOT fall back to the
-            // dev-time repo-relative path (data/app.db).
             // Shared DB path — same across ARAPI Tester and AR Conversational.
             // data_dir() returns AppData/Roaming on Windows (no bundle-id suffix).
             let db_path = match app.path().data_dir() {
@@ -46,7 +43,7 @@ pub fn run() {
                 Err(_) => String::new(),
             };
 
-            match app.shell().sidecar("arweb-sidecar") {
+            match app.shell().sidecar("ar-conversational-sidecar") {
                 Ok(cmd) => {
                     let cmd = if db_path.is_empty() {
                         cmd
@@ -58,10 +55,10 @@ pub fn run() {
                             let state = app.state::<SidecarState>();
                             *state.0.lock().unwrap() = Some(child);
                         }
-                        Err(e) => eprintln!("[arweb] failed to spawn sidecar: {e}"),
+                        Err(e) => eprintln!("[ar-conversational] failed to spawn sidecar: {e}"),
                     }
                 }
-                Err(e) => eprintln!("[arweb] sidecar binary not found ({e}); \
+                Err(e) => eprintln!("[ar-conversational] sidecar binary not found ({e}); \
                     expecting an externally-running sidecar"),
             }
             Ok(())
@@ -77,5 +74,5 @@ pub fn run() {
 
     builder
         .run(tauri::generate_context!())
-        .expect("error while running ARWEB API Tester");
+        .expect("error while running AR Conversational");
 }

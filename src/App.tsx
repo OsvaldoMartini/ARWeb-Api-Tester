@@ -4,7 +4,6 @@ import { HomePage } from '@/pages/HomePage';
 import { ImportApisPage } from '@/pages/ImportApisPage';
 import { ApiCatalogPage } from '@/pages/ApiCatalogPage';
 import { BusinessCategoriesPage } from '@/pages/BusinessCategoriesPage';
-import { AiAssistantPage } from '@/pages/AiAssistantPage';
 import { TestCasesPage } from '@/pages/TestCasesPage';
 import { BotJobDesignerPage } from '@/pages/BotJobDesignerPage';
 import { ExecuteTestsPage } from '@/pages/ExecuteTestsPage';
@@ -23,7 +22,6 @@ export function App() {
         <Route path="import" element={<ImportApisPage />} />
         <Route path="catalog" element={<ApiCatalogPage />} />
         <Route path="categories" element={<BusinessCategoriesPage />} />
-        <Route path="assistant" element={<AiAssistantPage />} />
         <Route path="test-cases" element={<TestCasesPage />} />
         <Route path="builder" element={<BotBuilderPage />} />
         <Route path="designer" element={<BotJobDesignerPage />} />

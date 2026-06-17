@@ -4,10 +4,10 @@
     { "id": 0, "name": "Progress Tracker Page",         "status": "done", "note": "Page at /separation, sidecar route GET /separation/progress, auto-refreshes every 10s" },
     { "id": 1, "name": "Rename src-tauri → src-arapi",  "status": "done", "note": "Folder renamed, package.json scripts updated, all build scripts patched" },
     { "id": 2, "name": "Split Node sidecar server",      "status": "done", "note": "server-arapi (8787) full stack, server-ar (8788) agents+AI only, shared SQLite DB" },
-    { "id": 3, "name": "Split React frontend",           "status": "pending", "note": "src/ stays ARAPI, create src-ar-web/" },
-    { "id": 4, "name": "Create src-ar Tauri shell",      "status": "pending", "note": "New Tauri project for AR Conversational" },
-    { "id": 5, "name": "Update src-arapi Tauri shell",   "status": "pending", "note": "Point to renamed server-arapi sidecar" },
-    { "id": 6, "name": "Clean up root package.json",     "status": "pending", "note": "Unambiguous scripts per app" },
+    { "id": 3, "name": "Split React frontend",           "status": "done", "note": "src/ ARAPI (assistant route removed), src-ar-web/ AR Conversational (5 pages + layout), vite.config-ar.ts (port 5174/8788), tsconfig.ar-web.json" },
+    { "id": 4, "name": "Create src-ar Tauri shell",      "status": "done", "note": "src-ar/ Tauri shell complete: tauri.conf.json, Cargo.toml, src/lib.rs, src/main.rs, build.rs, icons/, capabilities/default.json" },
+    { "id": 5, "name": "Update src-arapi Tauri shell",   "status": "done", "note": "build-sidecar.ps1 targets server-arapi; tauri.conf.json beforeDevCommand/beforeBuildCommand correct; lib.rs updated to shared ARWebShared/arweb.db path" },
+    { "id": 6, "name": "Clean up root package.json",     "status": "done", "note": "Fixed stale description; added preview:ar script; dev/build=ARAPI, dev:ar/build:ar=AR Conversational" },
     { "id": 7, "name": "Windows build & smoke test",     "status": "pending", "note": "Two .exe installers, no port conflicts" }
   ]
 }

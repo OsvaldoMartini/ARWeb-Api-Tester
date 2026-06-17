@@ -4,9 +4,9 @@
   "version": "1.0.0",
   "identifier": "com.arweb.ar-conversational",
   "build": {
-    "beforeDevCommand": "npm --prefix .. run dev:ar",
+    "beforeDevCommand": "npm run dev:ar",
     "devUrl": "http://localhost:5174",
-    "beforeBuildCommand": "npm --prefix .. run build:ar",
+    "beforeBuildCommand": "npm run build:ar",
     "frontendDist": "../dist-ar"
   },
   "app": {

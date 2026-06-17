@@ -37,15 +37,15 @@ pkg['version'] = new
 open(root + '/package.json', 'w').write(json.dumps(pkg, indent=2) + '\n')
 print(f'  updated package.json  ({cur} -> {new})', file=sys.stderr)
 
-# ── src-tauri/tauri.conf.json ─────────────────────────────────────────────────
-tauri_path = root + '/src-tauri/tauri.conf.json'
+# ── src-arapi/tauri.conf.json ─────────────────────────────────────────────────
+tauri_path = root + '/src-arapi/tauri.conf.json'
 t = json.load(open(tauri_path))
 t['version'] = new
 open(tauri_path, 'w').write(json.dumps(t, indent=2) + '\n')
-print('  updated src-tauri/tauri.conf.json', file=sys.stderr)
+print('  updated src-arapi/tauri.conf.json', file=sys.stderr)
 
-# ── src-tauri/Cargo.toml ──────────────────────────────────────────────────────
-cargo_path = root + '/src-tauri/Cargo.toml'
+# ── src-arapi/Cargo.toml ──────────────────────────────────────────────────────
+cargo_path = root + '/src-arapi/Cargo.toml'
 lines = open(cargo_path).readlines()
 in_pkg = False
 out = []
@@ -58,4 +58,4 @@ for line in lines:
         line = f'version = "{new}"\n'
     out.append(line)
 open(cargo_path, 'w').writelines(out)
-print('  updated src-tauri/Cargo.toml', file=sys.stderr)
+print('  updated src-arapi/Cargo.toml', file=sys.stderr)

@@ -46,15 +46,15 @@ $PkgRaw = $PkgRaw -replace '"version":\s*"[^"]+"', """version"": ""$New"""
 Set-Content $PkgPath -Value $PkgRaw -NoNewline
 Write-Host "  updated package.json"
 
-# ── src-tauri/tauri.conf.json ─────────────────────────────────────────────────
-$TauriConfPath = Join-Path $Root 'src-tauri' 'tauri.conf.json'
+# ── src-arapi/tauri.conf.json ─────────────────────────────────────────────────
+$TauriConfPath = Join-Path $Root 'src-arapi' 'tauri.conf.json'
 $TauriRaw = Get-Content $TauriConfPath -Raw
 $TauriRaw = $TauriRaw -replace '"version":\s*"[^"]+"', """version"": ""$New"""
 Set-Content $TauriConfPath -Value $TauriRaw -NoNewline
-Write-Host "  updated src-tauri/tauri.conf.json"
+Write-Host "  updated src-arapi/tauri.conf.json"
 
-# ── src-tauri/Cargo.toml ──────────────────────────────────────────────────────
-$CargoPath = Join-Path $Root 'src-tauri' 'Cargo.toml'
+# ── src-arapi/Cargo.toml ──────────────────────────────────────────────────────
+$CargoPath = Join-Path $Root 'src-arapi' 'Cargo.toml'
 $CargoLines = Get-Content $CargoPath
 $InPackage = $false
 $CargoOut = foreach ($Line in $CargoLines) {
@@ -67,11 +67,11 @@ $CargoOut = foreach ($Line in $CargoLines) {
     }
 }
 Set-Content $CargoPath -Value ($CargoOut -join "`n") -NoNewline
-Write-Host "  updated src-tauri/Cargo.toml"
+Write-Host "  updated src-arapi/Cargo.toml"
 
 # ── git commit ────────────────────────────────────────────────────────────────
 Push-Location $Root
-git add package.json src-tauri/tauri.conf.json src-tauri/Cargo.toml
+git add package.json src-arapi/tauri.conf.json src-arapi/Cargo.toml
 git commit -m "chore: bump version to $New"
 git tag -a "v$New" -m "Release v$New"
 Write-Host "  git commit + tag v$New created"

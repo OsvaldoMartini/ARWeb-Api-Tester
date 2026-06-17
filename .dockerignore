@@ -1,6 +1,7 @@
 .git
 .gitignore
-src-tauri/
+src-arapi/
+src-ar/
 specifications/
 scripts/
 node_modules

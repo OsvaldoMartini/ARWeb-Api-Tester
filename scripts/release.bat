@@ -43,8 +43,8 @@ REM ── 0. sync with remote to avoid merge conflicts on package.json ──�
 echo    Syncing with remote...
 REM Restore auto-modified files so git pull --rebase doesn't abort
 git restore package-lock.json >nul 2>&1
-git restore src-tauri\Cargo.lock >nul 2>&1
-git restore src-tauri\Cargo.toml >nul 2>&1
+git restore src-arapi\Cargo.lock >nul 2>&1
+git restore src-arapi\Cargo.toml >nul 2>&1
 git pull --rebase
 if errorlevel 1 (
     echo ERROR: git pull --rebase failed. Resolve conflicts manually, then retry.
@@ -83,7 +83,7 @@ if errorlevel 1 ( echo ERROR: tauri build failed & exit /b 1 )
 :after_build
 
 REM ── 5. collect artifacts ─────────────────────────────────────────────────────
-set "BUNDLE=%ROOT%\src-tauri\target\release\bundle"
+set "BUNDLE=%ROOT%\src-arapi\target\release\bundle"
 set "RELEASE_DIR=%ROOT%\releases\%TAG%"
 if not exist "%RELEASE_DIR%"       mkdir "%RELEASE_DIR%"
 if not exist "%RELEASE_DIR%\nsis"  mkdir "%RELEASE_DIR%\nsis"

@@ -43,7 +43,7 @@ if ($LASTEXITCODE -ne 0) { Write-Error "tauri build failed"; exit 1 }
 Pop-Location
 
 # ── 5. collect artifacts ──────────────────────────────────────────────────────
-$BundleRoot = Join-Path $Root 'src-tauri' 'target' 'release' 'bundle'
+$BundleRoot = Join-Path $Root 'src-arapi' 'target' 'release' 'bundle'
 $ReleaseDir = Join-Path $Root 'releases' $Tag
 New-Item -ItemType Directory -Force -Path $ReleaseDir | Out-Null
 

@@ -24,7 +24,7 @@ echo Bumped to %NEW%
 
 REM ── git commit + tag ─────────────────────────────────────────────────────────
 cd /d "%ROOT%"
-git add package.json src-tauri\tauri.conf.json src-tauri\Cargo.toml
+git add package.json src-arapi\tauri.conf.json src-arapi\Cargo.toml
 git commit -m "chore: bump version to %NEW%"
 git rev-parse "v%NEW%" >nul 2>&1
 if errorlevel 1 (

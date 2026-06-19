@@ -129,6 +129,8 @@ npm run build:ar
 # Build only sidecar executables
 pwsh scripts\build-sidecar.ps1
 pwsh scripts\build-sidecar-ar.ps1
+pwsh scripts\build-sidecars.ps1
+npm run sidecar:build:all
 
 # Full Windows installers
 pwsh scripts\build-arapi.ps1

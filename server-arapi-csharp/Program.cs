@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Microsoft.AspNetCore.Http.Json;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,143 +10,74 @@ var port = int.TryParse(Environment.GetEnvironmentVariable("SIDECAR_PORT"), out 
 builder.WebHost.UseUrls($"http://127.0.0.1:{port}");
 builder.Services.Configure<JsonOptions>(options =>
 {
-  options.SerializerOptions.PropertyNamingPolicy = null;
+  options.SerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+  options.SerializerOptions.PropertyNameCaseInsensitive = true;
 });
-
-builder.Services.AddSingleton(new AppState());
+builder.Services.AddSingleton<ArapiBackend>();
 builder.Services.AddCors(options =>
 {
-  options.AddDefaultPolicy(policy =>
-  {
-    policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
-  });
+  options.AddDefaultPolicy(policy => policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 });
 
 var app = builder.Build();
 app.UseCors();
 
-var state = app.Services.GetRequiredService<AppState>();
-state.InitializeDatabase();
+var backend = app.Services.GetRequiredService<ArapiBackend>();
+backend.Initialize();
 
-app.MapGet("/health", () => Results.Ok(new { ok = true, ts = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() }));
-
-app.MapGet("/catalog/endpoints", () => Results.Ok(Array.Empty<object>()));
-
-app.MapPost("/import", () => Results.Ok(new { ok = true, imported = 0, failures = Array.Empty<object>() }));
-
-app.MapPost("/import/upload", () => Results.Ok(new { ok = true, imported = 0, failures = Array.Empty<object>() }));
-
-app.MapGet("/taxonomy", () => Results.Ok(new { categories = Array.Empty<object>(), subcategories = Array.Empty<object>() }));
-
-app.MapGet("/agents", () => Results.Ok(Array.Empty<object>()));
-
-app.MapGet("/agents/capabilities", () => Results.Ok(Array.Empty<object>()));
-
-app.MapPost("/agents/ask", () => Results.Ok(new { error = "Not implemented yet" }));
-
-app.MapPost("/app-assistant/chat", () => Results.Ok(new { error = "Not implemented yet" }));
-
-app.MapGet("/settings/ai-providers", () => Results.Ok(new { providers = Array.Empty<object>() }));
-
-app.MapPost("/settings/ai-providers", () => Results.Ok(new { ok = true }));
-
-app.MapPost("/settings/ai-providers/set-default", () => Results.Ok(new { ok = true }));
-
-app.MapPost("/settings/ai-providers/test", () => Results.Ok(new { ok = true, ms = 0, text = "Not implemented yet" }));
-
-app.MapGet("/environments", () => Results.Ok(Array.Empty<object>()));
-
-app.MapPost("/environments", () => Results.Ok(new { ok = true, id = (string?)null }));
-
-app.MapPut("/environments/{id}", (string id) => Results.Ok(new { ok = true, id }));
-
-app.MapDelete("/environments/{id}", (string id) => Results.Ok(new { ok = true, id }));
-
-app.MapGet("/botjobs", () => Results.Ok(Array.Empty<object>()));
-
-app.MapPost("/botjobs", () => Results.Ok(new { ok = true, id = (string?)null }));
-
-app.MapGet("/botjobs/{id}", (string id) => Results.Ok(new { id, job = (object?)null, blocks = Array.Empty<object>(), commands = Array.Empty<object>(), variables = Array.Empty<object>() }));
-
-app.MapPut("/botjobs/{id}", (string id) => Results.Ok(new { ok = true, id }));
-
-app.MapDelete("/botjobs/{id}", (string id) => Results.Ok(new { ok = true, id }));
-
-app.MapPost("/botjobs/{id}/execute", (string id) => Results.Ok(new { ok = false, error = "Not implemented yet", id }));
-
-app.MapGet("/executions", () => Results.Ok(Array.Empty<object>()));
-
-app.MapGet("/executions/{runId}/steps", (string runId) => Results.Ok(Array.Empty<object>()));
-
-app.MapGet("/executions/{runId}/report.html", (string runId) => Results.Text($"<html><body>Run {runId} not implemented yet</body></html>", "text/html"));
-
-app.MapGet("/executions/{runId}/report.csv", (string runId) => Results.Text($"runId,status\n{runId},not_implemented\n", "text/csv"));
-
-app.MapGet("/catalog/export/postman", () => Results.Text("{}", "application/json"));
-
-app.MapGet("/catalog/export/bash", () => Results.Text("#!/usr/bin/env bash\n", "text/plain"));
-
-app.MapGet("/mock/status", () => Results.Ok(new { running = false, port = 8855 }));
-
-app.MapPost("/mock/start", () => Results.Ok(new { running = false, port = 8855 }));
-
-app.MapPost("/mock/stop", () => Results.Ok(new { running = false }));
-
-app.MapGet("/mock/log", () => Results.Ok(Array.Empty<object>()));
-
-app.MapPost("/mock/log/clear", () => Results.Ok(new { ok = true }));
-
-app.MapGet("/separation/progress", () =>
+app.MapGet("/health", backend.Health);
+app.MapGet("/catalog/endpoints", backend.CatalogEndpoints);
+app.MapPost("/import", async (ImportFolderRequest request) => await backend.ImportAsync(request.FolderPath ?? string.Empty));
+app.MapPost("/import/upload", async (UploadImportRequest request) => await backend.ImportUploadAsync(request));
+app.MapGet("/taxonomy", backend.Taxonomy);
+app.MapGet("/agents", backend.Agents);
+app.MapGet("/agents/capabilities", backend.AgentCapabilities);
+app.MapPost("/agents/ask", (AskAgentRequest request) => backend.AskAgent(request));
+app.MapPost("/app-assistant/chat", (AppAssistantChatRequest request) => backend.AppAssistantChat(request));
+app.MapGet("/settings/ai-providers", backend.GetAiProviders);
+app.MapPost("/settings/ai-providers", (AiProviderSettingRequest request) => backend.SaveAiProvider(request));
+app.MapPost("/settings/ai-providers/set-default", (DefaultSelectionRequest request) => backend.SetDefaultAiProvider(request));
+app.MapPost("/settings/ai-providers/test", (TestAiProviderRequest request) => backend.TestAiProvider(request));
+app.MapGet("/catalog/endpoints/{endpointId}/category", (string endpointId) => Results.BadRequest(new { error = "use PUT" }));
+app.MapPut("/catalog/endpoints/{endpointId}/category", (string endpointId, SetEndpointCategoryRequest request) => backend.SetEndpointCategory(endpointId, request));
+app.MapGet("/environments", backend.ListEnvironments);
+app.MapPost("/environments", (CreateEnvironmentRequest request) => backend.CreateEnvironment(request));
+app.MapPut("/environments/{id}", (string id, UpdateEnvironmentRequest request) => backend.UpdateEnvironment(id, request));
+app.MapDelete("/environments/{id}", (string id) => backend.DeleteEnvironment(id));
+app.MapGet("/botjobs", backend.ListBotJobs);
+app.MapPost("/botjobs", (CreateBotJobRequest request) => backend.CreateBotJob(request));
+app.MapGet("/botjobs/{id}", (string id) => backend.GetBotJob(id));
+app.MapPut("/botjobs/{id}", (string id, BotJobDetailRequest request) => backend.SaveBotJob(id, request));
+app.MapDelete("/botjobs/{id}", (string id) => backend.DeleteBotJob(id));
+app.MapPost("/botjobs/{id}/execute", (string id, ExecuteBotJobRequest request) => backend.ExecuteBotJob(id, request));
+app.MapGet("/executions", (HttpRequest request) =>
 {
-  var progressPath = Path.Combine(AppContext.BaseDirectory, "docs", "progress.json");
-  if (!File.Exists(progressPath))
-  {
-    progressPath = Path.Combine(Directory.GetCurrentDirectory(), "docs", "progress.json");
-  }
-
-  if (!File.Exists(progressPath))
-  {
-    return Results.Ok(new { error = "progress.json not found" });
-  }
-
-  var json = File.ReadAllText(progressPath);
-  return Results.Text(json, "application/json");
+  var botJobId = request.Query.TryGetValue("botJobId", out var values) ? values.ToString() : null;
+  return backend.ListExecutions(botJobId);
 });
+app.MapGet("/executions/{runId}/steps", (string runId) => backend.GetExecutionSteps(runId));
+app.MapGet("/executions/{runId}/report.html", (string runId) => backend.GetExecutionReportHtml(runId));
+app.MapGet("/executions/{runId}/report.csv", (string runId) => backend.GetExecutionReportCsv(runId));
+app.MapGet("/catalog/export/postman", (HttpRequest request) =>
+{
+  var baseUrl = request.Query.TryGetValue("baseUrl", out var values) ? values.ToString() : "http://localhost";
+  return backend.CatalogExportPostman(baseUrl);
+});
+app.MapGet("/catalog/export/bash", (HttpRequest request) =>
+{
+  var baseUrl = request.Query.TryGetValue("baseUrl", out var values) ? values.ToString() : "http://localhost";
+  return backend.CatalogExportBash(baseUrl);
+});
+app.MapGet("/mock/status", backend.MockStatus);
+app.MapPost("/mock/start", backend.MockStart);
+app.MapPost("/mock/stop", backend.MockStop);
+app.MapGet("/mock/log", backend.MockLog);
+app.MapPost("/mock/log/clear", backend.MockClearLog);
+app.MapGet("/separation/progress", backend.SeparationProgress);
 
 app.Run();
 
-sealed class AppState
+public sealed class ImportFolderRequest
 {
-  private bool _initialized;
-
-  public void InitializeDatabase()
-  {
-    if (_initialized) return;
-
-    var dbPath = ResolveDatabasePath();
-    var dir = Path.GetDirectoryName(dbPath);
-    if (!string.IsNullOrWhiteSpace(dir))
-    {
-      Directory.CreateDirectory(dir);
-    }
-
-    _initialized = true;
-  }
-
-  private static string ResolveDatabasePath()
-  {
-    var explicitPath = Environment.GetEnvironmentVariable("DB_PATH");
-    if (!string.IsNullOrWhiteSpace(explicitPath))
-    {
-      return explicitPath;
-    }
-
-    var appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-    if (!string.IsNullOrWhiteSpace(appData))
-    {
-      return Path.Combine(appData, "ARWebShared", "arweb.db");
-    }
-
-    return Path.Combine(AppContext.BaseDirectory, "data", "app.db");
-  }
+  public string? FolderPath { get; set; }
 }

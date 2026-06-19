@@ -371,11 +371,11 @@ export function SettingsPage() {
         <div className="card">
           <div className="mb-3 font-medium">Local services</div>
           <div className="grid grid-cols-2 gap-4 text-sm">
-            <div><div className="label">AR Conversational sidecar</div><code>8788</code></div>
-            <div><div className="label">ARAPI Tester sidecar</div><code>8787</code></div>
+            <div><div className="label">ARAPI backend</div><code>8787</code></div>
+            <div><div className="label">AR Conversational client</div><code>5174</code></div>
           </div>
           <p className="mt-3 text-xs text-text-muted">
-            Override via <code>SIDECAR_PORT</code> environment variable.
+            Override the backend port via <code>ARAPI_PORT</code> or <code>SIDECAR_PORT</code>.
           </p>
         </div>
       </div>

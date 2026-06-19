@@ -23,8 +23,11 @@ import { BankingAgentRouter, createAllAgents } from '@arweb/agents';
 import { MockServer } from '@arweb/mock-server';
 
 // Resolve the repo root regardless of which directory the process was started from.
-const _dir = dirname(fileURLToPath(import.meta.url));
-const _repoRoot = join(_dir, '..', '..', '..'); // server/src/bootstrap → repo root
+const _dir =
+  typeof __dirname === 'string'
+    ? __dirname
+    : dirname(fileURLToPath(import.meta.url));
+const _repoRoot = join(_dir, '..', '..', '..'); // server/src/bootstrap -> repo root
 const DB_DEFAULT = join(_repoRoot, 'data', 'app.db');
 
 /**

@@ -27,7 +27,7 @@ export function HomePage() {
       <div className="card mb-6 flex items-center justify-between">
         <div>
           <div className="text-sm font-medium">Sidecar status</div>
-          <div className="text-xs text-text-muted">AR Conversational engine · port 8788</div>
+          <div className="text-xs text-text-muted">ARAPI backend connection · port 8787</div>
         </div>
         <span className={
           'badge ' +

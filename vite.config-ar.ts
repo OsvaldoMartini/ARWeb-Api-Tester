@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react';
 import { fileURLToPath, URL } from 'node:url';
 
 const host = process.env.TAURI_DEV_HOST;
-const sidecarPort = process.env.SIDECAR_PORT ?? '8788';
+const sidecarPort = process.env.ARAPI_PORT ?? process.env.SIDECAR_PORT ?? '8787';
 
 export default defineConfig({
   plugins: [react()],
@@ -19,7 +19,7 @@ export default defineConfig({
     strictPort: true,
     host: host || false,
     hmr: host ? { protocol: 'ws', host, port: 5175 } : undefined,
-    watch: { ignored: ['**/src/**', '**/src-arapi/**', '**/server-arapi/**'] },
+    watch: { ignored: ['**/src/**', '**/src-arapi/**', '**/server-ar/**'] },
     proxy: {
       '/api': {
         target: `http://127.0.0.1:${sidecarPort}`,

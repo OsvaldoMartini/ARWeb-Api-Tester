@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Monorepo: ARAPI Tester (src/ + src-arapi/ + server-arapi/) and AR Conversational (src-ar-web/ + src-ar/ + server-ar/). No C#.",
+  "description": "Monorepo: ARAPI Tester (src/ + src-arapi/ + server-arapi/) and AR Conversational (src-ar-web/ + src-ar/ client against ARAPI). No C#.",
   "license": "UNLICENSED",
   "workspaces": [
     "packages/*",
@@ -16,7 +16,7 @@
     "dev:server": "npm run dev --workspace @arweb/server-arapi",
     "dev:server-ar": "npm run dev --workspace @arweb/server-ar",
     "dev": "npm run build:packages && concurrently -n server,web -c blue,green \"npm run dev:server\" \"npm run dev:web\"",
-    "dev:ar": "npm run build:packages && concurrently -n server-ar,web-ar -c magenta,cyan \"npm run dev:server-ar\" \"npx vite --config vite.config-ar.ts\"",
+    "dev:ar": "npm run build:packages && concurrently -n server-arapi,web-ar -c blue,cyan \"npm run dev:server\" \"npx vite --config vite.config-ar.ts\"",
     "build": "npm run build:packages && tsc --noEmit && vite build",
     "build:vercel": "npm run build:packages && vite build",
     "build:ar": "npm run build:packages && tsc -p tsconfig.ar-web.json --noEmit && npx vite build --config vite.config-ar.ts",

@@ -35,7 +35,7 @@
       "icons/icon.ico"
     ],
     "externalBin": [
-      "binaries/ar-conversational-sidecar"
+      "binaries/arweb-sidecar"
     ]
   }
 }

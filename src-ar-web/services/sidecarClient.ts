@@ -1,13 +1,13 @@
 /**
- * Thin typed client for the AR Conversational sidecar (port 8788).
+ * Thin typed client for the ARAPI backend used by AR Conversational.
  *
  * URL routing:
- *  - Dev: Vite proxies `/api/*` → `http://127.0.0.1:8788/*`
- *  - Tauri production: goes direct to the sidecar on localhost:8788.
+ *  - Dev: Vite proxies `/api/*` to `http://127.0.0.1:8787/*`
+ *  - Tauri production: goes direct to the ARAPI backend on localhost:8787.
  */
 
 const isTauri = typeof window !== 'undefined' && '__TAURI_INTERNALS__' in window;
-const BASE = isTauri ? 'http://127.0.0.1:8788' : '/api';
+const BASE = isTauri ? 'http://127.0.0.1:8787' : '/api';
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const res = await fetch(`${BASE}${path}`, {

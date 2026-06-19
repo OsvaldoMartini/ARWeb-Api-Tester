@@ -1,224 +1,245 @@
-# AGENTS.md — ARWeb Monorepo
+# AGENTS.md - ARWeb Monorepo
 
-This file gives AI coding agents (Codex, Copilot, Claude, etc.) the context needed to
-work effectively in this repository without re-deriving its structure from scratch.
+Operational context for AI coding agents working in this repository.
 
----
+This repo builds two separate Windows desktop apps from one TypeScript/Rust
+monorepo. Keep changes scoped to the app you are touching, and be especially
+careful around the Tauri shells and sidecar executable packaging.
 
-## What this project is
+## Project Map
 
-Two separate desktop Windows applications built as a monorepo:
+| App | Purpose | React UI | Node sidecar | Tauri shell | Dev ports |
+| --- | --- | --- | --- | --- | --- |
+| ARAPI | No-code REST API testing for banking staff | `src/` | `server-arapi/` | `src-arapi/` | UI `5173`, API `8787` |
+| AR Conversational | AI banking assistant for employee/client modes | `src-ar-web/` | ARAPI backend (`server-arapi/`) | `src-ar/` | UI `5174`, API `8787` |
 
-| App | Purpose | Tauri shell | Node sidecar | React frontend | Ports |
-|---|---|---|---|---|---|
-| **ARAPI Tester** | No-code REST API testing for banking staff | `src-arapi/` | `server-arapi/` | `src/` | UI: 5173, API: 8787 |
-| **AR Conversational** | AI banking assistant (employee & client modes) | `src-ar/` | `server-ar/` | `src-ar-web/` | UI: 5174, API: 8788 |
+Both apps use the same SQLite database:
 
-Both apps share the same SQLite database at `%APPDATA%\ARWebShared\arweb.db` (production)
-or `data/app.db` (dev fallback).
+- Packaged apps: `%APPDATA%\ARWebShared\arweb.db`
+- Dev fallback: `data/app.db`
 
-Target: Windows `.exe` installer (Tauri v2 + NSIS/MSI). **No C#, no .NET.**
+Target runtime is Windows desktop via Tauri v2, NSIS/MSI installers, and Node
+sidecar executables. Do not introduce C# or .NET.
 
----
+## Directory Roles
 
-## Repository layout
-
-```
-ARWeb-Api-Tester/
-├── src/                     ARAPI Tester — React frontend (Vite, port 5173)
-├── src-ar-web/              AR Conversational — React frontend (Vite, port 5174)
-├── src-arapi/               ARAPI Tester — Tauri v2 Rust shell
-├── src-ar/                  AR Conversational — Tauri v2 Rust shell
-├── server-arapi/            ARAPI Tester — Node.js HTTP sidecar (port 8787)
-├── server-ar/               AR Conversational — Node.js HTTP sidecar (port 8788)
-├── packages/
-│   ├── domain/              Pure TypeScript entities — no external deps
-│   ├── application/         Use-cases + port interfaces (ports.ts)
-│   ├── infrastructure/      SQLite repos, OpenAPI importer, HTTP executor, AI, reports
-│   ├── api-testing-engine/  BotJob execution engine
-│   ├── agents/              14 banking agents + BankingAgentRouter
-│   ├── mock-server/         Fastify-like localhost mock HTTP server
-│   ├── shared-ui/           React design-system tokens + utilities
-│   └── common/              Logger, Result<T>, uuid, nowIso, sanitize
-├── scripts/
-│   ├── build-arapi.ps1      Full installer build for ARAPI Tester
-│   ├── build-ar.ps1         Full installer build for AR Conversational
-│   ├── build-sidecar.ps1    Node sidecar → exe (server-arapi)
-│   └── build-sidecar-ar.ps1 Node sidecar → exe (server-ar)
-├── docs/
-│   └── progress.json        Separation roadmap status (phases 0-7, all done)
-├── data/                    Dev SQLite DB (gitignored)
-├── dist/                    ARAPI Tester Vite build output
-├── dist-ar/                 AR Conversational Vite build output
-├── index.html               ARAPI Tester Vite entry
-├── vite.config.ts           ARAPI Tester Vite config
-├── vite.config-ar.ts        AR Conversational Vite config
-├── tsconfig.json            Root TypeScript config (references packages)
-└── tsconfig.ar-web.json     TypeScript config for src-ar-web/
+```text
+src/                         ARAPI React frontend
+src-ar-web/                  AR Conversational React frontend
+server-arapi/                ARAPI localhost HTTP sidecar
+server-ar/                   Legacy AR Conversational sidecar code; do not use for new AR client flows
+src-arapi/                   ARAPI Tauri v2 shell
+src-ar/                      AR Conversational Tauri v2 shell
+packages/domain/             Pure TypeScript entities and enums
+packages/application/        Use cases, ports, validation
+packages/infrastructure/     SQLite, OpenAPI import, HTTP, AI, reports, export
+packages/api-testing-engine/ BotJob execution engine
+packages/agents/             Banking agents and router
+packages/mock-server/        Local mock HTTP server
+packages/shared-ui/          Shared React UI tokens/utilities
+packages/common/             Logger, Result, ids, time, sanitize helpers
+scripts/                     Windows build and release scripts
+docs/                        Manuals, roadmap/progress, generated docs
+dist/                        ARAPI Vite build output
+dist-ar/                     AR Conversational Vite build output
 ```
 
----
+## Architecture Rules
 
-## Architecture — clean layers
+The dependency direction is:
 
+```text
+React UI -> localhost Node sidecar -> application ports/use cases
+                                -> infrastructure adapters
+                                -> domain entities
 ```
-React UI  →  Node sidecar (HTTP, localhost only)  →  packages/application (use-cases)
-                                                   →  packages/infrastructure (SQLite, HTTP, AI)
-                                                   →  packages/domain (entities)
-```
 
-**Invariant:** All AI suggestions and agent plans must reference only endpoints that exist
-in the imported OpenAPI catalog. This is enforced by `RealApiCatalogValidator`
-(`packages/application/src/validation/`).
+Rules:
 
-**Rust holds no business logic.** The Tauri shells (`src-arapi/`, `src-ar/`) only:
-1. Open the Chromium window (React frontend)
-2. In production builds: spawn and kill the bundled Node sidecar
+- Rust has no business logic. `src-arapi/` and `src-ar/` only create the window,
+  load the frontend, spawn the production sidecar, pass `DB_PATH`, and kill the
+  sidecar on exit.
+- Domain and application layers must not import infrastructure.
+- Application ports live in `packages/application/src/interfaces/ports.ts`.
+  Add or adjust a port there before adding an infrastructure implementation.
+- Use `Result<T, E>` from `@arweb/common` for fallible domain/application flows.
+- All agent/AI plans must reference only endpoints present in the imported
+  OpenAPI catalog. `RealApiCatalogValidator` enforces this invariant.
+- Sidecar HTTP APIs are localhost-only JSON APIs. Do not expose them on a public
+  interface.
 
----
+## Executable Build Model
 
-## Key packages
+Each desktop app is a Tauri shell plus a packaged Node sidecar:
 
-### packages/domain
-Pure entities, no dependencies. Core types:
-- `ApiEndpoint`, `ApiSpec`, `ApiParameter`, `ApiOutputField` — OpenAPI catalog
-- `BotJob`, `BotJobBlock`, `BotJobCommand` — no-code test automation
-- `ExecutionRun`, `ExecutionStepResult` — test run results
-- `BusinessCategory`, `BusinessSubcategory` — 25 banking categories
-- `AiProviderConfig` — multi-provider AI settings
+- ARAPI sidecar source: `server-arapi/src/index.ts`
+- ARAPI sidecar exe: `src-arapi/binaries/arweb-sidecar-x86_64-pc-windows-msvc.exe`
+- ARAPI Tauri external bin name: `binaries/arweb-sidecar`
+- AR Conversational backend source: `server-arapi/src/index.ts` (shared ARAPI backend)
+- AR Conversational bundled sidecar exe: `src-ar/binaries/arweb-sidecar-x86_64-pc-windows-msvc.exe`
+- AR Conversational Tauri external bin name: `binaries/arweb-sidecar`
 
-### packages/application
-Port interfaces (in `src/interfaces/ports.ts`):
-- `CatalogReadPort`, `CatalogWritePort`
-- `BotJobRepository`, `ExecutionRepository`
-- `TaxonomyRepository`, `SettingsRepository`
-- `HttpExecutorPort`
+Important Tauri rules:
 
-Use-cases: `ImportOpenApiUseCase`
+- Run Tauri commands from the shell directory, not the repo root.
+  - ARAPI: `cd src-arapi && tauri build`
+  - AR Conversational: `cd src-ar && tauri build`
+- Prefer the wrapper scripts from the repo root:
+  - `pwsh scripts\build-arapi.ps1`
+  - `pwsh scripts\build-ar.ps1`
+- `src-arapi/tauri.conf.json` uses `beforeBuildCommand: "npm run build"` and
+  `frontendDist: "../dist"`.
+- `src-ar/tauri.conf.json` uses `beforeBuildCommand: "npm run build:ar"` and
+  `frontendDist: "../dist-ar"`.
+- `externalBin` entries must omit the target triple and `.exe`; Tauri appends
+  the target-specific suffix during bundling.
+- If a shell directory is renamed or moved, run `cargo clean --release` inside
+  that shell directory because Cargo may cache absolute paths.
 
-### packages/infrastructure/src/persistence/sqlite
-19-table SQLite schema. All repositories implement the application ports:
-- `SqliteCatalogRepository`
-- `SqliteBotJobRepository`
-- `SqliteExecutionRepository`
-- `SqliteTaxonomyRepository` — seeds 25 banking categories on first run
-- `SqliteSettingsRepository`
+Sidecar packaging rules:
 
-Database: opened via `openDatabase(path)` (WAL mode, FK on, idempotent migrations).
+- Sidecars are bundled to CJS with esbuild and then packaged with
+  `@yao-pkg/pkg`.
+- `better-sqlite3` is native. Keep it external in esbuild and pass the
+  `better_sqlite3.node` file as a pkg asset.
+- Do not switch to Node SEA unless the whole native-addon packaging path is
+  redesigned and tested.
+- An esbuild warning about `import.meta` in CJS may be harmless; verify runtime
+  behavior before treating it as a build failure.
 
-### packages/agents
-14 banking agents + router. Each agent extends `BaseAgent` and has a capability map:
-- `RelationshipManagerAgent`, `CreditAndLendingAgent`, `CashAndPaymentsAgent`
-- `PortfolioAdvisorAgent`, `ClientWealthAssistantAgent`, `SecuritiesTradingAgent`
-- `ClientCreditAssistantAgent`, `ClientCashAssistantAgent`, `ClientTradingAssistantAgent`
-- `BackOfficeOperationsAgent`, `ReportingAndCOOAgent`, `ComplianceAndRiskAgent`
-- `AuditAndUATAgent`, `ClientMessagesAndDocumentsAgent`
+## Common Build Commands
 
-`BankingAgentRouter` selects the right agent based on question intent.
+```powershell
+# Install dependencies
+npm install
 
----
-
-## Dev commands
-
-```bash
-# ARAPI Tester (web only, no Tauri window)
-npm run dev              # server-arapi :8787 + Vite :5173
-
-# AR Conversational (web only, no Tauri window)
-npm run dev:ar           # server-ar :8788 + Vite :5174
-
-# Build TypeScript packages only
+# Build TypeScript packages
 npm run build:packages
 
+# Run ARAPI web/dev sidecar
+npm run dev
+
+# Run AR Conversational web with the ARAPI backend
+npm run dev:ar
+
 # Build frontends
-npm run build            # ARAPI → dist/
-npm run build:ar         # AR Conversational → dist-ar/
+npm run build
+npm run build:ar
 
-# Full installer builds (Windows, requires Rust + Tauri CLI)
-pwsh scripts\build-arapi.ps1    # → src-arapi\target\release\bundle\
-pwsh scripts\build-ar.ps1       # → src-ar\target\release\bundle\
+# Build only sidecar executables
+pwsh scripts\build-sidecar.ps1
+pwsh scripts\build-sidecar-ar.ps1
 
-# Or via npm
-npm run installer:arapi
-npm run installer:ar
+# Full Windows installers
+pwsh scripts\build-arapi.ps1
+pwsh scripts\build-ar.ps1
 ```
 
----
+If `better_sqlite3.node` is missing, run:
 
-## Build notes (important for Tauri)
+```powershell
+npm install
+npm rebuild better-sqlite3
+```
 
-- `tauri build` must be run **from within** each shell directory (`src-arapi/` or `src-ar/`),
-  NOT from the repo root with `--config`. Running from root causes Tauri to compile the
-  wrong Rust crate. The `build-*.ps1` scripts do `Push-Location` before calling tauri.
-- `beforeBuildCommand` in `tauri.conf.json` runs from the **project root** (one level above
-  the shell dir). Use plain `npm run build` / `npm run build:ar` — no `--prefix` needed.
-- `better-sqlite3` is a native addon (`.node` file). It is excluded from esbuild and
-  bundled alongside the exe by `@yao-pkg/pkg`. SEA (Node single executable) is NOT used.
-- If you rename `src-arapi/` or `src-ar/`, run `cargo clean --release` inside the renamed
-  dir — Cargo caches absolute paths and will break after a rename.
-- The `import.meta` CJS warning from esbuild is expected and harmless (it's a warning,
-  not an error). The sidecar still runs correctly.
+## Runtime/Environment Notes
 
----
+- `DB_PATH` controls the SQLite path. Packaged Tauri apps pass a shared
+  `%APPDATA%\ARWebShared\arweb.db` path to their sidecar.
+- `SIDECAR_PORT` defaults:
+  - `server-arapi`: `8787`
+  - AR Conversational uses `server-arapi` on `8787`
+- Server bootstrap files:
+  - `server-arapi/src/bootstrap/container.ts`
+  - `server-ar/src/bootstrap/container.ts` (legacy)
+- Tauri spawn code:
+  - `src-arapi/src/lib.rs`
+  - `src-ar/src/lib.rs`
 
-## Sidecar API — server-arapi (port 8787)
+## Sidecar API Surface
 
-All routes are plain JSON over HTTP, localhost only.
+ARAPI, `server-arapi`, port `8787`:
 
-| Method | Route | Description |
-|---|---|---|
-| GET | `/health` | Liveness check |
-| GET | `/catalog/endpoints` | List all imported endpoints |
-| GET | `/catalog/specs` | List all imported OpenAPI specs |
-| POST | `/import` | Import from folder path `{ folderPath }` |
-| POST | `/import/upload` | Import uploaded files `{ files: [{name, content}] }` |
-| GET | `/taxonomy` | List banking categories + subcategories |
-| GET | `/botjobs` | List all BotJobs |
-| POST | `/botjobs` | Create a BotJob |
-| POST | `/botjobs/:id/run` | Execute a BotJob |
-| GET | `/executions` | List execution runs |
-| GET | `/settings` | Get all settings |
-| POST | `/settings` | Upsert a setting |
-| POST | `/assistant` | Chat with the app assistant (non-agent AI) |
-| GET | `/separation/progress` | Returns `docs/progress.json` content |
-
-## Sidecar API — server-ar (port 8788)
-
-| Method | Route | Description |
-|---|---|---|
-| GET | `/health` | Liveness check |
-| GET | `/catalog/endpoints` | Endpoints from shared SQLite |
-| GET | `/agents` | List available banking agents |
+| Method | Route | Purpose |
+| --- | --- | --- |
+| GET | `/health` | Liveness |
+| GET | `/catalog/endpoints` | List imported endpoints |
+| POST | `/import` | Import OpenAPI files from `{ folderPath }` |
+| POST | `/import/upload` | Import uploaded OpenAPI files |
+| GET | `/taxonomy` | Banking taxonomy |
+| GET | `/agents` | Available banking agents |
 | GET | `/agents/capabilities` | Agent capability map |
-| POST | `/agents/ask` | Ask a banking agent `{ question, mode, agentId }` |
-| GET | `/settings` | AI provider settings |
-| POST | `/settings` | Upsert a setting |
-| GET | `/separation/progress` | Returns `docs/progress.json` content |
+| POST | `/agents/ask` | Ask banking agent |
+| POST | `/app-assistant/chat` | App assistant chat |
+| GET | `/settings/ai-providers` | List AI provider settings without secrets |
+| POST | `/settings/ai-providers` | Upsert AI provider setting |
+| POST | `/settings/ai-providers/set-default` | Set default provider |
+| POST | `/settings/ai-providers/test` | Test provider call |
+| GET/POST/PUT/DELETE | `/environments...` | Environment CRUD |
+| GET/POST/PUT/DELETE | `/botjobs...` | BotJob CRUD |
+| POST | `/botjobs/:id/execute` | Execute a BotJob |
+| GET | `/executions` | List execution runs |
+| GET | `/executions/:runId/steps` | Run step results |
+| GET | `/executions/:runId/report.html` | HTML execution report |
+| GET | `/executions/:runId/report.csv` | CSV execution report |
+| GET | `/catalog/export/postman` | Postman collection export |
+| GET | `/catalog/export/bash` | Bash script export |
+| GET/POST | `/mock...` | Mock server status/control/log |
+| GET | `/separation/progress` | `docs/progress.json` |
 
----
+AR Conversational uses the ARAPI `server-arapi` routes above on port `8787`.
 
-## Coding conventions
+## Coding Conventions
 
-- **TypeScript strict mode** throughout. No `any` without a comment.
-- **ESM modules** (`"type": "module"` in all package.json files).
-- **Result<T, E>** pattern from `@arweb/common` for fallible operations — no raw throws
-  in domain/application layers.
-- **Port interfaces** live in `packages/application/src/interfaces/ports.ts`. Add a new
-  repository there before implementing it in infrastructure.
-- **No business logic in Rust.** If you need to add Tauri commands, add them to `lib.rs`
-  as thin wrappers only.
-- React: functional components + hooks. State: Zustand stores in `src/store/` and
-  `src-ar-web/store/`.
-- Styling: Tailwind CSS. Design tokens in `packages/shared-ui/`.
-- Tests: Vitest (`npm test`). E2E: Playwright (`npm run test:e2e`).
+- TypeScript is strict. Avoid `any`; if unavoidable, document why at the use
+  site.
+- The repo uses ESM (`"type": "module"`). Preserve `.js` extensions in emitted
+  TypeScript imports where existing code uses them.
+- React uses functional components and hooks.
+- State lives in Zustand stores under `src/store/` and `src-ar-web/store/`.
+- Styling is Tailwind CSS, with shared tokens/utilities in
+  `packages/shared-ui/`.
+- Keep UI behavior app-specific unless the shared package already owns the
+  abstraction.
+- Do not put secrets in logs, docs, generated exports, or API responses.
 
----
+## Testing and Verification
 
-## What is NOT done yet (known stubs)
+Use the narrowest verification that proves the change:
 
-- `BotJobDesignerPage.tsx` — visual no-code designer (UI stub)
-- `ExecuteTestsPage.tsx` — Run button not wired to `ExecutionRepository`
-- AI layer (`packages/infrastructure/src/ai/`) — offline stub; real provider calls
-  (OpenAI, Anthropic, Ollama) not yet implemented
-- Reports: HTML/CSV/Bash exporters exist; PDF, Postman, Excel pending
-- Several ARAPI Tester pages show placeholder content (EnvironmentsPage, MockServerPage)
+- Package/type changes: `npm run build:packages`
+- ARAPI frontend: `npm run build`
+- AR Conversational frontend: `npm run build:ar`
+- Full typecheck: `npm run typecheck`
+- Unit tests: `npm test`
+- E2E: `npm run test:e2e`
+- Sidecar exe smoke: run the generated exe and check `/health` on its port.
+- Full installer smoke: build with the PowerShell wrapper and inspect
+  `src-*/target/release/bundle/`.
+
+When fixing executable issues, always verify:
+
+- The expected sidecar exe exists in `src-*/binaries/`.
+- The Tauri `externalBin` base name matches the sidecar name used in `lib.rs`.
+- The sidecar starts without Node installed globally.
+- The app passes the intended `DB_PATH` in production.
+- The installer bundle contains the sidecar.
+
+## Known Incomplete Areas
+
+- Some ARAPI pages are still partial or placeholder-heavy.
+- AI provider integration is present but should be treated carefully; never
+  expose stored API keys.
+- Reports/export support exists for HTML, CSV, Bash, and Postman; confirm before
+  claiming PDF, Excel, or other formats.
+- BotJob execution and designer flows are evolving. Check current code before
+  assuming a route or UI action exists.
+
+## Agent Workflow
+
+1. Read the nearest code before editing.
+2. Keep changes inside the relevant app/package boundary.
+3. Preserve the executable packaging model unless explicitly changing it.
+4. Update this file when build commands, ports, sidecar names, or architecture
+   boundaries change.
+5. Do not revert unrelated user changes or generated artifacts.

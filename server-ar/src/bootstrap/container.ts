@@ -12,8 +12,11 @@ import {
 import { resolveMasterKey } from './crypto-key.js';
 import { BankingAgentRouter, createAllAgents } from '@arweb/agents';
 
-const _dir = dirname(fileURLToPath(import.meta.url));
-const _repoRoot = join(_dir, '..', '..', '..'); // server-ar/src/bootstrap → repo root
+const _dir =
+  typeof __dirname === 'string'
+    ? __dirname
+    : dirname(fileURLToPath(import.meta.url));
+const _repoRoot = join(_dir, '..', '..', '..'); // server-ar/src/bootstrap -> repo root
 const DB_DEFAULT = join(_repoRoot, 'data', 'app.db');
 
 export interface Container {

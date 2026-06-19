@@ -1,5 +1,5 @@
-# Build the AR Conversational Node.js sidecar as a self-contained Windows exe.
-# Mirrors build-sidecar.ps1 but targets server-ar and outputs to src-ar/binaries/.
+# Build the ARAPI Node.js sidecar as a self-contained Windows exe for the
+# AR Conversational shell.
 #
 # Usage: pwsh scripts/build-sidecar-ar.ps1
 
@@ -7,10 +7,10 @@ param([string]$TargetTriple = "x86_64-pc-windows-msvc")
 
 $ErrorActionPreference = "Stop"
 $root      = Split-Path $PSScriptRoot -Parent
-$outDir    = Join-Path $root "server-ar\dist"
+$outDir    = Join-Path $root "server-arapi\dist"
 $binDir    = Join-Path $root "src-ar\binaries"
 $bundle    = Join-Path $outDir "sidecar.cjs"
-$outputExe = Join-Path $binDir "ar-conversational-sidecar-$TargetTriple.exe"
+$outputExe = Join-Path $binDir "arweb-sidecar-$TargetTriple.exe"
 $esbuild   = Join-Path $root "node_modules\.bin\esbuild.cmd"
 
 New-Item -ItemType Directory -Force $outDir | Out-Null
@@ -34,8 +34,8 @@ and try again.
 Write-Host "   native addon: $addonPath"
 
 # ── Step 2: bundle TypeScript → CJS ──────────────────────────────────────────
-Write-Host "▶ Bundling server-ar with esbuild..."
-& $esbuild "$root\server-ar\src\index.ts" `
+Write-Host "▶ Bundling server-arapi with esbuild..."
+& $esbuild "$root\server-arapi\src\index.ts" `
     --bundle `
     --platform=node `
     --format=cjs `

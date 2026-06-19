@@ -1,10 +1,10 @@
 //! Minimal Tauri shell for AR Conversational.
 //!
 //! Design rule: Rust holds no business logic. All agent/AI logic lives in the
-//! TypeScript Node sidecar (server-ar, port 8788).
+//! ARAPI TypeScript Node sidecar (server-arapi, port 8787).
 //! This file does exactly two things:
 //!   1. Create the application window (the React frontend at dist-ar/).
-//!   2. In a packaged build, launch the bundled Node sidecar and stop it on exit.
+//!   2. In a packaged build, launch the bundled ARAPI sidecar and stop it on exit.
 //!
 //! Both ARAPI Tester and AR Conversational share the same SQLite database.
 //! We use data_dir()/ARWebShared/arweb.db so both apps resolve to the same path
@@ -43,7 +43,7 @@ pub fn run() {
                 Err(_) => String::new(),
             };
 
-            match app.shell().sidecar("ar-conversational-sidecar") {
+            match app.shell().sidecar("arweb-sidecar") {
                 Ok(cmd) => {
                     let cmd = if db_path.is_empty() {
                         cmd
@@ -55,11 +55,11 @@ pub fn run() {
                             let state = app.state::<SidecarState>();
                             *state.0.lock().unwrap() = Some(child);
                         }
-                        Err(e) => eprintln!("[ar-conversational] failed to spawn sidecar: {e}"),
+                        Err(e) => eprintln!("[ar-conversational] failed to spawn ARAPI sidecar: {e}"),
                     }
                 }
                 Err(e) => eprintln!("[ar-conversational] sidecar binary not found ({e}); \
-                    expecting an externally-running sidecar"),
+                    expecting an externally-running ARAPI backend"),
             }
             Ok(())
         })

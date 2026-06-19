@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite';
+import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 import { fileURLToPath, URL } from 'node:url';
 
@@ -9,6 +9,10 @@ const sidecarPort = process.env.SIDECAR_PORT ?? '8787';
 export default defineConfig({
   plugins: [react()],
   clearScreen: false,
+  test: {
+    exclude: ['**/node_modules/**', '**/dist/**', '**/dist-ar/**', '**/e2e/**'],
+    passWithNoTests: true,
+  },
   resolve: {
     alias: {
       // Mirror the `@/*` path alias from tsconfig so Rollup resolves it too.

@@ -10,7 +10,7 @@
       "identifier": "shell:allow-execute",
       "allow": [
         {
-          "name": "binaries/ar-conversational-sidecar",
+          "name": "binaries/arweb-sidecar",
           "sidecar": true
         }
       ]

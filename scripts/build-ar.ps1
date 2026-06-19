@@ -1,5 +1,5 @@
 # Full production build for AR Conversational.
-# Produces: src-ar\binaries\ar-conversational-sidecar-*.exe
+# Produces: src-ar\binaries\arweb-sidecar-*.exe
 #           src-ar\target\release\bundle\nsis\*.exe  (NSIS installer)
 #           src-ar\target\release\bundle\msi\*.msi   (MSI installer)
 #
@@ -20,7 +20,7 @@ Write-Host "============================================" -ForegroundColor Magen
 Write-Host ""
 
 # ── Step 1: build the Node.js sidecar ─────────────────────────────────────────
-Write-Host "[1/2] Building Node.js sidecar (server-ar)..." -ForegroundColor Yellow
+Write-Host "[1/2] Building Node.js sidecar (server-arapi)..." -ForegroundColor Yellow
 & "$PSScriptRoot\build-sidecar-ar.ps1" -TargetTriple $TargetTriple
 # build-sidecar-ar.ps1 throws on any failure
 
@@ -45,7 +45,7 @@ Write-Host "============================================" -ForegroundColor Green
 Write-Host "  AR Conversational build complete!"         -ForegroundColor Green
 Write-Host "============================================" -ForegroundColor Green
 Write-Host ""
-Write-Host "  Sidecar : src-ar\binaries\ar-conversational-sidecar-$TargetTriple.exe"
+Write-Host "  Sidecar : src-ar\binaries\arweb-sidecar-$TargetTriple.exe"
 Write-Host "  NSIS    : $bundleDir\nsis\"
 Write-Host "  MSI     : $bundleDir\msi\"
 Write-Host ""

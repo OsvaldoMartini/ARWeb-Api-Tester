@@ -22,7 +22,7 @@
     "build:ar": "npm run build:packages && tsc -p tsconfig.ar-web.json --noEmit && npx vite build --config vite.config-ar.ts",
     "build:server": "npm run build:packages && npm run build --workspace @arweb/server-arapi",
     "build:server-ar": "npm run build:packages && npm run build --workspace @arweb/server-ar",
-    "build:server-csharp": "pwsh scripts/build-arapi-csharp.ps1",
+    "build:server-csharp": "powershell -ExecutionPolicy Bypass -File scripts/build-arapi-csharp.ps1",
     "sidecar:build": "powershell -ExecutionPolicy Bypass -File scripts/build-sidecar.ps1",
     "sidecar:build:ar": "powershell -ExecutionPolicy Bypass -File scripts/build-sidecar-ar.ps1",
     "sidecar:build:all": "powershell -ExecutionPolicy Bypass -File scripts/build-sidecars.ps1",

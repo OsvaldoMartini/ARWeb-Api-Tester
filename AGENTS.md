@@ -8,9 +8,9 @@ careful around the Tauri shells and sidecar executable packaging.
 
 ## Project Map
 
-| App | Purpose | React UI | Node sidecar | Tauri shell | Dev ports |
+| App | Purpose | React UI | Backend | Tauri shell | Dev ports |
 | --- | --- | --- | --- | --- | --- |
-| ARAPI | No-code REST API testing for banking staff | `src/` | `server-arapi/` | `src-arapi/` | UI `5173`, API `8787` |
+| ARAPI | No-code REST API testing for banking staff | `src/` | `server-arapi-csharp/` | `src-arapi/` | UI `5173`, API `8787` |
 | AR Conversational | AI banking assistant for employee/client modes | `src-ar-web/` | ARAPI backend (`server-arapi/`) | `src-ar/` | UI `5174`, API `8787` |
 
 Both apps use the same SQLite database:
@@ -18,8 +18,8 @@ Both apps use the same SQLite database:
 - Packaged apps: `%APPDATA%\ARWebShared\arweb.db`
 - Dev fallback: `data/app.db`
 
-Target runtime is Windows desktop via Tauri v2, NSIS/MSI installers, and Node
-sidecar executables. Do not introduce C# or .NET.
+Target runtime is Windows desktop via Tauri v2, NSIS/MSI installers, and sidecar
+executables. ARAPI now uses C# for the backend path.
 
 ## Directory Roles
 
@@ -50,7 +50,7 @@ dist-ar/                     AR Conversational Vite build output
 The dependency direction is:
 
 ```text
-React UI -> localhost Node sidecar -> application ports/use cases
+React UI -> localhost backend -> application ports/use cases
                                 -> infrastructure adapters
                                 -> domain entities
 ```
@@ -59,7 +59,7 @@ Rules:
 
 - Rust has no business logic. `src-arapi/` and `src-ar/` only create the window,
   load the frontend, spawn the production sidecar, pass `DB_PATH`, and kill the
-  sidecar on exit.
+  sidecar on exit. ARAPI uses the C# backend executable.
 - Domain and application layers must not import infrastructure.
 - Application ports live in `packages/application/src/interfaces/ports.ts`.
   Add or adjust a port there before adding an infrastructure implementation.
@@ -73,10 +73,10 @@ Rules:
 
 Each desktop app is a Tauri shell plus a packaged Node sidecar:
 
-- ARAPI sidecar source: `server-arapi/src/index.ts`
-- ARAPI sidecar exe: `src-arapi/binaries/arweb-sidecar-x86_64-pc-windows-msvc.exe`
-- ARAPI Tauri external bin name: `binaries/arweb-sidecar`
-- AR Conversational backend source: `server-arapi/src/index.ts` (shared ARAPI backend)
+- ARAPI sidecar source: `server-arapi-csharp/Program.cs`
+- ARAPI sidecar exe: `src-arapi/binaries/arapi-backend-x86_64-pc-windows-msvc.exe`
+- ARAPI Tauri external bin name: `binaries/arapi-backend`
+- AR Conversational backend source: `server-arapi/src/index.ts` (shared legacy ARAPI backend)
 - AR Conversational bundled sidecar exe: `src-ar/binaries/arweb-sidecar-x86_64-pc-windows-msvc.exe`
 - AR Conversational Tauri external bin name: `binaries/arweb-sidecar`
 
@@ -88,7 +88,7 @@ Important Tauri rules:
 - Prefer the wrapper scripts from the repo root:
   - `pwsh scripts\build-arapi.ps1`
   - `pwsh scripts\build-ar.ps1`
-- `src-arapi/tauri.conf.json` uses `beforeBuildCommand: "npm run build"` and
+- `src-arapi/tauri.conf.json` uses `beforeBuildCommand: "npm run build && npm run build:server-csharp"` and
   `frontendDist: "../dist"`.
 - `src-ar/tauri.conf.json` uses `beforeBuildCommand: "npm run build:ar"` and
   `frontendDist: "../dist-ar"`.
@@ -133,7 +133,7 @@ pwsh scripts\build-sidecar-ar.ps1
 pwsh scripts\build-sidecars.ps1
 npm run sidecar:build:all
 
-# Build the C# backend experiment
+# Build the C# backend
 npm run build:server-csharp
 
 # Full Windows installers
@@ -153,7 +153,7 @@ npm rebuild better-sqlite3
 - `DB_PATH` controls the SQLite path. Packaged Tauri apps pass a shared
   `%APPDATA%\ARWebShared\arweb.db` path to their sidecar.
 - `SIDECAR_PORT` defaults:
-  - `server-arapi`: `8787`
+  - `server-arapi-csharp`: `8787`
   - AR Conversational uses `server-arapi` on `8787`
 - Server bootstrap files:
   - `server-arapi/src/bootstrap/container.ts`
@@ -164,7 +164,7 @@ npm rebuild better-sqlite3
 
 ## Sidecar API Surface
 
-ARAPI, `server-arapi`, port `8787`:
+ARAPI, `server-arapi-csharp`, port `8787`:
 
 | Method | Route | Purpose |
 | --- | --- | --- |
@@ -193,7 +193,8 @@ ARAPI, `server-arapi`, port `8787`:
 | GET/POST | `/mock...` | Mock server status/control/log |
 | GET | `/separation/progress` | `docs/progress.json` |
 
-AR Conversational uses the ARAPI `server-arapi` routes above on port `8787`.
+AR Conversational uses the ARAPI backend routes above on port `8787` through
+the shared `server-arapi` Node backend during the migration.
 
 ## Coding Conventions
 

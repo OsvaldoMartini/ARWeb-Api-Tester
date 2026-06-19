@@ -1,14 +1,13 @@
 //! Minimal Tauri shell for ARWEB API Tester.
 //!
-//! Design rule (from the roadmap): **Rust holds no business logic.** All testing,
-//! catalog, agent and mock-server logic lives in the TypeScript Node sidecar.
+//! Design rule (from the roadmap): **Rust holds no business logic.** All ARAPI
+//! backend logic lives in the C# sidecar.
 //! This file does exactly two things:
 //!   1. Create the application window (the React frontend).
-//!   2. In a packaged build, launch the bundled Node sidecar and stop it on exit.
+//!   2. In a packaged build, launch the bundled C# sidecar and stop it on exit.
 //!
-//! In development the sidecar is started by `npm run dev` (concurrently with
-//! Vite), so the spawn here is intentionally best-effort: if the sidecar binary
-//! isn't bundled (dev), we log and carry on rather than failing to open.
+//! In development the sidecar may not be bundled, so the spawn is best-effort:
+//! if the binary isn't present we log and carry on rather than failing to open.
 
 #[cfg(not(debug_assertions))]
 use tauri::Manager;
@@ -46,7 +45,7 @@ pub fn run() {
                 Err(_) => String::new(),
             };
 
-            match app.shell().sidecar("arweb-sidecar") {
+            match app.shell().sidecar("arapi-backend") {
                 Ok(cmd) => {
                     let cmd = if db_path.is_empty() {
                         cmd
@@ -58,10 +57,10 @@ pub fn run() {
                             let state = app.state::<SidecarState>();
                             *state.0.lock().unwrap() = Some(child);
                         }
-                        Err(e) => eprintln!("[arweb] failed to spawn sidecar: {e}"),
+                        Err(e) => eprintln!("[arapi] failed to spawn sidecar: {e}"),
                     }
                 }
-                Err(e) => eprintln!("[arweb] sidecar binary not found ({e}); \
+                Err(e) => eprintln!("[arapi] sidecar binary not found ({e}); \
                     expecting an externally-running sidecar"),
             }
             Ok(())

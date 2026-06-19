@@ -1,9 +1,11 @@
-# Build the C# ARAPI backend as a self-contained Windows executable.
+# Build the C# ARAPI backend as a Windows executable for the ARAPI shell.
 #
 # Usage: pwsh scripts/build-arapi-csharp.ps1
 # Optional: pwsh scripts/build-arapi-csharp.ps1 -Runtime win-x64
+# Optional: pwsh scripts/build-arapi-csharp.ps1 -TargetTriple x86_64-pc-windows-msvc
 
 param(
+  [string]$TargetTriple = "x86_64-pc-windows-msvc",
   [string]$Runtime = "win-x64",
   [string]$Configuration = "Release"
 )
@@ -11,7 +13,8 @@ param(
 $ErrorActionPreference = "Stop"
 $root = Split-Path $PSScriptRoot -Parent
 $project = Join-Path $root "server-arapi-csharp\server-arapi-csharp.csproj"
-$output = Join-Path $root "src-arapi\binaries\arapi-backend.exe"
+$binDir = Join-Path $root "src-arapi\binaries"
+$output = Join-Path $binDir "arapi-backend-$TargetTriple.exe"
 
 Write-Host ""
 Write-Host "============================================" -ForegroundColor Cyan
@@ -24,9 +27,16 @@ dotnet publish $project `
   -r $Runtime `
   --self-contained false `
   -p:PublishTrimmed=false `
-  -o (Split-Path $output)
+  -o $binDir
 
 if ($LASTEXITCODE -ne 0) { throw "dotnet publish failed" }
+
+$sourceExe = Join-Path $binDir "arapi-backend.exe"
+if (Test-Path $sourceExe) {
+  Copy-Item -LiteralPath $sourceExe -Destination $output -Force
+} else {
+  throw "Published backend executable not found: $sourceExe"
+}
 
 Write-Host ""
 Write-Host "DONE: $output" -ForegroundColor Green

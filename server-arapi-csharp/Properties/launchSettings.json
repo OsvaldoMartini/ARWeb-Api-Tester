@@ -1,0 +1,13 @@
+{
+  "profiles": {
+    "server-arapi-csharp": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "SIDECAR_PORT": "8787"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "http://127.0.0.1:8787"
+    }
+  }
+}

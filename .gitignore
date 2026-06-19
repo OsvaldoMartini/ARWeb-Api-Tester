@@ -16,6 +16,8 @@ src-arapi/binaries/
 src-ar/target/
 src-ar/gen/
 src-ar/binaries/
+server-arapi-csharp/bin/
+server-arapi-csharp/obj/
 
 # data (runtime, do not commit local DB)
 data/app.db

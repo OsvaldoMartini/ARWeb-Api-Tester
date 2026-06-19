@@ -28,7 +28,16 @@ const _dir =
     ? __dirname
     : dirname(fileURLToPath(import.meta.url));
 const _repoRoot = join(_dir, '..', '..', '..'); // server/src/bootstrap -> repo root
-const DB_DEFAULT = join(_repoRoot, 'data', 'app.db');
+
+function resolveDefaultDbPath(): string {
+  if (typeof process !== 'undefined' && (process as { pkg?: unknown }).pkg) {
+    const appData = process.env['APPDATA'] ?? process.env['LOCALAPPDATA'];
+    if (appData) {
+      return join(appData, 'ARWebShared', 'arweb.db');
+    }
+  }
+  return join(_repoRoot, 'data', 'app.db');
+}
 
 /**
  * Composition root. All wiring lives here so feature code stays free of
@@ -61,7 +70,7 @@ export function buildContainer(): Container {
   const sidecarPort = Number(process.env['SIDECAR_PORT'] ?? 8787);
   const mockPort    = Number(process.env['MOCK_SERVER_PORT'] ?? 8855);
   const realBaseUrl = process.env['REAL_API_BASE_URL'] ?? 'http://localhost:9000';
-  const dbPath      = process.env['DB_PATH'] ?? DB_DEFAULT;
+  const dbPath      = process.env['DB_PATH'] ?? resolveDefaultDbPath();
 
   // ── SQLite database (single shared connection, WAL mode) ──────────────────
   const db = openDatabase(dbPath);

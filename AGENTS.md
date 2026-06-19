@@ -27,6 +27,7 @@ sidecar executables. Do not introduce C# or .NET.
 src/                         ARAPI React frontend
 src-ar-web/                  AR Conversational React frontend
 server-arapi/                ARAPI localhost HTTP sidecar
+server-arapi-csharp/         Experimental C# ARAPI backend path
 server-ar/                   Legacy AR Conversational sidecar code; do not use for new AR client flows
 src-arapi/                   ARAPI Tauri v2 shell
 src-ar/                      AR Conversational Tauri v2 shell
@@ -131,6 +132,9 @@ pwsh scripts\build-sidecar.ps1
 pwsh scripts\build-sidecar-ar.ps1
 pwsh scripts\build-sidecars.ps1
 npm run sidecar:build:all
+
+# Build the C# backend experiment
+npm run build:server-csharp
 
 # Full Windows installers
 pwsh scripts\build-arapi.ps1

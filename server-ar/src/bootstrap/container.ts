@@ -17,7 +17,16 @@ const _dir =
     ? __dirname
     : dirname(fileURLToPath(import.meta.url));
 const _repoRoot = join(_dir, '..', '..', '..'); // server-ar/src/bootstrap -> repo root
-const DB_DEFAULT = join(_repoRoot, 'data', 'app.db');
+
+function resolveDefaultDbPath(): string {
+  if (typeof process !== 'undefined' && (process as { pkg?: unknown }).pkg) {
+    const appData = process.env['APPDATA'] ?? process.env['LOCALAPPDATA'];
+    if (appData) {
+      return join(appData, 'ARWebShared', 'arweb.db');
+    }
+  }
+  return join(_repoRoot, 'data', 'app.db');
+}
 
 export interface Container {
   logger: Logger;
@@ -33,7 +42,7 @@ export function buildContainer(): Container {
   const logger = new ConsoleLogger({ app: 'ar-sidecar' }, 'info');
 
   const sidecarPort = Number(process.env['SIDECAR_PORT'] ?? 8788);
-  const dbPath      = process.env['DB_PATH'] ?? DB_DEFAULT;
+  const dbPath      = process.env['DB_PATH'] ?? resolveDefaultDbPath();
 
   const db = openDatabase(dbPath);
   logger.info('SQLite database ready', { path: dbPath });

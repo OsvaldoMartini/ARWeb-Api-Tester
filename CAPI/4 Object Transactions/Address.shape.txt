@@ -1,0 +1,1095 @@
+{
+  _ident
+  addList {
+    bu {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    objAdd {
+      _href
+      id
+      ident
+      intlId
+    }
+    valList {
+      dateVal
+      idVal
+      nrVal
+      textVal
+      tswtzVal
+    }
+  }
+  addrKind {
+    _href
+    id
+    ident
+    intlId
+  }
+  addrMedium {
+    _href
+    id
+    ident
+    intlId
+  }
+  addrRole {
+    _href
+    id
+    ident
+    intlId
+  }
+  addrType {
+    _href
+    id
+    ident
+    intlId
+  }
+  agingId
+  attnOf
+  bdeRecVersion
+  bldgName
+  blockNr
+  bu {
+    _href
+    _ident
+    id
+    keyList {
+      objKey {
+        _href
+        id
+        ident
+        intlId
+      }
+      val
+    }
+  }
+  city
+  cityLocName
+  classifList {
+    bu {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    class {
+      _href
+      id
+      ident
+      intlId
+    }
+    classA
+    classFactor
+    cltSgmtCalc {
+      _href
+      id
+      ident
+      intlId
+    }
+    endDate
+    indivFeep {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    isInht
+    objClassif {
+      _href
+      id
+      ident
+      intlId
+    }
+    remark
+    spcdCostp {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    spcdCurry {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    spcdMaxVal
+    spcdMinVal
+    spcdMinmaxValType {
+      _href
+      id
+      ident
+      intlId
+    }
+    spcdOffsetVal
+    spcdOffsetValType {
+      _href
+      id
+      ident
+      intlId
+    }
+    spcdReason {
+      _href
+      id
+      ident
+      intlId
+    }
+    spcdVal
+    spcdValType {
+      _href
+      id
+      ident
+      intlId
+    }
+    startDate
+    userRef {
+      _href
+      id
+    }
+  }
+  closeDate
+  contactBp {
+    _href
+    _ident
+    id
+    keyList {
+      objKey {
+        _href
+        id
+        ident
+        intlId
+      }
+      val
+    }
+  }
+  contactPerson {
+    _href
+    _ident
+    id
+    keyList {
+      objKey {
+        _href
+        id
+        ident
+        intlId
+      }
+      val
+    }
+  }
+  country {
+    _href
+    _ident
+    id
+    keyList {
+      objKey {
+        _href
+        id
+        ident
+        intlId
+      }
+      val
+    }
+  }
+  countryClngCode {
+    _href
+    id
+    ident
+    intlId
+  }
+  countryState {
+    _href
+    id
+    ident
+    intlId
+  }
+  countryStateA
+  crof
+  dept
+  district
+  elAddr
+  extn {
+    addrFax {
+      refObj {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      val
+    }
+    addrNr {
+      refObj {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      val
+    }
+    addrSwift {
+      refObj {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      val
+    }
+    addrSym {
+      refObj {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      val
+    }
+    addrTlx {
+      refObj {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      val
+    }
+    mba$addrCif {
+      refObj {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      val
+    }
+    mba$addrLgcy {
+      refObj {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      val
+    }
+    mba$addrUniq {
+      refObj {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      val
+    }
+    mba$cltOnbDet {
+      cltOnbDocId
+    }
+    mba$extn {
+      sndLastName
+      sndLastNameA
+      suffix
+      suffixA
+    }
+    mba$intl {
+      cityA
+      countryA
+      firmA
+      langA
+      refAddrA
+      refTypeA
+      salutA
+      salutLetterA
+      zipA
+    }
+    mba$isValid {
+      bu {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      class {
+        _href
+        id
+        ident
+        intlId
+      }
+      classA
+      classFactor
+      cltSgmtCalc {
+        _href
+        id
+        ident
+        intlId
+      }
+      endDate
+      histStatus {
+        _href
+        id
+        ident
+        intlId
+      }
+      indivFeep {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      isInht
+      objClassif {
+        _href
+        id
+        ident
+        intlId
+      }
+      remark
+      secUser {
+        _href
+        id
+      }
+      spcdCostp {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      spcdCurry {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      spcdMaxVal
+      spcdMinVal
+      spcdMinmaxValType {
+        _href
+        id
+        ident
+        intlId
+      }
+      spcdOffsetVal
+      spcdOffsetValType {
+        _href
+        id
+        ident
+        intlId
+      }
+      spcdReason {
+        _href
+        id
+        ident
+        intlId
+      }
+      spcdVal
+      spcdValType {
+        _href
+        id
+        ident
+        intlId
+      }
+      startDate
+      timestamp
+    }
+    sdsAddrSync {
+      refObj {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      val
+    }
+  }
+  firm
+  firmA
+  firstName
+  firstNameA
+  floorNr
+  floorType {
+    _href
+    id
+    ident
+    intlId
+  }
+  fullAddr
+  fullAddrA
+  govStat {
+    _href
+    id
+    ident
+    intlId
+  }
+  id
+  isStdAddr
+  isVfy
+  keyList {
+    obj1 {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    obj2 {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    obj3 {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    obj4 {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    objKey {
+      _href
+      id
+      ident
+      intlId
+    }
+    prio
+    refObj {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    ruleTempl {
+      _href
+      id
+      ident
+      intlId
+    }
+    seqNr
+    trigMetaTyp {
+      _href
+      id
+      ident
+      intlId
+    }
+    trigOrderType {
+      _href
+      id
+      ident
+      intlId
+    }
+    val
+    valA
+  }
+  lang {
+    _href
+    id
+    ident
+    intlId
+  }
+  langIdA
+  locality
+  middleName
+  middleNameA
+  mxHybridAddr
+  name
+  nameA
+  nameAdd
+  netwType {
+    _href
+    id
+    ident
+    intlId
+  }
+  nobTitle {
+    _href
+    id
+    ident
+    intlId
+  }
+  obj {
+    _href
+    _ident
+    id
+    keyList {
+      objKey {
+        _href
+        id
+        ident
+        intlId
+      }
+      val
+    }
+  }
+  objPrcInfo {
+    addList {
+      docAdd {
+        _href
+        id
+        ident
+        intlId
+      }
+      valList {
+        dateVal
+        idVal
+        nrVal
+        textVal
+        tswtzVal
+      }
+    }
+    extn {
+      afsDocId
+      afsExtlRefNr
+      api1RefNr
+      api2RefNr
+      clmId
+      dxsCtxId
+      dxsEntityExtlRef
+      mba$authEdtRvwCompLvList {
+      }
+      mba$authorEdtRvwJtgList {
+      }
+      mba$blockAprvUserList {
+        _href
+        id
+      }
+      mba$blockJtgList
+      mba$blockRemnJtgList {
+        _href
+        id
+        ident
+        intlId
+      }
+      mba$ccPastAuthorUserList {
+        _href
+        id
+      }
+      mba$credChkAuthCompLvList {
+      }
+      mba$credChkAuthorJtgList {
+        _href
+        id
+        ident
+        intlId
+      }
+      mba$credChkCmt {
+      }
+      mba$credChkRestr {
+      }
+      mba$docErrType {
+        _href
+        id
+        ident
+        intlId
+      }
+      mba$edtRvwJtgList {
+      }
+      mba$edtRvwUserList {
+        _href
+        id
+      }
+      mba$iAuthEdtRvwCompLvLst {
+      }
+      mba$iCredChkAuthCompLvLt {
+      }
+      mba$instrDet
+      mba$isDfltValSet
+      mba$lswfInsJtg {
+        _href
+        id
+        ident
+        intlId
+      }
+      mba$lswfJtg {
+        _href
+        id
+        ident
+        intlId
+      }
+      mba$lswfLastSwfIntfWfaId
+      mba$lswfLastSwfWfaId
+      mba$lswfLastSwfWfsId
+      mba$lswfNextJtg {
+        _href
+        id
+        ident
+        intlId
+      }
+      mba$lswfNextJtgInfo
+      mba$lswfNextRa {
+        _href
+        id
+        ident
+        intlId
+      }
+      mba$lswfNextSwf {
+        _href
+        id
+        ident
+        intlId
+      }
+      mba$lswfPrevSwf {
+        _href
+        id
+        ident
+        intlId
+      }
+      mba$lswfRa {
+        _href
+        id
+        ident
+        intlId
+      }
+      mba$lswfSwf {
+        _href
+        id
+        ident
+        intlId
+      }
+      mba$lswfUc {
+        _href
+        id
+        ident
+        intlId
+      }
+      mba$mediumA
+      mba$mediumPhoneNr
+      mba$pastAuthorUserList {
+        _href
+        id
+      }
+      mba$srcFund {
+        _href
+        id
+        ident
+        intlId
+      }
+      pkpSvcRsvIdent
+    }
+    isFinal
+    keyList {
+      docKey {
+        _href
+        id
+        ident
+        intlId
+      }
+      val
+    }
+    lastTrans
+    metaTyp {
+      _href
+      id
+      ident
+      intlId
+    }
+    overrideList {
+      override {
+        _href
+        id
+        ident
+        intlId
+      }
+      overrideComment {
+        _href
+        id
+        ident
+        intlId
+      }
+      overrideText
+      secUser {
+        _href
+        id
+      }
+      signt
+      timestamp
+    }
+    wfcAction {
+      _href
+      id
+      ident
+      intlId
+    }
+    wfcStatus {
+      _href
+      id
+      ident
+      intlId
+    }
+  }
+  ownerBp {
+    _href
+    _ident
+    id
+    keyList {
+      objKey {
+        _href
+        id
+        ident
+        intlId
+      }
+      val
+    }
+  }
+  ownerCard {
+    _href
+    _ident
+    id
+    keyList {
+      objKey {
+        _href
+        id
+        ident
+        intlId
+      }
+      val
+    }
+  }
+  ownerObj {
+    _href
+    _ident
+    id
+    keyList {
+      objKey {
+        _href
+        id
+        ident
+        intlId
+      }
+      val
+    }
+  }
+  ownerPerson {
+    _href
+    _ident
+    id
+    keyList {
+      objKey {
+        _href
+        id
+        ident
+        intlId
+      }
+      val
+    }
+  }
+  phoneAreaCode
+  phoneExtn
+  phoneLoclNr
+  poBox
+  poBoxType {
+    _href
+    id
+    ident
+    intlId
+  }
+  rcvRestr {
+    _href
+    id
+    ident
+    intlId
+  }
+  refAddr {
+    _href
+    _ident
+    id
+    keyList {
+      objKey {
+        _href
+        id
+        ident
+        intlId
+      }
+      val
+    }
+  }
+  refType {
+    _href
+    id
+    ident
+    intlId
+  }
+  relList {
+    f1
+    obj1 {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    obj2 {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    objRelSubType {
+      _href
+      id
+      ident
+      intlId
+    }
+    objRelType {
+      _href
+      id
+      ident
+      intlId
+    }
+    prio
+    shareRate
+    subTrl
+    trl
+  }
+  remark
+  residency
+  salut {
+    _href
+    id
+    ident
+    intlId
+  }
+  salutAlt
+  salutLetter {
+    _href
+    id
+    ident
+    intlId
+  }
+  salutLetterA
+  salutLetterAlt
+  sdsInstn {
+    _href
+    id
+    ident
+    intlId
+  }
+  state
+  street
+  streetAdd
+  streetNr
+  streetType {
+    _href
+    id
+    ident
+    intlId
+  }
+  subDept
+  title {
+    _href
+    id
+    ident
+    intlId
+  }
+  titleAlt
+  titleAltA
+  titleIdA
+  unitNr
+  unitType {
+    _href
+    id
+    ident
+    intlId
+  }
+  zip
+}

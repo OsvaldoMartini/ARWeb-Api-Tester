@@ -1,0 +1,89 @@
+{
+  "$id": "https://avaloq.com/mba$code_limit_type_grp.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/mba$code_limit_type_grp",
+  "definitions": {
+    "code_tab_ref": {
+      "type": "object",
+      "properties": {
+        "_href": {
+          "description" : "Reference/link",
+          "type": "string"
+        },
+        "id": {
+          "description" : "Numeric reference",
+          "type": "integer"
+        },
+        "ident": {
+          "description" : "Unique symbolic reference",
+          "type": "string"
+        },
+        "intlId": {
+          "description" : "Symbolic reference",
+          "type": "string"
+        }
+      }
+    },
+    "mba$code_limit_type_grps": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/mba$code_limit_type_grp"
+      },
+      "uniqueItems": true
+    },
+    "mba$code_limit_type_grp": {
+      "type": "object",
+      "properties": {
+        "activ": {
+          "type": "boolean"
+        },
+        "envCompo": {
+          "description" : "Referencing: `/code-env-compos/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "id": {
+          "type": "integer"
+        },
+        "ident": {
+          "type": "string"
+        },
+        "intlId": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "nameI18nList": {
+          "type": "array",
+          "items": {
+            "description" : "Full translation list for name field. Only visible within compound APIs ",
+            "allOf": [
+              { "$ref": "#/definitions/name_i18n"
+               }
+              ]
+          }
+        },
+        "userId": {
+          "type": "string"
+        }
+      }
+    },
+    "name_i18n": {
+      "type": "object",
+      "properties": {
+        "lang": {
+          "description" : "LanguageReferencing: `/code-langs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref"
+             }
+            ]
+        },
+        "text": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

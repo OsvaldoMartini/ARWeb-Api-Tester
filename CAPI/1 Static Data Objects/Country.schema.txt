@@ -1,0 +1,1534 @@
+{
+  "$id": "https://avaloq.com/obj_country.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/obj_country",
+  "definitions": {
+    "code_tab_ref": {
+      "type": "object",
+      "properties": {
+        "_href": {
+          "description" : "Reference/link",
+          "type": "string"
+        },
+        "id": {
+          "description" : "Numeric reference",
+          "type": "integer"
+        },
+        "ident": {
+          "description" : "Unique symbolic reference",
+          "type": "string"
+        },
+        "intlId": {
+          "description" : "Symbolic reference",
+          "type": "string"
+        }
+      }
+    },
+    "code_tab_ref_action": {
+      "type": "object",
+      "properties": {
+        "action": {
+          "description" : "enum reference to action",
+          "type": "string"
+        },
+        "id": {
+          "description" : "Numeric reference",
+          "type": "integer"
+        },
+        "ident": {
+          "description" : "Unique symbolic reference",
+          "type": "string"
+        }
+      }
+    },
+    "doc_ref": {
+      "type": "object",
+      "properties": {
+        "_href": {
+          "description" : "Reference/link",
+          "type": "string"
+        },
+        "_ident": {
+          "description" : "Only used for workItem use cases, cross-reference in workItem context.",
+          "type": "string"
+        },
+        "id": {
+          "description" : "Numeric reference",
+          "type": "integer"
+        }
+      }
+    },
+    "mba$addr_ctrl": {
+      "type": "object",
+      "properties": {
+        "fldList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/mba$addr_ctrl_mba$addr_fld"
+          }
+        },
+        "fmtList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/mba$addr_ctrl_mba$addr_fmt"
+          }
+        }
+      }
+    },
+    "mba$addr_ctrl_mba$addr_fld": {
+      "type": "object",
+      "properties": {
+        "addrFldId": {
+          "type": "integer"
+        },
+        "cond": {
+          "type": "string"
+        },
+        "isMand": {
+          "type": "boolean"
+        },
+        "lbl": {
+          "type": "string"
+        },
+        "mandCondExpr": {
+          "description" : "Referencing: `/mba$code-script-exprs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "validRegexp": {
+          "type": "string"
+        }
+      }
+    },
+    "mba$addr_ctrl_mba$addr_fmt": {
+      "type": "object",
+      "properties": {
+        "addrFmtRef": {
+          "description" : "Referencing: `/mba$code-addr-fmt-refs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "fmt": {
+          "type": "string"
+        },
+        "postalAddrDlvType": {
+          "description" : "Referencing: `/mba$code-postal-addr-dlv-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        }
+      }
+    },
+    "mba$admin_divn": {
+      "type": "object",
+      "properties": {
+        "adminDivnList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/mba$admin_divn_mba$admin_divn_lvl"
+          }
+        }
+      }
+    },
+    "mba$admin_divn_mba$admin_divn_lvl": {
+      "type": "object",
+      "properties": {
+        "adminDivn": {
+          "description" : "Referencing: `/mba$code-admin-divns/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "adminDivnLvl": {
+          "type": "number"
+        },
+        "isPostalCodeUplRelv": {
+          "type": "boolean"
+        }
+      }
+    },
+    "mba$det": {
+      "type": "object",
+      "properties": {
+        "bbanFmt": {
+          "description" : "Referencing: `/mba$code-bban-fmts/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "isOmsLangRegion": {
+          "type": "boolean"
+        },
+        "majorityAge": {
+          "type": "number"
+        },
+        "parent": {
+          "description" : "Referencing: `/obj-countrys/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "vatNrLen": {
+          "type": "number"
+        }
+      }
+    },
+    "mba$ftr_risk": {
+      "type": "object",
+      "properties": {
+        "ftrRisk": {
+          "description" : "Referencing: `/mba$code-ftr-risks/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        }
+      }
+    },
+    "mba$pay_chan_ctrl": {
+      "type": "object",
+      "properties": {
+        "payChanList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/mba$pay_chan_ctrl_mba$pay_chan"
+          }
+        }
+      }
+    },
+    "mba$pay_chan_ctrl_mba$pay_chan": {
+      "type": "object",
+      "properties": {
+        "curry": {
+          "description" : "Referencing: `/obj-assets/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "fldList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/mba$pay_chan_ctrl_pay_chan_list_mba$pay_fld"
+          }
+        },
+        "ot": {
+          "description" : "Referencing: `/code-order-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "payChan": {
+          "description" : "Referencing: `/code-pay-chans/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        }
+      }
+    },
+    "mba$pay_chan_ctrl_pay_chan_list_mba$pay_fld": {
+      "type": "object",
+      "properties": {
+        "isMand": {
+          "type": "boolean"
+        },
+        "payFldId": {
+          "type": "integer"
+        }
+      }
+    },
+    "mba$qi": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        }
+      }
+    },
+    "mba$tech": {
+      "type": "object",
+      "properties": {
+        "config": {
+          "type": "string"
+        },
+        "dataOrigin": {
+          "description" : "Referencing: `/mba$code-data-origins/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        }
+      }
+    },
+    "mba$week": {
+      "type": "object",
+      "properties": {
+        "weekdayList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/mba$week_mba$weekday"
+          }
+        }
+      }
+    },
+    "mba$week_mba$weekday": {
+      "type": "object",
+      "properties": {
+        "weekday": {
+          "description" : "Referencing: `/code-weekdays/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        }
+      }
+    },
+    "mba$zip": {
+      "type": "object",
+      "properties": {
+        "zipDet": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/mba$zip_mba$zip_det"
+          }
+        }
+      }
+    },
+    "mba$zip_mba$zip_det": {
+      "type": "object",
+      "properties": {
+        "city": {
+          "type": "string"
+        },
+        "isJurisdiction": {
+          "type": "string"
+        },
+        "jurisdictionId": {
+          "type": "number"
+        },
+        "state": {
+          "description" : "Referencing: `/code-country-states/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "zip": {
+          "type": "string"
+        },
+        "zipSelPrio": {
+          "type": "number"
+        }
+      }
+    },
+    "obj_add": {
+      "type": "object",
+      "properties": {
+        "boolVal": {
+          "description" : "Value",
+          "type": "boolean"
+        },
+        "bu": {
+          "description" : "Business UnitReferencing: `/obj-bps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "dateVal": {
+          "description" : "Value",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "idVal": {
+          "description" : "Value",
+          "type": "integer"
+        },
+        "nrVal": {
+          "description" : "Value",
+          "type": "number"
+        },
+        "objAdd": {
+          "description" : "Referencing: `/code-obj-adds/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "textVal": {
+          "description" : "Value",
+          "type": "string"
+        },
+        "tswtzVal": {
+          "description" : "Value",
+          "type": "string"
+          ,
+            "format": "date-time"
+        },
+        "valList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/obj_add_val"
+          }
+        }
+      }
+    },
+    "obj_add_val": {
+      "type": "object",
+      "properties": {
+        "dateVal": {
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "idVal": {
+          "type": "integer"
+        },
+        "nrVal": {
+          "type": "number"
+        },
+        "seqNr": {
+          "type": "integer"
+        },
+        "textVal": {
+          "type": "string"
+        },
+        "tswtzVal": {
+          "type": "string"
+          ,
+            "format": "date-time"
+        }
+      }
+    },
+    "obj_classif": {
+      "type": "object",
+      "properties": {
+        "bu": {
+          "description" : "Business UnitReferencing: `/obj-bps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "class": {
+          "description" : "ClassReferencing: `/code-obj-classs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "classA": {
+          "description" : "Automatic",
+          "type": "boolean"
+        },
+        "classFactor": {
+          "description" : "Factor",
+          "type": "number"
+        },
+        "cltSgmtCalc": {
+          "description" : "Calculated Client SegmentReferencing: `/code-person-mktng-sgmts/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "endDate": {
+          "description" : "Valid until",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "histStatus": {
+          "description" : "Hist StatusReferencing: `/code-hist-statuss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "indivFeep": {
+          "description" : "Indiv. Fee ProfileReferencing: `/obj-feeps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "isInht": {
+          "description" : "Is Inherited",
+          "type": "boolean"
+        },
+        "objClassif": {
+          "description" : "Referencing: `/code-obj-classifs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "remark": {
+          "description" : "Remark",
+          "type": "string"
+        },
+        "secUser": {
+          "description" : "UserReferencing: `/users/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/user_ref" }
+          ]
+        },
+        "spcdCostp": {
+          "description" : "SPCD Cost ProfileReferencing: `/obj-costps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "spcdCurry": {
+          "description" : "SPCD CurrencyReferencing: `/obj-assets/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "spcdMaxVal": {
+          "description" : "SPCD Maximum",
+          "type": "number"
+        },
+        "spcdMinVal": {
+          "description" : "SPCD Minimum",
+          "type": "number"
+        },
+        "spcdMinmaxValType": {
+          "description" : "SPCD Min/Max TypeReferencing: `/code-cost-ovr-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "spcdOffsetVal": {
+          "description" : "SPCD Offset",
+          "type": "number"
+        },
+        "spcdOffsetValType": {
+          "description" : "SPCD Offset TypeReferencing: `/code-cost-ovr-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "spcdReason": {
+          "description" : "SPCD ReasonReferencing: `/code-cost-ovr-reasons/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "spcdVal": {
+          "description" : "SPCD Value",
+          "type": "number"
+        },
+        "spcdValType": {
+          "description" : "SPCD Value TypeReferencing: `/code-cost-ovr-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "startDate": {
+          "description" : "Valid from",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "timestamp": {
+          "description" : "Timestamp",
+          "type": "string"
+          ,
+            "format": "date-time"
+        },
+        "userRef": {
+          "description" : "Responsible UserReferencing: `/users/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/user_ref" }
+          ]
+        }
+      }
+    },
+    "obj_classif_": {
+      "type": "object",
+      "properties": {
+        "bu": {
+          "description" : "Business UnitReferencing: `/obj-bps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "class": {
+          "description" : "ClassReferencing: `/code-obj-classs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "classA": {
+          "description" : "Class a/m",
+          "type": "boolean"
+        },
+        "classFactor": {
+          "description" : "Class factor",
+          "type": "number"
+        },
+        "cltSgmtCalc": {
+          "description" : "Client segment calculationReferencing: `/code-person-mktng-sgmts/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "endDate": {
+          "description" : "Valid Until",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "histStatus": {
+          "description" : "Hist statusReferencing: `/code-hist-statuss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "indivFeep": {
+          "description" : "Individual feepReferencing: `/obj-feeps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "isInht": {
+          "description" : "Is inherited",
+          "type": "boolean"
+        },
+        "objClassif": {
+          "description" : "Referencing: `/code-obj-classifs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "remark": {
+          "description" : "Remark",
+          "type": "string"
+        },
+        "secUser": {
+          "description" : "Sec userReferencing: `/users/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/user_ref" }
+          ]
+        },
+        "spcdCostp": {
+          "description" : "SPCD Cost ProfileReferencing: `/obj-costps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "spcdCurry": {
+          "description" : "SPCD CurrencyReferencing: `/obj-assets/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "spcdMaxVal": {
+          "description" : "SPCD Maximum",
+          "type": "number"
+        },
+        "spcdMinVal": {
+          "description" : "SPCD Minimum",
+          "type": "number"
+        },
+        "spcdMinmaxValType": {
+          "description" : "SPCD Min/Max TypeReferencing: `/code-cost-ovr-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "spcdOffsetVal": {
+          "description" : "SPCD Offset",
+          "type": "number"
+        },
+        "spcdOffsetValType": {
+          "description" : "SPCD Offset TypeReferencing: `/code-cost-ovr-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "spcdReason": {
+          "description" : "SPCD ReasonReferencing: `/code-cost-ovr-reasons/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "spcdVal": {
+          "description" : "SPCD Value",
+          "type": "number"
+        },
+        "spcdValType": {
+          "description" : "SPCD Value TypeReferencing: `/code-cost-ovr-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "startDate": {
+          "description" : "Valid from",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "timestamp": {
+          "description" : "Timestamp",
+          "type": "string"
+          ,
+            "format": "date-time"
+        }
+      }
+    },
+    "obj_classif_set_": {
+      "type": "object",
+      "properties": {
+        "bu": {
+          "description" : "Business UnitReferencing: `/obj-bps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "class": {
+          "description" : "ClassReferencing: `/code-obj-classs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "classA": {
+          "description" : "Class a/m",
+          "type": "boolean"
+        },
+        "classFactor": {
+          "description" : "Class factor",
+          "type": "number"
+        },
+        "cltSgmtCalc": {
+          "description" : "Client segment calculationReferencing: `/code-person-mktng-sgmts/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "endDate": {
+          "description" : "Valid Until",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "indivFeep": {
+          "description" : "Individual feepReferencing: `/obj-feeps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "isInht": {
+          "description" : "Is inherited",
+          "type": "boolean"
+        },
+        "objClassif": {
+          "description" : "Referencing: `/code-obj-classifs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "remark": {
+          "description" : "Remark",
+          "type": "string"
+        },
+        "spcdCostp": {
+          "description" : "SPCD Cost ProfileReferencing: `/obj-costps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "spcdCurry": {
+          "description" : "SPCD CurrencyReferencing: `/obj-assets/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "spcdMaxVal": {
+          "description" : "SPCD Maximum",
+          "type": "number"
+        },
+        "spcdMinVal": {
+          "description" : "SPCD Minimum",
+          "type": "number"
+        },
+        "spcdMinmaxValType": {
+          "description" : "SPCD Min/Max TypeReferencing: `/code-cost-ovr-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "spcdOffsetVal": {
+          "description" : "SPCD Offset",
+          "type": "number"
+        },
+        "spcdOffsetValType": {
+          "description" : "SPCD Offset TypeReferencing: `/code-cost-ovr-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "spcdReason": {
+          "description" : "SPCD ReasonReferencing: `/code-cost-ovr-reasons/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "spcdVal": {
+          "description" : "SPCD Value",
+          "type": "number"
+        },
+        "spcdValType": {
+          "description" : "SPCD Value TypeReferencing: `/code-cost-ovr-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "startDate": {
+          "description" : "Valid from",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "timestamp": {
+          "description" : "Timestamp",
+          "type": "string"
+          ,
+            "format": "date-time"
+        }
+      }
+    },
+    "obj_country": {
+      "type": "object",
+      "properties": {
+        "addList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/obj_add"
+          }
+        },
+        "bdeRecVersion": {
+          "type": "integer"
+        },
+        "bu": {
+          "description" : "Business unitReferencing: `/obj-bps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "classifList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/obj_classif"
+          }
+        },
+        "closeDate": {
+          "description" : "Closing date",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "doc": {
+          "description" : "Document id if the object is being modifiedReferencing: `/docs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/doc_ref" }
+          ]
+        },
+        "extn": {
+          "$ref": "#/definitions/obj_country_extn"
+        },
+        "fyStart": {
+          "description" : "Fiscal Year start",
+          "type": "string"
+        },
+        "ibanBankClrEndPos": {
+          "description" : "IBAN bank clearing number ending position",
+          "type": "integer"
+        },
+        "ibanBankClrStartPos": {
+          "description" : "IBAN bank clearing number starting position",
+          "type": "integer"
+        },
+        "ibanLen": {
+          "description" : "International bank account number length",
+          "type": "integer"
+        },
+        "ibanNccKey1": {
+          "description" : "IBAN bank clearing key id 1Referencing: `/code-obj-keys/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "ibanNccKey2": {
+          "description" : "IBAN bank clearing key id 2Referencing: `/code-obj-keys/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "ibanNccRefObj1": {
+          "description" : "IBAN bank clearing key ref object 1Referencing: `/objs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "ibanNccRefObj2": {
+          "description" : "IBAN bank clearing key ref object 2Referencing: `/objs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "id": {
+          "description" : "IDReferencing: `/objs/{id}`",
+          "type": "integer"
+        },
+        "intrCalcMethod": {
+          "description" : "Interest calculation methodReferencing: `/code-intr-calc-methods/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "keyList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/obj_key"
+          }
+        },
+        "lastTrans": {
+          "$ref": "#/definitions/obj_trans"
+        },
+        "mainCurry": {
+          "description" : "Main currencyReferencing: `/obj-assets/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "objName": {
+          "allOf": [
+            { "$ref": "#/definitions/obj_name"
+             }
+            ]
+        },
+        "objNameList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/obj_name"
+          }
+        },
+        "objSubType": {
+          "description" : "Object sub-typeReferencing: `/code-obj-sub-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "objType": {
+          "description" : "Object typeReferencing: `/code-obj-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "openDate": {
+          "description" : "Opening date",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "relList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/obj_rel"
+          }
+        },
+        "remarkList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/obj_remark"
+          }
+        },
+        "sdsInstn": {
+          "description" : "SDS instance IDReferencing: `/code-extl-syss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "sortAlpha": {
+          "description" : "Alpha-numeric sort value",
+          "type": "string"
+        },
+        "sortNr": {
+          "description" : "Numeric sort value",
+          "type": "integer"
+        },
+        "transList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/obj_trans"
+          }
+        },
+        "valDateOffset": {
+          "description" : "Value date offset in days",
+          "type": "integer"
+        },
+        "valDateOffsetCheck": {
+          "description" : "Value date offset for check in days",
+          "type": "integer"
+        },
+        "valDateOffsetNote": {
+          "description" : "Value date offset for notes in days",
+          "type": "integer"
+        }
+      }
+    },
+    "obj_country_extn": {
+      "type": "object",
+      "properties": {
+        "countryBbkNum": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/obj_key_single_"
+          }
+        },
+        "countryIso": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/obj_key_single_"
+          }
+        },
+        "countryIso3": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/obj_key_single_"
+          }
+        },
+        "countryMbrEea": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/obj_classif_set_"
+          }
+        },
+        "countryMbrEeaDet": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/obj_classif_set_"
+          }
+        },
+        "countryMbrEuroU": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/obj_classif_set_"
+          }
+        },
+        "countryMbrEuroUDet": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/obj_classif_set_"
+          }
+        },
+        "countryNr": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/obj_key_single_"
+          }
+        },
+        "countrySym": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/obj_key_single_"
+          }
+        },
+        "countryTkn": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/obj_key_single_"
+          }
+        },
+        "ctryUsTaxFatca": {
+          "$ref": "#/definitions/obj_classif_"
+        },
+        "ctryUsTaxFatcaHist": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/obj_classif_"
+          }
+        },
+        "mba$addrCtrl": {
+          "$ref": "#/definitions/mba$addr_ctrl"
+        },
+        "mba$adminDivn": {
+          "$ref": "#/definitions/mba$admin_divn"
+        },
+        "mba$area": {
+          "$ref": "#/definitions/obj_classif_"
+        },
+        "mba$areaHist": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/obj_classif_"
+          }
+        },
+        "mba$contin": {
+          "$ref": "#/definitions/obj_classif_"
+        },
+        "mba$continHist": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/obj_classif_"
+          }
+        },
+        "mba$countryHyparcv": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/obj_key_single_"
+          }
+        },
+        "mba$det": {
+          "$ref": "#/definitions/mba$det"
+        },
+        "mba$ftrRisk": {
+          "$ref": "#/definitions/mba$ftr_risk"
+        },
+        "mba$isOecdMbr": {
+          "$ref": "#/definitions/obj_classif_"
+        },
+        "mba$isOecdMbrHist": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/obj_classif_"
+          }
+        },
+        "mba$mktStatus": {
+          "$ref": "#/definitions/obj_classif_"
+        },
+        "mba$mktStatusHist": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/obj_classif_"
+          }
+        },
+        "mba$payChanCtrl": {
+          "$ref": "#/definitions/mba$pay_chan_ctrl"
+        },
+        "mba$qi": {
+          "$ref": "#/definitions/mba$qi"
+        },
+        "mba$riskCat": {
+          "$ref": "#/definitions/obj_classif_"
+        },
+        "mba$riskCatHist": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/obj_classif_"
+          }
+        },
+        "mba$subcontin": {
+          "$ref": "#/definitions/obj_classif_"
+        },
+        "mba$subcontinHist": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/obj_classif_"
+          }
+        },
+        "mba$tech": {
+          "$ref": "#/definitions/mba$tech"
+        },
+        "mba$tradingStatus": {
+          "$ref": "#/definitions/obj_classif_"
+        },
+        "mba$tradingStatusHist": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/obj_classif_"
+          }
+        },
+        "mba$type": {
+          "$ref": "#/definitions/obj_classif_"
+        },
+        "mba$typeHist": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/obj_classif_"
+          }
+        },
+        "mba$week": {
+          "$ref": "#/definitions/mba$week"
+        },
+        "mba$zip": {
+          "$ref": "#/definitions/mba$zip"
+        },
+        "refIssuer": {
+          "description" : "Reference IssuerReferencing: `/obj-persons/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "srd2MinThres": {
+          "description" : "Minimum Threshold",
+          "type": "number"
+        },
+        "usTaxRate": {
+          "$ref": "#/definitions/obj_classif_"
+        },
+        "usTaxRateHist": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/obj_classif_"
+          }
+        }
+      }
+    },
+    "obj_countrys": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/obj_country"
+      },
+      "uniqueItems": true
+    },
+    "obj_key": {
+      "type": "object",
+      "properties": {
+        "obj": {
+          "description" : "Referencing: `/objs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "obj1": {
+          "description" : "ObjectsReferencing: `/objs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "obj1Class": {
+          "description" : "Object Class",
+          "type": "string"
+        },
+        "obj2": {
+          "description" : "ObjectsReferencing: `/objs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "obj2Class": {
+          "description" : "Object Class",
+          "type": "string"
+        },
+        "obj3": {
+          "description" : "ObjectsReferencing: `/objs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "obj3Class": {
+          "description" : "Object Class",
+          "type": "string"
+        },
+        "obj4": {
+          "description" : "ObjectsReferencing: `/objs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "obj4Class": {
+          "description" : "Object Class",
+          "type": "string"
+        },
+        "objKey": {
+          "description" : "Referencing: `/code-obj-keys/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "prio": {
+          "description" : "Priority",
+          "type": "string"
+        },
+        "refObj": {
+          "description" : "ReferenceReferencing: `/objs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "ruleId": {
+          "description" : "Rule",
+          "type": "integer"
+        },
+        "ruleTempl": {
+          "description" : "TemplateReferencing: `/code-rule-templs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "seqNr": {
+          "type": "integer"
+        },
+        "trigMetaTyp": {
+          "description" : "Triggering Meta TypReferencing: `/meta-typs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "trigOrderType": {
+          "description" : "Triggering Order TypeReferencing: `/code-order-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "val": {
+          "description" : "Value",
+          "type": "string"
+        },
+        "valA": {
+          "description" : "Automatic",
+          "type": "boolean"
+        }
+      }
+    },
+    "obj_key_ref_": {
+      "type": "object",
+      "properties": {
+        "objKey": {
+          "description" : "Referencing: `/code-obj-keys/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "val": {
+          "description" : "Key value",
+          "type": "string"
+        }
+      }
+    },
+    "obj_key_single_": {
+      "type": "object",
+      "properties": {
+        "refObj": {
+          "description" : "Reference objectReferencing: `/objs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "val": {
+          "description" : "Value",
+          "type": "string"
+        }
+      }
+    },
+    "obj_name": {
+      "type": "object",
+      "properties": {
+        "dateValid": {
+          "description" : "Date Valid",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "dateValidTo": {
+          "description" : "Date Valid to",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "insTime": {
+          "description" : "Insertion Time",
+          "type": "string"
+          ,
+            "format": "date-time"
+        },
+        "lang": {
+          "description" : "LanguageReferencing: `/code-langs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "name": {
+          "description" : "Name",
+          "type": "string"
+        },
+        "nameA": {
+          "description" : "Name Auto Flag",
+          "type": "string"
+        },
+        "nameAbbr": {
+          "description" : "Abbreviation",
+          "type": "string"
+        },
+        "nameAbbrA": {
+          "description" : "Abbreviation Auto Flag",
+          "type": "string"
+        },
+        "nameIntl": {
+          "description" : "Internal Name",
+          "type": "string"
+        },
+        "nameIntlA": {
+          "description" : "Internal Name Auto Flag",
+          "type": "string"
+        },
+        "nameLong": {
+          "description" : "Long Name",
+          "type": "string"
+        },
+        "nameLongA": {
+          "description" : "Long Name Auto Flag",
+          "type": "string"
+        }
+      }
+    },
+    "obj_ref": {
+      "type": "object",
+      "properties": {
+        "_href": {
+          "description" : "Reference/link",
+          "type": "string"
+        },
+        "_ident": {
+          "description" : "Only used for workItem use cases, cross-reference in workItem context.",
+          "type": "string"
+        },
+        "id": {
+          "description" : "Numeric reference",
+          "type": "integer"
+        },
+        "keyList": {
+          "type": "array",
+          "items": {
+            "description": "Key value object reference ",
+            "allOf": [
+              { "$ref": "#/definitions/obj_key_ref_" }
+            ]
+          }
+        }
+      }
+    },
+    "obj_rel": {
+      "type": "object",
+      "properties": {
+        "f1": {
+          "type": "number"
+        },
+        "obj1": {
+          "description" : "Referencing: `/objs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "obj2": {
+          "description" : "Referencing: `/objs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "objRelSubType": {
+          "description" : "Referencing: `/code-obj-rel-sub-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "objRelType": {
+          "description" : "Referencing: `/code-obj-rel-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "prio": {
+          "type": "integer"
+        },
+        "shareRate": {
+          "description" : "Sharing Rate (Sharing)",
+          "type": "number"
+        },
+        "subTrl": {
+          "type": "string"
+        },
+        "trl": {
+          "type": "string"
+        }
+      }
+    },
+    "obj_remark": {
+      "type": "object",
+      "properties": {
+        "attch": {
+          "type": "string"
+        },
+        "dateValidTo": {
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "langList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/obj_remark_det"
+          }
+        },
+        "subType": {
+          "description" : "Referencing: `/code-remark-sub-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "text": {
+          "type": "string"
+        },
+        "timestamp": {
+          "type": "string"
+          ,
+            "format": "date-time-no-tz"
+        },
+        "topic": {
+          "type": "string"
+        },
+        "type": {
+          "description" : "Referencing: `/code-remark-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "user": {
+          "description" : "Referencing: `/users/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/user_ref" }
+          ]
+        }
+      }
+    },
+    "obj_remark_det": {
+      "type": "object",
+      "properties": {
+        "lang": {
+          "description" : "Referencing: `/code-langs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "text": {
+          "type": "string"
+        }
+      }
+    },
+    "obj_trans": {
+      "type": "object",
+      "properties": {
+        "doc": {
+          "description" : "Referencing: `/docs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/doc_ref" }
+          ]
+        },
+        "timestamp": {
+          "type": "string"
+          ,
+            "format": "date-time-no-tz"
+        },
+        "userstamp": {
+          "type": "string"
+        }
+      }
+    },
+    "user_ref": {
+      "type": "object",
+      "properties": {
+        "_href": {
+          "description" : "Reference/link",
+          "type": "string"
+        },
+        "id": {
+          "description" : "Numeric reference",
+          "type": "integer"
+        }
+      }
+    }
+  }
+}

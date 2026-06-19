@@ -1,0 +1,113 @@
+{
+  "$id": "https://avaloq.com/code_invst_bdl_trg_bal_type.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/code_invst_bdl_trg_bal_type",
+  "definitions": {
+    "code_tab_ref": {
+      "type": "object",
+      "properties": {
+        "_href": {
+          "description" : "Reference/link",
+          "type": "string"
+        },
+        "id": {
+          "description" : "Numeric reference",
+          "type": "integer"
+        },
+        "ident": {
+          "description" : "Unique symbolic reference",
+          "type": "string"
+        },
+        "intlId": {
+          "description" : "Symbolic reference",
+          "type": "string"
+        }
+      }
+    },
+    "code_invst_bdl_trg_bal_type": {
+      "type": "object",
+      "properties": {
+        "activ": {
+          "type": "boolean"
+        },
+        "descn": {
+          "type": "string"
+        },
+        "execRestr": {
+          "description" : "Referencing: `/code-invst-bdl-exec-restrs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "id": {
+          "type": "integer"
+        },
+        "ident": {
+          "type": "string"
+        },
+        "intlId": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "nameI18nList": {
+          "type": "array",
+          "items": {
+            "description" : "Full translation list for name field. Only visible within compound APIs ",
+            "allOf": [
+              { "$ref": "#/definitions/name_i18n"
+               }
+              ]
+          }
+        },
+        "requAmount": {
+          "type": "boolean"
+        },
+        "step1MetaTyp": {
+          "type": "array",
+          "items": {
+            "description": "Referencing: `/meta-typs/{id}`",
+            "allOf": [
+              { "$ref": "#/definitions/code_tab_ref" }
+            ]
+          }
+        },
+        "step2MetaTyp": {
+          "type": "array",
+          "items": {
+            "description": "Referencing: `/meta-typs/{id}`",
+            "allOf": [
+              { "$ref": "#/definitions/code_tab_ref" }
+            ]
+          }
+        },
+        "userId": {
+          "type": "string"
+        }
+      }
+    },
+    "code_invst_bdl_trg_bal_types": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/code_invst_bdl_trg_bal_type"
+      },
+      "uniqueItems": true
+    },
+    "name_i18n": {
+      "type": "object",
+      "properties": {
+        "lang": {
+          "description" : "LanguageReferencing: `/code-langs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref"
+             }
+            ]
+        },
+        "text": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

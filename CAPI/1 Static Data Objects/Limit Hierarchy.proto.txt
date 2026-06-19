@@ -1,0 +1,141 @@
+syntax = "proto3";
+
+package com.avaloq.acp.bde.protobuf.obj_lihi;
+
+import "meta_model.proto";
+import "wrappers.proto";
+import "options.proto";
+
+option (version) = "3.6.2";
+
+message ObjAdd {
+  SInt64Value obj_add_id = 1 [(bde_entity) = "Code_obj_add", (bde_ref_type) = "code"];
+  repeated ObjAddVal val_list = 2;
+  BoolValue bool_val = 3;
+  SInt64Value bu_id = 4 [(bde_entity) = "Obj_bp", (bde_ref_type) = "obj"];
+  StringValue date_val = 5 [(format) = "date"];
+  SInt64Value id_val = 6;
+  StringValue nr_val = 7 [(format) = "decimal"];
+  StringValue text_val = 8;
+  StringValue tswtz_val = 9 [(format) = "date_time"];
+  StringValue ctx = 10;
+  StringValue ctype = 11;
+  StringValue data_type = 12;
+  BoolValue is_multi_val = 13;
+  SInt64Value obj_id = 14 [(bde_entity) = "Obj", (bde_ref_type) = "obj"];
+  StringValue type = 15;
+  StringValue val = 16;
+}
+
+message ObjAddVal {
+  StringValue text_val = 1;
+  StringValue nr_val = 2 [(format) = "decimal"];
+  StringValue date_val = 3 [(format) = "date"];
+  StringValue tswtz_val = 4 [(format) = "date_time"];
+  SInt64Value id_val = 5;
+  SInt64Value seq_nr = 6;
+  StringValue val = 7;
+}
+
+message ObjKey {
+  StringValue val = 2;
+  SInt64Value obj_key_id = 3 [(bde_entity) = "Code_obj_key", (bde_ref_type) = "code"];
+  StringValue obj_1_class = 4;
+  SInt64Value obj_1_id = 5 [(bde_entity) = "Obj", (bde_ref_type) = "obj"];
+  StringValue obj_2_class = 6;
+  SInt64Value obj_2_id = 7 [(bde_entity) = "Obj", (bde_ref_type) = "obj"];
+  StringValue obj_3_class = 8;
+  SInt64Value obj_3_id = 9 [(bde_entity) = "Obj", (bde_ref_type) = "obj"];
+  StringValue obj_4_class = 10;
+  SInt64Value obj_4_id = 11 [(bde_entity) = "Obj", (bde_ref_type) = "obj"];
+  SInt64Value obj_id = 12 [(bde_entity) = "Obj", (bde_ref_type) = "obj"];
+  StringValue prio = 13;
+  SInt64Value rule_id = 14;
+  SInt64Value rule_templ_id = 15 [(bde_entity) = "Code_rule_templ", (bde_ref_type) = "code"];
+  SInt64Value seq_nr = 16;
+  SInt64Value trig_meta_typ_id = 17 [(bde_entity) = "Meta_typ", (bde_ref_type) = "code"];
+  SInt64Value trig_order_type_id = 18 [(bde_entity) = "Code_order_type", (bde_ref_type) = "code"];
+  BoolValue val_a = 19;
+  BoolValue obj_1_is_null = 20;
+  BoolValue obj_2_is_null = 21;
+  BoolValue obj_3_is_null = 22;
+  BoolValue obj_4_is_null = 23;
+  SInt64Value ref_obj_id = 116 [(bde_entity) = "Obj", (bde_ref_type) = "obj"];
+}
+
+message ObjLhlimAmount {
+  SInt64Value lhlim_id = 1 [(bde_entity) = "Obj_lihi_limit", (bde_ref_type) = "obj"];
+  StringValue name = 2;
+  SInt64Value lhlim_dim_id = 3 [(bde_entity) = "Code_lihi_limit_dim", (bde_ref_type) = "code"];
+  StringValue static_amount = 4 [(format) = "decimal"];
+}
+
+message ObjLihi {
+  option (is_bde_entity) = true;
+  sint64 id = 2 [(bde_entity) = "Obj", (bde_ref_type) = "obj"];
+  SInt64Value lihi_fam_id = 3 [(bde_entity) = "Code_lihi_fam", (bde_ref_type) = "code"];
+  repeated ObjName obj_name_list = 4;
+  SInt64Value bu_id = 5 [(bde_entity) = "Obj_bp", (bde_ref_type) = "obj"];
+  repeated ObjKey key_list = 6;
+  StringValue open_date = 7 [(format) = "date"];
+  StringValue close_date = 8 [(format) = "date"];
+  BoolValue is_dflt = 9;
+  repeated ObjLihiLimit hobs_list = 10;
+  SInt64Value obj_type_id = 11 [(bde_entity) = "Code_obj_type", (bde_ref_type) = "code"];
+  repeated ObjAdd add_list = 12;
+  SInt64Value bde_rec_version = 14;
+  repeated ObjStructAdd struct_add_list = 15;
+  ObjTrans last_trans = 16;
+}
+
+message ObjLihiLimit {
+  sint64 id = 1 [(bde_entity) = "Obj", (bde_ref_type) = "obj"];
+  SInt64Value lihi_id = 2 [(bde_entity) = "Obj_lihi", (bde_ref_type) = "obj"];
+  SInt64Value parent_limit_id = 3 [(bde_entity) = "Obj_lihi_limit", (bde_ref_type) = "obj"];
+  repeated ObjName obj_name_list = 4;
+  SInt64Value tag = 5;
+  SInt64Value limit_curry_id = 6 [(bde_entity) = "Obj_asset", (bde_ref_type) = "obj"];
+  SInt64Value owner_id = 7 [(bde_entity) = "Obj", (bde_ref_type) = "obj"];
+  StringValue open_date = 8 [(format) = "date"];
+  StringValue close_date = 9 [(format) = "date"];
+  repeated ObjLhlimAmount amount_list = 10;
+}
+
+message ObjName {
+  StringValue name = 2;
+  StringValue name_long = 3;
+  StringValue name_abbr = 4;
+  StringValue name_intl = 5;
+  SInt64Value lang_id = 6 [(bde_entity) = "Code_lang", (bde_ref_type) = "code"];
+  StringValue date_valid = 7 [(format) = "date"];
+  StringValue date_valid_to = 8 [(format) = "date"];
+  StringValue ins_time = 9 [(format) = "date_time"];
+  StringValue name_a = 10;
+  StringValue name_abbr_a = 11;
+  StringValue name_intl_a = 12;
+  StringValue name_long_a = 13;
+}
+
+message ObjStructAdd {
+  StringValue name = 1;
+  repeated ObjStructAddFld fld_list = 2;
+}
+
+message ObjStructAddFld {
+  StringValue name = 1;
+  BoolValue bool_val = 2;
+  StringValue date_val = 3 [(format) = "date"];
+  SInt64Value id_val = 4;
+  StringValue nr_val = 5 [(format) = "decimal"];
+  StringValue text_val = 6;
+  repeated ObjStructAddFld val_list = 7;
+  ObjStructAdd ref_val = 8;
+  repeated ObjStructAdd ref_val_list = 9;
+}
+
+message ObjTrans {
+  UInt64Value doc_id = 1 [(bde_entity) = "Doc", (bde_ref_type) = "doc"];
+  StringValue timestamp = 2 [(format) = "date_time_no_tz"];
+  StringValue userstamp = 4;
+}
+

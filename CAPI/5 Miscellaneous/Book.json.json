@@ -1,0 +1,505 @@
+{
+  "openapi" : "3.0.2",
+  "security" : [ {
+    "bearerAuth" : [ ]
+  } ],
+  "info" : {
+    "title" : "Book API",
+    "version" : "1.0.5",
+    "x-avq$categories" : [ "capi" ]
+  },
+  "servers" : [ {
+    "url" : "/api1/",
+    "description" : "Development server"
+  } ],
+  "paths" : {
+    "/books" : {
+      "get" : {
+        "tags" : [ "API endpoints" ],
+        "summary" : "Get Book references.",
+        "description" : "Get a collection of `Book` references.\nThe result set can be restricted through filter parameter.\nOnly `Book` references will be returned that can be accessed by the user (security applied).\nPaging is supported with parameters *limit* and *offset*.\n",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/Filter"
+        }, {
+          "$ref" : "#/components/parameters/PageLimit"
+        }, {
+          "$ref" : "#/components/parameters/PageOffset"
+        }, {
+          "$ref" : "#/components/parameters/HrefActive"
+        }, {
+          "$ref" : "#/components/parameters/IncludeInactive"
+        }, {
+          "$ref" : "#/components/parameters/Accept-Encoding"
+        }, {
+          "$ref" : "#/components/parameters/Accept-Language"
+        }, {
+          "$ref" : "#/components/parameters/ShowAllBooks"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful response",
+            "headers" : {
+              "Content-Language" : {
+                "$ref" : "#/components/headers/Content-Language"
+              },
+              "X-Has-Next-Page" : {
+                "$ref" : "#/components/headers/X-Has-Next-Page"
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/book"
+                  }
+                }
+              }
+            }
+          },
+          "default" : {
+            "$ref" : "#/components/responses/Problem"
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "securitySchemes" : {
+      "bearerAuth" : {
+        "type" : "http",
+        "scheme" : "bearer",
+        "bearerFormat" : "JWT"
+      }
+    },
+    "schemas" : {
+      "book" : {
+        "title" : "book",
+        "type" : "object",
+        "properties" : {
+          "bookDate" : {
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "bookKind" : {
+            "description" : "Referencing: `/code-book-kinds/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "bookValPos" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "bookValRef" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "cont" : {
+            "description" : "Source property: `pos`<br>Back property: `cont`<br>Referencing: `/obj-conts/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "doc" : {
+            "description" : "Referencing: `/docs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/doc_ref"
+            } ],
+            "readOnly" : true
+          },
+          "evt" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/evt"
+            } ],
+            "readOnly" : true
+          },
+          "evtStatus" : {
+            "description" : "Back property: `id`<br>Referencing: `/code-evt-statuss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "extlBookText" : {
+            "type" : "string",
+            "readOnly" : true
+          },
+          "metaTyp" : {
+            "description" : "Back property: `id`<br>Referencing: `/meta-typs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "orderType" : {
+            "description" : "Back property: `id`<br>Referencing: `/code-order-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "perfDate" : {
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "pko" : {
+            "description" : "Referencing: `/code-be-pkos/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "pos" : {
+            "description" : "Referencing: `/obj-poss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "qty" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "refCurry" : {
+            "description" : "Referencing: `/obj-assets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "trxDate" : {
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "trxValPos" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "trxValRef" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "valDate" : {
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "veriAtrxSeqNr" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "veriDate" : {
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          }
+        }
+      },
+      "books" : {
+        "title" : "List of book",
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/book"
+        },
+        "uniqueItems" : true
+      },
+      "code_tab_ref" : {
+        "title" : "code_tab_ref",
+        "type" : "object",
+        "properties" : {
+          "_href" : {
+            "description" : "Reference/link",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "id" : {
+            "description" : "Numeric reference",
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "ident" : {
+            "description" : "Unique symbolic reference",
+            "type" : "string"
+          },
+          "intlId" : {
+            "description" : "Symbolic reference",
+            "type" : "string",
+            "readOnly" : true
+          }
+        }
+      },
+      "code_tab_ref_action" : {
+        "title" : "code_tab_ref_action",
+        "type" : "object",
+        "properties" : {
+          "_href" : {
+            "description" : "Reference/link",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "action" : {
+            "enum" : [ "hold", "proceed", "discard" ],
+            "example" : "hold",
+            "description" : "enum reference to action",
+            "type" : "string",
+            "writeOnly" : true
+          },
+          "id" : {
+            "description" : "Numeric reference",
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "ident" : {
+            "description" : "Unique symbolic reference",
+            "type" : "string"
+          },
+          "intlId" : {
+            "description" : "Symbolic reference",
+            "type" : "string",
+            "readOnly" : true
+          }
+        }
+      },
+      "doc_ref" : {
+        "title" : "doc_ref",
+        "type" : "object",
+        "properties" : {
+          "_href" : {
+            "description" : "Reference/link",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "_ident" : {
+            "description" : "Only used for workItem use cases, cross-reference in workItem context.",
+            "type" : "string",
+            "writeOnly" : true
+          },
+          "id" : {
+            "description" : "Numeric reference",
+            "type" : "integer",
+            "format" : "int64"
+          }
+        }
+      },
+      "evt" : {
+        "title" : "evt",
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "description" : "Event ID<br>Referencing: `/evts/`",
+            "type" : "integer",
+            "format" : "int64",
+            "readOnly" : true
+          }
+        }
+      },
+      "obj_key_ref_" : {
+        "title" : "obj_key_ref_",
+        "type" : "object",
+        "properties" : {
+          "objKey" : {
+            "description" : "Referencing: `/code-obj-keys/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "val" : {
+            "description" : "Key value",
+            "type" : "string"
+          }
+        }
+      },
+      "obj_ref" : {
+        "title" : "obj_ref",
+        "type" : "object",
+        "properties" : {
+          "_href" : {
+            "description" : "Reference/link",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "_ident" : {
+            "description" : "Only used for workItem use cases, cross-reference in workItem context.",
+            "type" : "string",
+            "writeOnly" : true
+          },
+          "id" : {
+            "description" : "Numeric reference",
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "keyList" : {
+            "description" : "Key value object reference ",
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_key_ref_"
+            },
+            "writeOnly" : true
+          }
+        }
+      }
+    },
+    "headers" : {
+      "Content-Language" : {
+        "schema" : {
+          "type" : "string"
+        }
+      },
+      "X-Has-Next-Page" : {
+        "schema" : {
+          "type" : "string"
+        }
+      },
+      "Location" : {
+        "schema" : {
+          "type" : "string"
+        },
+        "description" : "Location of the created resource"
+      },
+      "ETag" : {
+        "schema" : {
+          "type" : "string"
+        },
+        "description" : "Current entity-tag"
+      }
+    },
+    "parameters" : {
+      "Filter" : {
+        "name" : "filter",
+        "in" : "query",
+        "description" : "Expression to reduce the result set. Only following parameters are allowed:\n<ul>\n  <li><div class=\"parameter__name required\">pos.id|cont.id (==|in)<span>&nbsp;*</span></div></li>\n  <li>bookDate(>=|<=)</li>\n  <li>trxDate(>=|<=)</li>\n  <li>perfDate(>=|<=)</li>\n  <li>valDate(>=|<=)</li>\n  <li>veriDate(>=|<=)</li>\n  <li>extlBookText (==)</li>\n  <li>veriAtrxSeqNr (>=)</li>\n</ul>\nFollowing additional parameters are allowed if <b>avaloq-position-keeping</b> component is deployed in constellation\"\n<ul>\n  <li>pko.id (==)</li>          \n  <li>evtStatus.id (==|in)</li>\n  <li>evtStatus.ident (==|in)</li>\n  <li>metaTyp.id (==|in)</li>\n  <li>metaTyp.ident (==|in)</li>\n  <li>orderType.id (==|in) Parameter mandatory within a <b>not</b> condition (ex. /books?filter=trxDate>='2022-12-25' and pos.id in (...) and not( orderType.id in (...)) )</li>\n  <li>orderType.ident (==|in) Parameter mandatory within a <b>not</b> condition (ex. /books?filter=trxDate>='2022-12-25' and pos.id in (...) and not( orderType.ident in (...)) )</li>\n</ul>\n",
+        "schema" : {
+          "type" : "string"
+        },
+        "required" : true
+      },
+      "PageLimit" : {
+        "name" : "limit",
+        "in" : "query",
+        "description" : "Limits the number of items on a page",
+        "schema" : {
+          "type" : "integer",
+          "default" : 5,
+          "minimum" : 1,
+          "maximum" : 200
+        }
+      },
+      "PageOffset" : {
+        "name" : "offset",
+        "in" : "query",
+        "description" : "Number of records to be skipped before selecting the result set",
+        "schema" : {
+          "type" : "integer",
+          "minimum" : 0
+        }
+      },
+      "HrefActive" : {
+        "name" : "href",
+        "in" : "query",
+        "description" : "Activates the href",
+        "schema" : {
+          "type" : "boolean"
+        }
+      },
+      "IncludeInactive" : {
+        "name" : "include_inactive",
+        "in" : "query",
+        "description" : "Includes inactive data",
+        "schema" : {
+          "type" : "boolean"
+        }
+      },
+      "If-None-Match" : {
+        "name" : "If-None-Match",
+        "in" : "header",
+        "description" : "Specifies version known by client",
+        "schema" : {
+          "type" : "string"
+        },
+        "required" : false
+      },
+      "If-Match" : {
+        "name" : "If-Match",
+        "in" : "header",
+        "description" : "Specifies entity-tag known by client",
+        "schema" : {
+          "type" : "string"
+        },
+        "required" : false
+      },
+      "Accept-Encoding" : {
+        "name" : "Accept-Encoding",
+        "in" : "header",
+        "description" : "Compression scheme<br/> Warning: HTTP compression might not lead to better performance",
+        "schema" : {
+          "type" : "string"
+        },
+        "example" : "gzip, deflate",
+        "required" : false
+      },
+      "Accept-Language" : {
+        "name" : "Accept-Language",
+        "in" : "header",
+        "description" : "Specifies the language and locale that the client prefers",
+        "schema" : {
+          "type" : "string"
+        },
+        "example" : "de-CH, en-US",
+        "required" : false
+      },
+      "X-Request-ID" : {
+        "name" : "X-Request-ID",
+        "in" : "header",
+        "description" : "Specifies the request id in UUID format. If not provided, it will be generated automatically.",
+        "schema" : {
+          "type" : "string",
+          "format" : "uuid"
+        },
+        "required" : false
+      },
+      "ShowAllBooks" : {
+        "name" : "showAllBooks",
+        "in" : "query",
+        "description" : "<p>Can be used to return all the bookings of the position. This overrides the max number set in ACP.</p>",
+        "schema" : {
+          "type" : "boolean"
+        }
+      }
+    },
+    "responses" : {
+      "Problem" : {
+        "description" : "RFC7807 Problem",
+        "content" : {
+          "application/problem+json" : {
+            "schema" : {
+              "type" : "object",
+              "properties" : {
+                "type" : {
+                  "type" : "string"
+                },
+                "title" : {
+                  "type" : "string"
+                },
+                "status" : {
+                  "type" : "number",
+                  "format" : "integer"
+                },
+                "detail" : {
+                  "type" : "string"
+                }
+              },
+              "additionalProperties" : true,
+              "required" : [ "type", "title", "status" ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

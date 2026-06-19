@@ -1,0 +1,161 @@
+{
+  "$id": "https://avaloq.com/code_order_type_grp.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/code_order_type_grp",
+  "definitions": {
+    "code_tab_ref": {
+      "type": "object",
+      "properties": {
+        "_href": {
+          "description" : "Reference/link",
+          "type": "string"
+        },
+        "id": {
+          "description" : "Numeric reference",
+          "type": "integer"
+        },
+        "ident": {
+          "description" : "Unique symbolic reference",
+          "type": "string"
+        },
+        "intlId": {
+          "description" : "Symbolic reference",
+          "type": "string"
+        }
+      }
+    },
+    "code_order_type_grp": {
+      "type": "object",
+      "properties": {
+        "activ": {
+          "type": "boolean"
+        },
+        "cntOrderTypeGrp": {
+          "description" : "Referencing: `/code-order-type-grps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "descn": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "ident": {
+          "type": "string"
+        },
+        "intlId": {
+          "type": "string"
+        },
+        "isCntOtg": {
+          "type": "string"
+        },
+        "isOppOtg": {
+          "type": "string"
+        },
+        "mba$ccmLabel": {
+          "type": "string"
+        },
+        "mba$envCompo": {
+          "description" : "Referencing: `/code-env-compos/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$isBuyOrd": {
+          "type": "boolean"
+        },
+        "mba$isCcmAdvLoan": {
+          "type": "boolean"
+        },
+        "mba$isCcmAdvLoanAmtDiff": {
+          "type": "boolean"
+        },
+        "mba$isCcmAdvOtcopt": {
+          "type": "boolean"
+        },
+        "mba$isCcpsClrEmir": {
+          "type": "boolean"
+        },
+        "mba$isCredChkReq": {
+          "type": "boolean"
+        },
+        "mba$isSellOrd": {
+          "type": "boolean"
+        },
+        "mba$origDocRelType": {
+          "description" : "Referencing: `/code-doc-rel-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$undrlyDocRelType": {
+          "description" : "Referencing: `/code-doc-rel-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "metaTyp": {
+          "description" : "Referencing: `/meta-typs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "name": {
+          "type": "string"
+        },
+        "nameI18nList": {
+          "type": "array",
+          "items": {
+            "description" : "Full translation list for name field. Only visible within compound APIs ",
+            "allOf": [
+              { "$ref": "#/definitions/name_i18n"
+               }
+              ]
+          }
+        },
+        "oppositeOtg": {
+          "description" : "Referencing: `/code-order-type-grps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "side": {
+          "type": "number"
+        },
+        "sign": {
+          "type": "number"
+        },
+        "trl": {
+          "type": "string"
+        },
+        "userId": {
+          "type": "string"
+        }
+      }
+    },
+    "code_order_type_grps": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/code_order_type_grp"
+      },
+      "uniqueItems": true
+    },
+    "name_i18n": {
+      "type": "object",
+      "properties": {
+        "lang": {
+          "description" : "LanguageReferencing: `/code-langs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref"
+             }
+            ]
+        },
+        "text": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

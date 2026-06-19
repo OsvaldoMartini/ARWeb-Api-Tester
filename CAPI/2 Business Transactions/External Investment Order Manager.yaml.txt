@@ -1,0 +1,2399 @@
+openapi: "3.0.2"
+security:
+  - bearerAuth: []
+
+info:
+  title: "External Investment Order Manager API"
+  version: "3.14.0"
+  x-avq$categories:
+    - capi
+
+servers:
+- url: "/api1/"
+  description: "Development server"
+
+paths:
+  /doc-xioms:
+    get:
+      tags:
+      - API endpoints
+      summary: Get External Investment Order Manager orders.
+      description: |
+        Get a collection of `External Investment Order Manager` orders.
+        The result set can be restricted through filter parameter.
+        Only `External Investment Order Manager` orders will be returned that can be accessed by the user (security applied).
+        Paging is supported with parameters *limit* and *offset*.
+    
+      parameters:
+      - $ref: '#/components/parameters/Filter'
+      - $ref: '#/components/parameters/DocPool'
+      - $ref: '#/components/parameters/PageLimit'
+      - $ref: '#/components/parameters/PageOffset'
+      - $ref: '#/components/parameters/HrefActive'
+      - $ref: '#/components/parameters/IncludeInactive'
+      - $ref: '#/components/parameters/Accept-Encoding'
+      - $ref: '#/components/parameters/Accept-Language'
+    
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            Content-Language:
+              $ref: '#/components/headers/Content-Language'
+            X-Has-Next-Page:
+              $ref: '#/components/headers/X-Has-Next-Page'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/doc_xiom'
+        'default':
+          $ref: '#/components/responses/Problem'
+    post:
+      tags:
+      - API endpoints
+      summary: Create a new External Investment Order Manager order
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/doc_xiom'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/doc_xiom'
+      parameters:
+      - $ref: '#/components/parameters/X-Request-ID'
+      - $ref: '#/components/parameters/Accept-Encoding'
+      responses:
+        '201':
+          description: Successfully created a new `External Investment Order Manager` order
+          headers:
+            Location:
+              $ref: '#/components/headers/Location'
+            ETag:
+              $ref: '#/components/headers/ETag'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    format: int64
+                    example: 123456
+                  bdeRecVersion:
+                    type: integer
+                    format: int64
+                    example: 1618390720445656
+        'default':
+          $ref: '#/components/responses/Problem'
+
+  /doc-xioms/{doc_xiom_id}:
+    get:
+      tags:
+      - API endpoints
+      summary: "Get a External Investment Order Manager order"
+      description: |
+        *Get a `External Investment Order Manager` order by ID*.
+        Only `External Investment Order Manager` order will be returned that can be accessed by the user (security applied).
+        If user does not have access to resource, not found error will be returned instead of unauthorized - to disallow attacks.
+      parameters:
+      - in: path
+        name: doc_xiom_id
+        schema:
+          type: string
+        required: true
+        description: ID of the `External Investment Order Manager` order to get
+      - $ref: '#/components/parameters/HrefActive'
+      - $ref: '#/components/parameters/IncludeInactive'
+      - $ref: '#/components/parameters/Accept-Encoding'
+      - $ref: '#/components/parameters/If-None-Match'
+      - $ref: '#/components/parameters/Accept-Language'
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            Content-Language:
+              $ref: '#/components/headers/Content-Language'
+            ETag:
+              $ref: '#/components/headers/ETag'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/doc_xiom'
+        '304':
+          description: Not modified
+        'default':
+          $ref: '#/components/responses/Problem'
+    patch:
+      tags:
+      - API endpoints
+      summary: "Modify/update an existing External Investment Order Manager order"
+      description: |
+        *Partially modify/update an existing `External Investment Order Manager` order identified by ID*.
+        Only `External Investment Order Manager` order will be replaced that can be accessed by the user (security applied).
+        If user does not have access to resource, not found error will be returned instead of unauthorized - to disallow attacks.
+      parameters:
+      - in: path
+        name: doc_xiom_id
+        schema:
+          type: string
+        required: true
+        description: ID of the `External Investment Order Manager` order to modify/update
+      - $ref: '#/components/parameters/If-Match'
+      - $ref: '#/components/parameters/X-Request-ID'
+      - $ref: '#/components/parameters/Accept-Encoding'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/doc_xiom'
+      responses:
+        '200':
+          description: Request successfully processed
+          headers:
+            ETag:
+              $ref: '#/components/headers/ETag'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    format: int64
+                    example: 123456
+                  bdeRecVersion:
+                    type: integer
+                    format: int64
+                    example: 1618390720445656
+        'default':
+          $ref: '#/components/responses/Problem'
+
+
+components:
+  securitySchemes:
+    bearerAuth:            # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT    # optional, arbitrary value for documentation purposes
+
+  schemas:
+    code_tab_ref:
+      title: code_tab_ref
+      type: object
+      properties:
+        _href:
+          description: "Reference/link"
+          type: string
+          readOnly: true
+        id:
+          description: "Numeric reference"
+          type: integer
+          format: int32
+        ident:
+          description: "Unique symbolic reference"
+          type: string
+        intlId:
+          description: "Symbolic reference"
+          type: string
+          readOnly: true
+    code_tab_ref_action:
+      title: code_tab_ref_action
+      type: object
+      properties:
+        _href:
+          description: "Reference/link"
+          type: string
+          readOnly: true
+        action:
+          enum: [hold, proceed, discard]
+          example: hold
+          description: "enum reference to action"
+          type: string
+          writeOnly: true
+        id:
+          description: "Numeric reference"
+          type: integer
+          format: int32
+        ident:
+          description: "Unique symbolic reference"
+          type: string
+        intlId:
+          description: "Symbolic reference"
+          type: string
+          readOnly: true
+    doc_add:
+      title: doc_add
+      type: object
+      properties:
+        docAdd:
+          description: "Referencing: `/code-doc-adds/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+          x-additionalFieldType: extn_generic
+        valList:
+          type: array
+          items:
+            $ref: '#/components/schemas/doc_add_val'
+          readOnly: true
+          x-additionalFieldType: extn_generic
+    doc_add_val:
+      title: doc_add_val
+      type: object
+      properties:
+        dateVal:
+          type: string
+          format: date
+          readOnly: true
+          x-additionalFieldType: extn_generic
+        idVal:
+          type: integer
+          format: int32
+          readOnly: true
+          x-additionalFieldType: extn_generic
+        nrVal:
+          type: number
+          readOnly: true
+          x-additionalFieldType: extn_generic
+        textVal:
+          type: string
+          readOnly: true
+          x-additionalFieldType: extn_generic
+        tswtzVal:
+          type: string
+          format: date-time
+          readOnly: true
+          x-additionalFieldType: extn_generic
+    doc_invst_doc_fx:
+      title: doc_invst_doc_fx
+      type: object
+      properties:
+        buyAmount:
+          description: "Amount that the bank buys"
+          type: number
+        buyCurry:
+          description: "Currency that the bank buys<br>Referencing: `/obj-assets/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        buyMacc:
+          description: "Money Account from which the amount is debited<br>Referencing: `/obj-poss/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        cont:
+          description: "Container of the Fx trade<br>Referencing: `/obj-conts/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        fxDate:
+          description: "Date of the Fx trade - if it's in the future, the trade is a forward, else it's a spot."
+          type: string
+          format: date
+        genDoc:
+          description: "Generated order<br>Referencing: `/docs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/doc_ref'
+        orderTypeGrp:
+          description: "The expected order group type generated for this entry<br>Referencing: `/code-order-type-grps/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        sellAmount:
+          description: "Amount that the bank sells"
+          type: number
+        sellCurry:
+          description: "Currency that the bank sells<br>Referencing: `/obj-assets/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        sellMacc:
+          description: "Money Account to which the amount is credited<br>Referencing: `/obj-poss/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+    doc_invst_doc_oofx:
+      title: doc_invst_doc_oofx
+      type: object
+      properties:
+        callCurry:
+          description: "Call Currency<br>Referencing: `/obj-assets/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        callMacc:
+          description: "Call Money Account<br>Referencing: `/obj-poss/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        callQty:
+          description: "Call quantity"
+          type: number
+        cont:
+          description: "Container of the OOFX trade<br>Referencing: `/obj-conts/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        genDoc:
+          description: "Generated order<br>Referencing: `/docs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/doc_ref'
+        optStyle:
+          description: "The option style<br>Referencing: `/code-opt-styles/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        optType:
+          description: "The option type<br>Referencing: `/code-opt-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        period:
+          description: "Expiration Period<br>Referencing: `/code-oofx-periods/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        putCurry:
+          description: "Put currency<br>Referencing: `/obj-assets/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        putMacc:
+          description: "Put Money Account<br>Referencing: `/obj-poss/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        putQty:
+          description: "Put quantity"
+          type: number
+        strike:
+          description: "Strike"
+          type: number
+    doc_invst_doc_trade:
+      title: doc_invst_doc_trade
+      type: object
+      properties:
+        amountTrade:
+          description: "See DEF_REBALS.T_TRADE_REC"
+          type: number
+        asset1:
+          description: "See DEF_REBALS.T_TRADE_REC<br>Referencing: `/obj-assets/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        cont:
+          description: "See DEF_REBALS.T_TRADE_REC<br>Referencing: `/obj-conts/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        cost:
+          description: "See DEF_REBALS.T_TRADE_REC"
+          type: number
+          readOnly: true
+        execType:
+          description: "See DEF_REBALS.T_TRADE_REC<br>Referencing: `/code-order-sub-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        expirDate:
+          description: "See DEF_REBALS.T_TRADE_REC"
+          type: string
+          format: date
+        genDoc:
+          description: "See DEF_REBALS.T_TRADE_REC<br>Referencing: `/docs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/doc_ref'
+          readOnly: true
+        limit:
+          description: "See DEF_REBALS.T_TRADE_REC"
+          type: number
+        macc:
+          description: "See DEF_REBALS.T_TRADE_REC<br>Referencing: `/obj-poss/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        mkt:
+          description: "See DEF_REBALS.T_TRADE_REC<br>Referencing: `/obj-mkts/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        orderType:
+          description: "See DEF_REBALS.T_TRADE_REC<br>Referencing: `/code-order-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        orderTypeGrp:
+          description: "See DEF_REBALS.T_TRADE_REC<br>Referencing: `/code-order-type-grps/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        pos:
+          description: "See DEF_REBALS.T_TRADE_REC<br>Referencing: `/obj-poss/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        price:
+          description: "See DEF_REBALS.T_TRADE_REC"
+          type: number
+        qty:
+          description: "See DEF_REBALS.T_TRADE_REC"
+          type: number
+        solic:
+          description: "See DEF_REBALS.T_TRADE_REC<br>Referencing: `/code-invstr-prot-solics/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        tradeCurry:
+          description: "See DEF_REBALS.T_TRADE_REC<br>Referencing: `/obj-assets/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        trigPrice:
+          description: "See DEF_REBALS.T_TRADE_REC"
+          type: number
+        validConstrId:
+          description: "See DEF_REBALS.T_TRADE_REC"
+          type: number
+        wfcMetaTyp:
+          description: "See DEF_REBALS.T_TRADE_REC<br>Referencing: `/meta-typs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+    doc_key:
+      title: doc_key
+      type: object
+      properties:
+        docKey:
+          description: "Referencing: `/code-doc-keys/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+          x-additionalFieldType: extn_generic
+        val:
+          type: string
+          readOnly: true
+          x-additionalFieldType: extn_generic
+    doc_override:
+      title: doc_override
+      type: object
+      properties:
+        override:
+          description: "Override code<br>Referencing: `/code-overrides/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        overrideComment:
+          description: "Comment<br>Referencing: `/code-override-comments/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        overrideText:
+          description: "Override text"
+          type: string
+        secUser:
+          description: "User<br>Referencing: `/users/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/user_ref'
+        signt:
+          description: "Signature"
+          type: string
+        timestamp:
+          description: "Timestamp"
+          type: string
+          format: date-time
+    doc_postit:
+      title: doc_postit
+      type: object
+      properties:
+        ctx:
+          description: "Text<br>Referencing: `/code-postit-ctxs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        doProp:
+          description: "Is postit propagated"
+          type: boolean
+        isMan:
+          description: "Is manualally entered"
+          type: boolean
+        role:
+          description: "Role<br>Referencing: `/users/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/user_ref'
+        subType:
+          description: "Subtype<br>Referencing: `/code-postit-sub-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        text:
+          description: "Text"
+          type: string
+        timestamp:
+          description: "Timestamp"
+          type: string
+          format: date-time-no-tz
+        topic:
+          description: "Topic"
+          type: string
+        type:
+          description: "Type<br>Referencing: `/code-postit-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        user:
+          description: "Inserted by<br>Referencing: `/users/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/user_ref'
+    doc_ref:
+      title: doc_ref
+      type: object
+      properties:
+        _href:
+          description: "Reference/link"
+          type: string
+          readOnly: true
+        _ident:
+          description: "Only used for workItem use cases, cross-reference in workItem context."
+          type: string
+          writeOnly: true
+        id:
+          description: "Numeric reference"
+          type: integer
+          format: int64
+    doc_xiom:
+      title: doc_xiom
+      type: object
+      properties:
+        addList:
+          type: array
+          items:
+            $ref: '#/components/schemas/doc_add'
+          x-additionalFieldType: extn_generic
+        advNr:
+          description: "Advice Number of DOC"
+          type: integer
+          format: int32
+        agingId:
+          type: integer
+          format: int32
+          readOnly: true
+        bdeRecVersion:
+          type: integer
+          format: int32
+        bp:
+          description: "Contracting Business Partner<br>Referencing: `/obj-bps/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        bpLevelRep:
+          description: "Aggregate client meeting preparation reporting on BP level"
+          type: boolean
+        bu:
+          description: "Business unit of order itself<br>Referencing: `/obj-bps/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        chkoutType:
+          description: "Checkout type<br>Referencing: `/code-xiom-chkout-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        cont:
+          description: "Contracting Container<br>Referencing: `/obj-conts/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        descn:
+          description: "Description"
+          type: string
+        evalDetList:
+          type: array
+          items:
+            $ref: '#/components/schemas/docp_xiom_eval_det'
+        extlProposId:
+          description: "External Proposal ID"
+          type: string
+        extlRefNr:
+          description: "External reference number"
+          type: string
+        extlRepLang:
+          description: "Language of the external report"
+          type: string
+        extn:
+          $ref: '#/components/schemas/doc_xiom_extn'
+        fxList:
+          type: array
+          items:
+            $ref: '#/components/schemas/doc_invst_doc_fx'
+        hasPostit:
+          description: "Has order a post-it"
+          type: boolean
+        hasWorkItem:
+          type: boolean
+          readOnly: true
+        id:
+          description: "ID<br>Referencing: `/docs/{id}`"
+          type: integer
+          format: int64
+        inpr:
+          $ref: '#/components/schemas/docp_inpr'
+        insBySecUser:
+          description: "Order created by user<br>Referencing: `/users/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/user_ref'
+        intlRefNr:
+          description: "Internal reference number"
+          type: string
+        ips:
+          description: "Investment Policy Statement<br>Referencing: `/obj-ipss/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        isDel:
+          description: "is order deleted"
+          type: boolean
+        isFinal:
+          description: "Is order in a final status?"
+          type: boolean
+        isSim:
+          description: "Is the order a simulation?"
+          type: boolean
+          readOnly: true
+        keyList:
+          type: array
+          items:
+            $ref: '#/components/schemas/doc_key'
+          x-additionalFieldType: extn_generic
+        lastMsg:
+          description: "Last message ID<br>Referencing: `/msgs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        lastTrans:
+          description: "Last transition"
+          type: string
+          format: date-time
+        lastTransSecUser:
+          description: "Last transition user<br>Referencing: `/users/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/user_ref'
+          readOnly: true
+        linkGrp:
+          description: "Link group"
+          type: number
+        medium:
+          description: "Communication medium, e.g. phone, fax, etc.<br>Referencing: `/code-mediums/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        metaTyp:
+          description: "Meta type<br>Referencing: `/meta-typs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        oofxList:
+          type: array
+          items:
+            $ref: '#/components/schemas/doc_invst_doc_oofx'
+        orderDate:
+          description: "Order date"
+          type: string
+          format: date
+        orderDateTz:
+          description: "Order date"
+          type: string
+          format: date-time
+          readOnly: true
+        orderNr:
+          description: "Reference no."
+          type: integer
+          format: int32
+        orderType:
+          description: "Order type<br>Referencing: `/code-order-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        orderTypeGrp:
+          description: "Order type group<br>Referencing: `/code-order-type-grps/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        orderedBy:
+          description: "Ordered by"
+          type: string
+        overrideList:
+          type: array
+          items:
+            $ref: '#/components/schemas/doc_override'
+        postitList:
+          type: array
+          items:
+            $ref: '#/components/schemas/doc_postit'
+        refDoc:
+          description: "Reference order<br>Referencing: `/docs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/doc_ref'
+        sendRepToEbank:
+          description: "Send report to ebanking"
+          type: boolean
+        tradeList:
+          type: array
+          items:
+            $ref: '#/components/schemas/doc_invst_doc_trade'
+        wfcAction:
+          description: "Workflow Action<br>Referencing: `/wfc-action-xioms/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref_action'
+        wfcStatus:
+          description: "Workflow  status<br>Referencing: `/wfc-status-xioms/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+    doc_xiom_extn:
+      title: doc_xiom_extn
+      type: object
+      properties:
+        afsDocId:
+          description: "AFS Order ID"
+          type: string
+        afsExtlRefNr:
+          description: "AFS external reference number"
+          type: string
+        api1RefNr:
+          description: "Primary API external reference number"
+          type: string
+        api2RefNr:
+          description: "Secondary API external reference number"
+          type: string
+        chkoutStep:
+          description: "XIOM Checkout Step"
+          type: string
+        cnstGiven:
+          description: "XIOM Consent given"
+          type: boolean
+        dxsCtxId:
+          description: "DXS context ID"
+          type: string
+        dxsEntityExtlRef:
+          description: "DXS entity external reference"
+          type: string
+        extlProposId:
+          description: "External Proposal ID"
+          type: string
+        extlRepRef:
+          description: "External report reference"
+          type: string
+        mba$authEdtRvwCompLvList:
+          description: "Authorization: comp lv that need to authorize for specific edt rvw in jtg"
+          type: array
+          items:
+            type: string
+        mba$authorEdtRvwJtgList:
+          type: array
+          items:
+            $ref: '#/components/schemas/number'
+        mba$blockAprvUserList:
+          description: "List of Users having approved the Compliance Blocking Codes<br>Referencing: `/users/{id}`"
+          type: array
+          items:
+            $ref: '#/components/schemas/user_ref'
+        mba$blockJtgList:
+          description: "Current List of matching compliance block IDs with the corresponding JTG IDs"
+          type: string
+        mba$blockRemnJtgList:
+          description: "List of JTG still required to approve the Compliance Blocking Codes<br>Referencing: `/mba$code-job-type-grps/{id}`"
+          type: array
+          items:
+            $ref: '#/components/schemas/code_tab_ref'
+        mba$ccPastAuthorUserList:
+          description: "Authorization: User List for current jtg (Credit Check)<br>Referencing: `/users/{id}`"
+          type: array
+          items:
+            $ref: '#/components/schemas/user_ref'
+        mba$credChkAuthCompLvList:
+          description: "Authorization: comp lv that need to authorize in jtg (Credit Check)"
+          type: array
+          items:
+            type: string
+        mba$credChkAuthorJtgList:
+          description: "JTG to authorize the order. Indication, which jtg has to author (Credit Check).<br>Referencing: `/mba$code-job-type-grps/{id}`"
+          type: array
+          items:
+            $ref: '#/components/schemas/code_tab_ref'
+        mba$credChkCmt:
+          description: "Comment of the Decision (Credit Check)"
+          type: array
+          items:
+            type: string
+        mba$credChkRestr:
+          description: "Additional Restriction List (Credit Check)"
+          type: array
+          items:
+            type: string
+        mba$docErrType:
+          description: "Order Processing Error Type<br>Referencing: `/mba$code-doc-err-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        mba$edtRvwJtgList:
+          type: array
+          items:
+            $ref: '#/components/schemas/number'
+        mba$edtRvwUserList:
+          description: "Last user to edited the order for jtg (as listed in mba$edt_rvw_jtg_list)<br>Referencing: `/users/{id}`"
+          type: array
+          items:
+            $ref: '#/components/schemas/user_ref'
+        mba$iAuthEdtRvwCompLvLst:
+          description: "Authorization:initial comp lv that need to authorize for specific edt rvw in jtg"
+          type: array
+          items:
+            type: string
+        mba$iCredChkAuthCompLvLt:
+          description: "Authorization:initial comp lv that need to authorize in jtg (Credit Check)"
+          type: array
+          items:
+            type: string
+        mba$instrDet:
+          description: "Instruction Details"
+          type: string
+        mba$isDfltValSet:
+          description: "Have default values been applied"
+          type: boolean
+        mba$lswfInsJtg:
+          description: "Job Type Group that inserted the order<br>Referencing: `/mba$code-job-type-grps/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        mba$lswfJtg:
+          description: "Current job type group owning the status<br>Referencing: `/mba$code-job-type-grps/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        mba$lswfLastSwfIntfWfaId:
+          description: "Last interface action used"
+          type: number
+        mba$lswfLastSwfWfaId:
+          description: "Last workflow action used"
+          type: number
+        mba$lswfLastSwfWfsId:
+          description: "Communication to next department"
+          type: number
+        mba$lswfNextJtg:
+          description: "Next job type group owning the status<br>Referencing: `/mba$code-job-type-grps/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        mba$lswfNextJtgInfo:
+          description: "Communication to next job type group"
+          type: string
+        mba$lswfNextRa:
+          description: "Next Routing Action for Linkable Sub-Workflow<br>Referencing: `/mba$code-lswf-raps/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        mba$lswfNextSwf:
+          description: "Next Linkable Sub-Workflow in Workflow<br>Referencing: `/mba$code-lswfs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        mba$lswfPrevSwf:
+          description: "Previous Linkable Sub-Workflow in Workflow<br>Referencing: `/mba$code-lswfs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        mba$lswfRa:
+          description: "Current Routing Action for Linkable Sub-Workflow<br>Referencing: `/mba$code-lswf-raps/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        mba$lswfSwf:
+          description: "Current Linkable Sub-Workflow in Workflow<br>Referencing: `/mba$code-lswfs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        mba$lswfUc:
+          description: "Use Case assigned to the order<br>Referencing: `/mba$code-lswf-ucs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        mba$mediumA:
+          description: "Medium A/M flag"
+          type: boolean
+        mba$mediumPhoneNr:
+          description: "Reference phone number to be registered in case of a phone call"
+          type: string
+        mba$pastAuthorUserList:
+          description: "Authorization: User List for current jtg<br>Referencing: `/users/{id}`"
+          type: array
+          items:
+            $ref: '#/components/schemas/user_ref'
+        mba$srcFund:
+          description: "Source of Funds<br>Referencing: `/mba$code-src-funds/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        pkpSvcRsvIdent:
+          description: "Position Keeping Service: Reservation/advice identifier"
+          type: string
+        xiomUser:
+          description: "XIOM User"
+          type: string
+    doc_xioms:
+      title: List of doc_xiom
+      type: array
+      items:
+        $ref: '#/components/schemas/doc_xiom'
+      uniqueItems: true
+    docp_inpr:
+      title: docp_inpr
+      type: object
+      properties:
+        advsClientList:
+          type: array
+          items:
+            $ref: '#/components/schemas/docp_inpr_client'
+        advsLoc:
+          description: "Advisor location at the time of advice.<br>Referencing: `/obj-countrys/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        advsLocA:
+          description: "Auto/Manual flag of Advisor location at the time of advice."
+          type: boolean
+          readOnly: true
+        busiCtx:
+          description: |
+            The business context in which the rules are to
+                      be evaluated.<br>Referencing: `/code-invstr-prot-busi-ctxs/{id}`
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        cont:
+          description: |
+            The container under discussion. The owner of
+                      that container is also used for filtering the person lookup for
+                      'advs_client_list.person_id'.<br>Referencing: `/obj-conts/{id}`
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          readOnly: true
+        doc:
+          description: "Doc_id<br>Referencing: `/docs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/doc_ref'
+          readOnly: true
+        dur:
+          description: "Duration of the meeting.<br>Referencing: `/code-invstr-prot-durs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        durA:
+          description: "Auto/Manual flag of Duration of the meeting."
+          type: boolean
+          readOnly: true
+        finalVersionSeqNr:
+          description: "The sequence number of the final version."
+          type: integer
+          format: int32
+          readOnly: true
+        frze:
+          description: |
+            Set to TRUE (+) in order to freeze the rules and
+                      the fields; FALSE in order to have the rules be re-evaluted upon changes
+                      in the order.
+          type: boolean
+          readOnly: true
+        intive:
+          description: "Initiative: client or investment advisor.<br>Referencing: `/code-invstr-prot-intives/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        intiveA:
+          description: "Auto/Manual flag of Initiative: client or investment advisor."
+          type: boolean
+          readOnly: true
+        invstAdvs:
+          description: |
+            Investment advisor - either a business partner
+                      (BP) or person, depending on the organisational structure activation.<br>Referencing: `/objs/{id}`
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        invstAdvsA:
+          description: |
+            Auto/Manual flag of Investment advisor - either a business partner
+                      (BP) or person, depending on the organisational structure activation.
+          type: boolean
+          readOnly: true
+        ips:
+          description: "The selected investment policy statement (IPS).<br>Referencing: `/obj-ipss/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          readOnly: true
+        meetingDate:
+          description: |
+            Date and time of the meeting, converted to local
+                      time zone.
+          type: string
+          format: date-time-no-tz
+        meetingDateA:
+          description: |
+            Auto/Manual flag of Date and time of the meeting, converted to local
+                      time zone.
+          type: boolean
+          readOnly: true
+        overallStatus:
+          description: "The overall investor protection status of the final version.<br>Referencing: `/code-invstr-prot-statuss/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        refDoc:
+          description: |
+            Reference order for which the investor
+                      protection rules have already been evaluated and which created this
+                      order (to which this investor protection part is attached).<br>Referencing: `/docs/{id}`
+          allOf:
+            - $ref: '#/components/schemas/doc_ref'
+          readOnly: true
+        scusList:
+          type: array
+          items:
+            $ref: '#/components/schemas/docp_inpr_cus'
+        scusOverStatus:
+          description: "Overall service custom teststatus.<br>Referencing: `/code-invstr-prot-statuss/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        sdocmOverStatus:
+          description: |
+            Overall service information document status
+                      (okay, restricted, not okay).<br>Referencing: `/code-invstr-prot-statuss/{id}`
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        sindList:
+          type: array
+          items:
+            $ref: '#/components/schemas/docp_inpr_indu'
+        sindOverStatus:
+          description: "Overall service information duty status.<br>Referencing: `/code-invstr-prot-statuss/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        sindmOverState:
+          description: |
+            Overall service information document state
+                      (required, received, handed over, ...).<br>Referencing: `/code-invstr-prot-docm-states/{id}`
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        svcDocmList:
+          type: array
+          items:
+            $ref: '#/components/schemas/docp_inpr_docm'
+        svcList:
+          type: array
+          items:
+            $ref: '#/components/schemas/docp_inpr_svc'
+        svcOverStatus:
+          description: "Overall advisory service status.<br>Referencing: `/code-invstr-prot-statuss/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        svcType:
+          description: |
+            The provided bank service respective degree of
+                      advice given: Advice Given, Opinion Given, Direct Execution, ...<br>Referencing: `/code-invstr-prot-svc-types/{id}`
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        svcTypeA:
+          description: |
+            Auto/Manual flag of The provided bank service respective degree of
+                      advice given: Advice Given, Opinion Given, Direct Execution, ...
+          type: boolean
+          readOnly: true
+        versList:
+          type: array
+          items:
+            $ref: '#/components/schemas/docp_inpr_vers'
+    docp_inpr_apof:
+      title: docp_inpr_apof
+      type: object
+      properties:
+        legalNorm:
+          description: "Legal norm for which this applicable offering is evaluated.<br>Referencing: `/code-invstr-prot-legal-norms/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        ovr:
+          description: "Applicable offering override code.<br>Referencing: `/code-overrides/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        ovrJustifTempl:
+          description: "Justification template for the override of the applicable offering status.<br>Referencing: `/code-invstr-prot-justifs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        ovrJustifTemplA:
+          description: "Auto/Manual flag of Justification template for the override of the applicable offering status."
+          type: boolean
+          readOnly: true
+        ovrJustifText:
+          description: "Justification text for the override of the applicable offering status."
+          type: string
+        partId:
+          description: "Part ID"
+          type: number
+          readOnly: true
+        person:
+          description: "Advised client for whom this applicable offering is evaluated.<br>Referencing: `/obj-persons/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          readOnly: true
+        replyOvr:
+          description: "Set to TRUE in order to override the 'apof_rule_reply_id'; valid 'apof_ovr_id' required."
+          type: boolean
+        rule:
+          description: "The rule identifier.<br>Referencing: `/code-invstr-prot-rules/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        ruleDiag:
+          description: "The rule diagnosis (error or result type).<br>Referencing: `/code-invstr-prot-rule-diags/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        ruleMsgKeyOrVal:
+          description: |
+            The encoded, translatable text (or the
+                      non-translatable text itself) for the message explaining the (negative)
+                      applicable offering reply. Use 'rule_msg' or alternatively
+                      bre_text.text#text in order to display the (translated) text.
+          type: string
+          readOnly: true
+        ruleReply:
+          description: "The reply of the applicable offering rule service.<br>Referencing: `/code-invstr-prot-rule-replys/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        status:
+          description: "Applicable offering status.<br>Referencing: `/code-invstr-prot-statuss/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+    docp_inpr_asset:
+      title: docp_inpr_asset
+      type: object
+      properties:
+        acusList:
+          type: array
+          items:
+            $ref: '#/components/schemas/docp_inpr_cus'
+        acusOverStatus:
+          description: "Overall asset custom test status.<br>Referencing: `/code-invstr-prot-statuss/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        advReasonTempl:
+          description: "Template for the advice reason.<br>Referencing: `/code-invstr-prot-adv-reasons/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        advReasonTemplA:
+          description: "Auto/Manual flag of Template for the advice reason."
+          type: boolean
+          readOnly: true
+        advReasonText:
+          description: "The reason for the advice."
+          type: string
+        aindList:
+          type: array
+          items:
+            $ref: '#/components/schemas/docp_inpr_indu'
+        aindOverStatus:
+          description: "Overall asset information duty status.<br>Referencing: `/code-invstr-prot-statuss/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        apofList:
+          type: array
+          items:
+            $ref: '#/components/schemas/docp_inpr_apof'
+        apofOverStatus:
+          description: "Overall asset applicable offering status.<br>Referencing: `/code-invstr-prot-statuss/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        asset:
+          description: "The asset being discussed.<br>Referencing: `/obj-assets/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          readOnly: true
+        assetComment:
+          description: "Asset comment."
+          type: string
+        atstList:
+          type: array
+          items:
+            $ref: '#/components/schemas/docp_inpr_atst'
+        atstOverStatus:
+          description: "Overall appropriateness status.<br>Referencing: `/code-invstr-prot-statuss/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        docmList:
+          type: array
+          items:
+            $ref: '#/components/schemas/docp_inpr_docm'
+        docmOverStatus:
+          description: |
+            Overall asset information document status
+                      (okay, restricted, not okay).<br>Referencing: `/code-invstr-prot-statuss/{id}`
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        indmOverState:
+          description: |
+            Overall asset information document state
+                      (required, received, handed over, ...).<br>Referencing: `/code-invstr-prot-docm-states/{id}`
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        mkt:
+          description: "The market on which the asset is going to be traded.<br>Referencing: `/obj-mkts/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          readOnly: true
+        optimInstr:
+          description: "The optimiser instruction which has been set for the position on the actual order (e.g. REBALP).<br>Referencing: `/code-optim-instrs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        partId:
+          description: "Part ID"
+          type: number
+          readOnly: true
+        pos:
+          description: "The position which is on either buy, hold or sell.<br>Referencing: `/obj-poss/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          readOnly: true
+        qty:
+          description: "The quantity by which the position is changed: positive for buy, negative for sell."
+          type: number
+          readOnly: true
+        remark:
+          description: "The remark which has been added to the position on the actual order (e.g. REBALP)."
+          type: string
+          readOnly: true
+        solic:
+          description: "Solicitation: whether the discussed asset is recommended or on client request.<br>Referencing: `/code-invstr-prot-solics/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+    docp_inpr_atst:
+      title: docp_inpr_atst
+      type: object
+      properties:
+        existKnowlExper:
+          description: "The existing knowledge and experience (K&E) of the client as a comma separated list."
+          type: string
+          readOnly: true
+        legalNorm:
+          description: "Legal norm for which this appropriateness test is evaluated.<br>Referencing: `/code-invstr-prot-legal-norms/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        ovr:
+          description: "A-test override code.<br>Referencing: `/code-overrides/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        ovrJustifTempl:
+          description: "Justification template for the override of the a-test status.<br>Referencing: `/code-invstr-prot-justifs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        ovrJustifTemplA:
+          description: "Auto/Manual flag of Justification template for the override of the a-test status."
+          type: boolean
+          readOnly: true
+        ovrJustifText:
+          description: "Justification text for the override of the a-test status."
+          type: string
+        partId:
+          description: "Part ID"
+          type: number
+          readOnly: true
+        person:
+          description: "Advised client for which this appropriateness test is evaluated.<br>Referencing: `/obj-persons/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          readOnly: true
+        replyOvr:
+          description: "Set to TRUE in order to override the 'rule_reply_id'; valid 'ovr_id' required."
+          type: boolean
+        requKnowlExper:
+          description: "The required knowledge and experience (K&E) for the asset (in the parent ASSET part)."
+          type: string
+          readOnly: true
+        rule:
+          description: "The rule identifier.<br>Referencing: `/code-invstr-prot-rules/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        ruleDiag:
+          description: "The rule diagnosis (error or result type).<br>Referencing: `/code-invstr-prot-rule-diags/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        ruleReply:
+          description: "The reply of the a-test rule service.<br>Referencing: `/code-invstr-prot-rule-replys/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        status:
+          description: "A-test status.<br>Referencing: `/code-invstr-prot-statuss/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        succ:
+          description: "Indicates whether the client has successfully passed the a-test (true) or not (false)."
+          type: boolean
+          readOnly: true
+    docp_inpr_client:
+      title: docp_inpr_client
+      type: object
+      properties:
+        involv:
+          description: "Client involvement: mandatory or optional.<br>Referencing: `/code-invstr-prot-involvs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        legalNormList:
+          type: array
+          items:
+            $ref: '#/components/schemas/docp_inpr_legal'
+        loc:
+          description: "Client location at the time of advice.<br>Referencing: `/obj-countrys/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        manual:
+          description: "Indicates whether the client was manually added (TRUE) or due to the stakeholder nomination rule (FALSE)."
+          type: boolean
+          readOnly: true
+        medium:
+          description: "The medium (Face to Face, Phone, E-Mail, ...) by which the service is provided to this client.<br>Referencing: `/code-invstr-prot-mediums/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        partId:
+          description: "Part ID"
+          type: number
+          readOnly: true
+        person:
+          description: "Advised client.<br>Referencing: `/obj-persons/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        role:
+          description: "Client role.<br>Referencing: `/code-invstr-prot-roles/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        rule:
+          description: "The rule identifier.<br>Referencing: `/code-invstr-prot-rules/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        ruleDiag:
+          description: "The rule diagnosis (error or result type).<br>Referencing: `/code-invstr-prot-rule-diags/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+    docp_inpr_cobe:
+      title: docp_inpr_cobe
+      type: object
+      properties:
+        legalNorm:
+          description: "Legal norm for which this cost-benefit test is evaluated.<br>Referencing: `/code-invstr-prot-legal-norms/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        ovr:
+          description: "Cost-benefit test override code.<br>Referencing: `/code-overrides/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        ovrJustifTempl:
+          description: |
+            Justification template for the override of the
+                      cost-benefit test status.<br>Referencing: `/code-invstr-prot-justifs/{id}`
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        ovrJustifText:
+          description: |
+            Justification text for the override of the
+                      cost-benefit test status.
+          type: string
+          readOnly: true
+        partId:
+          description: "Part ID"
+          type: number
+          readOnly: true
+        person:
+          description: "Advised client for which this cost-benefit test is evaluated.<br>Referencing: `/obj-persons/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          readOnly: true
+        replyOvr:
+          description: |
+            Set to TRUE in order to override the
+                      'cobe_rule_reply_id'; valid 'cobe_ovr_id' required.
+          type: boolean
+          readOnly: true
+        rule:
+          description: "The rule identifier.<br>Referencing: `/code-invstr-prot-rules/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        ruleDiag:
+          description: "The rule diagnosis (error or result type).<br>Referencing: `/code-invstr-prot-rule-diags/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        ruleMsgCtx:
+          description: |
+            The context which provides the parameters,
+                      separated by semicolon (INVSTR_PROT_CONST.C_CTX_SEP), for the message
+                      placeholders (&1, &2 etc.) in 'rule_msg_key_or_val'.
+          type: string
+          readOnly: true
+        ruleMsgKeyOrVal:
+          description: |
+            The OUT_TEXT_NORM key (or the non-translatable
+                      text itself) for the message explaining the (negative) cost-benefit test
+                      reply.  Use 'rule_msg' in order to display the (translated) text.
+          type: string
+          readOnly: true
+        ruleReply:
+          description: "The reply of the cost-benefit test rule service (CSS function).<br>Referencing: `/code-invstr-prot-rule-replys/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        status:
+          description: "Cost-benefit test status.<br>Referencing: `/code-invstr-prot-statuss/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+    docp_inpr_cus:
+      title: docp_inpr_cus
+      type: object
+      properties:
+        legalNorm:
+          description: "Legal norm for which this custom test is evaluated.<br>Referencing: `/code-invstr-prot-legal-norms/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        ovr:
+          description: "Custom test override code.<br>Referencing: `/code-overrides/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        ovrJustifTempl:
+          description: |
+            Justification template for the override of the
+                      custom test status.<br>Referencing: `/code-invstr-prot-justifs/{id}`
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        ovrJustifTemplA:
+          description: |
+            Auto/Manual flag of Justification template for the override of the
+                      custom test status.
+          type: boolean
+          readOnly: true
+        ovrJustifText:
+          description: |
+            Justification text for the override of the
+                      custom test status.
+          type: string
+        partId:
+          description: "Part ID"
+          type: number
+          readOnly: true
+        person:
+          description: "Advised client for which this custom test is evaluated.<br>Referencing: `/obj-persons/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          readOnly: true
+        replyOvr:
+          description: |
+            Set to TRUE in order to override the
+                      'cobe_rule_reply_id'; valid 'cobe_ovr_id' required.
+          type: boolean
+        rule:
+          description: "The rule identifier.<br>Referencing: `/code-invstr-prot-rules/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        ruleDiag:
+          description: "The rule diagnosis (error or result type).<br>Referencing: `/code-invstr-prot-rule-diags/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        ruleMsgCtx:
+          description: |
+            The context which provides the parameters,
+                      separated by semicolon (INVSTR_PROT_CONST.C_CTX_SEP), for the message
+                      placeholders (&1, &2 etc.) in 'rule_msg_key_or_val'.
+          type: string
+          readOnly: true
+        ruleMsgKeyOrVal:
+          description: |
+            The OUT_TEXT_NORM key (or the non-translatable
+                      text itself) for the message explaining the (negative) custom test
+                      reply.  Use 'rule_msg' in order to display the (translated) text.
+          type: string
+          readOnly: true
+        ruleReply:
+          description: "The reply of the custom test rule service (CSS function).<br>Referencing: `/code-invstr-prot-rule-replys/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        status:
+          description: "Custom test status.<br>Referencing: `/code-invstr-prot-statuss/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+    docp_inpr_docm:
+      title: docp_inpr_docm
+      type: object
+      properties:
+        altLangList:
+          type: array
+          items:
+            $ref: '#/components/schemas/docp_inpr_lang'
+          readOnly: true
+        avlLangList:
+          type: array
+          items:
+            $ref: '#/components/schemas/docp_inpr_lang'
+          readOnly: true
+        cltConf:
+          description: |
+            Indicates whether the client has confirmed
+                      or rejected the information document.<br>Referencing: `/code-invstr-prot-clt-confs/{id}`
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        docmDistr:
+          description: |
+            Indicates the way the document is to be
+                      distributed, specifically whether it is mandatory or optional, or whether
+                      it is to be retrieved manually and personally handed over.<br>Referencing: `/code-invstr-prot-docm-distrs/{id}`
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        docmState:
+          description: |
+            Information document state (Required, Received,
+                      Handed Over, ...).<br>Referencing: `/code-invstr-prot-docm-states/{id}`
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        docmType:
+          description: |
+            The type of the information document,
+                      for instance PIB or PRIIP-KID. The actually received document type is
+                      stored in 'rcvd_docm_type_id'.<br>Referencing: `/code-info-docm-types/{id}`
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        jusCountry:
+          description: |
+            The jurisdiction for which the information
+                      document is to be generated.<br>Referencing: `/obj-countrys/{id}`
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        lang:
+          description: |
+            The language in which the information document
+                      is to be generated.<br>Referencing: `/code-langs/{id}`
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        legalNorm:
+          description: |
+            The Legal norm for which the information document
+                      is required.<br>Referencing: `/code-invstr-prot-legal-norms/{id}`
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        manual:
+          description: |
+            Indicates whether the information document was
+                      manually added (TRUE) or due to the information duty rule (FALSE).
+          type: boolean
+          readOnly: true
+        ovDocmState:
+          description: |
+            Overall information document state (Required,
+                      Received, Handed Over, ...) which takes the 'docm_state_id' and the
+                      'clt_conf_id' into account.<br>Referencing: `/code-invstr-prot-docm-states/{id}`
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        ovr:
+          description: "Information document override code.<br>Referencing: `/code-overrides/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        ovrJustifTempl:
+          description: |
+            Justification template for the override of the
+                      information document status.<br>Referencing: `/code-invstr-prot-justifs/{id}`
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        ovrJustifTemplA:
+          description: |
+            Auto/Manual flag of Justification template for the override of the
+                      information document status.
+          type: boolean
+          readOnly: true
+        ovrJustifText:
+          description: |
+            Justification text for the override of the
+                      information document status.
+          type: string
+        partId:
+          description: "Part ID"
+          type: number
+          readOnly: true
+        person:
+          description: |
+            Advised client for which the information document
+                      is required.<br>Referencing: `/obj-persons/{id}`
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        postTrade:
+          description: |
+            Indicates whether the document can be delivered
+                      post-trade or not.<br>Referencing: `/code-invstr-prot-post-trades/{id}`
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        prefLang:
+          description: |
+            The preferred language which has been determined
+                      by the information document detail rule service.<br>Referencing: `/code-langs/{id}`
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        rcvdDocmType:
+          description: |
+            The received type of the information document,
+                      for instance PIB or PRIIP-KID. In most cases this is expected to be
+                      equal to 'docm_type_id', except if the requested document type could
+                      not be retrieved and alternative documents have been specified.<br>Referencing: `/code-info-docm-types/{id}`
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        rcvdLang:
+          description: |
+            The received language of the information
+                      document. In most cases this is expected to be equal to 'lang_id', except
+                      if the requested document language could not be retrieved and
+                      alternative languages have been specified.<br>Referencing: `/code-langs/{id}`
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        requ:
+          description: |
+            Indicates whether the information document needs
+                      to be retrieved or not.
+          type: boolean
+        rtrvOvr:
+          description: "Information document retrieval override checkbox."
+          type: boolean
+        rtrvTime:
+          description: |
+            Information document retrieval date and time,
+                      converted to local time zone.
+          type: string
+          format: date-time-no-tz
+          readOnly: true
+        rule:
+          description: "The rule identifier.<br>Referencing: `/code-invstr-prot-rules/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        ruleCltConf:
+          description: |
+            Indicates whether a client confirmation for
+                      the information document is required or not.<br>Referencing: `/code-invstr-prot-clt-confs/{id}`
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        ruleDiag:
+          description: "The rule diagnosis (error or result type).<br>Referencing: `/code-invstr-prot-rule-diags/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        ruleDocmDistr:
+          description: |
+            The distribution which has been determined by
+                      the information duty rule service. Also refer to 'docm_distr_id'.<br>Referencing: `/code-invstr-prot-docm-distrs/{id}`
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        ruleJusCountry:
+          description: |
+            The jurisdiction which has been determined by
+                      the information document detail rule service.<br>Referencing: `/obj-countrys/{id}`
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          readOnly: true
+        statusMsgCtx:
+          description: |
+            The context which provides the parameters,
+                      separated by semicolon (INVSTR_PROT_CONST.C_CTX_SEP), for the message
+                      placeholders (&1, &2 etc.) in 'status_msg_key_val'.
+          type: string
+          readOnly: true
+        statusMsgKeyVal:
+          description: |
+            The OUT_TEXT_NORM key (or the non-translatable
+                      text itself) for the information document retrieval status
+                      message. Use 'status_msg' in order to display the (translated) text.
+          type: string
+          readOnly: true
+        uuid:
+          description: |
+            Information document universally unique
+                      identifier (UUID).
+          type: string
+          readOnly: true
+    docp_inpr_indu:
+      title: docp_inpr_indu
+      type: object
+      properties:
+        agingId:
+          description: "ID"
+          type: number
+          readOnly: true
+        doc:
+          description: "Doc_id<br>Referencing: `/docs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/doc_ref'
+          readOnly: true
+        docm:
+          description: "Required client document.<br>Referencing: `/obj-docms/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          readOnly: true
+        docmDistr:
+          description: |
+            Defines the information document distribution,
+                      for instance mandatory, optional or post-trade delivery.<br>Referencing: `/code-invstr-prot-docm-distrs/{id}`
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        docmExists:
+          description: |
+            Indicates whether the required client document
+                      exists (true) or not (false).
+          type: boolean
+          readOnly: true
+        docmOwns:
+          description: |
+            Ownership of the required client document:
+                      person, BP, CONT, IPS.<br>Referencing: `/code-invstr-prot-docm-ownss/{id}`
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        docmType:
+          description: "The information document type (e.g. PIB or KIID).<br>Referencing: `/code-info-docm-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        docmValid:
+          description: |
+            Indicates whether the required client document
+                      has a valid signature (signed, not expired).
+          type: boolean
+          readOnly: true
+        infoDuty:
+          description: |
+            The kind of information duty: information
+                      document, client document or disclaimer (text).<br>Referencing: `/code-invstr-prot-info-dutys/{id}`
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        legalNorm:
+          description: |
+            Legal norm for which this asset information duty
+                      is required.<br>Referencing: `/code-invstr-prot-legal-norms/{id}`
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        ovr:
+          description: "Information duty override code<br>Referencing: `/code-overrides/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        ovrJustifTempl:
+          description: |
+            Justification template for the override of the
+                      information duty status.<br>Referencing: `/code-invstr-prot-justifs/{id}`
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        ovrJustifTemplA:
+          description: |
+            Auto/Manual flag of Justification template for the override of the
+                      information duty status.
+          type: boolean
+          readOnly: true
+        ovrJustifText:
+          description: |
+            Justification text for the override of the
+                      information duty status.
+          type: string
+        partId:
+          description: "Part ID"
+          type: number
+          readOnly: true
+        person:
+          description: |
+            Advised client for whom this asset information
+                      duty is required.<br>Referencing: `/obj-persons/{id}`
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          readOnly: true
+        postTrade:
+          description: |
+            Indicates whether the document can be delivered
+                      post-trade or not.<br>Referencing: `/code-invstr-prot-post-trades/{id}`
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        replyOvr:
+          description: |
+            Set to TRUE in order to override the
+                      'docm_exists', 'docm_valid' result; valid 'ovr_id' required.
+          type: boolean
+        rule:
+          description: "The rule identifier.<br>Referencing: `/code-invstr-prot-rules/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        ruleDiag:
+          description: "The rule diagnosis (error or result type).<br>Referencing: `/code-invstr-prot-rule-diags/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        ruleMsgKeyOrVal:
+          description: |
+            The encoded, translatable text (or the
+                      non-translatable text itself) according to 'info_duty_id', for instance
+                      a disclaimer text or an explanation why a given information document is
+                      required. Use 'rule_msg' or alternatively bre_text.text#text in order to
+                      display the (translated) text.
+          type: string
+          readOnly: true
+        status:
+          description: "Information duty status.<br>Referencing: `/code-invstr-prot-statuss/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+    docp_inpr_lang:
+      title: docp_inpr_lang
+      type: object
+      properties:
+        lang:
+          description: "The ID of the language.<br>Referencing: `/code-langs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        partId:
+          description: "Part ID"
+          type: number
+          readOnly: true
+    docp_inpr_legal:
+      title: docp_inpr_legal
+      type: object
+      properties:
+        aTest:
+          description: "An appropiateness test is needed when set to TRUE."
+          type: boolean
+          readOnly: true
+        apofTest:
+          description: "Applicable offering test is needed when set to TRUE."
+          type: boolean
+          readOnly: true
+        cbTest:
+          description: "A cost-benefit test is needed when set to TRUE."
+          type: boolean
+          readOnly: true
+        customTest:
+          description: "A custom test is needed when set to TRUE."
+          type: boolean
+          readOnly: true
+        induTest:
+          description: "Information duty is needed when set to TRUE."
+          type: boolean
+          readOnly: true
+        legalNorm:
+          description: "Legal Norm.<br>Referencing: `/code-invstr-prot-legal-norms/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        sTest:
+          description: "A suitability test is needed when set to TRUE."
+          type: boolean
+          readOnly: true
+    docp_inpr_restr:
+      title: docp_inpr_restr
+      type: object
+      properties:
+        restr:
+          description: "The restriction which implements the s-test.<br>Referencing: `/obj-restrs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          readOnly: true
+        status:
+          description: "S-test status.<br>Referencing: `/code-invstr-prot-statuss/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+    docp_inpr_stst:
+      title: docp_inpr_stst
+      type: object
+      properties:
+        ststLegalNorm:
+          description: "Legal norm for which this suitability test is evaluated.<br>Referencing: `/code-invstr-prot-legal-norms/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        ststPerson:
+          description: "Advised client for which this suitability test is evaluated.<br>Referencing: `/obj-persons/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          readOnly: true
+        ststRestr:
+          description: "The restriction which implements the s-test.<br>Referencing: `/obj-restrs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          readOnly: true
+    docp_inpr_svc:
+      title: docp_inpr_svc
+      type: object
+      properties:
+        legalNorm:
+          description: "Legal norm for which this advisory service rule service is evaluated.<br>Referencing: `/code-invstr-prot-legal-norms/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        ovr:
+          description: "Advisory service override code.<br>Referencing: `/code-overrides/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        ovrJustifTempl:
+          description: |
+            Justification template for the override of the
+                      advisory service status.<br>Referencing: `/code-invstr-prot-justifs/{id}`
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        ovrJustifTemplA:
+          description: |
+            Auto/Manual flag of Justification template for the override of the
+                      advisory service status.
+          type: boolean
+          readOnly: true
+        ovrJustifText:
+          description: |
+            Justification text for the override of the
+                      advisory service status.
+          type: string
+        partId:
+          description: "Part ID"
+          type: number
+          readOnly: true
+        person:
+          description: "Advised client for whom this service is offered.<br>Referencing: `/obj-persons/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          readOnly: true
+        replyOvr:
+          description: |
+            Set to TRUE in order to override the
+                      'rule_reply_id'; valid 'ovr_id' required.
+          type: boolean
+        rule:
+          description: "The rule identifier.<br>Referencing: `/code-invstr-prot-rules/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        ruleDiag:
+          description: "The rule diagnosis (error or result type).<br>Referencing: `/code-invstr-prot-rule-diags/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        ruleMsgKeyOrVal:
+          description: |
+            The encoded, translatable text (or the
+                      non-translatable text itself) for the message explaining the (negative)
+                      advisory service reply. Use 'rule_msg' or alternatively
+                      bre_text.text#text in order to display the (translated) text.
+          type: string
+          readOnly: true
+        ruleReply:
+          description: "The reply of the advisory service rule service.<br>Referencing: `/code-invstr-prot-rule-replys/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        status:
+          description: "Advisory service status.<br>Referencing: `/code-invstr-prot-statuss/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+    docp_inpr_vers:
+      title: docp_inpr_vers
+      type: object
+      properties:
+        acusOverStatus:
+          description: "Overall asset custom test status.<br>Referencing: `/code-invstr-prot-statuss/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        aindOverStatus:
+          description: "Overall asset information duty status.<br>Referencing: `/code-invstr-prot-statuss/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        apofOverStatus:
+          description: "Overall applicable offering status.<br>Referencing: `/code-invstr-prot-statuss/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        assetList:
+          type: array
+          items:
+            $ref: '#/components/schemas/docp_inpr_asset'
+        atstOverStatus:
+          description: "Overall appropriateness status.<br>Referencing: `/code-invstr-prot-statuss/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        cobeList:
+          type: array
+          items:
+            $ref: '#/components/schemas/docp_inpr_cobe'
+          readOnly: true
+        cobeOverStatus:
+          description: "Overall cost-benefit test status.<br>Referencing: `/code-invstr-prot-statuss/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        cusOverStatus:
+          description: |
+            Overall custom test status: the combination of
+                      asset ('vers.acus_over_status_id') and service information duty
+                      ('inpr.scus_over_status_id') status.<br>Referencing: `/code-invstr-prot-statuss/{id}`
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        docmOverStatus:
+          description: "Overall asset information document status.<br>Referencing: `/code-invstr-prot-statuss/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        induOverStatus:
+          description: |
+            Overall information duty status: the combination
+                      of asset ('vers.aind_over_status_id') and service information duty
+                      ('inpr.sind_over_status_id') status.<br>Referencing: `/code-invstr-prot-statuss/{id}`
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        motivTempl:
+          description: "Motivation template.<br>Referencing: `/code-invstr-prot-motivs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        motivText:
+          description: "Motivation text for the advisory protocol."
+          type: string
+          readOnly: true
+        overallStatus:
+          description: "Overall investor protection status.<br>Referencing: `/code-invstr-prot-statuss/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        partId:
+          description: "Part ID"
+          type: number
+          readOnly: true
+        restrList:
+          type: array
+          items:
+            $ref: '#/components/schemas/docp_inpr_restr'
+          readOnly: true
+        restrOverStatus:
+          description: "Overall suitability status.<br>Referencing: `/code-invstr-prot-statuss/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        ststList:
+          type: array
+          items:
+            $ref: '#/components/schemas/docp_inpr_stst'
+          readOnly: true
+        supplmntTempl:
+          description: "Supplementary note template.<br>Referencing: `/code-invstr-prot-suppl-notes/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        supplmntText:
+          description: "Supplementary note text for the advisory protocol."
+          type: string
+          readOnly: true
+        versionId:
+          description: "The ID of the corresponding version of the order."
+          type: number
+          readOnly: true
+    docp_xiom_eval_det:
+      title: docp_xiom_eval_det
+      type: object
+      properties:
+        cmt:
+          description: "Comment"
+          type: string
+        description:
+          description: "Description"
+          type: string
+        entId:
+          description: "Entity id"
+          type: string
+        entTag:
+          description: "Entity tag"
+          type: string
+        evalHigh:
+          description: "Evaluation threshold high"
+          type: string
+        evalLow:
+          description: "Evaluation threshold low"
+          type: string
+        evalVal:
+          description: "Source of the rule"
+          type: string
+        failContri:
+          description: "Failure contributions related to the rule"
+          type: string
+        metadata:
+          description: "Metadata related to the rule"
+          type: string
+        ovrCmt:
+          description: "Override comment"
+          type: string
+        ovrStatus:
+          description: "Override status"
+          type: string
+        ovrTimestp:
+          description: "Override timestamp"
+          type: string
+        ovrUser:
+          description: "Override user"
+          type: string
+        passed:
+          description: "Flag to indicate if the rule passed (true) or failed (false)"
+          type: boolean
+        ruleCat:
+          description: "Rule category"
+          type: string
+        ruleId:
+          description: "The identifier of the rule passed"
+          type: string
+        ruleType:
+          description: "Rule type Prop or Portf"
+          type: string
+        severity:
+          description: "Severity of the rule"
+          type: string
+        shortName:
+          description: "Short name of the rule"
+          type: string
+        src:
+          description: "Source"
+          type: string
+        svrOvrCmt:
+          description: "Supervisor override comment"
+          type: string
+        svrOvrStatus:
+          description: "Supervisor override status"
+          type: string
+        svrOvrTimestp:
+          description: "Supervisor override timestamp"
+          type: string
+        svrOvrUser:
+          description: "Supervisor override user"
+          type: string
+    number:
+      title: number
+      type: object
+    obj_key_ref_:
+      title: obj_key_ref_
+      type: object
+      properties:
+        objKey:
+          description: "Referencing: `/code-obj-keys/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        val:
+          description: "Key value"
+          type: string
+    obj_ref:
+      title: obj_ref
+      type: object
+      properties:
+        _href:
+          description: "Reference/link"
+          type: string
+          readOnly: true
+        _ident:
+          description: "Only used for workItem use cases, cross-reference in workItem context."
+          type: string
+          writeOnly: true
+        id:
+          description: "Numeric reference"
+          type: integer
+          format: int32
+        keyList:
+          description: "Key value object reference "
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key_ref_'
+          writeOnly: true
+    user_ref:
+      title: user_ref
+      type: object
+      properties:
+        _href:
+          description: "Reference/link"
+          type: string
+          readOnly: true
+        id:
+          description: "Numeric reference"
+          type: integer
+          format: int32
+    validationResult:
+      title: validationResult
+      type: object
+      properties:
+        displText:
+          type: string
+          readOnly: true
+        ovrHasRight:
+          type: boolean
+          readOnly: true
+        ref:
+          description: "Referencing: `/code_ui_errs/{id}` or `/code_overrides/{id}`"
+          readOnly: true
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        resType:
+          description: "Referencing: `/code_err_types/{id}`"
+          readOnly: true
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        ovrSignt:
+          type: integer
+          format: int32
+
+  headers:
+    Content-Language:
+      schema:
+        type: string
+    X-Has-Next-Page:
+      schema:
+        type: string
+    Location:
+      schema:
+        type: string
+      description: Location of the created resource
+    ETag:
+      schema:
+        type: string
+      description: Current entity-tag
+
+  parameters:
+    Filter:
+      name: filter
+      in: query
+      description: Expression to reduce the result set
+      schema:
+        type: string
+    DocPool:
+      name: docPool
+      style: deepObject
+      explode: true
+      in: query
+      description: "Expression to assign a docPool to reduce the result set <br> Example: <br> docPool[intlId]=stex_client_opn&docPool[objIdList]=22334,55667&docPool[refDateFrom] = 2023-05-01"
+      schema:
+        type: object
+        required: [intlId]
+        properties:
+          intlId:
+            type: string
+            example: stex_client_opn
+          objIdList:
+            type: string
+            example: 2222,3333,5555
+          refDateFrom:
+            type: string
+            format: date
+          refDateTo:
+            type: string
+            format: date
+    PageLimit:
+      name: limit
+      in: query
+      description: Limits the number of items on a page
+      schema:
+        type: integer
+        default: 5
+        minimum: 1
+        maximum: 200
+    PageOffset:
+      name: offset
+      in: query
+      description: Number of records to be skipped before selecting the result set
+      schema:
+        type: integer
+        minimum: 0
+    HrefActive:
+      name: href
+      in: query
+      description: Activates the href
+      schema:
+        type: boolean
+    IncludeInactive:
+      name: include_inactive
+      in: query
+      description: Includes inactive data
+      schema:
+        type: boolean
+    If-None-Match:
+      name: If-None-Match
+      in: header
+      description: Specifies version known by client
+      schema:
+        type: string
+      required: false
+    If-Match:
+      name: If-Match
+      in: header
+      description: Specifies entity-tag known by client
+      schema:
+        type: string
+      required: false
+    Accept-Encoding:
+      name: Accept-Encoding
+      in: header
+      description: >-
+        Compression scheme<br/>
+        Warning: HTTP compression might not lead to better performance
+      schema:
+        type: string
+      example: gzip, deflate
+      required: false
+    Accept-Language:
+      name: Accept-Language
+      in: header
+      description: Specifies the language and locale that the client prefers
+      schema:
+        type: string
+      example: de-CH, en-US
+      required: false
+    X-Request-ID:
+      name: X-Request-ID
+      in: header
+      description: Specifies the request id in UUID format. If not provided, it will be generated automatically.
+      schema:
+        type: string
+        format: uuid
+      required: false
+  responses:
+    Problem:
+      description: RFC7807 Problem
+      content:
+        application/problem+json:
+          schema:
+            type: object
+            properties:
+              type:
+                type: string
+              title:
+                type: string
+              status:
+                type: number
+                format: integer
+              detail:
+                type: string
+              messages:
+                type: array
+                readOnly: true
+                items:
+                  type: string
+              validationResults:
+                type: array
+                readOnly: true
+                items:
+                  $ref: '#/components/schemas/validationResult'
+            additionalProperties: true
+            required:
+              - type
+              - title
+              - status
+

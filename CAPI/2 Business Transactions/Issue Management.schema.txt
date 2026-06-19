@@ -1,0 +1,2161 @@
+{
+  "$id": "https://avaloq.com/doc_crm_issue.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/doc_crm_issue",
+  "definitions": {
+    "code_tab_ref": {
+      "type": "object",
+      "properties": {
+        "_href": {
+          "description" : "Reference/link",
+          "type": "string"
+        },
+        "id": {
+          "description" : "Numeric reference",
+          "type": "integer"
+        },
+        "ident": {
+          "description" : "Unique symbolic reference",
+          "type": "string"
+        },
+        "intlId": {
+          "description" : "Symbolic reference",
+          "type": "string"
+        }
+      }
+    },
+    "code_tab_ref_action": {
+      "type": "object",
+      "properties": {
+        "_href": {
+          "description" : "Reference/link",
+          "type": "string"
+        },
+        "action": {
+          "description" : "enum reference to action",
+          "type": "string"
+        },
+        "id": {
+          "description" : "Numeric reference",
+          "type": "integer"
+        },
+        "ident": {
+          "description" : "Unique symbolic reference",
+          "type": "string"
+        },
+        "intlId": {
+          "description" : "Symbolic reference",
+          "type": "string"
+        }
+      }
+    },
+    "doc_add": {
+      "type": "object",
+      "properties": {
+        "docAdd": {
+          "description" : "Referencing: `/code-doc-adds/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "valList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/doc_add_val"
+          }
+        }
+      }
+    },
+    "doc_add_val": {
+      "type": "object",
+      "properties": {
+        "dateVal": {
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "idVal": {
+          "type": "integer"
+        },
+        "nrVal": {
+          "type": "number"
+        },
+        "textVal": {
+          "type": "string"
+        },
+        "tswtzVal": {
+          "type": "string"
+          ,
+            "format": "date-time"
+        }
+      }
+    },
+    "doc_cred_chk": {
+      "type": "object",
+      "properties": {
+        "credChkEvt": {
+          "description" : "The type of credit check eventReferencing: `/code-cred-chk-evts/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "newViolAmount": {
+          "description" : "The new violation amount related to the credit check event",
+          "type": "number"
+        },
+        "oldViolAmount": {
+          "description" : "The prior violation amount related to the credit check event",
+          "type": "number"
+        },
+        "refPos": {
+          "description" : "The position which was booked by the transaction causing the increaseReferencing: `/obj-poss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "secUser": {
+          "description" : "The user involved in the credit check eventReferencing: `/users/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/user_ref" }
+          ]
+        },
+        "timestamp": {
+          "description" : "The timestamp of the credit check event",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "violPos": {
+          "description" : "The position with a violation increaseReferencing: `/obj-poss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        }
+      }
+    },
+    "doc_crm_issue": {
+      "type": "object",
+      "properties": {
+        "_ident": {
+          "description" : "Only used for workItem usecases, definition of a crossreference in workItem context",
+          "type": "string"
+        },
+        "acrmRule": {
+          "description" : "Referencing: `/code-crm-rules/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "addList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/doc_add"
+          }
+        },
+        "advNr": {
+          "description" : "Advice Number of DOC",
+          "type": "integer"
+        },
+        "agingId": {
+          "type": "integer"
+        },
+        "allDayEvt": {
+          "type": "boolean"
+        },
+        "attch": {
+          "type": "string"
+        },
+        "autoCtact": {
+          "$ref": "#/definitions/doc_ctact2"
+        },
+        "bdeRecVersion": {
+          "type": "integer"
+        },
+        "bookDoc": {
+          "description" : "Link to the order where the bookings are doneReferencing: `/doc-books/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/doc_ref" }
+          ]
+        },
+        "bu": {
+          "description" : "Business unit of order itselfReferencing: `/obj-bps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "campgnTaskSeqNr": {
+          "description" : "Campaign Task Seq Number",
+          "type": "number"
+        },
+        "credChkList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/doc_cred_chk"
+          }
+        },
+        "crmIssueId": {
+          "type": "integer"
+        },
+        "descn": {
+          "description" : "Current Description",
+          "type": "string"
+        },
+        "descnList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/doc_crm_issue_descn"
+          }
+        },
+        "discdReason": {
+          "description" : "The reason for discarding this orderReferencing: `/code-doc-discd-reasons/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "docBlock": {
+          "description" : "Block CodeReferencing: `/code-blocks/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "docBlockA": {
+          "description" : "Block Code",
+          "type": "boolean"
+        },
+        "docList": {
+          "type": "array",
+          "items": {
+            "description": "Referencing: `/docs/{id}`",
+            "allOf": [
+              { "$ref": "#/definitions/doc_ref" }
+            ]
+          }
+        },
+        "docPrcInfo": {
+          "description" : "process info idReferencing: `/code-doc-prc-infos/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "docPrcInfoRemark": {
+          "description" : "process info remark",
+          "type": "string"
+        },
+        "docRevsCause": {
+          "description" : "Reversal CauseReferencing: `/code-doc-revs-causes/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "docRole": {
+          "description" : "Order roleReferencing: `/code-doc-roles/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "dueDate": {
+          "description" : "Due Date",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "duplDoc": {
+          "description" : "The original order of which this one is a duplicate ofReferencing: `/docs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/doc_ref" }
+          ]
+        },
+        "endTime": {
+          "type": "string"
+          ,
+            "format": "date-time"
+        },
+        "enteredVmDate": {
+          "description" : "date order entered visum monitoring",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "expirDate": {
+          "description" : "Expiry date",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "expirDateA": {
+          "description" : "Is expiry date set automatically",
+          "type": "boolean"
+        },
+        "extlRefNr": {
+          "description" : "External reference number",
+          "type": "string"
+        },
+        "extn": {
+          "$ref": "#/definitions/doc_crm_issue_extn"
+        },
+        "feBp": {
+          "description" : "Broker business partnerReferencing: `/obj-bps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "findingKey": {
+          "type": "string"
+        },
+        "firstRemindDate": {
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "hasPostit": {
+          "description" : "Has order a post-it",
+          "type": "boolean"
+        },
+        "hasWorkItem": {
+          "type": "boolean"
+        },
+        "id": {
+          "description" : "IDReferencing: `/docs/{id}`",
+          "type": "integer"
+        },
+        "insBySecUser": {
+          "description" : "Order created by userReferencing: `/users/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/user_ref" }
+          ]
+        },
+        "intlRefNr": {
+          "description" : "Internal reference number",
+          "type": "string"
+        },
+        "isBackdt": {
+          "description" : "Is backdated transaction",
+          "type": "boolean"
+        },
+        "isDel": {
+          "description" : "is order deleted",
+          "type": "boolean"
+        },
+        "isFinal": {
+          "description" : "Is order in a final status?",
+          "type": "boolean"
+        },
+        "isMigr": {
+          "description" : "Is migration transaction",
+          "type": "boolean"
+        },
+        "isRefIssue": {
+          "type": "boolean"
+        },
+        "isRevs": {
+          "description" : "Is reversal transaction (reversal w/o original)",
+          "type": "boolean"
+        },
+        "isSim": {
+          "description" : "Is the order a simulation?",
+          "type": "boolean"
+        },
+        "isaRelv": {
+          "description" : "ISA relevant",
+          "type": "boolean"
+        },
+        "issueArea": {
+          "description" : "Referencing: `/code-crm-issue-areas/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "issueList": {
+          "type": "array",
+          "items": {
+            "description": "Referencing: `/doc-crm-issues/{id}`",
+            "allOf": [
+              { "$ref": "#/definitions/doc_ref" }
+            ]
+          }
+        },
+        "issueNote": {
+          "type": "string"
+        },
+        "issuePrio": {
+          "description" : "Referencing: `/code-crm-issue-prios/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "issueSubType": {
+          "description" : "Referencing: `/code-crm-issue-sub-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "issueType": {
+          "description" : "Referencing: `/code-crm-issue-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "issuer": {
+          "description" : "Referencing: `/objs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "issuerA": {
+          "type": "boolean"
+        },
+        "issuerAccess": {
+          "description" : "Referencing: `/code-accesss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "issuerDept": {
+          "description" : "Referencing: `/code-resp-depts/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "issuerDeptA": {
+          "type": "boolean"
+        },
+        "issuerDeptObj": {
+          "description" : "Referencing: `/obj-persons/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "issuerDeptObjA": {
+          "type": "boolean"
+        },
+        "keyList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/doc_key"
+          }
+        },
+        "lastMsg": {
+          "description" : "Last message IDReferencing: `/msgs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "lastRemindDate": {
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "lastTrans": {
+          "description" : "Last transition",
+          "type": "string"
+          ,
+            "format": "date-time"
+        },
+        "lastTransSecUser": {
+          "description" : "Last transition userReferencing: `/users/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/user_ref" }
+          ]
+        },
+        "location": {
+          "type": "string"
+        },
+        "mainAsset": {
+          "description" : "Referencing: `/obj-assets/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "mainBp": {
+          "description" : "Referencing: `/obj-bps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "mainBpRegOwner": {
+          "description" : "Referencing: `/obj-persons/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "mainCont": {
+          "description" : "Referencing: `/obj-conts/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "mainPerson": {
+          "description" : "Referencing: `/obj-persons/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "mainPos": {
+          "description" : "Referencing: `/obj-poss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "masterDoc": {
+          "description" : "Return the master doc of the current docReferencing: `/docs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/doc_ref" }
+          ]
+        },
+        "medium": {
+          "description" : "Communication medium, e.g. phone, fax, etc.Referencing: `/code-mediums/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "metaTyp": {
+          "description" : "Meta typeReferencing: `/meta-typs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "notBonusRelv": {
+          "description" : "not bonus relevant",
+          "type": "boolean"
+        },
+        "notBonusWidrwRelv": {
+          "description" : "not bonus withdrawal relevant",
+          "type": "boolean"
+        },
+        "notReconStornoRelv": {
+          "description" : "Not Reconciliation Storno Relevant",
+          "type": "boolean"
+        },
+        "notWidrwRelv": {
+          "description" : "not withdrawal relevant",
+          "type": "boolean"
+        },
+        "objLinkList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/doc_crm_issue_obj"
+          }
+        },
+        "obl": {
+          "description" : "Referencing: `/code-crm-issue-obls/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "openDate": {
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "orderDate": {
+          "description" : "Order date",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "orderDateTz": {
+          "description" : "Order date",
+          "type": "string"
+          ,
+            "format": "date-time"
+        },
+        "orderNr": {
+          "description" : "Reference no.",
+          "type": "integer"
+        },
+        "orderType": {
+          "description" : "Order typeReferencing: `/code-order-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "orderTypeGrp": {
+          "description" : "Order type groupReferencing: `/code-order-type-grps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "orderedBy": {
+          "description" : "Ordered by",
+          "type": "string"
+        },
+        "origDoc": {
+          "description" : "The original order of which this one is a rectificate of Referencing: `/doc-crm-issues/{id}` ",
+          "allOf": [
+            { "$ref": "#/definitions/doc_ref"
+             }
+            ]
+        },
+        "overrideList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/doc_override"
+          }
+        },
+        "parentDoc": {
+          "description" : "Referencing: `/docs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/doc_ref" }
+          ]
+        },
+        "parentMetaTyp": {
+          "description" : "Referencing: `/meta-typs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "parentObj": {
+          "description" : "Referencing: `/objs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "perfDate": {
+          "description" : "Performance date",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "perfDateA": {
+          "description" : "Is performance date set automatically",
+          "type": "boolean"
+        },
+        "postitList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/doc_postit"
+          }
+        },
+        "qty": {
+          "type": "number"
+        },
+        "qtyLinked": {
+          "type": "number"
+        },
+        "questrCtactList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/doc_ctact2"
+          }
+        },
+        "reasonList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/doc_crm_issue_reason"
+          }
+        },
+        "recon2ItemList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/doc_tab_recon2"
+          }
+        },
+        "rectiDoc": {
+          "description" : "Only visible within compound APIs The rectificate of this order. Referencing: `/doc-crm-issues/{id}` Back-property: origDoc ",
+          "allOf": [
+            { "$ref": "#/definitions/doc_ref"
+             }
+            ]
+        },
+        "refCurry": {
+          "description" : "Referencing: `/obj-assets/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "refDate": {
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "refDoc": {
+          "description" : "Reference orderReferencing: `/docs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/doc_ref" }
+          ]
+        },
+        "refIssue": {
+          "description" : "Referencing: `/doc-crm-issues/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/doc_ref" }
+          ]
+        },
+        "remindLevel": {
+          "description" : "Referencing: `/code-crm-issue-remind-levels/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "respBp": {
+          "description" : "Responsible Business PartnerReferencing: `/obj-bps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "respBpA": {
+          "description" : "Responsible Business Partner a/m",
+          "type": "boolean"
+        },
+        "respDept": {
+          "description" : "Referencing: `/code-resp-depts/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "respDeptA": {
+          "type": "boolean"
+        },
+        "respDeptObj": {
+          "description" : "Referencing: `/obj-persons/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "respDeptObjA": {
+          "type": "boolean"
+        },
+        "respObj": {
+          "description" : "Responsible ObjectReferencing: `/objs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "respObjA": {
+          "description" : "Responsible Object a/m",
+          "type": "boolean"
+        },
+        "revsOfDoc": {
+          "description" : "The original order for which the actual order is the reversalReferencing: `/docs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/doc_ref" }
+          ]
+        },
+        "revsOriginUser": {
+          "description" : "OriginatorReferencing: `/users/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/user_ref" }
+          ]
+        },
+        "rmInvolList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/doc_crm_issue_rm_invol"
+          }
+        },
+        "sdsInstn": {
+          "description" : "SDS instance IDReferencing: `/code-extl-syss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "settlePlan": {
+          "description" : "Settlement planReferencing: `/code-settle-plans/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "settlePlanA": {
+          "description" : "Settlement plan",
+          "type": "boolean"
+        },
+        "startDate": {
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "startTime": {
+          "type": "string"
+          ,
+            "format": "date-time"
+        },
+        "subject": {
+          "type": "string"
+        },
+        "terminal": {
+          "description" : "Terminal where advice of order was printedReferencing: `/obj-terminals/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "todoList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/doc_todo"
+          }
+        },
+        "todoTempl": {
+          "description" : "ToDo TemplateReferencing: `/code-todo-templs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "transList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/doc_trans"
+          }
+        },
+        "trigParty": {
+          "description" : "Referencing: `/code-crm-issue-trig-partys/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "trl": {
+          "type": "string"
+        },
+        "trxDate": {
+          "description" : "Transaction date",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "trxDateA": {
+          "description" : "Is transaction date set automatically",
+          "type": "boolean"
+        },
+        "undefAsset": {
+          "type": "string"
+        },
+        "undefBp": {
+          "type": "string"
+        },
+        "val": {
+          "type": "number"
+        },
+        "valDate": {
+          "description" : "Value date",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "valDateA": {
+          "description" : "Is value date set automatically",
+          "type": "boolean"
+        },
+        "wfcAction": {
+          "description" : "Workflow ActionReferencing: `/wfc-action-crm_issues/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref_action" }
+          ]
+        },
+        "wfcStatus": {
+          "description" : "Workflow  statusReferencing: `/wfc-status-crm_issues/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "workItemList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/doc_tab_work_item"
+          }
+        }
+      }
+    },
+    "doc_crm_issue_descn": {
+      "type": "object",
+      "properties": {
+        "descn": {
+          "description" : "Description",
+          "type": "string"
+        },
+        "secUser": {
+          "description" : "Inserted byReferencing: `/users/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/user_ref" }
+          ]
+        },
+        "timestamp": {
+          "description" : "Timestamp",
+          "type": "string"
+          ,
+            "format": "date-time"
+        }
+      }
+    },
+    "doc_crm_issue_extn": {
+      "type": "object",
+      "properties": {
+        "afsDocId": {
+          "description" : "AFS Order ID",
+          "type": "string"
+        },
+        "afsExtlRefNr": {
+          "description" : "AFS external reference number",
+          "type": "string"
+        },
+        "amlTrxPeriodEndDate": {
+          "description" : "AML Observation End Date",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "amlTrxPeriodStartDate": {
+          "description" : "AML Observation Start Date",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "amlTrxTempl": {
+          "description" : "AML Transaction Template",
+          "type": "string"
+        },
+        "api1RefNr": {
+          "description" : "Primary API external reference number",
+          "type": "string"
+        },
+        "api2RefNr": {
+          "description" : "Secondary API external reference number",
+          "type": "string"
+        },
+        "dxsCtxId": {
+          "description" : "DXS context ID",
+          "type": "string"
+        },
+        "dxsEntityExtlRef": {
+          "description" : "DXS entity external reference",
+          "type": "string"
+        },
+        "isBillable": {
+          "description" : "Billable",
+          "type": "boolean"
+        },
+        "listMsgLinked": {
+          "type": "array",
+          "items": {
+            "description": "List Message ID",
+            "type": "number"
+          }
+        },
+        "mba$authEdtRvwCompLvList": {
+          "type": "array",
+          "items": {
+            "description": "Authorization: comp lv that need to authorize for specific edt rvw in jtg",
+            "type": "string"
+          }
+        },
+        "mba$authorEdtRvwJtgList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/number"
+          }
+        },
+        "mba$blockAprvUserList": {
+          "type": "array",
+          "items": {
+            "description": "List of Users having approved the Compliance Blocking CodesReferencing: `/users/{id}`",
+            "allOf": [
+              { "$ref": "#/definitions/user_ref" }
+            ]
+          }
+        },
+        "mba$blockJtgList": {
+          "description" : "Current List of matching compliance block IDs with the corresponding JTG IDs",
+          "type": "string"
+        },
+        "mba$blockRemnJtgList": {
+          "type": "array",
+          "items": {
+            "description": "List of JTG still required to approve the Compliance Blocking CodesReferencing: `/mba$code-job-type-grps/{id}`",
+            "allOf": [
+              { "$ref": "#/definitions/code_tab_ref" }
+            ]
+          }
+        },
+        "mba$ccPastAuthorUserList": {
+          "type": "array",
+          "items": {
+            "description": "Authorization: User List for current jtg (Credit Check)Referencing: `/users/{id}`",
+            "allOf": [
+              { "$ref": "#/definitions/user_ref" }
+            ]
+          }
+        },
+        "mba$cltContactType": {
+          "description" : "Client Contact TypeReferencing: `/code-ctact2-mediums/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$credChkAuthCompLvList": {
+          "type": "array",
+          "items": {
+            "description": "Authorization: comp lv that need to authorize in jtg (Credit Check)",
+            "type": "string"
+          }
+        },
+        "mba$credChkAuthorJtgList": {
+          "type": "array",
+          "items": {
+            "description": "JTG to authorize the order. Indication, which jtg has to author (Credit Check).Referencing: `/mba$code-job-type-grps/{id}`",
+            "allOf": [
+              { "$ref": "#/definitions/code_tab_ref" }
+            ]
+          }
+        },
+        "mba$credChkCmt": {
+          "type": "array",
+          "items": {
+            "description": "Comment of the Decision (Credit Check)",
+            "type": "string"
+          }
+        },
+        "mba$credChkRestr": {
+          "type": "array",
+          "items": {
+            "description": "Additional Restriction List (Credit Check)",
+            "type": "string"
+          }
+        },
+        "mba$crsAddDocm": {
+          "description" : "Additional Documents required",
+          "type": "string"
+        },
+        "mba$crsDocmAddr": {
+          "description" : "Address to send documents toReferencing: `/obj-addrs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "mba$crsKycNewIndc": {
+          "description" : "KYC: New indicia Information",
+          "type": "string"
+        },
+        "mba$crsScMisTin": {
+          "type": "array",
+          "items": {
+            "description": "Reason for missing TIN",
+            "type": "string"
+          }
+        },
+        "mba$crsScTaxJur": {
+          "type": "array",
+          "items": {
+            "description": "Tax jurisdiction of self certificationReferencing: `/obj-countrys/{id}`",
+            "allOf": [
+              { "$ref": "#/definitions/obj_ref" }
+            ]
+          }
+        },
+        "mba$crsScTin": {
+          "type": "array",
+          "items": {
+            "description": "TIN for self certification",
+            "type": "string"
+          }
+        },
+        "mba$custPsafe": {
+          "description" : "Custodian Reported PSAFE in MT535 (if it differs from Position PSAFE)Referencing: `/obj-bps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "mba$dateOfDeath": {
+          "description" : "Date of death",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "mba$docErrType": {
+          "description" : "Order Processing Error TypeReferencing: `/mba$code-doc-err-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$docmIssueDate": {
+          "description" : "Document Issue Date",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "mba$docmList": {
+          "type": "array",
+          "items": {
+            "description": "Document ListReferencing: `/obj-docms/{id}`",
+            "allOf": [
+              { "$ref": "#/definitions/obj_ref" }
+            ]
+          }
+        },
+        "mba$edtRvwJtgList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/number"
+          }
+        },
+        "mba$edtRvwUserList": {
+          "type": "array",
+          "items": {
+            "description": "Last user to edited the order for jtg (as listed in mba$edt_rvw_jtg_list)Referencing: `/users/{id}`",
+            "allOf": [
+              { "$ref": "#/definitions/user_ref" }
+            ]
+          }
+        },
+        "mba$hasCassIpct": {
+          "description" : "CASS Impact",
+          "type": "boolean"
+        },
+        "mba$iAuthEdtRvwCompLvLst": {
+          "type": "array",
+          "items": {
+            "description": "Authorization:initial comp lv that need to authorize for specific edt rvw in jtg",
+            "type": "string"
+          }
+        },
+        "mba$iCredChkAuthCompLvLt": {
+          "type": "array",
+          "items": {
+            "description": "Authorization:initial comp lv that need to authorize in jtg (Credit Check)",
+            "type": "string"
+          }
+        },
+        "mba$instrDet": {
+          "description" : "Instruction Details",
+          "type": "string"
+        },
+        "mba$isDfltValSet": {
+          "description" : "Have default values been applied",
+          "type": "boolean"
+        },
+        "mba$lswfInsJtg": {
+          "description" : "Job Type Group that inserted the orderReferencing: `/mba$code-job-type-grps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$lswfJtg": {
+          "description" : "Current job type group owning the statusReferencing: `/mba$code-job-type-grps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$lswfLastSwfIntfWfaId": {
+          "description" : "Last interface action used",
+          "type": "number"
+        },
+        "mba$lswfLastSwfWfaId": {
+          "description" : "Last workflow action used",
+          "type": "number"
+        },
+        "mba$lswfLastSwfWfsId": {
+          "description" : "Communication to next department",
+          "type": "number"
+        },
+        "mba$lswfNextJtg": {
+          "description" : "Next job type group owning the statusReferencing: `/mba$code-job-type-grps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$lswfNextJtgInfo": {
+          "description" : "Communication to next job type group",
+          "type": "string"
+        },
+        "mba$lswfNextRa": {
+          "description" : "Next Routing Action for Linkable Sub-WorkflowReferencing: `/mba$code-lswf-raps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$lswfNextSwf": {
+          "description" : "Next Linkable Sub-Workflow in WorkflowReferencing: `/mba$code-lswfs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$lswfPrevSwf": {
+          "description" : "Previous Linkable Sub-Workflow in WorkflowReferencing: `/mba$code-lswfs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$lswfRa": {
+          "description" : "Current Routing Action for Linkable Sub-WorkflowReferencing: `/mba$code-lswf-raps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$lswfSwf": {
+          "description" : "Current Linkable Sub-Workflow in WorkflowReferencing: `/mba$code-lswfs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$lswfUc": {
+          "description" : "Use Case assigned to the orderReferencing: `/mba$code-lswf-ucs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$mediumA": {
+          "description" : "Medium A/M flag",
+          "type": "boolean"
+        },
+        "mba$mediumPhoneNr": {
+          "description" : "Reference phone number to be registered in case of a phone call",
+          "type": "string"
+        },
+        "mba$pastAuthorUserList": {
+          "type": "array",
+          "items": {
+            "description": "Authorization: User List for current jtgReferencing: `/users/{id}`",
+            "allOf": [
+              { "$ref": "#/definitions/user_ref" }
+            ]
+          }
+        },
+        "mba$pillarId": {
+          "description" : "KVG Recon Pillar Id",
+          "type": "number"
+        },
+        "mba$pillarNrRec": {
+          "description" : "KVG Recon Pillar record",
+          "type": "number"
+        },
+        "mba$qtyGrp": {
+          "description" : "Quantity group type",
+          "type": "string"
+        },
+        "mba$refMsg": {
+          "description" : "Reference Message",
+          "type": "number"
+        },
+        "mba$restrEvalResName": {
+          "description" : "Restriction evaluation result",
+          "type": "string"
+        },
+        "mba$scValidFrom": {
+          "description" : "Self Certification valid from",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "mba$srcFund": {
+          "description" : "Source of FundsReferencing: `/mba$code-src-funds/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "msxchngEmailAddrNew": {
+          "description" : "Exchange User Change New Email Address",
+          "type": "string"
+        },
+        "msxchngEmailAddrOld": {
+          "description" : "Exchange User Change Old Email Address",
+          "type": "string"
+        },
+        "msxchngUserRespId": {
+          "description" : "Exchange User Change Responsible",
+          "type": "number"
+        },
+        "pkpSvcRsvIdent": {
+          "description" : "Position Keeping Service: Reservation/advice identifier",
+          "type": "string"
+        },
+        "reconQiProposal": {
+          "type": "array",
+          "items": {
+            "description": "QI Reconciliation proposalReferencing: `/code-recon-qi-proposals/{id}`",
+            "allOf": [
+              { "$ref": "#/definitions/code_tab_ref" }
+            ]
+          }
+        },
+        "reconReasonCode": {
+          "type": "array",
+          "items": {
+            "description": "Reconciliation reason codeReferencing: `/code-recon-reason-codes/{id}`",
+            "allOf": [
+              { "$ref": "#/definitions/code_tab_ref" }
+            ]
+          }
+        },
+        "settlePosCertType": {
+          "description" : "Cert position type of incoming settlemenReferencing: `/code-pos-cert-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "settlePrepTime": {
+          "description" : "Preparation of incoming settlement alleg",
+          "type": "string"
+          ,
+            "format": "date"
+        }
+      }
+    },
+    "doc_crm_issue_obj": {
+      "type": "object",
+      "properties": {
+        "descn": {
+          "description" : "Link Description",
+          "type": "string"
+        },
+        "isMainObj": {
+          "description" : "Is object a main object?",
+          "type": "boolean"
+        },
+        "linkType": {
+          "description" : "Link typeReferencing: `/code-crm-issue-obj-link-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "obj": {
+          "description" : "Linked ObjectReferencing: `/objs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "objType": {
+          "description" : "Referencing: `/code-obj-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        }
+      }
+    },
+    "doc_crm_issue_reason": {
+      "type": "object",
+      "properties": {
+        "reason": {
+          "description" : "ReasonReferencing: `/code-crm-issue-reasons/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "reasonType": {
+          "description" : "Reason typeReferencing: `/code-crm-issue-reason-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        }
+      }
+    },
+    "doc_crm_issue_rm_invol": {
+      "type": "object",
+      "properties": {
+        "crmIssueRmInvol": {
+          "description" : "'CRM Issue RM involvement type'Referencing: `/code-crm-issue-rm-invols/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "rmText": {
+          "description" : "RM Text",
+          "type": "string"
+        }
+      }
+    },
+    "doc_crm_issues": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/doc_crm_issue"
+      },
+      "uniqueItems": true
+    },
+    "doc_ctact2": {
+      "type": "object",
+      "properties": {
+        "actionList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/doc_ctact2_action"
+          }
+        },
+        "addr": {
+          "description" : "Used AddressReferencing: `/obj-addrs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "addrA": {
+          "description" : "Used Address Automatic",
+          "type": "boolean"
+        },
+        "attch": {
+          "description" : "Attachment",
+          "type": "string"
+        },
+        "attchA": {
+          "description" : "Attachment Automatic",
+          "type": "boolean"
+        },
+        "campgnCltReaction": {
+          "description" : "Campaign Client Reaction",
+          "type": "string"
+        },
+        "campgnDoc": {
+          "description" : "Campaign OrderReferencing: `/docs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/doc_ref" }
+          ]
+        },
+        "campgnRespKey": {
+          "description" : "Campaign Response Key",
+          "type": "string"
+        },
+        "chan": {
+          "description" : "ChannelReferencing: `/code-ctact2-chans/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "chanA": {
+          "description" : "Channel Automatic",
+          "type": "boolean"
+        },
+        "cltStisfct": {
+          "description" : "Client SatisfactionReferencing: `/code-ctact2-clt-stisfcts/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "contentLong": {
+          "description" : "Action Content CLOB version",
+          "type": "string"
+        },
+        "ctactArea": {
+          "description" : "Contact AreaReferencing: `/code-ctact2-areas/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "ctactAreaA": {
+          "description" : "Contact Area Automatic",
+          "type": "boolean"
+        },
+        "ctactEndDate": {
+          "description" : "Contact Date/Time to",
+          "type": "string"
+          ,
+            "format": "date-time"
+        },
+        "ctactEndDateA": {
+          "description" : "Contact Date/Time to Automatic",
+          "type": "boolean"
+        },
+        "ctactMedium": {
+          "description" : "MediumReferencing: `/code-ctact2-mediums/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "ctactMediumA": {
+          "description" : "Medium Automatic",
+          "type": "boolean"
+        },
+        "ctactRespObj": {
+          "description" : "ResponsibleReferencing: `/objs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "ctactRespObjA": {
+          "description" : "Responsible Automatic",
+          "type": "boolean"
+        },
+        "ctactStartDate": {
+          "description" : "Contact Date/Time from",
+          "type": "string"
+          ,
+            "format": "date-time"
+        },
+        "ctactStartDateA": {
+          "description" : "Contact Date/Time from Automatic",
+          "type": "boolean"
+        },
+        "ctactSubType": {
+          "description" : "Contact SubtypeReferencing: `/code-ctact2-sub-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "ctactSubTypeA": {
+          "description" : "Contact Sub Type Automatic",
+          "type": "boolean"
+        },
+        "ctactType": {
+          "description" : "Contact TypeReferencing: `/code-ctact2-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "ctactTypeA": {
+          "description" : "Contact Type Automatic",
+          "type": "boolean"
+        },
+        "dir": {
+          "description" : "DirectionReferencing: `/code-ctact2-dirs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "dirA": {
+          "description" : "Direction Automatic",
+          "type": "boolean"
+        },
+        "docPrcInfo": {
+          "description" : "process info idReferencing: `/code-doc-prc-infos/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "docPrcInfoRemark": {
+          "description" : "process info remark",
+          "type": "string"
+        },
+        "enteredVmDate": {
+          "description" : "date order entered visum monitoring",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "hasWorkItem": {
+          "type": "boolean"
+        },
+        "id": {
+          "description" : "IDReferencing: `/docs/{id}`",
+          "type": "integer"
+        },
+        "involObjListA": {
+          "description" : "Involved Object List Automatic",
+          "type": "boolean"
+        },
+        "isDel": {
+          "description" : "is order deleted",
+          "type": "boolean"
+        },
+        "linkDocListA": {
+          "description" : "Related Orders Automatic",
+          "type": "boolean"
+        },
+        "loc": {
+          "description" : "Location",
+          "type": "string"
+        },
+        "locA": {
+          "description" : "Location Automatic",
+          "type": "boolean"
+        },
+        "parentDoc": {
+          "description" : "Parent Order NumberReferencing: `/docs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/doc_ref" }
+          ]
+        },
+        "parentMetaTyp": {
+          "description" : "Parent Meta TypeReferencing: `/meta-typs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "parentOt": {
+          "description" : "Parent Order TypeReferencing: `/code-order-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "react": {
+          "description" : "Client reaction to campaignReferencing: `/code-ctact2-clt-reacts/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "reactCampgnDoc": {
+          "description" : "Campaign Doc_ID used in client reactionReferencing: `/docs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/doc_ref" }
+          ]
+        },
+        "reactCampgnDocA": {
+          "description" : "Campaign Doc auto flag used in client reaction",
+          "type": "boolean"
+        },
+        "reactCampgnSeqNr": {
+          "description" : "Reaction Campaign Sequence Nr",
+          "type": "number"
+        },
+        "reactComment": {
+          "description" : "Reaction comment",
+          "type": "string"
+        },
+        "reactDate": {
+          "description" : "Reaction date",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "reactLoc": {
+          "description" : "Reaction location",
+          "type": "string"
+        },
+        "reactNrPartic": {
+          "description" : "Reaction number of participants",
+          "type": "number"
+        },
+        "respDept": {
+          "description" : "Responsible DepartmentReferencing: `/code-resp-depts/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "respDeptA": {
+          "description" : "Responsible Department Automatic",
+          "type": "boolean"
+        },
+        "subj": {
+          "description" : "Subject",
+          "type": "string"
+        },
+        "subjA": {
+          "description" : "Subject Automatic",
+          "type": "boolean"
+        },
+        "syncSeqNr": {
+          "description" : "Client Satisfaction",
+          "type": "integer"
+        },
+        "totExpndTimeM": {
+          "description" : "Total Expenditure of Time (Min)",
+          "type": "number"
+        }
+      }
+    },
+    "doc_ctact2_action": {
+      "type": "object",
+      "properties": {
+        "actionContent": {
+          "description" : "Action Content",
+          "type": "string"
+        },
+        "ctactActionType": {
+          "description" : "Action TypeReferencing: `/code-ctact2-action-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "ctactTopic": {
+          "description" : "Contact action topicReferencing: `/code-ctact2-topics/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "insByObj": {
+          "description" : "Action entry inserted byReferencing: `/objs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "timestampIns": {
+          "description" : "Action entry inserted at",
+          "type": "string"
+          ,
+            "format": "date-time"
+        }
+      }
+    },
+    "doc_key": {
+      "type": "object",
+      "properties": {
+        "docKey": {
+          "description" : "Referencing: `/code-doc-keys/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "val": {
+          "type": "string"
+        }
+      }
+    },
+    "doc_override": {
+      "type": "object",
+      "properties": {
+        "override": {
+          "description" : "Override codeReferencing: `/code-overrides/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "overrideComment": {
+          "description" : "CommentReferencing: `/code-override-comments/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "overrideText": {
+          "description" : "Override text",
+          "type": "string"
+        },
+        "secUser": {
+          "description" : "UserReferencing: `/users/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/user_ref" }
+          ]
+        },
+        "signt": {
+          "description" : "Signature",
+          "type": "string"
+        },
+        "timestamp": {
+          "description" : "Timestamp",
+          "type": "string"
+          ,
+            "format": "date-time"
+        }
+      }
+    },
+    "doc_postit": {
+      "type": "object",
+      "properties": {
+        "ctx": {
+          "description" : "TextReferencing: `/code-postit-ctxs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "doProp": {
+          "description" : "Is postit propagated",
+          "type": "boolean"
+        },
+        "isMan": {
+          "description" : "Is manualally entered",
+          "type": "boolean"
+        },
+        "role": {
+          "description" : "RoleReferencing: `/users/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/user_ref" }
+          ]
+        },
+        "subType": {
+          "description" : "SubtypeReferencing: `/code-postit-sub-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "text": {
+          "description" : "Text",
+          "type": "string"
+        },
+        "timestamp": {
+          "description" : "Timestamp",
+          "type": "string"
+          ,
+            "format": "date-time-no-tz"
+        },
+        "topic": {
+          "description" : "Topic",
+          "type": "string"
+        },
+        "type": {
+          "description" : "TypeReferencing: `/code-postit-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "user": {
+          "description" : "Inserted byReferencing: `/users/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/user_ref" }
+          ]
+        }
+      }
+    },
+    "doc_ref": {
+      "type": "object",
+      "properties": {
+        "_href": {
+          "description" : "Reference/link",
+          "type": "string"
+        },
+        "_ident": {
+          "description" : "Only used for workItem use cases, cross-reference in workItem context.",
+          "type": "string"
+        },
+        "id": {
+          "description" : "Numeric reference",
+          "type": "integer"
+        }
+      }
+    },
+    "doc_tab_recon2": {
+      "type": "object",
+      "properties": {
+        "amount": {
+          "description" : "Amount",
+          "type": "number"
+        },
+        "assetInfo": {
+          "description" : "Asset Information",
+          "type": "string"
+        },
+        "debCred": {
+          "description" : "Balance of Credits / Debits",
+          "type": "string"
+        },
+        "delIssueDoc": {
+          "description" : "Deleted Issue Doc IDReferencing: `/docs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/doc_ref" }
+          ]
+        },
+        "docTabRef": {
+          "description" : "Reference",
+          "type": "string"
+        },
+        "editMode": {
+          "description" : "Edit Mode",
+          "type": "string"
+        },
+        "entryDate": {
+          "description" : "Entry Date",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "flowLinkKey": {
+          "description" : "Flow Link Key",
+          "type": "integer"
+        },
+        "fundsCode": {
+          "description" : "Funds Code",
+          "type": "string"
+        },
+        "isExtl": {
+          "description" : "Is External",
+          "type": "string"
+        },
+        "issueDoc": {
+          "description" : "Issue Doc IDReferencing: `/docs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/doc_ref" }
+          ]
+        },
+        "matchQtyDiff": {
+          "description" : "Diff. quantity",
+          "type": "number"
+        },
+        "matchValDateDiff": {
+          "description" : "Value date diff.",
+          "type": "integer"
+        },
+        "narr": {
+          "description" : "Narrative",
+          "type": "string"
+        },
+        "pos": {
+          "description" : "PositionReferencing: `/obj-poss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "qty": {
+          "description" : "Quantity",
+          "type": "number"
+        },
+        "qtyType": {
+          "description" : "Quantity Type",
+          "type": "string"
+        },
+        "recon2ItemStatus": {
+          "description" : "StatusReferencing: `/code-recon2-item-statuss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "recon2MatchCmtd": {
+          "description" : "Matching MethodReferencing: `/code-recon2-match-cmtds/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "reconLotType": {
+          "description" : "Reconciliation Lot TypeReferencing: `/code-recon-lot-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "ref1": {
+          "description" : "Reference",
+          "type": "string"
+        },
+        "ref2": {
+          "description" : "Reference",
+          "type": "string"
+        },
+        "ref3": {
+          "description" : "Reference",
+          "type": "string"
+        },
+        "ref4": {
+          "description" : "Reference",
+          "type": "string"
+        },
+        "ref5": {
+          "description" : "Reference",
+          "type": "string"
+        },
+        "ref6": {
+          "description" : "Reference",
+          "type": "string"
+        },
+        "seqNr": {
+          "description" : "Sequence no.",
+          "type": "integer"
+        },
+        "trxType": {
+          "description" : "Transaction Type",
+          "type": "string"
+        },
+        "valDate": {
+          "description" : "Value Date",
+          "type": "string"
+          ,
+            "format": "date"
+        }
+      }
+    },
+    "doc_tab_work_item": {
+      "type": "object",
+      "properties": {
+        "closeDate": {
+          "description" : "Close Date",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "descn": {
+          "description" : "Description",
+          "type": "string"
+        },
+        "isSlaveDirty": {
+          "description" : "Is dirty ?",
+          "type": "boolean"
+        },
+        "isTightLink": {
+          "description" : "Is Linked",
+          "type": "boolean"
+        },
+        "masterDoc": {
+          "description" : "Master OrderReferencing: `/docs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/doc_ref" }
+          ]
+        },
+        "seqNr": {
+          "description" : "Sequence no.",
+          "type": "integer"
+        },
+        "slaveDoc": {
+          "description" : "OrderReferencing: `/docs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/doc_ref" }
+          ]
+        },
+        "subject": {
+          "description" : "Subject",
+          "type": "string"
+        },
+        "tag": {
+          "description" : "Tag",
+          "type": "string"
+        },
+        "workItemCtx": {
+          "description" : "Work Item ContextReferencing: `/code-work-item-ctxs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "workItemStatus": {
+          "description" : "Work Item StatusReferencing: `/code-work-item-statuss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "workItemType": {
+          "description" : "Work Item TypeReferencing: `/code-work-item-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        }
+      }
+    },
+    "doc_todo": {
+      "type": "object",
+      "properties": {
+        "dueDate": {
+          "description" : "Todo Due date",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "isDone": {
+          "description" : "Is Todo done?",
+          "type": "boolean"
+        },
+        "remark": {
+          "description" : "Todo Remark",
+          "type": "string"
+        },
+        "secUser": {
+          "description" : "Todo Done-UserstampReferencing: `/users/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/user_ref" }
+          ]
+        },
+        "seq": {
+          "description" : "ToDo Sequence",
+          "type": "integer"
+        },
+        "timestamp": {
+          "description" : "Todo Done-Timestamp",
+          "type": "string"
+          ,
+            "format": "date-time-no-tz"
+        },
+        "todo": {
+          "description" : "TodoReferencing: `/code-todos/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        }
+      }
+    },
+    "doc_trans": {
+      "type": "object",
+      "properties": {
+        "calcCnt": {
+          "type": "integer"
+        },
+        "calcTime": {
+          "type": "integer"
+        },
+        "intfWfcAction": {
+          "description" : "Workflow Interface ActionReferencing: `/wfc-action-crm_issues/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "newWfcStatus": {
+          "description" : "Workflow StatusReferencing: `/wfc-status-crm_issues/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "oldWfcStatus": {
+          "description" : "Workflow StatusReferencing: `/wfc-status-crm_issues/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "opnTime": {
+          "type": "integer"
+        },
+        "remark": {
+          "description" : "Remark",
+          "type": "string"
+        },
+        "ruleTime": {
+          "type": "integer"
+        },
+        "secUser": {
+          "description" : "UserReferencing: `/users/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/user_ref" }
+          ]
+        },
+        "seqNr": {
+          "description" : "Sequence no.",
+          "type": "integer"
+        },
+        "timestamp": {
+          "description" : "Timestamp",
+          "type": "string"
+          ,
+            "format": "date-time"
+        },
+        "transAction": {
+          "description" : "TransitionReferencing: `/code-trans-actions/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "userTime": {
+          "type": "integer"
+        },
+        "wfcAction": {
+          "description" : "Workflow ActionReferencing: `/wfc-action-crm_issues/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "wfcTime": {
+          "type": "integer"
+        }
+      }
+    },
+    "number": {
+      "type": "object",
+      "properties": {
+      }
+    },
+    "obj_key_ref_": {
+      "type": "object",
+      "properties": {
+        "objKey": {
+          "description" : "Referencing: `/code-obj-keys/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "val": {
+          "description" : "Key value",
+          "type": "string"
+        }
+      }
+    },
+    "obj_ref": {
+      "type": "object",
+      "properties": {
+        "_href": {
+          "description" : "Reference/link",
+          "type": "string"
+        },
+        "_ident": {
+          "description" : "Only used for workItem usecases, crossreference in workItem context",
+          "type": "string"
+        },
+        "id": {
+          "description" : "Numeric reference",
+          "type": "integer"
+        },
+        "keyList": {
+          "type": "array",
+          "items": {
+            "description": "Key value object reference ",
+            "allOf": [
+              { "$ref": "#/definitions/obj_key_ref_" }
+            ]
+          }
+        }
+      }
+    },
+    "user_ref": {
+      "type": "object",
+      "properties": {
+        "_href": {
+          "description" : "Reference/link",
+          "type": "string"
+        },
+        "id": {
+          "description" : "Numeric reference",
+          "type": "integer"
+        }
+      }
+    }
+  }
+}

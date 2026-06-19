@@ -1,0 +1,4531 @@
+{
+  "openapi" : "3.0.2",
+  "security" : [ {
+    "bearerAuth" : [ ]
+  } ],
+  "info" : {
+    "title" : "Person API",
+    "version" : "3.32.1",
+    "x-avq$categories" : [ "capi" ]
+  },
+  "servers" : [ {
+    "url" : "/api1/",
+    "description" : "Development server"
+  } ],
+  "paths" : {
+    "/doc-persons" : {
+      "get" : {
+        "tags" : [ "API endpoints" ],
+        "summary" : "Get Person orders.",
+        "description" : "Get a collection of `Person` orders.\nThe result set can be restricted through filter parameter.\nOnly `Person` orders will be returned that can be accessed by the user (security applied).\nPaging is supported with parameters *limit* and *offset*.\n",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/Filter"
+        }, {
+          "$ref" : "#/components/parameters/DocPool"
+        }, {
+          "$ref" : "#/components/parameters/PageLimit"
+        }, {
+          "$ref" : "#/components/parameters/PageOffset"
+        }, {
+          "$ref" : "#/components/parameters/HrefActive"
+        }, {
+          "$ref" : "#/components/parameters/IncludeInactive"
+        }, {
+          "$ref" : "#/components/parameters/Accept-Encoding"
+        }, {
+          "$ref" : "#/components/parameters/Accept-Language"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful response",
+            "headers" : {
+              "Content-Language" : {
+                "$ref" : "#/components/headers/Content-Language"
+              },
+              "X-Has-Next-Page" : {
+                "$ref" : "#/components/headers/X-Has-Next-Page"
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/doc_person"
+                  }
+                }
+              }
+            }
+          },
+          "default" : {
+            "$ref" : "#/components/responses/Problem"
+          }
+        }
+      }
+    },
+    "/doc-persons/{doc_person_id}" : {
+      "get" : {
+        "tags" : [ "API endpoints" ],
+        "summary" : "Get a Person order",
+        "description" : "*Get a `Person` order by ID*.\nOnly `Person` order will be returned that can be accessed by the user (security applied).\nIf user does not have access to resource, not found error will be returned instead of unauthorized - to disallow attacks.\n",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "doc_person_id",
+          "schema" : {
+            "type" : "string"
+          },
+          "required" : true,
+          "description" : "ID of the `Person` order to get"
+        }, {
+          "$ref" : "#/components/parameters/HrefActive"
+        }, {
+          "$ref" : "#/components/parameters/IncludeInactive"
+        }, {
+          "$ref" : "#/components/parameters/Accept-Encoding"
+        }, {
+          "$ref" : "#/components/parameters/If-None-Match"
+        }, {
+          "$ref" : "#/components/parameters/Accept-Language"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful response",
+            "headers" : {
+              "Content-Language" : {
+                "$ref" : "#/components/headers/Content-Language"
+              },
+              "ETag" : {
+                "$ref" : "#/components/headers/ETag"
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/doc_person"
+                }
+              }
+            }
+          },
+          "304" : {
+            "description" : "Not modified"
+          },
+          "default" : {
+            "$ref" : "#/components/responses/Problem"
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "securitySchemes" : {
+      "bearerAuth" : {
+        "type" : "http",
+        "scheme" : "bearer",
+        "bearerFormat" : "JWT"
+      }
+    },
+    "schemas" : {
+      "code_tab_ref" : {
+        "title" : "code_tab_ref",
+        "type" : "object",
+        "properties" : {
+          "_href" : {
+            "description" : "Reference/link",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "id" : {
+            "description" : "Numeric reference",
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "ident" : {
+            "description" : "Unique symbolic reference",
+            "type" : "string"
+          },
+          "intlId" : {
+            "description" : "Symbolic reference",
+            "type" : "string",
+            "readOnly" : true
+          }
+        }
+      },
+      "code_tab_ref_action" : {
+        "title" : "code_tab_ref_action",
+        "type" : "object",
+        "properties" : {
+          "_href" : {
+            "description" : "Reference/link",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "action" : {
+            "enum" : [ "hold", "proceed", "discard" ],
+            "example" : "hold",
+            "description" : "enum reference to action",
+            "type" : "string",
+            "writeOnly" : true
+          },
+          "id" : {
+            "description" : "Numeric reference",
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "ident" : {
+            "description" : "Unique symbolic reference",
+            "type" : "string"
+          },
+          "intlId" : {
+            "description" : "Symbolic reference",
+            "type" : "string",
+            "readOnly" : true
+          }
+        }
+      },
+      "doc_add" : {
+        "title" : "doc_add",
+        "type" : "object",
+        "properties" : {
+          "docAdd" : {
+            "description" : "Referencing: `/code-doc-adds/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "valList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/doc_add_val"
+            },
+            "readOnly" : true
+          }
+        }
+      },
+      "doc_add_val" : {
+        "title" : "doc_add_val",
+        "type" : "object",
+        "properties" : {
+          "dateVal" : {
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "idVal" : {
+            "type" : "integer",
+            "format" : "int32",
+            "readOnly" : true
+          },
+          "nrVal" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "textVal" : {
+            "type" : "string",
+            "readOnly" : true
+          },
+          "tswtzVal" : {
+            "type" : "string",
+            "format" : "date-time",
+            "readOnly" : true
+          }
+        }
+      },
+      "doc_classif_set" : {
+        "title" : "doc_classif_set",
+        "type" : "object",
+        "properties" : {
+          "bu" : {
+            "description" : "Business Unit<br>Referencing: `/obj-bps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "class" : {
+            "description" : "Class<br>Referencing: `/code-obj-classs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "classA" : {
+            "type" : "boolean",
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "classFactor" : {
+            "type" : "number",
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "cltSgmtCalc" : {
+            "description" : "Calculated Client Segment<br>Referencing: `/code-person-mktng-sgmts/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "endDate" : {
+            "type" : "string",
+            "format" : "date",
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "indivFeep" : {
+            "description" : "Indiv. Fee Profile<br>Referencing: `/obj-feeps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "isInht" : {
+            "description" : "Is Inherited",
+            "type" : "boolean",
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "objClassif" : {
+            "description" : "Referencing: `/code-obj-classifs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "remark" : {
+            "description" : "Remark",
+            "type" : "string",
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "spcdCostp" : {
+            "description" : "SPCD Cost Profile<br>Referencing: `/obj-costps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "spcdCurry" : {
+            "description" : "SPCD Currency<br>Referencing: `/obj-assets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "spcdMaxVal" : {
+            "description" : "SPCD Maximum",
+            "type" : "number",
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "spcdMinVal" : {
+            "description" : "SPCD Minimum",
+            "type" : "number",
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "spcdMinmaxValType" : {
+            "description" : "SPCD Min/Max Type<br>Referencing: `/code-cost-ovr-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "spcdOffsetVal" : {
+            "description" : "SPCD Offset",
+            "type" : "number",
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "spcdOffsetValType" : {
+            "description" : "SPCD Offset Type<br>Referencing: `/code-cost-ovr-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "spcdReason" : {
+            "description" : "SPCD Reason<br>Referencing: `/code-cost-ovr-reasons/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "spcdVal" : {
+            "description" : "SPCD Value",
+            "type" : "number",
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "spcdValType" : {
+            "description" : "SPCD Value Type<br>Referencing: `/code-cost-ovr-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "startDate" : {
+            "type" : "string",
+            "format" : "date",
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "userRef" : {
+            "description" : "Responsible User<br>Referencing: `/users/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/user_ref"
+            } ],
+            "x-additionalFieldType" : "extn_generic"
+          }
+        }
+      },
+      "doc_clt_suity_hist" : {
+        "title" : "doc_clt_suity_hist",
+        "type" : "object",
+        "properties" : {
+          "cltSuity" : {
+            "description" : "Client Suitability ID<br>Referencing: `/code-clt-suitys/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "cltSuityBu" : {
+            "description" : "Business Unit<br>Referencing: `/obj-bps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "cltSuityOvr" : {
+            "description" : "Override Client Suitability<br>Referencing: `/code-clt-suitys/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "cltSuityOvrDate" : {
+            "description" : "Client Sutability Override Date",
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "cltSuityOvrReason" : {
+            "description" : "Override Reason",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "cltSuityOvrUser" : {
+            "description" : "Override User<br>Referencing: `/users/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/user_ref"
+            } ],
+            "readOnly" : true
+          },
+          "cltSuityReasonList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_clt_suity_reason_hist"
+            },
+            "readOnly" : true
+          },
+          "cltSuityRefDate" : {
+            "description" : "Reference Date",
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "cltSuityRuleEvalTimestp" : {
+            "description" : "Client Rule Evaluation Timestamp",
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          }
+        }
+      },
+      "doc_direct_resp_rel" : {
+        "title" : "doc_direct_resp_rel",
+        "type" : "object",
+        "properties" : {
+          "resp" : {
+            "description" : "Referencing: `/obj-persons/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "respRole" : {
+            "description" : "Referencing: `/code-auth-roles/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "validFrom" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "validTo" : {
+            "type" : "string",
+            "format" : "date"
+          }
+        }
+      },
+      "doc_key" : {
+        "title" : "doc_key",
+        "type" : "object",
+        "properties" : {
+          "docKey" : {
+            "description" : "Referencing: `/code-doc-keys/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "val" : {
+            "type" : "string",
+            "readOnly" : true
+          }
+        }
+      },
+      "doc_obj_add" : {
+        "title" : "doc_obj_add",
+        "type" : "object",
+        "properties" : {
+          "bu" : {
+            "description" : "Business Unit<br>Referencing: `/obj-bps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "objAdd" : {
+            "description" : "Code addition<br>Referencing: `/code-obj-adds/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "valList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/doc_obj_add_val"
+            },
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_generic"
+          }
+        }
+      },
+      "doc_obj_add_val" : {
+        "title" : "doc_obj_add_val",
+        "type" : "object",
+        "properties" : {
+          "dateVal" : {
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "idVal" : {
+            "type" : "integer",
+            "format" : "int32",
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "nrVal" : {
+            "type" : "number",
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "textVal" : {
+            "type" : "string",
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "tswtzVal" : {
+            "type" : "string",
+            "format" : "date-time",
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_generic"
+          }
+        }
+      },
+      "doc_obj_key" : {
+        "title" : "doc_obj_key",
+        "type" : "object",
+        "properties" : {
+          "obj1" : {
+            "description" : "Object one<br>Referencing: `/objs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "obj2" : {
+            "description" : "Object two<br>Referencing: `/objs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "obj3" : {
+            "description" : "Object three<br>Referencing: `/objs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "obj4" : {
+            "description" : "Object four<br>Referencing: `/objs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "objKey" : {
+            "description" : "Object key<br>Referencing: `/code-obj-keys/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "prio" : {
+            "description" : "Priority",
+            "type" : "string",
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "refObj" : {
+            "description" : "Reference object<br>Referencing: `/objs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "ruleTempl" : {
+            "description" : "Rule template<br>Referencing: `/code-rule-templs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "seqNr" : {
+            "description" : "Sequence number",
+            "type" : "integer",
+            "format" : "int32",
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "trigMetaTyp" : {
+            "description" : "Triggering Meta Typ<br>Referencing: `/meta-typs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "trigOrderType" : {
+            "description" : "Triggering Order Type<br>Referencing: `/code-order-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "val" : {
+            "description" : "Key value",
+            "type" : "string",
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "valA" : {
+            "description" : "Key value set automatically",
+            "type" : "boolean",
+            "x-additionalFieldType" : "extn_generic"
+          }
+        }
+      },
+      "doc_obj_name" : {
+        "title" : "doc_obj_name",
+        "type" : "object",
+        "properties" : {
+          "lang" : {
+            "description" : "Language<br>Referencing: `/code-langs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "name" : {
+            "description" : "Name",
+            "type" : "string"
+          },
+          "nameA" : {
+            "description" : "Name Auto Flag",
+            "type" : "boolean"
+          },
+          "nameAbbr" : {
+            "type" : "string"
+          },
+          "nameAbbrA" : {
+            "type" : "boolean"
+          },
+          "nameIntl" : {
+            "description" : "Internal Name",
+            "type" : "string"
+          },
+          "nameIntlA" : {
+            "description" : "Internal Name Auto Flag",
+            "type" : "boolean"
+          },
+          "nameLong" : {
+            "description" : "Long name",
+            "type" : "string"
+          },
+          "nameLongA" : {
+            "description" : "Long Name Auto Flag",
+            "type" : "boolean"
+          }
+        }
+      },
+      "doc_obj_rel" : {
+        "title" : "doc_obj_rel",
+        "type" : "object",
+        "properties" : {
+          "f1" : {
+            "type" : "number"
+          },
+          "obj1" : {
+            "description" : "Source object<br>Referencing: `/objs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "obj2" : {
+            "description" : "Target object<br>Referencing: `/objs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "objRelSubType" : {
+            "description" : "Object relation sub type<br>Referencing: `/code-obj-rel-sub-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "objRelType" : {
+            "description" : "Object relation type<br>Referencing: `/code-obj-rel-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "prio" : {
+            "description" : "Relation Priority",
+            "type" : "number"
+          },
+          "shareRate" : {
+            "description" : "Sharing Rate (Sharing)",
+            "type" : "number"
+          },
+          "subTrl" : {
+            "description" : "Subtrailer",
+            "type" : "string"
+          },
+          "trl" : {
+            "description" : "Trailer",
+            "type" : "string"
+          }
+        }
+      },
+      "doc_override" : {
+        "title" : "doc_override",
+        "type" : "object",
+        "properties" : {
+          "override" : {
+            "description" : "Override code<br>Referencing: `/code-overrides/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "overrideComment" : {
+            "description" : "Comment<br>Referencing: `/code-override-comments/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "overrideText" : {
+            "description" : "Override text",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "secUser" : {
+            "description" : "User<br>Referencing: `/users/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/user_ref"
+            } ],
+            "readOnly" : true
+          },
+          "signt" : {
+            "description" : "Signature",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "timestamp" : {
+            "description" : "Timestamp",
+            "type" : "string",
+            "format" : "date-time",
+            "readOnly" : true
+          }
+        }
+      },
+      "doc_person" : {
+        "title" : "doc_person",
+        "type" : "object",
+        "properties" : {
+          "_ident" : {
+            "description" : "Only used for workItem usecases, definition of a crossreference in workItem context",
+            "type" : "string",
+            "writeOnly" : true
+          },
+          "addList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/doc_obj_add"
+            },
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "agingId" : {
+            "type" : "integer",
+            "format" : "int32",
+            "readOnly" : true
+          },
+          "assessOfMngt" : {
+            "description" : "Assessment of Management",
+            "type" : "string"
+          },
+          "balanceRange" : {
+            "description" : "Balance range<br>Referencing: `/code-person-balance-ranges/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "balanceRangeA" : {
+            "description" : "Automatic/manual switch for balance range",
+            "type" : "boolean"
+          },
+          "bankRel" : {
+            "description" : "Bp-Bank Relation<br>Referencing: `/code-person-bank-rels/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "bdeRecVersion" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "birthCountry" : {
+            "description" : "Country of Birth<br>Referencing: `/obj-countrys/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "birthDate" : {
+            "description" : "Birth date",
+            "type" : "string",
+            "format" : "date"
+          },
+          "bu" : {
+            "description" : "Business unit of order itself<br>Referencing: `/obj-bps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "budgetRemark" : {
+            "description" : "Assessment of Budget",
+            "type" : "string"
+          },
+          "caveat" : {
+            "description" : "Caveats",
+            "type" : "string"
+          },
+          "ceaseDate" : {
+            "description" : "ceased operations",
+            "type" : "string",
+            "format" : "date"
+          },
+          "classifList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/doc_classif_set"
+            },
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "clientLifecycle" : {
+            "description" : "Client Lifecycle<br>Referencing: `/code-person-client-lifecycles/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "closeDate" : {
+            "description" : "Closing date",
+            "type" : "string",
+            "format" : "date"
+          },
+          "cltSuityHistList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/doc_clt_suity_hist"
+            },
+            "readOnly" : true
+          },
+          "coa" : {
+            "description" : "Cost Accounting<br>Referencing: `/obj-coas/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "comnPrefList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/doc_person_comn_pref"
+            }
+          },
+          "competBank" : {
+            "description" : "Primary Competitor Bank<br>Referencing: `/obj-persons/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "competBankRemark" : {
+            "description" : "Remark About Competition",
+            "type" : "string"
+          },
+          "competRemark" : {
+            "description" : "Competition Comment",
+            "type" : "string"
+          },
+          "countryNatiList" : {
+            "description" : "List of Nationalities<br>Referencing: `/obj-countrys/{id}`",
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_ref"
+            }
+          },
+          "credStrat" : {
+            "description" : "Credit Strategy<br>Referencing: `/code-person-cred-strats/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "deTaxPerson" : {
+            "$ref" : "#/components/schemas/doc_tab_person_de_tax"
+          },
+          "deathDate" : {
+            "description" : "Death date",
+            "type" : "string",
+            "format" : "date"
+          },
+          "domiAddr" : {
+            "description" : "Referencing: `/obj-addrs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "establishCountry" : {
+            "description" : "Referencing: `/obj-countrys/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "establishDate" : {
+            "description" : "date of establishment",
+            "type" : "string",
+            "format" : "date"
+          },
+          "extn" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/doc_person_extn"
+            } ],
+            "readOnly" : true
+          },
+          "finRevisionDate" : {
+            "description" : "Financial revision date (since)",
+            "type" : "string",
+            "format" : "date"
+          },
+          "finRevisionType" : {
+            "description" : "Type of Revision<br>Referencing: `/code-fin-revision-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "genCoa" : {
+            "description" : "Generate Cost Accounting Object",
+            "type" : "boolean"
+          },
+          "gender" : {
+            "description" : "Gender<br>Referencing: `/code-genders/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "hometown" : {
+            "description" : "Hometown ",
+            "type" : "string"
+          },
+          "id" : {
+            "description" : "ID<br>Referencing: `/docs/{id}`",
+            "type" : "integer",
+            "format" : "int64",
+            "readOnly" : true
+          },
+          "incomeRange" : {
+            "description" : "Income Range<br>Referencing: `/code-person-income-ranges/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "incomeRangeA" : {
+            "description" : "Income Range",
+            "type" : "boolean"
+          },
+          "jobType" : {
+            "description" : "Job type<br>Referencing: `/code-job-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "jobTypeA" : {
+            "description" : "Job Type calcuated automatically",
+            "type" : "boolean"
+          },
+          "jobUserType" : {
+            "description" : "User type linked to the Job<br>Referencing: `/code-job-user-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "jobUserTypeA" : {
+            "description" : "Job User Type calcuated automatically",
+            "type" : "boolean"
+          },
+          "keyList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/doc_obj_key"
+            },
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "lang" : {
+            "description" : "Language<br>Referencing: `/code-langs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "mktRemark" : {
+            "description" : "Market Comment",
+            "type" : "string"
+          },
+          "monthFinStmtSubm" : {
+            "description" : "Month of financial statement submission",
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "nofEmpl" : {
+            "description" : "Number of Employees<br>Referencing: `/code-person-nof-empls/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "obj" : {
+            "description" : "Referencing: `/objs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "objDirectRespList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/doc_direct_resp_rel"
+            }
+          },
+          "objNameList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/doc_obj_name"
+            }
+          },
+          "objPrcInfo" : {
+            "$ref" : "#/components/schemas/doc_with_obj_prc_info"
+          },
+          "openDate" : {
+            "description" : "Opening date",
+            "type" : "string",
+            "format" : "date"
+          },
+          "personDetList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/doc_person_det"
+            }
+          },
+          "personIdentList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/doc_person_ident"
+            }
+          },
+          "personNameList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/doc_person_name"
+            }
+          },
+          "personRelList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/doc_person_rel2"
+            }
+          },
+          "placeBirth" : {
+            "description" : "Place of birth",
+            "type" : "string"
+          },
+          "prePerson" : {
+            "description" : "Reference to predecessor person<br>Referencing: `/obj-persons/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "prodRemark" : {
+            "description" : "Product Comment",
+            "type" : "string"
+          },
+          "relEndDate" : {
+            "description" : "End of Relation",
+            "type" : "string",
+            "format" : "date"
+          },
+          "relList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/doc_obj_rel"
+            }
+          },
+          "relStartDate" : {
+            "description" : "Start of Relation",
+            "type" : "string",
+            "format" : "date"
+          },
+          "relStrat" : {
+            "description" : "Relation Strategy<br>Referencing: `/code-person-rel-strats/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "religDenomi" : {
+            "description" : "Religious Denomination<br>Referencing: `/code-relig-denomis/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "sctrRemark" : {
+            "description" : "Sector Comment",
+            "type" : "string"
+          },
+          "sdsInstn" : {
+            "description" : "SDS instance ID<br>Referencing: `/code-extl-syss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "stratRemark" : {
+            "description" : "Remark for Strategy",
+            "type" : "string"
+          },
+          "swotOpportunity" : {
+            "description" : "SWOT: Opportunities",
+            "type" : "string"
+          },
+          "swotRemark" : {
+            "description" : "SWOT: Comment",
+            "type" : "string"
+          },
+          "swotStrenght" : {
+            "description" : "SWOT: Strenghts",
+            "type" : "string"
+          },
+          "swotThreat" : {
+            "description" : "SWOT: Threats",
+            "type" : "string"
+          },
+          "swotWeakness" : {
+            "description" : "SWOT: Weaknesses",
+            "type" : "string"
+          },
+          "turnoverRange" : {
+            "description" : "Turnover range<br>Referencing: `/code-person-turnover-ranges/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "turnoverRangeA" : {
+            "description" : "Automatic/manual switch for turnover range",
+            "type" : "boolean"
+          },
+          "zekEntries" : {
+            "description" : "Entries Existing<br>Referencing: `/code-yes-nos/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "zekInfoObtain" : {
+            "description" : "Information Obtained<br>Referencing: `/code-zek-info-obtains/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "zekIrreg" : {
+            "description" : "Irregularities<br>Referencing: `/code-yes-nos/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "zekLastIncidentDate" : {
+            "description" : "Last Incident Date",
+            "type" : "string",
+            "format" : "date"
+          },
+          "zekObtainDate" : {
+            "description" : "Date of information",
+            "type" : "string",
+            "format" : "date"
+          },
+          "zekRemark" : {
+            "description" : "Comment",
+            "type" : "string"
+          }
+        }
+      },
+      "doc_person_comn_pref" : {
+        "title" : "doc_person_comn_pref",
+        "type" : "object",
+        "properties" : {
+          "comnType" : {
+            "description" : "Communication Type<br>Referencing: `/code-comn-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "lang" : {
+            "description" : "Language<br>Referencing: `/code-langs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "objAddr" : {
+            "description" : "Address<br>Referencing: `/obj-addrs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "prio" : {
+            "description" : "Priority",
+            "type" : "string"
+          },
+          "remark" : {
+            "description" : "Remark",
+            "type" : "string"
+          },
+          "restrObj" : {
+            "description" : "Object Restriction<br>Referencing: `/objs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          }
+        }
+      },
+      "doc_person_det" : {
+        "title" : "doc_person_det",
+        "type" : "object",
+        "properties" : {
+          "clientStatus" : {
+            "description" : "Client Status<br>Referencing: `/code-person-client-statuss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "clientStatusA" : {
+            "description" : "Automatic/manual switch for client status",
+            "type" : "boolean"
+          },
+          "countryNati" : {
+            "description" : "Nationality<br>Referencing: `/obj-countrys/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "countryRisk" : {
+            "description" : "Country of risk<br>Referencing: `/obj-countrys/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "countryRiskA" : {
+            "description" : "Automatic/manual switch for country of risk",
+            "type" : "boolean"
+          },
+          "emplKind" : {
+            "description" : "Employee kind<br>Referencing: `/code-person-empl-kinds/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "isLegIncap" : {
+            "description" : "is legally incapacitated",
+            "type" : "boolean"
+          },
+          "jurisdictionPlaceA" : {
+            "description" : "Automatic/manual switch for the place of jurisdiction",
+            "type" : "boolean"
+          },
+          "jurisdictionPlaceId" : {
+            "description" : "Place of jurisdiction",
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "legalForm" : {
+            "description" : "Leagl form<br>Referencing: `/code-legal-forms/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "maritalStatus" : {
+            "description" : "Marital Status<br>Referencing: `/code-marital-statuss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "maritalStatusFrom" : {
+            "description" : "Marital Status_from",
+            "type" : "string",
+            "format" : "date"
+          },
+          "personType" : {
+            "description" : "Person type<br>Referencing: `/code-obj-sub-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "profession" : {
+            "description" : "Profession",
+            "type" : "string"
+          }
+        }
+      },
+      "doc_person_extn" : {
+        "title" : "doc_person_extn",
+        "type" : "object",
+        "properties" : {
+          "bpFitchLong" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "bpFitchShort" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "bpMoodyLong" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "bpMoodyShort" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "bpRepRateLong" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "bpRepRateShort" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "bpSpLong" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "bpSpShort" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "confirmPayeeOptOut" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "frsBpClassif" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "frsClaimEligible" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "frsCons" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "frsDeRegCraftsm" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "frsDfltExpCpty" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "frsEcbClass" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "frsEconSctr" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "frsRiskCountryId" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "frsRiskIndBp" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "frsSme" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "jobUserAuthName" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_key_single_"
+            },
+            "readOnly" : true
+          },
+          "jobUserLicType" : {
+            "description" : "Job User License Type<br>Referencing: `/code-user-lic-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "jobUserWinUserSid" : {
+            "description" : "Job User Windows User SID",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "legBkrRemtCcp" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "legCdeInternationalInst" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "legCptyCvaElig" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "legEligCpty" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "legEstablishedRel" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "legFinCntprty" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "legIntragroup" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "legInvstFirm" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "legIrbExpoClass" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "legLinkUndertaking" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "legNace21" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "legNace211" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "legNace212" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "legNace213" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "legNace214" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "legNace22" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "legNace23" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "legNace24" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "legNonPerfBp" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "legRepGrp" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_key_single_"
+            },
+            "readOnly" : true
+          },
+          "legStructuredEnt" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "legTypInvstFirm" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "legTypIssCentralGovEquiv" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "legTypeCentralGovEquiv" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "mba$aalAplList" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/mba_aal_apl_list"
+            } ],
+            "readOnly" : true
+          },
+          "mba$amlStatus" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "mba$buAudDate" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/mba_bu_aud_date"
+            } ],
+            "readOnly" : true
+          },
+          "mba$cltOnbDet" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/mba_clt_onb_det"
+            } ],
+            "readOnly" : true
+          },
+          "mba$collatCmtdPar" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/mba_collat_cmtd_par"
+            } ],
+            "readOnly" : true
+          },
+          "mba$det" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/mba_det"
+            } ],
+            "readOnly" : true
+          },
+          "mba$distrRestr" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/mba_distr_restr"
+            } ],
+            "readOnly" : true
+          },
+          "mba$docm" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/mba_docm"
+            } ],
+            "readOnly" : true
+          },
+          "mba$emplType" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "mba$fatcaAggraccVal" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "mba$fatcaIsHighVal" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "mba$finInstType" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "mba$finLiteracy" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "mba$highRiskFactor" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_classif_set_"
+            },
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "mba$highRiskFactorDet" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_classif_set_"
+            },
+            "readOnly" : true
+          },
+          "mba$hktrIndstrlSctr" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "mba$hnwiOptions" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "mba$hsicGrp" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "mba$hsicIndustry" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "mba$hsicMajor" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "mba$hsicMinor" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "mba$hsicSect" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "mba$idvStatus" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "mba$intl" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/mba_intl"
+            } ],
+            "readOnly" : true
+          },
+          "mba$invstRiskProfile" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/mba_invst_risk_profile"
+            } ],
+            "readOnly" : true
+          },
+          "mba$isComn" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "mba$isDealer" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "mba$isFatcaMinClaim" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "mba$isHkma" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "mba$isHnwi" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "mba$isMsme" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "mba$isPep" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "mba$isPi" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "mba$isSmallLoclAuth" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "mba$isVatGrp" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "mba$isWholesale" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "mba$jobCompet" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/mba_job_compet"
+            } ],
+            "readOnly" : true
+          },
+          "mba$jobStatus" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "mba$jobType" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "mba$legEquityGrp" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/mba_leg_equity_grp"
+            } ],
+            "readOnly" : true
+          },
+          "mba$loanGrading" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "mba$oeType" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "mba$othCtact" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "mba$persLegalFormDet" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/mba_pers_legal_form_det"
+            } ],
+            "readOnly" : true
+          },
+          "mba$personBlbFundMgr" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_key_single_"
+            },
+            "readOnly" : true
+          },
+          "mba$personCdsNr" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_key_single_"
+            },
+            "readOnly" : true
+          },
+          "mba$personCif" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_key_single_"
+            },
+            "readOnly" : true
+          },
+          "mba$personExtl" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_key"
+            },
+            "readOnly" : true
+          },
+          "mba$personGk" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_key_single_"
+            },
+            "readOnly" : true
+          },
+          "mba$personIndvId" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_key_single_"
+            },
+            "readOnly" : true
+          },
+          "mba$personLgcy" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_key_single_"
+            },
+            "readOnly" : true
+          },
+          "mba$personMerge" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_key"
+            },
+            "readOnly" : true
+          },
+          "mba$personPid" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_key_single_"
+            },
+            "readOnly" : true
+          },
+          "mba$personSrsNr" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_key_single_"
+            },
+            "readOnly" : true
+          },
+          "mba$personWmIssuerNr" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_key_single_"
+            },
+            "readOnly" : true
+          },
+          "mba$prsnlCirc" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/mba_prsnl_circ"
+            } ],
+            "readOnly" : true
+          },
+          "mba$purpCompany" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "mba$race" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "mba$repFig" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/mba_rep_fig"
+            } ],
+            "readOnly" : true
+          },
+          "mba$riskAuto" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "mba$riskManu" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "mba$riskRate" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "mba$rmProfnInfo" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/mba_rm_profn_info"
+            } ],
+            "readOnly" : true
+          },
+          "mba$salesfunnel" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "mba$ssicGrp" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "mba$ssicIndustry" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "mba$ssicMajor" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "mba$ssicMinor" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "mba$ssicSect" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "mba$tkSectorCode" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "mba$trustType" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "mba$usQiLobCode" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "mba$usTaxQiDocm" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "oeSecResv" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "personElAddr" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_key"
+            },
+            "readOnly" : true
+          },
+          "personFeepType" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_classif_set_"
+            },
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "personFeepTypeDet" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_classif_set_"
+            },
+            "readOnly" : true
+          },
+          "personIdentNr" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_key"
+            },
+            "readOnly" : true
+          },
+          "personIsaInvstrId" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_key_single_"
+            },
+            "readOnly" : true
+          },
+          "personKowaUuid" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_key_single_"
+            },
+            "readOnly" : true
+          },
+          "personLrgExpo" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_key_single_"
+            },
+            "readOnly" : true
+          },
+          "personMainResp" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_key_single_"
+            },
+            "readOnly" : true
+          },
+          "personNr" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_key_single_"
+            },
+            "readOnly" : true
+          },
+          "personQiChap3Status" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "personQiCompli" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "personRateIntl" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "personSof" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_classif_set_"
+            },
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "personSofDet" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_classif_set_"
+            },
+            "readOnly" : true
+          },
+          "personSow" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_classif_set_"
+            },
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "personSowDet" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_classif_set_"
+            },
+            "readOnly" : true
+          },
+          "personSym" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_key_single_"
+            },
+            "readOnly" : true
+          },
+          "personUsTaxFrnCompli" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "sdsPersonSync" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_key_single_"
+            },
+            "readOnly" : true
+          },
+          "typSubjectToSii" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "ukecosctr" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "ukexpotype" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_classif_"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          }
+        }
+      },
+      "doc_person_ident" : {
+        "title" : "doc_person_ident",
+        "type" : "object",
+        "properties" : {
+          "extlRef" : {
+            "description" : "external reference",
+            "type" : "string"
+          },
+          "identNr" : {
+            "description" : "Number of the Identification Document",
+            "type" : "string"
+          },
+          "identType" : {
+            "description" : "Identification Type<br>Referencing: `/code-person-ident-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "issueCountry" : {
+            "description" : "Issuing Country<br>Referencing: `/obj-countrys/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "issueDate" : {
+            "description" : "Issue date of the Identification",
+            "type" : "string",
+            "format" : "date"
+          },
+          "issuePlace" : {
+            "description" : "Place of issue",
+            "type" : "string"
+          },
+          "issuerObj" : {
+            "description" : "Issuer object; its type depends on the ident_type_id definition, see CODE_PERSON_IDENT_TYPE<br>Referencing: `/objs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "objDocm" : {
+            "description" : "Document<br>Referencing: `/obj-docms/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "person" : {
+            "description" : "Referencing: `/obj-persons/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "validTo" : {
+            "description" : "Valid To Date",
+            "type" : "string",
+            "format" : "date"
+          }
+        }
+      },
+      "doc_person_name" : {
+        "title" : "doc_person_name",
+        "type" : "object",
+        "properties" : {
+          "artistName" : {
+            "description" : "Artist Name",
+            "type" : "string"
+          },
+          "birthName" : {
+            "description" : "Birth Name",
+            "type" : "string"
+          },
+          "firstName" : {
+            "description" : "First Name",
+            "type" : "string"
+          },
+          "fullName" : {
+            "description" : "Full Name",
+            "type" : "string"
+          },
+          "fullNameA" : {
+            "description" : "Full Name Auto Flag",
+            "type" : "boolean"
+          },
+          "lang" : {
+            "description" : "Language ID<br>Referencing: `/code-langs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "lastName" : {
+            "description" : "Last Name",
+            "type" : "string"
+          },
+          "middleName" : {
+            "description" : "Middle Name",
+            "type" : "string"
+          },
+          "sndLastName" : {
+            "description" : "Second Last Name",
+            "type" : "string"
+          },
+          "title" : {
+            "description" : "Title ID<br>Referencing: `/code-titles/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "titleAlt" : {
+            "description" : "Alternative Title",
+            "type" : "string"
+          }
+        }
+      },
+      "doc_person_obj_prc_info_extn" : {
+        "title" : "doc_person_obj_prc_info_extn",
+        "type" : "object",
+        "properties" : {
+          "afsDocId" : {
+            "description" : "AFS Order ID",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "afsExtlRefNr" : {
+            "description" : "AFS external reference number",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "api1RefNr" : {
+            "description" : "Primary API external reference number",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "api2RefNr" : {
+            "description" : "Secondary API external reference number",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "clmId" : {
+            "description" : "CLM ID",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "dxsCtxId" : {
+            "description" : "DXS context ID",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "dxsEntityExtlRef" : {
+            "description" : "DXS entity external reference",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "mba$afsContr" : {
+            "description" : "Existing AFS Contract<br>Referencing: `/obj-docms/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "mba$authEdtRvwCompLvList" : {
+            "description" : "Authorization: comp lv that need to authorize for specific edt rvw in jtg",
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            },
+            "readOnly" : true
+          },
+          "mba$authorEdtRvwJtgList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/number"
+            },
+            "readOnly" : true
+          },
+          "mba$blockAprvUserList" : {
+            "description" : "List of Users having approved the Compliance Blocking Codes<br>Referencing: `/users/{id}`",
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/user_ref"
+            },
+            "readOnly" : true
+          },
+          "mba$blockJtgList" : {
+            "description" : "Current List of matching compliance block IDs with the corresponding JTG IDs",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "mba$blockRemnJtgList" : {
+            "description" : "List of JTG still required to approve the Compliance Blocking Codes<br>Referencing: `/mba$code-job-type-grps/{id}`",
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            },
+            "readOnly" : true
+          },
+          "mba$ccPastAuthorUserList" : {
+            "description" : "Authorization: User List for current jtg (Credit Check)<br>Referencing: `/users/{id}`",
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/user_ref"
+            },
+            "readOnly" : true
+          },
+          "mba$credChkAuthCompLvList" : {
+            "description" : "Authorization: comp lv that need to authorize in jtg (Credit Check)",
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            },
+            "readOnly" : true
+          },
+          "mba$credChkAuthorJtgList" : {
+            "description" : "JTG to authorize the order. Indication, which jtg has to author (Credit Check).<br>Referencing: `/mba$code-job-type-grps/{id}`",
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            },
+            "readOnly" : true
+          },
+          "mba$credChkCmt" : {
+            "description" : "Comment of the Decision (Credit Check)",
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            },
+            "readOnly" : true
+          },
+          "mba$credChkRestr" : {
+            "description" : "Additional Restriction List (Credit Check)",
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            },
+            "readOnly" : true
+          },
+          "mba$docErrType" : {
+            "description" : "Order Processing Error Type<br>Referencing: `/mba$code-doc-err-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "mba$edtRvwJtgList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/number"
+            },
+            "readOnly" : true
+          },
+          "mba$edtRvwUserList" : {
+            "description" : "Last user to edited the order for jtg (as listed in mba$edt_rvw_jtg_list)<br>Referencing: `/users/{id}`",
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/user_ref"
+            },
+            "readOnly" : true
+          },
+          "mba$hasCreateAfsContr" : {
+            "description" : "Create AFS Contract",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "mba$iAuthEdtRvwCompLvLst" : {
+            "description" : "Authorization:initial comp lv that need to authorize for specific edt rvw in jtg",
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            },
+            "readOnly" : true
+          },
+          "mba$iCredChkAuthCompLvLt" : {
+            "description" : "Authorization:initial comp lv that need to authorize in jtg (Credit Check)",
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            },
+            "readOnly" : true
+          },
+          "mba$instrDet" : {
+            "description" : "Instruction Details",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "mba$isDfltValSet" : {
+            "description" : "Have default values been applied",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "mba$lswfInsJtg" : {
+            "description" : "Job Type Group that inserted the order<br>Referencing: `/mba$code-job-type-grps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "mba$lswfJtg" : {
+            "description" : "Current job type group owning the status<br>Referencing: `/mba$code-job-type-grps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "mba$lswfLastSwfIntfWfaId" : {
+            "description" : "Last interface action used",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "mba$lswfLastSwfWfaId" : {
+            "description" : "Last workflow action used",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "mba$lswfLastSwfWfsId" : {
+            "description" : "Communication to next department",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "mba$lswfNextJtg" : {
+            "description" : "Next job type group owning the status<br>Referencing: `/mba$code-job-type-grps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "mba$lswfNextJtgInfo" : {
+            "description" : "Communication to next job type group",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "mba$lswfNextRa" : {
+            "description" : "Next Routing Action for Linkable Sub-Workflow<br>Referencing: `/mba$code-lswf-raps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "mba$lswfNextSwf" : {
+            "description" : "Next Linkable Sub-Workflow in Workflow<br>Referencing: `/mba$code-lswfs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "mba$lswfPrevSwf" : {
+            "description" : "Previous Linkable Sub-Workflow in Workflow<br>Referencing: `/mba$code-lswfs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "mba$lswfRa" : {
+            "description" : "Current Routing Action for Linkable Sub-Workflow<br>Referencing: `/mba$code-lswf-raps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "mba$lswfSwf" : {
+            "description" : "Current Linkable Sub-Workflow in Workflow<br>Referencing: `/mba$code-lswfs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "mba$lswfUc" : {
+            "description" : "Use Case assigned to the order<br>Referencing: `/mba$code-lswf-ucs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "mba$mediumA" : {
+            "description" : "Medium A/M flag",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "mba$mediumPhoneNr" : {
+            "description" : "Reference phone number to be registered in case of a phone call",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "mba$pastAuthorUserList" : {
+            "description" : "Authorization: User List for current jtg<br>Referencing: `/users/{id}`",
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/user_ref"
+            },
+            "readOnly" : true
+          },
+          "mba$srcFund" : {
+            "description" : "Source of Funds<br>Referencing: `/mba$code-src-funds/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "pkpSvcRsvIdent" : {
+            "description" : "Position Keeping Service: Reservation/advice identifier",
+            "type" : "string",
+            "readOnly" : true
+          }
+        }
+      },
+      "doc_person_rel2" : {
+        "title" : "doc_person_rel2",
+        "type" : "object",
+        "properties" : {
+          "advnProfitAmt" : {
+            "description" : "Advance Profit Amount",
+            "type" : "number"
+          },
+          "advnProfitCurry" : {
+            "description" : "Advance Profit Currency<br>Referencing: `/obj-assets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "dir" : {
+            "description" : "Direction",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "hasLiab" : {
+            "description" : "Has the related person a liability?",
+            "type" : "boolean"
+          },
+          "hasPartic" : {
+            "description" : "Participation",
+            "type" : "boolean"
+          },
+          "hasProfitPartic" : {
+            "description" : "Profit Participation",
+            "type" : "boolean"
+          },
+          "isLegRepr" : {
+            "description" : "Legal Representative",
+            "type" : "boolean"
+          },
+          "liabPerc" : {
+            "description" : "Liability percentage",
+            "type" : "number"
+          },
+          "particAmt" : {
+            "description" : "Participation Amount",
+            "type" : "number"
+          },
+          "particCurry" : {
+            "description" : "Participation Currency<br>Referencing: `/obj-assets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "particPerc" : {
+            "description" : "Participation Percentage",
+            "type" : "number"
+          },
+          "personRelDet" : {
+            "description" : "Details<br>Referencing: `/code-person-rel-dets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "personRelKind" : {
+            "description" : "Kind<br>Referencing: `/code-person-rel-kinds/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "personRelRole" : {
+            "description" : "Role<br>Referencing: `/code-person-rel-roles/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "personRelSubKind" : {
+            "description" : "Sub Kind<br>Referencing: `/code-person-rel-sub-kinds/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "personRelType" : {
+            "description" : "Relation Type<br>Referencing: `/code-person-rel-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "personTrg" : {
+            "description" : "ID of Target Person<br>Referencing: `/obj-persons/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "profitParticAmt" : {
+            "description" : "Profit Participation Amount",
+            "type" : "number"
+          },
+          "profitParticCurry" : {
+            "description" : "Profit Participation Currency<br>Referencing: `/obj-assets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "profitParticPerc" : {
+            "description" : "Profit Participation Percentage",
+            "type" : "number"
+          },
+          "remark" : {
+            "description" : "Remark",
+            "type" : "string"
+          },
+          "validFrom" : {
+            "description" : "Valid From Date",
+            "type" : "string",
+            "format" : "date"
+          },
+          "validTo" : {
+            "description" : "Valid To Date",
+            "type" : "string",
+            "format" : "date"
+          }
+        }
+      },
+      "doc_persons" : {
+        "title" : "List of doc_person",
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/doc_person"
+        },
+        "uniqueItems" : true
+      },
+      "doc_tab_person_de_tax" : {
+        "title" : "doc_tab_person_de_tax",
+        "type" : "object",
+        "properties" : {
+          "addr" : {
+            "description" : "German Taxes Person Address<br>Referencing: `/obj-addrs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "germanDomi" : {
+            "description" : "German Taxes Person German Domicile<br>Referencing: `/code-de-tax-german-domis/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "personType" : {
+            "description" : "German Taxes Person Type<br>Referencing: `/code-de-tax-person-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "state" : {
+            "description" : "German Taxes Person State<br>Referencing: `/code-de-tax-states/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "stmtType" : {
+            "description" : "German Taxes Person Statement Type<br>Referencing: `/code-de-tax-stmt-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          }
+        }
+      },
+      "doc_with_obj_prc_info" : {
+        "title" : "doc_with_obj_prc_info",
+        "type" : "object",
+        "properties" : {
+          "addList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/doc_add"
+            }
+          },
+          "extn" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/doc_person_obj_prc_info_extn"
+            } ],
+            "readOnly" : true
+          },
+          "isFinal" : {
+            "description" : "Is order in a final status?",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "keyList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/doc_key"
+            }
+          },
+          "lastTrans" : {
+            "description" : "Last transition",
+            "type" : "string",
+            "format" : "date-time",
+            "readOnly" : true
+          },
+          "metaTyp" : {
+            "description" : "Referencing: `/meta-typs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "overrideList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/doc_override"
+            }
+          },
+          "wfcAction" : {
+            "description" : "Workflow Action<br>Referencing: `/wfc-action-persons/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "wfcStatus" : {
+            "description" : "Workflow Status<br>Referencing: `/wfc-status-persons/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          }
+        }
+      },
+      "mba_aal_apl_list" : {
+        "title" : "mba$aal_apl_list",
+        "type" : "object",
+        "properties" : {
+          "collectList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/mba_aal_apl_list_mba_aal_apl_det"
+            },
+            "readOnly" : true
+          }
+        }
+      },
+      "mba_aal_apl_list_mba_aal_apl_det" : {
+        "title" : "mba$aal_apl_list_mba$aal_apl_det",
+        "type" : "object",
+        "properties" : {
+          "objCollectId" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "relSubType" : {
+            "description" : "Referencing: `/code-obj-rel-sub-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          }
+        }
+      },
+      "mba_bu_aud_date" : {
+        "title" : "mba$bu_aud_date",
+        "type" : "object",
+        "properties" : {
+          "audDate" : {
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          }
+        }
+      },
+      "mba_clt_onb_det" : {
+        "title" : "mba$clt_onb_det",
+        "type" : "object",
+        "properties" : {
+          "cltOnbDocId" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "isMktOptIn" : {
+            "type" : "boolean",
+            "readOnly" : true
+          }
+        }
+      },
+      "mba_collat_cmtd_par" : {
+        "title" : "mba$collat_cmtd_par",
+        "type" : "object",
+        "properties" : {
+          "cmtd" : {
+            "description" : "Referencing: `/code-collat-val-cmtds/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "cmtdParList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/mba_collat_cmtd_par_mba_collat_cmtd_par_item"
+            },
+            "readOnly" : true
+          },
+          "factRuleList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/mba_collat_cmtd_par_mba_collat_fact_rule"
+            },
+            "readOnly" : true
+          }
+        }
+      },
+      "mba_collat_cmtd_par_fact_rule_list_mba_cont_class" : {
+        "title" : "mba$collat_cmtd_par_fact_rule_list_mba$cont_class",
+        "type" : "object",
+        "properties" : {
+          "class" : {
+            "description" : "Referencing: `/code-obj-classs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          }
+        }
+      },
+      "mba_collat_cmtd_par_fact_rule_list_mba_ips_class" : {
+        "title" : "mba$collat_cmtd_par_fact_rule_list_mba$ips_class",
+        "type" : "object",
+        "properties" : {
+          "class" : {
+            "description" : "Referencing: `/code-obj-classs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          }
+        }
+      },
+      "mba_collat_cmtd_par_mba_collat_cmtd_par_item" : {
+        "title" : "mba$collat_cmtd_par_mba$collat_cmtd_par_item",
+        "type" : "object",
+        "properties" : {
+          "cmtdPar" : {
+            "description" : "Referencing: `/mba$code-collat-val-cmtd-pars/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "cmtdParVal" : {
+            "type" : "number",
+            "readOnly" : true
+          }
+        }
+      },
+      "mba_collat_cmtd_par_mba_collat_fact_rule" : {
+        "title" : "mba$collat_cmtd_par_mba$collat_fact_rule",
+        "type" : "object",
+        "properties" : {
+          "contClassLid" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/mba_collat_cmtd_par_fact_rule_list_mba_cont_class"
+            },
+            "readOnly" : true
+          },
+          "fact" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "ipsClassLid" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/mba_collat_cmtd_par_fact_rule_list_mba_ips_class"
+            },
+            "readOnly" : true
+          },
+          "prio" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "validFrom" : {
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "validTo" : {
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          }
+        }
+      },
+      "mba_det" : {
+        "title" : "mba$det",
+        "type" : "object",
+        "properties" : {
+          "amlRiskScoreTot" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "emplDetList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/mba_det_mba_empl_det"
+            },
+            "readOnly" : true
+          },
+          "expectActyCountryList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/mba_det_mba_expect_acty_country"
+            },
+            "readOnly" : true
+          },
+          "marrContr" : {
+            "description" : "Referencing: `/mba$code-marr-contrs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "prefName" : {
+            "type" : "string",
+            "readOnly" : true
+          },
+          "regRef" : {
+            "type" : "string",
+            "readOnly" : true
+          },
+          "regulator" : {
+            "type" : "string",
+            "readOnly" : true
+          },
+          "rrlNrAccHolder" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "sector" : {
+            "description" : "Referencing: `/mba$code-person-sectors/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "shortName" : {
+            "type" : "string",
+            "readOnly" : true
+          },
+          "srcWlthActList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/mba_det_mba_src_wlth_act"
+            },
+            "readOnly" : true
+          },
+          "suffix" : {
+            "type" : "string",
+            "readOnly" : true
+          },
+          "valExpectActyPa" : {
+            "description" : "Referencing: `/mba$code-val-init-depo-actys/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "valInitDepo" : {
+            "description" : "Referencing: `/mba$code-val-init-depo-actys/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "vulnbDetList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/mba_det_mba_vulnb_det"
+            },
+            "readOnly" : true
+          }
+        }
+      },
+      "mba_det_mba_empl_det" : {
+        "title" : "mba$det_mba$empl_det",
+        "type" : "object",
+        "properties" : {
+          "emplKind" : {
+            "description" : "Referencing: `/code-person-empl-kinds/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "emplName" : {
+            "type" : "string",
+            "readOnly" : true
+          },
+          "incomeType" : {
+            "description" : "Referencing: `/code-person-income-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "profession" : {
+            "type" : "string",
+            "readOnly" : true
+          },
+          "remark" : {
+            "type" : "string",
+            "readOnly" : true
+          },
+          "validFrom" : {
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "validTo" : {
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "workNature" : {
+            "description" : "Referencing: `/mba$code-work-natures/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          }
+        }
+      },
+      "mba_det_mba_expect_acty_country" : {
+        "title" : "mba$det_mba$expect_acty_country",
+        "type" : "object",
+        "properties" : {
+          "expectActyCountry" : {
+            "description" : "Referencing: `/obj-countrys/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          }
+        }
+      },
+      "mba_det_mba_src_wlth_act" : {
+        "title" : "mba$det_mba$src_wlth_act",
+        "type" : "object",
+        "properties" : {
+          "wlthActName" : {
+            "description" : "Referencing: `/code-obj-classs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "wlthCountry" : {
+            "description" : "Referencing: `/obj-countrys/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          }
+        }
+      },
+      "mba_det_mba_vulnb_det" : {
+        "title" : "mba$det_mba$vulnb_det",
+        "type" : "object",
+        "properties" : {
+          "comment" : {
+            "type" : "string",
+            "readOnly" : true
+          },
+          "endDate" : {
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "srvList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/mba_det_vulnb_det_list_mba_vulnb_srv"
+            },
+            "readOnly" : true
+          },
+          "startDate" : {
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "vulnb" : {
+            "description" : "Referencing: `/mba$code-vulnbs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          }
+        }
+      },
+      "mba_det_vulnb_det_list_mba_vulnb_srv" : {
+        "title" : "mba$det_vulnb_det_list_mba$vulnb_srv",
+        "type" : "object",
+        "properties" : {
+          "comment" : {
+            "type" : "string",
+            "readOnly" : true
+          },
+          "endDate" : {
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "startDate" : {
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "vulnbSrv" : {
+            "description" : "Referencing: `/mba$code-vulnb-srvs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          }
+        }
+      },
+      "mba_distr_restr" : {
+        "title" : "mba$distr_restr",
+        "type" : "object",
+        "properties" : {
+          "distrRestrList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/mba_distr_restr_mba_distr_restr"
+            },
+            "readOnly" : true
+          }
+        }
+      },
+      "mba_distr_restr_mba_distr_restr" : {
+        "title" : "mba$distr_restr_mba$distr_restr",
+        "type" : "object",
+        "properties" : {
+          "country" : {
+            "description" : "Referencing: `/obj-countrys/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "restrType" : {
+            "description" : "Referencing: `/mba$code-distr-restr-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "scriptExpr" : {
+            "description" : "Referencing: `/mba$code-script-exprs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          }
+        }
+      },
+      "mba_docm" : {
+        "title" : "mba$docm",
+        "type" : "object",
+        "properties" : {
+          "docmList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/mba_docm_mba_docm_det"
+            },
+            "readOnly" : true
+          }
+        }
+      },
+      "mba_docm_mba_docm_det" : {
+        "title" : "mba$docm_mba$docm_det",
+        "type" : "object",
+        "properties" : {
+          "accrEnTrl" : {
+            "description" : "Referencing: `/mba$code-accr-en-trls/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "action" : {
+            "description" : "Referencing: `/mba$code-actions/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "actionA" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "addDate" : {
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "addUser" : {
+            "description" : "Referencing: `/obj-persons/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "arcvDate" : {
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "arcvId" : {
+            "type" : "string",
+            "readOnly" : true
+          },
+          "comment" : {
+            "type" : "string",
+            "readOnly" : true
+          },
+          "country" : {
+            "description" : "Referencing: `/obj-countrys/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "countryA" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "deferralReason" : {
+            "description" : "Referencing: `/code-deferral-reasons/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "deferredDate" : {
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "deferredDateA" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "docm" : {
+            "description" : "Referencing: `/obj-docms/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "docmDetCtrl" : {
+            "description" : "Referencing: `/obj-docms/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "docmNr" : {
+            "type" : "string",
+            "readOnly" : true
+          },
+          "docmRes" : {
+            "description" : "Referencing: `/mba$code-docm-ress/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "docmType" : {
+            "description" : "Referencing: `/mba$code-docm-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "expirDate" : {
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "expirDateA" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "fullName" : {
+            "type" : "string",
+            "readOnly" : true
+          },
+          "idNr" : {
+            "type" : "string",
+            "readOnly" : true
+          },
+          "isFatcaRelv" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "issueDate" : {
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "issuer" : {
+            "type" : "string",
+            "readOnly" : true
+          },
+          "needsPrint" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "printDate" : {
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "refersToObjId" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "reqType" : {
+            "description" : "Referencing: `/mba$code-req-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "signDate" : {
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "signDateA" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "signDuePeriod" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "signUser" : {
+            "description" : "Referencing: `/obj-persons/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "state" : {
+            "description" : "Referencing: `/code-country-states/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "stateA" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "urlAddr" : {
+            "type" : "string",
+            "readOnly" : true
+          },
+          "user" : {
+            "type" : "string",
+            "readOnly" : true
+          }
+        }
+      },
+      "mba_intl" : {
+        "title" : "mba$intl",
+        "type" : "object",
+        "properties" : {
+          "domiCountryA" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "establishCountryA" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "langA" : {
+            "type" : "boolean",
+            "readOnly" : true
+          }
+        }
+      },
+      "mba_invst_risk_profile" : {
+        "title" : "mba$invst_risk_profile",
+        "type" : "object",
+        "properties" : {
+          "hasInvstLevExper" : {
+            "type" : "string",
+            "readOnly" : true
+          },
+          "invstExperList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/mba_invst_risk_profile_mba_invst_exper"
+            },
+            "readOnly" : true
+          }
+        }
+      },
+      "mba_invst_risk_profile_mba_invst_exper" : {
+        "title" : "mba$invst_risk_profile_mba$invst_exper",
+        "type" : "object",
+        "properties" : {
+          "assetExperTime" : {
+            "description" : "Referencing: `/mba$code-exper-times/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "assetRiskCat" : {
+            "description" : "Referencing: `/code-obj-classs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "assetRiskCatExper" : {
+            "description" : "Referencing: `/mba$code-exper-lvls/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          }
+        }
+      },
+      "mba_job_compet" : {
+        "title" : "mba$job_compet",
+        "type" : "object",
+        "properties" : {
+          "configList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/mba_job_compet_mba_job_compet_config"
+            },
+            "readOnly" : true
+          }
+        }
+      },
+      "mba_job_compet_config_list_mba_meta_typ_det" : {
+        "title" : "mba$job_compet_config_list_mba$meta_typ_det",
+        "type" : "object",
+        "properties" : {
+          "metaTyp" : {
+            "description" : "Referencing: `/meta-typs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          }
+        }
+      },
+      "mba_job_compet_mba_job_compet_config" : {
+        "title" : "mba$job_compet_mba$job_compet_config",
+        "type" : "object",
+        "properties" : {
+          "competLvl" : {
+            "description" : "Referencing: `/mba$code-job-compet-lvls/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "competType" : {
+            "description" : "Referencing: `/mba$code-job-compet-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "metaTypList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/mba_job_compet_config_list_mba_meta_typ_det"
+            },
+            "readOnly" : true
+          }
+        }
+      },
+      "mba_leg_equity_grp" : {
+        "title" : "mba$leg_equity_grp",
+        "type" : "object",
+        "properties" : {
+          "isPrivPlace" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "legAddAccDescn" : {
+            "type" : "string",
+            "readOnly" : true
+          },
+          "legEquityGrp" : {
+            "description" : "Referencing: `/mba$code-leg-equity-grps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "legPrivPlaceVal" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "legRiskWeightVal" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "overCollatCoverPool" : {
+            "type" : "number",
+            "readOnly" : true
+          }
+        }
+      },
+      "mba_pers_legal_form_det" : {
+        "title" : "mba$pers_legal_form_det",
+        "type" : "object",
+        "properties" : {
+          "aifMgrStat" : {
+            "description" : "Referencing: `/mba$code-aif-mgr-stats/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "fundCaptStruct" : {
+            "description" : "Referencing: `/mba$code-fund-capt-structs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "fundComp" : {
+            "description" : "Referencing: `/mba$code-fund-comps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "legalFundForm" : {
+            "description" : "Referencing: `/mba$code-legal-fund-forms/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "legalRegime" : {
+            "description" : "Referencing: `/mba$code-legal-regimes/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          }
+        }
+      },
+      "mba_prsnl_circ" : {
+        "title" : "mba$prsnl_circ",
+        "type" : "object",
+        "properties" : {
+          "srcWlth" : {
+            "type" : "string",
+            "readOnly" : true
+          }
+        }
+      },
+      "mba_rep_fig" : {
+        "title" : "mba$rep_fig",
+        "type" : "object",
+        "properties" : {
+          "annuBal" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "annuBudget" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "annuTov" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "balCurry" : {
+            "description" : "Referencing: `/obj-assets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "budgetCurry" : {
+            "description" : "Referencing: `/obj-assets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "tovCurry" : {
+            "description" : "Referencing: `/obj-assets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          }
+        }
+      },
+      "mba_rm_profn_info" : {
+        "title" : "mba$rm_profn_info",
+        "type" : "object",
+        "properties" : {
+          "saletrg" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "saletrgCurry" : {
+            "description" : "Referencing: `/obj-assets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          }
+        }
+      },
+      "number" : {
+        "title" : "number",
+        "type" : "object"
+      },
+      "obj_classif_" : {
+        "title" : "obj_classif_",
+        "type" : "object",
+        "properties" : {
+          "bu" : {
+            "description" : "Business Unit<br>Referencing: `/obj-bps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "class" : {
+            "description" : "Class<br>Referencing: `/code-obj-classs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "classA" : {
+            "description" : "Class a/m",
+            "type" : "boolean",
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "classFactor" : {
+            "description" : "Class factor",
+            "type" : "number",
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "cltSgmtCalc" : {
+            "description" : "Client segment calculation<br>Referencing: `/code-person-mktng-sgmts/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "endDate" : {
+            "description" : "Valid Until",
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "histStatus" : {
+            "description" : "Hist status<br>Referencing: `/code-hist-statuss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "indivFeep" : {
+            "description" : "Individual feep<br>Referencing: `/obj-feeps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "isInht" : {
+            "description" : "Is inherited",
+            "type" : "boolean",
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "objClassif" : {
+            "description" : "Referencing: `/code-obj-classifs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "remark" : {
+            "description" : "Remark",
+            "type" : "string",
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "secUser" : {
+            "description" : "Sec user<br>Referencing: `/users/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/user_ref"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "spcdCostp" : {
+            "description" : "SPCD Cost Profile<br>Referencing: `/obj-costps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "spcdCurry" : {
+            "description" : "SPCD Currency<br>Referencing: `/obj-assets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "spcdMaxVal" : {
+            "description" : "SPCD Maximum",
+            "type" : "number",
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "spcdMinVal" : {
+            "description" : "SPCD Minimum",
+            "type" : "number",
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "spcdMinmaxValType" : {
+            "description" : "SPCD Min/Max Type<br>Referencing: `/code-cost-ovr-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "spcdOffsetVal" : {
+            "description" : "SPCD Offset",
+            "type" : "number",
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "spcdOffsetValType" : {
+            "description" : "SPCD Offset Type<br>Referencing: `/code-cost-ovr-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "spcdReason" : {
+            "description" : "SPCD Reason<br>Referencing: `/code-cost-ovr-reasons/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "spcdVal" : {
+            "description" : "SPCD Value",
+            "type" : "number",
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "spcdValType" : {
+            "description" : "SPCD Value Type<br>Referencing: `/code-cost-ovr-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "startDate" : {
+            "description" : "Valid from",
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "timestamp" : {
+            "description" : "Timestamp",
+            "type" : "string",
+            "format" : "date-time",
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          }
+        }
+      },
+      "obj_classif_set_" : {
+        "title" : "obj_classif_set_",
+        "type" : "object",
+        "properties" : {
+          "bu" : {
+            "description" : "Business Unit<br>Referencing: `/obj-bps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "class" : {
+            "description" : "Class<br>Referencing: `/code-obj-classs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "classA" : {
+            "description" : "Class a/m",
+            "type" : "boolean",
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "classFactor" : {
+            "description" : "Class factor",
+            "type" : "number",
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "cltSgmtCalc" : {
+            "description" : "Client segment calculation<br>Referencing: `/code-person-mktng-sgmts/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "endDate" : {
+            "description" : "Valid Until",
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "indivFeep" : {
+            "description" : "Individual feep<br>Referencing: `/obj-feeps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "isInht" : {
+            "description" : "Is inherited",
+            "type" : "boolean",
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "objClassif" : {
+            "description" : "Referencing: `/code-obj-classifs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "remark" : {
+            "description" : "Remark",
+            "type" : "string",
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "spcdCostp" : {
+            "description" : "SPCD Cost Profile<br>Referencing: `/obj-costps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "spcdCurry" : {
+            "description" : "SPCD Currency<br>Referencing: `/obj-assets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "spcdMaxVal" : {
+            "description" : "SPCD Maximum",
+            "type" : "number",
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "spcdMinVal" : {
+            "description" : "SPCD Minimum",
+            "type" : "number",
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "spcdMinmaxValType" : {
+            "description" : "SPCD Min/Max Type<br>Referencing: `/code-cost-ovr-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "spcdOffsetVal" : {
+            "description" : "SPCD Offset",
+            "type" : "number",
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "spcdOffsetValType" : {
+            "description" : "SPCD Offset Type<br>Referencing: `/code-cost-ovr-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "spcdReason" : {
+            "description" : "SPCD Reason<br>Referencing: `/code-cost-ovr-reasons/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "spcdVal" : {
+            "description" : "SPCD Value",
+            "type" : "number",
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "spcdValType" : {
+            "description" : "SPCD Value Type<br>Referencing: `/code-cost-ovr-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "startDate" : {
+            "description" : "Valid from",
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "timestamp" : {
+            "description" : "Timestamp",
+            "type" : "string",
+            "format" : "date-time",
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_curr_classif"
+          }
+        }
+      },
+      "obj_clt_suity_reason_hist" : {
+        "title" : "obj_clt_suity_reason_hist",
+        "type" : "object",
+        "properties" : {
+          "cltSuityReason" : {
+            "description" : "Client Suitability Reason",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "person" : {
+            "description" : "Object ID<br>Referencing: `/obj-persons/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          }
+        }
+      },
+      "obj_key" : {
+        "title" : "obj_key",
+        "type" : "object",
+        "properties" : {
+          "obj1" : {
+            "description" : "Object 1<br>Referencing: `/objs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "obj1Class" : {
+            "description" : "Object 1 class",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "obj2" : {
+            "description" : "Object 2<br>Referencing: `/objs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "obj2Class" : {
+            "description" : "Object 2 class",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "obj3" : {
+            "description" : "Object 3<br>Referencing: `/objs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "obj3Class" : {
+            "description" : "Object 3 class",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "obj4" : {
+            "description" : "Object 4<br>Referencing: `/objs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "obj4Class" : {
+            "description" : "Object 4 class",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "objKey" : {
+            "description" : "Object key<br>Referencing: `/code-obj-keys/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "prio" : {
+            "description" : "Priority",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "refObj" : {
+            "description" : "Reference object<br>Referencing: `/objs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "val" : {
+            "description" : "Value",
+            "type" : "string",
+            "readOnly" : true
+          }
+        }
+      },
+      "obj_key_ref_" : {
+        "title" : "obj_key_ref_",
+        "type" : "object",
+        "properties" : {
+          "objKey" : {
+            "description" : "Referencing: `/code-obj-keys/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "val" : {
+            "description" : "Key value",
+            "type" : "string"
+          }
+        }
+      },
+      "obj_key_single_" : {
+        "title" : "obj_key_single_",
+        "type" : "object",
+        "properties" : {
+          "refObj" : {
+            "description" : "Reference object<br>Referencing: `/objs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "val" : {
+            "description" : "Value",
+            "type" : "string",
+            "readOnly" : true
+          }
+        }
+      },
+      "obj_ref" : {
+        "title" : "obj_ref",
+        "type" : "object",
+        "properties" : {
+          "_href" : {
+            "description" : "Reference/link",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "_ident" : {
+            "description" : "Only used for workItem usecases, crossreference in workItem context",
+            "type" : "string",
+            "writeOnly" : true
+          },
+          "id" : {
+            "description" : "Numeric reference",
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "keyList" : {
+            "description" : "Key value object reference ",
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_key_ref_"
+            },
+            "writeOnly" : true
+          }
+        }
+      },
+      "user_ref" : {
+        "title" : "user_ref",
+        "type" : "object",
+        "properties" : {
+          "_href" : {
+            "description" : "Reference/link",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "id" : {
+            "description" : "Numeric reference",
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }
+      }
+    },
+    "headers" : {
+      "Content-Language" : {
+        "schema" : {
+          "type" : "string"
+        }
+      },
+      "X-Has-Next-Page" : {
+        "schema" : {
+          "type" : "string"
+        }
+      },
+      "Location" : {
+        "schema" : {
+          "type" : "string"
+        },
+        "description" : "Location of the created resource"
+      },
+      "ETag" : {
+        "schema" : {
+          "type" : "string"
+        },
+        "description" : "Current entity-tag"
+      }
+    },
+    "parameters" : {
+      "Filter" : {
+        "name" : "filter",
+        "in" : "query",
+        "description" : "Expression to reduce the result set",
+        "schema" : {
+          "type" : "string"
+        }
+      },
+      "DocPool" : {
+        "name" : "docPool",
+        "style" : "deepObject",
+        "explode" : true,
+        "in" : "query",
+        "description" : "Expression to assign a docPool to reduce the result set <br> Example: <br> docPool[intlId]=stex_client_opn&docPool[objIdList]=22334,55667&docPool[refDateFrom] = 2023-05-01",
+        "schema" : {
+          "type" : "object",
+          "required" : [ "intlId" ],
+          "properties" : {
+            "intlId" : {
+              "type" : "string",
+              "example" : "stex_client_opn"
+            },
+            "objIdList" : {
+              "type" : "string",
+              "example" : "2222,3333,5555"
+            },
+            "refDateFrom" : {
+              "type" : "string",
+              "format" : "date"
+            },
+            "refDateTo" : {
+              "type" : "string",
+              "format" : "date"
+            }
+          }
+        }
+      },
+      "PageLimit" : {
+        "name" : "limit",
+        "in" : "query",
+        "description" : "Limits the number of items on a page",
+        "schema" : {
+          "type" : "integer",
+          "default" : 5,
+          "minimum" : 1,
+          "maximum" : 200
+        }
+      },
+      "PageOffset" : {
+        "name" : "offset",
+        "in" : "query",
+        "description" : "Number of records to be skipped before selecting the result set",
+        "schema" : {
+          "type" : "integer",
+          "minimum" : 0
+        }
+      },
+      "HrefActive" : {
+        "name" : "href",
+        "in" : "query",
+        "description" : "Activates the href",
+        "schema" : {
+          "type" : "boolean"
+        }
+      },
+      "IncludeInactive" : {
+        "name" : "include_inactive",
+        "in" : "query",
+        "description" : "Includes inactive data",
+        "schema" : {
+          "type" : "boolean"
+        }
+      },
+      "If-None-Match" : {
+        "name" : "If-None-Match",
+        "in" : "header",
+        "description" : "Specifies version known by client",
+        "schema" : {
+          "type" : "string"
+        },
+        "required" : false
+      },
+      "If-Match" : {
+        "name" : "If-Match",
+        "in" : "header",
+        "description" : "Specifies entity-tag known by client",
+        "schema" : {
+          "type" : "string"
+        },
+        "required" : false
+      },
+      "Accept-Encoding" : {
+        "name" : "Accept-Encoding",
+        "in" : "header",
+        "description" : "Compression scheme<br/> Warning: HTTP compression might not lead to better performance",
+        "schema" : {
+          "type" : "string"
+        },
+        "example" : "gzip, deflate",
+        "required" : false
+      },
+      "Accept-Language" : {
+        "name" : "Accept-Language",
+        "in" : "header",
+        "description" : "Specifies the language and locale that the client prefers",
+        "schema" : {
+          "type" : "string"
+        },
+        "example" : "de-CH, en-US",
+        "required" : false
+      },
+      "X-Request-ID" : {
+        "name" : "X-Request-ID",
+        "in" : "header",
+        "description" : "Specifies the request id in UUID format. If not provided, it will be generated automatically.",
+        "schema" : {
+          "type" : "string",
+          "format" : "uuid"
+        },
+        "required" : false
+      }
+    },
+    "responses" : {
+      "Problem" : {
+        "description" : "RFC7807 Problem",
+        "content" : {
+          "application/problem+json" : {
+            "schema" : {
+              "type" : "object",
+              "properties" : {
+                "type" : {
+                  "type" : "string"
+                },
+                "title" : {
+                  "type" : "string"
+                },
+                "status" : {
+                  "type" : "number",
+                  "format" : "integer"
+                },
+                "detail" : {
+                  "type" : "string"
+                }
+              },
+              "additionalProperties" : true,
+              "required" : [ "type", "title", "status" ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

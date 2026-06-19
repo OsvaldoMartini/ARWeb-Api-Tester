@@ -1,0 +1,617 @@
+{
+  "$id": "https://avaloq.com/obj_lihi.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/obj_lihi",
+  "definitions": {
+    "code_tab_ref": {
+      "type": "object",
+      "properties": {
+        "_href": {
+          "description" : "Reference/link",
+          "type": "string"
+        },
+        "id": {
+          "description" : "Numeric reference",
+          "type": "integer"
+        },
+        "ident": {
+          "description" : "Unique symbolic reference",
+          "type": "string"
+        },
+        "intlId": {
+          "description" : "Symbolic reference",
+          "type": "string"
+        }
+      }
+    },
+    "code_tab_ref_action": {
+      "type": "object",
+      "properties": {
+        "action": {
+          "description" : "enum reference to action",
+          "type": "string"
+        },
+        "id": {
+          "description" : "Numeric reference",
+          "type": "integer"
+        },
+        "ident": {
+          "description" : "Unique symbolic reference",
+          "type": "string"
+        }
+      }
+    },
+    "doc_ref": {
+      "type": "object",
+      "properties": {
+        "_href": {
+          "description" : "Reference/link",
+          "type": "string"
+        },
+        "_ident": {
+          "description" : "Only used for workItem use cases, cross-reference in workItem context.",
+          "type": "string"
+        },
+        "id": {
+          "description" : "Numeric reference",
+          "type": "integer"
+        }
+      }
+    },
+    "obj_add": {
+      "type": "object",
+      "properties": {
+        "boolVal": {
+          "description" : "Value",
+          "type": "boolean"
+        },
+        "bu": {
+          "description" : "Business UnitReferencing: `/obj-bps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "ctx": {
+          "description" : "Context",
+          "type": "string"
+        },
+        "ctype": {
+          "description" : "Data Type",
+          "type": "string"
+        },
+        "dataType": {
+          "description" : "Data Type",
+          "type": "string"
+        },
+        "dateVal": {
+          "description" : "Value",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "idVal": {
+          "description" : "Value",
+          "type": "integer"
+        },
+        "isMultiVal": {
+          "description" : "Is Multi Value",
+          "type": "boolean"
+        },
+        "nrVal": {
+          "description" : "Value",
+          "type": "number"
+        },
+        "obj": {
+          "description" : "Referencing: `/objs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "objAdd": {
+          "description" : "Referencing: `/code-obj-adds/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "textVal": {
+          "description" : "Value",
+          "type": "string"
+        },
+        "tswtzVal": {
+          "description" : "Value",
+          "type": "string"
+          ,
+            "format": "date-time"
+        },
+        "type": {
+          "description" : "Data Type",
+          "type": "string"
+        },
+        "val": {
+          "description" : "Value",
+          "type": "string"
+        },
+        "valList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/obj_add_val"
+          }
+        }
+      }
+    },
+    "obj_add_val": {
+      "type": "object",
+      "properties": {
+        "dateVal": {
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "idVal": {
+          "type": "integer"
+        },
+        "nrVal": {
+          "type": "number"
+        },
+        "seqNr": {
+          "type": "integer"
+        },
+        "textVal": {
+          "type": "string"
+        },
+        "tswtzVal": {
+          "type": "string"
+          ,
+            "format": "date-time"
+        },
+        "val": {
+          "type": "string"
+        }
+      }
+    },
+    "obj_key": {
+      "type": "object",
+      "properties": {
+        "obj": {
+          "description" : "Referencing: `/objs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "obj1": {
+          "description" : "ObjectsReferencing: `/objs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "obj1Class": {
+          "description" : "Object Class",
+          "type": "string"
+        },
+        "obj1IsNull": {
+          "description" : "Empty",
+          "type": "boolean"
+        },
+        "obj2": {
+          "description" : "ObjectsReferencing: `/objs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "obj2Class": {
+          "description" : "Object Class",
+          "type": "string"
+        },
+        "obj2IsNull": {
+          "description" : "Empty",
+          "type": "boolean"
+        },
+        "obj3": {
+          "description" : "ObjectsReferencing: `/objs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "obj3Class": {
+          "description" : "Object Class",
+          "type": "string"
+        },
+        "obj3IsNull": {
+          "description" : "Empty",
+          "type": "boolean"
+        },
+        "obj4": {
+          "description" : "ObjectsReferencing: `/objs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "obj4Class": {
+          "description" : "Object Class",
+          "type": "string"
+        },
+        "obj4IsNull": {
+          "description" : "Empty",
+          "type": "boolean"
+        },
+        "objKey": {
+          "description" : "Referencing: `/code-obj-keys/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "prio": {
+          "description" : "Priority",
+          "type": "string"
+        },
+        "refObj": {
+          "description" : "ReferenceReferencing: `/objs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "ruleId": {
+          "description" : "Rule",
+          "type": "integer"
+        },
+        "ruleTempl": {
+          "description" : "TemplateReferencing: `/code-rule-templs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "seqNr": {
+          "type": "integer"
+        },
+        "trigMetaTyp": {
+          "description" : "Triggering Meta TypReferencing: `/meta-typs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "trigOrderType": {
+          "description" : "Triggering Order TypeReferencing: `/code-order-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "val": {
+          "description" : "Value",
+          "type": "string"
+        },
+        "valA": {
+          "description" : "Automatic",
+          "type": "boolean"
+        }
+      }
+    },
+    "obj_key_ref_": {
+      "type": "object",
+      "properties": {
+        "objKey": {
+          "description" : "Referencing: `/code-obj-keys/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "val": {
+          "description" : "Key value",
+          "type": "string"
+        }
+      }
+    },
+    "obj_key_single_": {
+      "type": "object",
+      "properties": {
+        "refObj": {
+          "description" : "Reference objectReferencing: `/objs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "val": {
+          "description" : "Value",
+          "type": "string"
+        }
+      }
+    },
+    "obj_lhlim_amount": {
+      "type": "object",
+      "properties": {
+        "lhlim": {
+          "description" : "Lihi Limit IdReferencing: `/obj-lihi-limits/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "lhlimDim": {
+          "description" : "Lihi Limit Amount dimension idReferencing: `/code-lihi-limit-dims/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "name": {
+          "description" : "Name",
+          "type": "string"
+        },
+        "staticAmount": {
+          "description" : "Limit Amount",
+          "type": "number"
+        }
+      }
+    },
+    "obj_lihi": {
+      "type": "object",
+      "properties": {
+        "addList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/obj_add"
+          }
+        },
+        "bdeRecVersion": {
+          "type": "integer"
+        },
+        "bu": {
+          "description" : "Business unitReferencing: `/obj-bps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "closeDate": {
+          "description" : "Close date",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "extn": {
+          "$ref": "#/definitions/obj_lihi_extn"
+        },
+        "hobsList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/obj_lihi_limit"
+          }
+        },
+        "id": {
+          "description" : "IDReferencing: `/objs/{id}`",
+          "type": "integer"
+        },
+        "isDflt": {
+          "description" : "Default Limit Hierarchy",
+          "type": "boolean"
+        },
+        "keyList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/obj_key"
+          }
+        },
+        "lastTrans": {
+          "$ref": "#/definitions/obj_trans"
+        },
+        "lihiFam": {
+          "description" : "Lihi Family IdReferencing: `/code-lihi-fams/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "objName": {
+          "allOf": [
+            { "$ref": "#/definitions/obj_name"
+             }
+            ]
+        },
+        "objNameList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/obj_name"
+          }
+        },
+        "objType": {
+          "description" : "Object typeReferencing: `/code-obj-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "openDate": {
+          "description" : "Open date",
+          "type": "string"
+          ,
+            "format": "date"
+        }
+      }
+    },
+    "obj_lihi_extn": {
+      "type": "object",
+      "properties": {
+        "lihiNbr": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/obj_key_single_"
+          }
+        },
+        "lihiSym": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/obj_key_single_"
+          }
+        }
+      }
+    },
+    "obj_lihi_limit": {
+      "type": "object",
+      "properties": {
+        "amountList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/obj_lhlim_amount"
+          }
+        },
+        "closeDate": {
+          "description" : "Close date",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "id": {
+          "description" : "IDReferencing: `/objs/{id}`",
+          "type": "integer"
+        },
+        "lihi": {
+          "description" : "Containing Limit HierarchyReferencing: `/obj-lihis/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "limitCurry": {
+          "description" : "Limit CurryReferencing: `/obj-assets/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "objNameList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/obj_name"
+          }
+        },
+        "openDate": {
+          "description" : "Open date",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "owner": {
+          "description" : "OwnerReferencing: `/objs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "parentLimit": {
+          "description" : "Hobs ownerReferencing: `/obj-lihi-limits/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "tag": {
+          "description" : "Tag",
+          "type": "integer"
+        }
+      }
+    },
+    "obj_lihis": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/obj_lihi"
+      },
+      "uniqueItems": true
+    },
+    "obj_name": {
+      "type": "object",
+      "properties": {
+        "dateValid": {
+          "description" : "Date Valid",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "dateValidTo": {
+          "description" : "Date Valid to",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "insTime": {
+          "description" : "Insertion Time",
+          "type": "string"
+          ,
+            "format": "date-time"
+        },
+        "lang": {
+          "description" : "LanguageReferencing: `/code-langs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "name": {
+          "description" : "Name",
+          "type": "string"
+        },
+        "nameA": {
+          "description" : "Name Auto Flag",
+          "type": "string"
+        },
+        "nameAbbr": {
+          "description" : "Abbreviation",
+          "type": "string"
+        },
+        "nameAbbrA": {
+          "description" : "Abbreviation Auto Flag",
+          "type": "string"
+        },
+        "nameIntl": {
+          "description" : "Internal Name",
+          "type": "string"
+        },
+        "nameIntlA": {
+          "description" : "Internal Name Auto Flag",
+          "type": "string"
+        },
+        "nameLong": {
+          "description" : "Long Name",
+          "type": "string"
+        },
+        "nameLongA": {
+          "description" : "Long Name Auto Flag",
+          "type": "string"
+        }
+      }
+    },
+    "obj_ref": {
+      "type": "object",
+      "properties": {
+        "_href": {
+          "description" : "Reference/link",
+          "type": "string"
+        },
+        "_ident": {
+          "description" : "Only used for workItem use cases, cross-reference in workItem context.",
+          "type": "string"
+        },
+        "id": {
+          "description" : "Numeric reference",
+          "type": "integer"
+        },
+        "keyList": {
+          "type": "array",
+          "items": {
+            "description": "Key value object reference ",
+            "allOf": [
+              { "$ref": "#/definitions/obj_key_ref_" }
+            ]
+          }
+        }
+      }
+    },
+    "obj_trans": {
+      "type": "object",
+      "properties": {
+        "doc": {
+          "description" : "Referencing: `/docs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/doc_ref" }
+          ]
+        },
+        "timestamp": {
+          "type": "string"
+          ,
+            "format": "date-time-no-tz"
+        },
+        "userstamp": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

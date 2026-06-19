@@ -1,0 +1,101 @@
+{
+  "$id": "https://avaloq.com/code_cost_css_grp.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/code_cost_css_grp",
+  "definitions": {
+    "code_cost_css_grp": {
+      "type": "object",
+      "properties": {
+        "activ": {
+          "type": "boolean"
+        },
+        "cntSrc": {
+          "description" : "Referencing: `/code-feep-cnt-srcs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "descn": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "ident": {
+          "type": "string"
+        },
+        "intlId": {
+          "type": "string"
+        },
+        "mba$envCompo": {
+          "description" : "Referencing: `/code-env-compos/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "name": {
+          "type": "string"
+        },
+        "nameI18nList": {
+          "type": "array",
+          "items": {
+            "description" : "Full translation list for name field. Only visible within compound APIs ",
+            "allOf": [
+              { "$ref": "#/definitions/name_i18n"
+               }
+              ]
+          }
+        },
+        "useExtnMapVal": {
+          "type": "boolean"
+        },
+        "userId": {
+          "type": "string"
+        }
+      }
+    },
+    "code_tab_ref": {
+      "type": "object",
+      "properties": {
+        "_href": {
+          "description" : "Reference/link",
+          "type": "string"
+        },
+        "id": {
+          "description" : "Numeric reference",
+          "type": "integer"
+        },
+        "ident": {
+          "description" : "Unique symbolic reference",
+          "type": "string"
+        },
+        "intlId": {
+          "description" : "Symbolic reference",
+          "type": "string"
+        }
+      }
+    },
+    "code_cost_css_grps": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/code_cost_css_grp"
+      },
+      "uniqueItems": true
+    },
+    "name_i18n": {
+      "type": "object",
+      "properties": {
+        "lang": {
+          "description" : "LanguageReferencing: `/code-langs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref"
+             }
+            ]
+        },
+        "text": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

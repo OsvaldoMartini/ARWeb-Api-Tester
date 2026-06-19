@@ -1,0 +1,134 @@
+{
+  "$id": "https://avaloq.com/code_doc_add.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/code_doc_add",
+  "definitions": {
+    "code_tab_ref": {
+      "type": "object",
+      "properties": {
+        "_href": {
+          "description" : "Reference/link",
+          "type": "string"
+        },
+        "id": {
+          "description" : "Numeric reference",
+          "type": "integer"
+        },
+        "ident": {
+          "description" : "Unique symbolic reference",
+          "type": "string"
+        },
+        "intlId": {
+          "description" : "Symbolic reference",
+          "type": "string"
+        }
+      }
+    },
+    "code_doc_adds": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/code_doc_add"
+      },
+      "uniqueItems": true
+    },
+    "code_doc_add": {
+      "type": "object",
+      "properties": {
+        "activ": {
+          "type": "boolean"
+        },
+        "charRestr": {
+          "description" : "Referencing: `/code-char-restrs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "ctx": {
+          "type": "string"
+        },
+        "dataType": {
+          "type": "string"
+        },
+        "descn": {
+          "type": "string"
+        },
+        "docAddCmtd": {
+          "description" : "Referencing: `/code-doc-add-cmtds/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "fmt": {
+          "type": "number"
+        },
+        "hide": {
+          "type": "boolean"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "ident": {
+          "type": "string"
+        },
+        "intl2Id": {
+          "type": "string"
+        },
+        "intlId": {
+          "type": "string"
+        },
+        "maxLen": {
+          "type": "number"
+        },
+        "mba$envCompo": {
+          "description" : "Referencing: `/code-env-compos/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "metaTyp": {
+          "description" : "Referencing: `/meta-typs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "multiAddCnt": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        },
+        "nameI18nList": {
+          "type": "array",
+          "items": {
+            "description" : "Full translation list for name field. Only visible within compound APIs ",
+            "allOf": [
+              { "$ref": "#/definitions/name_i18n"
+               }
+              ]
+          }
+        },
+        "orderByForm": {
+          "type": "string"
+        },
+        "userId": {
+          "type": "string"
+        }
+      }
+    },
+    "name_i18n": {
+      "type": "object",
+      "properties": {
+        "lang": {
+          "description" : "LanguageReferencing: `/code-langs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref"
+             }
+            ]
+        },
+        "text": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

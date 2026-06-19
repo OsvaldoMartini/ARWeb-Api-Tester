@@ -1,0 +1,1319 @@
+{
+  "$id": "https://avaloq.com/obj_restr.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/obj_restr",
+  "definitions": {
+    "code_tab_ref": {
+      "type": "object",
+      "properties": {
+        "_href": {
+          "description" : "Reference/link",
+          "type": "string"
+        },
+        "id": {
+          "description" : "Numeric reference",
+          "type": "integer"
+        },
+        "ident": {
+          "description" : "Unique symbolic reference",
+          "type": "string"
+        },
+        "intlId": {
+          "description" : "Symbolic reference",
+          "type": "string"
+        }
+      }
+    },
+    "code_tab_ref_action": {
+      "type": "object",
+      "properties": {
+        "action": {
+          "description" : "enum reference to action",
+          "type": "string"
+        },
+        "id": {
+          "description" : "Numeric reference",
+          "type": "integer"
+        },
+        "ident": {
+          "description" : "Unique symbolic reference",
+          "type": "string"
+        }
+      }
+    },
+    "doc_ref": {
+      "type": "object",
+      "properties": {
+        "_href": {
+          "description" : "Reference/link",
+          "type": "string"
+        },
+        "_ident": {
+          "description" : "Only used for workItem use cases, cross-reference in workItem context.",
+          "type": "string"
+        },
+        "id": {
+          "description" : "Numeric reference",
+          "type": "integer"
+        }
+      }
+    },
+    "obj_add": {
+      "type": "object",
+      "properties": {
+        "objAdd": {
+          "description" : "Referencing: `/code-obj-adds/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "valList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/obj_add_val"
+          }
+        }
+      }
+    },
+    "obj_add_val": {
+      "type": "object",
+      "properties": {
+        "dateVal": {
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "idVal": {
+          "type": "integer"
+        },
+        "nrVal": {
+          "type": "number"
+        },
+        "seqNr": {
+          "type": "integer"
+        },
+        "textVal": {
+          "type": "string"
+        },
+        "tswtzVal": {
+          "type": "string"
+          ,
+            "format": "date-time"
+        },
+        "val": {
+          "type": "string"
+        }
+      }
+    },
+    "obj_classif": {
+      "type": "object",
+      "properties": {
+        "bu": {
+          "description" : "Business UnitReferencing: `/obj-bps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "class": {
+          "description" : "ClassReferencing: `/code-obj-classs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "classA": {
+          "description" : "Automatic",
+          "type": "boolean"
+        },
+        "classFactor": {
+          "description" : "Factor",
+          "type": "number"
+        },
+        "cltSgmtCalc": {
+          "description" : "Calculated Client SegmentReferencing: `/code-person-mktng-sgmts/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "endDate": {
+          "description" : "Valid until",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "histStatus": {
+          "description" : "Hist StatusReferencing: `/code-hist-statuss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "indivFeep": {
+          "description" : "Indiv. Fee ProfileReferencing: `/obj-feeps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "isInht": {
+          "description" : "Is Inherited",
+          "type": "boolean"
+        },
+        "objClassif": {
+          "description" : "Referencing: `/code-obj-classifs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "remark": {
+          "description" : "Remark",
+          "type": "string"
+        },
+        "secUser": {
+          "description" : "UserReferencing: `/users/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/user_ref" }
+          ]
+        },
+        "spcdCostp": {
+          "description" : "SPCD Cost ProfileReferencing: `/obj-costps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "spcdCurry": {
+          "description" : "SPCD CurrencyReferencing: `/obj-assets/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "spcdMaxVal": {
+          "description" : "SPCD Maximum",
+          "type": "number"
+        },
+        "spcdMinVal": {
+          "description" : "SPCD Minimum",
+          "type": "number"
+        },
+        "spcdMinmaxValType": {
+          "description" : "SPCD Min/Max TypeReferencing: `/code-cost-ovr-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "spcdOffsetVal": {
+          "description" : "SPCD Offset",
+          "type": "number"
+        },
+        "spcdOffsetValType": {
+          "description" : "SPCD Offset TypeReferencing: `/code-cost-ovr-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "spcdReason": {
+          "description" : "SPCD ReasonReferencing: `/code-cost-ovr-reasons/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "spcdVal": {
+          "description" : "SPCD Value",
+          "type": "number"
+        },
+        "spcdValType": {
+          "description" : "SPCD Value TypeReferencing: `/code-cost-ovr-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "startDate": {
+          "description" : "Valid from",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "timestamp": {
+          "description" : "Timestamp",
+          "type": "string"
+          ,
+            "format": "date-time"
+        },
+        "userRef": {
+          "description" : "Responsible UserReferencing: `/users/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/user_ref" }
+          ]
+        }
+      }
+    },
+    "obj_key": {
+      "type": "object",
+      "properties": {
+        "obj": {
+          "description" : "Referencing: `/objs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "obj1": {
+          "description" : "ObjectsReferencing: `/objs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "obj1Class": {
+          "description" : "Object Class",
+          "type": "string"
+        },
+        "obj1IsNull": {
+          "description" : "Empty",
+          "type": "boolean"
+        },
+        "obj2": {
+          "description" : "ObjectsReferencing: `/objs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "obj2Class": {
+          "description" : "Object Class",
+          "type": "string"
+        },
+        "obj2IsNull": {
+          "description" : "Empty",
+          "type": "boolean"
+        },
+        "obj3": {
+          "description" : "ObjectsReferencing: `/objs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "obj3Class": {
+          "description" : "Object Class",
+          "type": "string"
+        },
+        "obj3IsNull": {
+          "description" : "Empty",
+          "type": "boolean"
+        },
+        "obj4": {
+          "description" : "ObjectsReferencing: `/objs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "obj4Class": {
+          "description" : "Object Class",
+          "type": "string"
+        },
+        "obj4IsNull": {
+          "description" : "Empty",
+          "type": "boolean"
+        },
+        "objKey": {
+          "description" : "Referencing: `/code-obj-keys/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "prio": {
+          "description" : "Priority",
+          "type": "string"
+        },
+        "refObj": {
+          "description" : "ReferenceReferencing: `/objs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "ruleId": {
+          "description" : "Rule",
+          "type": "integer"
+        },
+        "ruleTempl": {
+          "description" : "TemplateReferencing: `/code-rule-templs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "seqNr": {
+          "type": "integer"
+        },
+        "trigMetaTyp": {
+          "description" : "Triggering Meta TypReferencing: `/meta-typs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "trigOrderType": {
+          "description" : "Triggering Order TypeReferencing: `/code-order-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "val": {
+          "description" : "Value",
+          "type": "string"
+        },
+        "valA": {
+          "description" : "Automatic",
+          "type": "boolean"
+        }
+      }
+    },
+    "obj_key_ref_": {
+      "type": "object",
+      "properties": {
+        "objKey": {
+          "description" : "Referencing: `/code-obj-keys/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "val": {
+          "description" : "Key value",
+          "type": "string"
+        }
+      }
+    },
+    "obj_key_single_": {
+      "type": "object",
+      "properties": {
+        "refObj": {
+          "description" : "Reference objectReferencing: `/objs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "val": {
+          "description" : "Value",
+          "type": "string"
+        }
+      }
+    },
+    "obj_name": {
+      "type": "object",
+      "properties": {
+        "dateValid": {
+          "description" : "Date Valid",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "dateValidTo": {
+          "description" : "Date Valid to",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "insTime": {
+          "description" : "Insertion Time",
+          "type": "string"
+          ,
+            "format": "date-time"
+        },
+        "lang": {
+          "description" : "LanguageReferencing: `/code-langs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "name": {
+          "description" : "Name",
+          "type": "string"
+        },
+        "nameA": {
+          "description" : "Name Auto Flag",
+          "type": "string"
+        },
+        "nameAbbr": {
+          "description" : "Abbreviation",
+          "type": "string"
+        },
+        "nameAbbrA": {
+          "description" : "Abbreviation Auto Flag",
+          "type": "string"
+        },
+        "nameIntl": {
+          "description" : "Internal Name",
+          "type": "string"
+        },
+        "nameIntlA": {
+          "description" : "Internal Name Auto Flag",
+          "type": "string"
+        },
+        "nameLong": {
+          "description" : "Long Name",
+          "type": "string"
+        },
+        "nameLongA": {
+          "description" : "Long Name Auto Flag",
+          "type": "string"
+        }
+      }
+    },
+    "obj_ref": {
+      "type": "object",
+      "properties": {
+        "_href": {
+          "description" : "Reference/link",
+          "type": "string"
+        },
+        "_ident": {
+          "description" : "Only used for workItem use cases, cross-reference in workItem context.",
+          "type": "string"
+        },
+        "id": {
+          "description" : "Numeric reference",
+          "type": "integer"
+        },
+        "keyList": {
+          "type": "array",
+          "items": {
+            "description": "Key value object reference ",
+            "allOf": [
+              { "$ref": "#/definitions/obj_key_ref_" }
+            ]
+          }
+        }
+      }
+    },
+    "obj_remark": {
+      "type": "object",
+      "properties": {
+        "attch": {
+          "type": "string"
+        },
+        "dateValidTo": {
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "langList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/obj_remark_det"
+          }
+        },
+        "subType": {
+          "description" : "Referencing: `/code-remark-sub-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "text": {
+          "type": "string"
+        },
+        "timestamp": {
+          "type": "string"
+          ,
+            "format": "date-time-no-tz"
+        },
+        "topic": {
+          "type": "string"
+        },
+        "type": {
+          "description" : "Referencing: `/code-remark-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "user": {
+          "description" : "Referencing: `/users/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/user_ref" }
+          ]
+        }
+      }
+    },
+    "obj_remark_det": {
+      "type": "object",
+      "properties": {
+        "lang": {
+          "description" : "Referencing: `/code-langs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "text": {
+          "type": "string"
+        }
+      }
+    },
+    "obj_restr": {
+      "type": "object",
+      "properties": {
+        "addList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/obj_add"
+          }
+        },
+        "baseHobs": {
+          "description" : "Customised Restriction: Based OnReferencing: `/obj-hobss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "bdeRecVersion": {
+          "type": "integer"
+        },
+        "bu": {
+          "description" : "Business unitReferencing: `/obj-bps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "classifList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/obj_classif"
+          }
+        },
+        "closeDate": {
+          "description" : "Close date",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "deviEmptyRefGrp": {
+          "description" : "Whether empty groups in the reference object have the deviation applied",
+          "type": "boolean"
+        },
+        "doc": {
+          "description" : "Document id if the object is being modifiedReferencing: `/docs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/doc_ref" }
+          ]
+        },
+        "evalPeriod": {
+          "description" : "Performance Restriction: Evaluation PeriodReferencing: `/code-perf-periods/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "extn": {
+          "$ref": "#/definitions/obj_restr_extn"
+        },
+        "firstXPos": {
+          "description" : "Customised Restriction: First x Positions",
+          "type": "number"
+        },
+        "id": {
+          "description" : "IDReferencing: `/objs/{id}`",
+          "type": "integer"
+        },
+        "isAaOvr": {
+          "description" : "Override Asset Allocation Parameters",
+          "type": "boolean"
+        },
+        "isAcktOvr": {
+          "description" : "Override Acknowledgement Parameters",
+          "type": "boolean"
+        },
+        "isChkAa": {
+          "description" : "Check Asset Allocation",
+          "type": "boolean"
+        },
+        "isChkDur": {
+          "description" : "Check Duration",
+          "type": "boolean"
+        },
+        "isChkPeakToDate": {
+          "description" : "Performance Restriction: Is the peak to date set?",
+          "type": "boolean"
+        },
+        "isChkRefContAbs": {
+          "description" : "Check Reference Container Absolute",
+          "type": "boolean"
+        },
+        "isChkRefContRel": {
+          "description" : "Check Reference Container Relative",
+          "type": "boolean"
+        },
+        "isCustmdOvr": {
+          "description" : "Override Customised Parameters",
+          "type": "boolean"
+        },
+        "isEvalOvr": {
+          "description" : "Override Default Evaluation Parameters",
+          "type": "boolean"
+        },
+        "isNameOvr": {
+          "description" : "Override Name",
+          "type": "boolean"
+        },
+        "isPerfOvr": {
+          "description" : "Override Performance Parameters",
+          "type": "boolean"
+        },
+        "isPosListOvr": {
+          "description" : "Override Position List Parameters",
+          "type": "boolean"
+        },
+        "isRemarkOvr": {
+          "description" : "Override General Remarks Parameters",
+          "type": "boolean"
+        },
+        "isRestrRelOvr": {
+          "description" : "Override Default Relation Information",
+          "type": "boolean"
+        },
+        "isRiskOvr": {
+          "description" : "Override Risk Parameters",
+          "type": "boolean"
+        },
+        "isSplitOvr": {
+          "description" : "Override Default Split Parameters",
+          "type": "boolean"
+        },
+        "isTemplOvr": {
+          "description" : "Override Default Template Parameters",
+          "type": "boolean"
+        },
+        "keyList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/obj_key"
+          }
+        },
+        "lastTrans": {
+          "$ref": "#/definitions/obj_trans"
+        },
+        "objName": {
+          "allOf": [
+            { "$ref": "#/definitions/obj_name"
+             }
+            ]
+        },
+        "objNameList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/obj_name"
+          }
+        },
+        "objRef": {
+          "description" : "Customised Restriction: Reference ObjectReferencing: `/objs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "objRefDeviType": {
+          "description" : "Type of deviation from the reference object: absolute or relativeReferencing: `/code-restr-devi-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "objRestrList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/obj_restr_link"
+          }
+        },
+        "objSubType": {
+          "description" : "Object sub-typeReferencing: `/code-obj-sub-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "objType": {
+          "description" : "Object typeReferencing: `/code-obj-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "observDays": {
+          "description" : "Risk Restriction: Observation Days",
+          "type": "integer"
+        },
+        "openDate": {
+          "description" : "Open date",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "perfFig": {
+          "description" : "Performance Restriction: Performance FigureReferencing: `/code-figs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "perfNcf": {
+          "description" : "Performance Restriction: Performance NCF TypeReferencing: `/code-perf-ncf-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "refCurry": {
+          "description" : "Customised Restriction: Reference currencyReferencing: `/objs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "refHobs": {
+          "description" : "Customised Restriction: Filter for the Reference ObjectReferencing: `/obj-hobss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "refLinkId": {
+          "description" : "Restriction Link",
+          "type": "integer"
+        },
+        "refPosHobs": {
+          "description" : "Position Filters for the Reference ObjectReferencing: `/obj-hobss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "remarkList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/obj_remark"
+          }
+        },
+        "repDelay": {
+          "description" : "Reporting Delay",
+          "type": "integer"
+        },
+        "repDelayA": {
+          "description" : "Is automatic Reporting Delay",
+          "type": "boolean"
+        },
+        "restrClassGrpnList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/obj_restr_class_grpn_det"
+          }
+        },
+        "restrGrpnType": {
+          "description" : "Customised Restriction: Grouping TypeReferencing: `/code-restr-grpn-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "restrOwner": {
+          "description" : "Restriction OwnerReferencing: `/objs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "restrPerfAggr": {
+          "description" : "Performance Restriction: Performance Aggregation TypeReferencing: `/code-restr-perf-aggrs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "restrTempl": {
+          "description" : "Restriction Template TypeReferencing: `/code-restr-templs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "restrTheme": {
+          "description" : "Restriction ThemeReferencing: `/code-restr-themes/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "restrType": {
+          "description" : "Restriction TypeReferencing: `/code-obj-sub-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "restrValType": {
+          "description" : "Customised Restriction: Valuation TypeReferencing: `/code-restr-val-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "riskEvalCmtd": {
+          "description" : "Risk Calculation MethodReferencing: `/code-lihi-aggr-cmtds/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "riskRefCompType": {
+          "description" : "Risk Reference Comparison TypeReferencing: `/code-restr-risk-ref-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "riskRefCurry": {
+          "description" : "Risk Restriction: Reference currencyReferencing: `/objs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "riskRefObj": {
+          "description" : "Risk Restriction: Reference ObjectReferencing: `/objs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "riskType": {
+          "description" : "Risk TypeReferencing: `/code-restr-risk-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "sdsInstn": {
+          "description" : "SDS instance IDReferencing: `/code-extl-syss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "selHobs": {
+          "description" : "Customised Restriction: SelectionReferencing: `/obj-hobss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "sortAlpha": {
+          "description" : "Alpha-numeric sort value",
+          "type": "string"
+        },
+        "sortNr": {
+          "description" : "Numeric sort value",
+          "type": "integer"
+        },
+        "surrList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/obj_restr_surr_item"
+          }
+        },
+        "transList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/obj_trans"
+          }
+        },
+        "useDirTs": {
+          "description" : "Risk Restriction: Use direct timeseries",
+          "type": "boolean"
+        }
+      }
+    },
+    "obj_restr_class_grpn_det": {
+      "type": "object",
+      "properties": {
+        "class": {
+          "description" : "ClassReferencing: `/code-obj-classs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        }
+      }
+    },
+    "obj_restr_extn": {
+      "type": "object",
+      "properties": {
+        "restrNr": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/obj_key_single_"
+          }
+        },
+        "restrSym": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/obj_key_single_"
+          }
+        }
+      }
+    },
+    "obj_restr_grpn_ackt_item": {
+      "type": "object",
+      "properties": {
+        "ackByPerson": {
+          "description" : "The person who acknowledgedReferencing: `/obj-persons/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "grpnClass": {
+          "description" : "Grouping Class IDReferencing: `/code-obj-classs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "grpnObj": {
+          "description" : "Grouping Object IDReferencing: `/objs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "grpnText": {
+          "description" : "Grouping Text",
+          "type": "string"
+        },
+        "reason": {
+          "description" : "Reason for acknowledgementReferencing: `/code-restr-ackt-reasons/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "reasonText": {
+          "description" : "Reason (free text) for acknowledgement",
+          "type": "string"
+        },
+        "subRestrRef": {
+          "description" : "Referenced Sub RestrictionReferencing: `/obj-restrs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "validFrom": {
+          "description" : "Valid from",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "validTo": {
+          "description" : "Valid to",
+          "type": "string"
+          ,
+            "format": "date"
+        }
+      }
+    },
+    "obj_restr_link": {
+      "type": "object",
+      "properties": {
+        "basketSplitType": {
+          "description" : "Forces the split type to use this level of detailReferencing: `/code-basket-split-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "dateType": {
+          "description" : "Restriction evaluation date typeReferencing: `/code-date-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "delta": {
+          "description" : "Delta",
+          "type": "number"
+        },
+        "fundClsAllAsset": {
+          "description" : "Iterate Over All Fund Share Class Assets",
+          "type": "boolean"
+        },
+        "fundClsAsset": {
+          "description" : "Fund Share Class AssetReferencing: `/obj-assets/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "grpnAcktItemList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/obj_restr_grpn_ackt_item"
+          }
+        },
+        "isAccrIncl": {
+          "description" : "Include Accruals",
+          "type": "boolean"
+        },
+        "isAcktAlw": {
+          "description" : "Is acknowledgement allowed?",
+          "type": "boolean"
+        },
+        "isCesrGrpnEnbl": {
+          "description" : "Enable CESR Grouping?",
+          "type": "boolean"
+        },
+        "isChkMpf": {
+          "description" : "Check Model Portfolio",
+          "type": "boolean"
+        },
+        "isChkPrioSurr": {
+          "description" : "Check Priority Surrogates",
+          "type": "boolean"
+        },
+        "isChkSurr": {
+          "description" : "Check Surrogate",
+          "type": "boolean"
+        },
+        "isDisplRestr": {
+          "description" : "Display Restriction",
+          "type": "boolean"
+        },
+        "isExAnteRestr": {
+          "description" : "Restriction evaluates pre-deal",
+          "type": "boolean"
+        },
+        "isExPostRestr": {
+          "description" : "Restriction is evaluated in batch evaluation",
+          "type": "boolean"
+        },
+        "isFixXPos": {
+          "description" : "Customised Restriction: First x Positions (fix)",
+          "type": "boolean"
+        },
+        "isInfo": {
+          "description" : "Information Only Restriction",
+          "type": "boolean"
+        },
+        "isInvRestr": {
+          "description" : "Inverse Restriction",
+          "type": "boolean"
+        },
+        "isSplitBasketWeight": {
+          "description" : "Split Basket Weight",
+          "type": "boolean"
+        },
+        "isSplitCont": {
+          "description" : "Spilt Container",
+          "type": "boolean"
+        },
+        "isSplitFuture": {
+          "description" : "Split Future",
+          "type": "boolean"
+        },
+        "isSplitFxfwd": {
+          "description" : "Split FX Forward",
+          "type": "boolean"
+        },
+        "isSplitFxswap": {
+          "description" : "Split FX Swap",
+          "type": "boolean"
+        },
+        "isSplitOpteq": {
+          "description" : "Split Equity Option",
+          "type": "boolean"
+        },
+        "isSplitOptfx": {
+          "description" : "Split FX Option",
+          "type": "boolean"
+        },
+        "isSplitWrnt": {
+          "description" : "Split Warrant",
+          "type": "boolean"
+        },
+        "isSupprVirtCash": {
+          "description" : "Supress Virtual Cash Positions?",
+          "type": "boolean"
+        },
+        "limitSopFromLink": {
+          "description" : "Performance Restriction: Limit SOP from Link",
+          "type": "boolean"
+        },
+        "linkRemark": {
+          "description" : "Remark",
+          "type": "string"
+        },
+        "minEvalRelv": {
+          "description" : "Minimum evaluation relevanceReferencing: `/code-restr-eval-relvs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "nameA": {
+          "description" : "Name auto",
+          "type": "boolean"
+        },
+        "nameOvr": {
+          "description" : "Name",
+          "type": "string"
+        },
+        "parentRestr": {
+          "description" : "Parent RestrictionReferencing: `/obj-restrs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "perfDropVal": {
+          "description" : "Performance Restriction: Drop Value",
+          "type": "number"
+        },
+        "perfValFrom": {
+          "description" : "Performance Restriction: value from",
+          "type": "number"
+        },
+        "perfValTo": {
+          "description" : "Performance Restriction: value to",
+          "type": "number"
+        },
+        "posListType": {
+          "description" : "Position List TypeReferencing: `/code-restr-pos-list-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "restr": {
+          "description" : "Link to Restriction ObjectReferencing: `/obj-restrs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "restrOvrType": {
+          "description" : "Override typeReferencing: `/code-restr-ovr-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "restrPrio": {
+          "description" : "Restriction PriorityReferencing: `/code-restr-prios/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "restrPrioIdA": {
+          "description" : "Is automatic Restriction Priority",
+          "type": "boolean"
+        },
+        "restrRelType": {
+          "description" : "Relation TypeReferencing: `/code-restr-rel-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "riskValFrom": {
+          "description" : "Risk Restriction: Value from",
+          "type": "number"
+        },
+        "riskValTo": {
+          "description" : "Risk Restriction: Value to",
+          "type": "number"
+        },
+        "templAsset": {
+          "description" : "Template AssetReferencing: `/obj-assets/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "templAssetClass": {
+          "description" : "Template asset classReferencing: `/code-obj-classs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "templPos": {
+          "description" : "Template PositionReferencing: `/obj-poss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "templRefCurry": {
+          "description" : "Template reference currencyReferencing: `/obj-assets/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "templRestrValType": {
+          "description" : "Template valuation typeReferencing: `/code-restr-val-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "templSubst": {
+          "description" : "Template substituteReferencing: `/objs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "templTradeCurry": {
+          "description" : "Template trade currencyReferencing: `/obj-assets/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "templValFrom": {
+          "description" : "Template value from",
+          "type": "number"
+        },
+        "templValTo": {
+          "description" : "Template value to",
+          "type": "number"
+        },
+        "valFrom": {
+          "description" : "Customised Restriction: Value from",
+          "type": "number"
+        },
+        "valTo": {
+          "description" : "Customised Restriction: Value to",
+          "type": "number"
+        },
+        "validFrom": {
+          "description" : "Valid from date",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "validFromA": {
+          "description" : "Valid from date auto",
+          "type": "boolean"
+        },
+        "validTo": {
+          "description" : "Valid to date",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "validToA": {
+          "description" : "Valid to date auto",
+          "type": "boolean"
+        }
+      }
+    },
+    "obj_restr_surr_item": {
+      "type": "object",
+      "properties": {
+        "origHobsItem": {
+          "description" : "Original HOBS itemReferencing: `/obj-hobss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "surrHobsItem": {
+          "description" : "Surrogate HOBS itemReferencing: `/obj-hobss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        }
+      }
+    },
+    "obj_restrs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/obj_restr"
+      },
+      "uniqueItems": true
+    },
+    "obj_trans": {
+      "type": "object",
+      "properties": {
+        "doc": {
+          "description" : "Referencing: `/docs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/doc_ref" }
+          ]
+        },
+        "timestamp": {
+          "type": "string"
+          ,
+            "format": "date-time-no-tz"
+        },
+        "userstamp": {
+          "type": "string"
+        }
+      }
+    },
+    "user_ref": {
+      "type": "object",
+      "properties": {
+        "_href": {
+          "description" : "Reference/link",
+          "type": "string"
+        },
+        "id": {
+          "description" : "Numeric reference",
+          "type": "integer"
+        }
+      }
+    }
+  }
+}

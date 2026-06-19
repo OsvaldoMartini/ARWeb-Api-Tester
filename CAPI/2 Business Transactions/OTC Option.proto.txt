@@ -1,0 +1,568 @@
+syntax = "proto3";
+
+package com.avaloq.acp.bde.protobuf.doc_otcopt;
+
+import "meta_model.proto";
+import "wrappers.proto";
+import "options.proto";
+
+option (version) = "3.11.3";
+
+message DocAdd {
+  SInt64Value doc_add_id = 1 [(bde_entity) = "Code_doc_add", (bde_ref_type) = "code"];
+  repeated DocAddVal val_list = 2;
+}
+
+message DocAddVal {
+  StringValue text_val = 1;
+  StringValue nr_val = 2 [(format) = "decimal"];
+  StringValue date_val = 3 [(format) = "date"];
+  StringValue tswtz_val = 4 [(format) = "date_time"];
+  SInt64Value id_val = 5;
+}
+
+message DocCostEntry {
+  SInt64Value book_kind_id = 1 [(bde_entity) = "Code_book_kind", (bde_ref_type) = "code"];
+  SInt64Value cost_chrg_type_id = 2 [(bde_entity) = "Code_cost_chrg_type", (bde_ref_type) = "code"];
+  StringValue amount = 3 [(format) = "decimal"];
+  StringValue amount_calc = 4 [(format) = "decimal"];
+  StringValue amount_spcd = 5 [(format) = "decimal"];
+  SInt64Value bvg_incl_type_id = 6 [(bde_entity) = "Code_cost_bv_incl_type", (bde_ref_type) = "code"];
+  SInt64Value bvn_incl_type_id = 7 [(bde_entity) = "Code_cost_bv_incl_type", (bde_ref_type) = "code"];
+  BoolValue cost_chrg_type_a = 8;
+  BoolValue cost_qty_type_a = 9;
+  SInt64Value cost_qty_type_id = 10 [(bde_entity) = "Code_cost_qty_type", (bde_ref_type) = "code"];
+  BoolValue is_incl = 11;
+  BoolValue is_manual = 12;
+  BoolValue is_orig_cost = 13;
+  BoolValue is_vat_incl = 14;
+  BoolValue is_vatrf_incl = 15;
+  StringValue orig_rate = 16 [(format) = "decimal"];
+  StringValue orig_val = 17 [(format) = "decimal"];
+  BoolValue ovr_a = 18;
+  BoolValue ovr_curry_a = 19;
+  SInt64Value ovr_curry_id = 20 [(bde_entity) = "Obj_asset", (bde_ref_type) = "obj"];
+  BoolValue ovr_min_max = 21;
+  BoolValue ovr_possible = 22;
+  SInt64Value ovr_type_id = 23 [(bde_entity) = "Code_cost_ovr_type", (bde_ref_type) = "code"];
+  StringValue ovr_val = 24 [(format) = "decimal"];
+  StringValue ovr_xrate = 25 [(format) = "decimal"];
+  BoolValue ovr_xrate_a = 26;
+  SInt64Value pri_pos_curry_id = 27 [(bde_entity) = "Obj_asset", (bde_ref_type) = "obj"];
+  SInt64Value pri_pos_id = 28 [(bde_entity) = "Obj_pos", (bde_ref_type) = "obj"];
+  StringValue pri_pos_val = 29 [(format) = "decimal"];
+  SInt64Value prop_type_id = 30 [(bde_entity) = "Code_cost_prop_type", (bde_ref_type) = "code"];
+  StringValue publ_rate = 31 [(format) = "decimal"];
+  StringValue publ_val = 32 [(format) = "decimal"];
+  StringValue rate = 33 [(format) = "decimal"];
+  SInt64Value sel_id = 34 [(bde_entity) = "Code_ovr_bool", (bde_ref_type) = "code"];
+  SInt64Value spcd_classif_id = 35 [(bde_entity) = "Code_obj_classif", (bde_ref_type) = "code"];
+  StringValue vat = 36 [(format) = "decimal"];
+  BoolValue vat_a = 37;
+  SInt64Value vat_evt_2_id = 38 [(bde_entity) = "Code_vat_evt", (bde_ref_type) = "code"];
+  SInt64Value vat_evt_id = 39 [(bde_entity) = "Code_vat_evt", (bde_ref_type) = "code"];
+  StringValue vat_liab_split_rate = 40 [(format) = "decimal"];
+  StringValue vat_nr = 41;
+  BoolValue vat_nr_a = 42;
+  StringValue vat_rate = 43 [(format) = "decimal"];
+  BoolValue vat_rate_a = 44;
+  StringValue vatrf = 45 [(format) = "decimal"];
+  StringValue vatrf_fact = 46 [(format) = "decimal"];
+  StringValue vatrf_xrate = 47 [(format) = "decimal"];
+}
+
+message DocCostList {
+  SInt64Value curry_id = 1 [(bde_entity) = "Obj_asset", (bde_ref_type) = "obj"];
+  repeated DocCostEntry entry_list = 2;
+  SInt64Value row_nr = 3;
+}
+
+message DocCredChk {
+  SInt64Value cred_chk_evt_id = 1 [(bde_entity) = "Code_cred_chk_evt", (bde_ref_type) = "code"];
+  StringValue new_viol_amount = 2 [(format) = "decimal"];
+  StringValue old_viol_amount = 3 [(format) = "decimal"];
+  SInt64Value ref_pos_id = 4 [(bde_entity) = "Obj_pos", (bde_ref_type) = "obj"];
+  SInt64Value sec_user_id = 5 [(bde_entity) = "User", (bde_ref_type) = "use"];
+  StringValue timestamp = 6 [(format) = "date"];
+  SInt64Value viol_pos_id = 7 [(bde_entity) = "Obj_pos", (bde_ref_type) = "obj"];
+}
+
+message DocKey {
+  StringValue val = 2;
+  SInt64Value doc_key_id = 3 [(bde_entity) = "Code_doc_key", (bde_ref_type) = "code"];
+}
+
+message DocObjAdd {
+  SInt64Value obj_add_id = 1 [(bde_entity) = "Code_obj_add", (bde_ref_type) = "code"];
+  repeated DocObjAddVal val_list = 2;
+  SInt64Value bu_id = 4 [(bde_entity) = "Obj_bp", (bde_ref_type) = "obj"];
+}
+
+message DocObjAddVal {
+  StringValue text_val = 1;
+  StringValue nr_val = 2 [(format) = "decimal"];
+  StringValue date_val = 3 [(format) = "date"];
+  StringValue tswtz_val = 4 [(format) = "date_time"];
+  SInt64Value id_val = 5;
+}
+
+message DocObjClassif {
+  SInt64Value bu_id = 1 [(bde_entity) = "Obj_bp", (bde_ref_type) = "obj"];
+  BoolValue class_a = 2;
+  StringValue class_factor = 3 [(format) = "decimal"];
+  SInt64Value class_id = 4 [(bde_entity) = "Code_obj_class", (bde_ref_type) = "code"];
+  SInt64Value clt_sgmt_calc_id = 5 [(bde_entity) = "Code_person_mktng_sgmt", (bde_ref_type) = "code"];
+  StringValue end_date = 6 [(format) = "date"];
+  SInt64Value indiv_feep_id = 7 [(bde_entity) = "Obj_feep", (bde_ref_type) = "obj"];
+  BoolValue is_inht = 8;
+  SInt64Value obj_classif_id = 9 [(bde_entity) = "Code_obj_classif", (bde_ref_type) = "code"];
+  StringValue remark = 10;
+  SInt64Value spcd_costp_id = 11 [(bde_entity) = "Obj_costp", (bde_ref_type) = "obj"];
+  SInt64Value spcd_curry_id = 12 [(bde_entity) = "Obj_asset", (bde_ref_type) = "obj"];
+  StringValue spcd_max_val = 13 [(format) = "decimal"];
+  StringValue spcd_min_val = 14 [(format) = "decimal"];
+  SInt64Value spcd_minmax_val_type_id = 15 [(bde_entity) = "Code_cost_ovr_type", (bde_ref_type) = "code"];
+  StringValue spcd_offset_val = 16 [(format) = "decimal"];
+  SInt64Value spcd_offset_val_type_id = 17 [(bde_entity) = "Code_cost_ovr_type", (bde_ref_type) = "code"];
+  SInt64Value spcd_reason_id = 18 [(bde_entity) = "Code_cost_ovr_reason", (bde_ref_type) = "code"];
+  StringValue spcd_val = 19 [(format) = "decimal"];
+  SInt64Value spcd_val_type_id = 20 [(bde_entity) = "Code_cost_ovr_type", (bde_ref_type) = "code"];
+  StringValue start_date = 21 [(format) = "date"];
+  SInt64Value user_ref_id = 22 [(bde_entity) = "User", (bde_ref_type) = "use"];
+}
+
+message DocObjExtn {
+  repeated DocObjAdd add_list = 1;
+  repeated DocObjClassif classif_list = 2;
+  repeated DocObjKey key_list = 3;
+  repeated DocStructAdd struct_add_list = 4;
+}
+
+message DocObjKey {
+  StringValue name = 1;
+  SInt64Value obj_key_id = 2 [(bde_entity) = "Code_obj_key", (bde_ref_type) = "code"];
+  SInt64Value seq_nr = 3;
+  StringValue val = 4;
+  BoolValue val_a = 5;
+  SInt64Value ref_obj_id = 6 [(bde_entity) = "Obj", (bde_ref_type) = "obj"];
+  StringValue prio = 7;
+  SInt64Value rule_templ_id = 8 [(bde_entity) = "Code_rule_templ", (bde_ref_type) = "code"];
+  SInt64Value obj_1_id = 9 [(bde_entity) = "Obj", (bde_ref_type) = "obj"];
+  BoolValue obj_1_is_null = 10;
+  SInt64Value obj_2_id = 11 [(bde_entity) = "Obj", (bde_ref_type) = "obj"];
+  BoolValue obj_2_is_null = 12;
+  SInt64Value obj_3_id = 13 [(bde_entity) = "Obj", (bde_ref_type) = "obj"];
+  BoolValue obj_3_is_null = 14;
+  SInt64Value obj_4_id = 15 [(bde_entity) = "Obj", (bde_ref_type) = "obj"];
+  BoolValue obj_4_is_null = 16;
+  SInt64Value trig_meta_typ_id = 17 [(bde_entity) = "Meta_typ", (bde_ref_type) = "code"];
+  SInt64Value trig_order_type_id = 18 [(bde_entity) = "Code_order_type", (bde_ref_type) = "code"];
+}
+
+message DocOtcopt {
+  option (is_bde_entity) = true;
+  repeated DocAdd add_list = 1;
+  SInt64Value adv_nr = 2;
+  StringValue adv_text = 3;
+  StringValue amount = 4 [(format) = "decimal"];
+  SInt64Value asset_id = 5 [(bde_entity) = "Obj_asset", (bde_ref_type) = "obj"];
+  UInt64Value book_doc_id = 6 [(bde_entity) = "Doc_book", (bde_ref_type) = "doc"];
+  BoolValue book_macc_a = 7;
+  SInt64Value book_macc_id = 8 [(bde_entity) = "Obj_pos", (bde_ref_type) = "obj"];
+  StringValue book_text = 9;
+  SInt64Value bp_id = 10 [(bde_entity) = "Obj_bp", (bde_ref_type) = "obj"];
+  BoolValue broker_a = 11;
+  SInt64Value broker_id = 12 [(bde_entity) = "Obj_bp", (bde_ref_type) = "obj"];
+  SInt64Value bu_id = 13 [(bde_entity) = "Obj_bp", (bde_ref_type) = "obj"];
+  BoolValue cnt_macc_a = 14;
+  SInt64Value cnt_macc_id = 15 [(bde_entity) = "Obj_pos", (bde_ref_type) = "obj"];
+  SInt64Value cont_id = 16 [(bde_entity) = "Obj_cont", (bde_ref_type) = "obj"];
+  StringValue contr_bv_pos = 17 [(format) = "decimal"];
+  repeated DocCostList cost_list = 18;
+  repeated DocCredChk cred_chk_list = 19;
+  SInt64Value discd_reason_id = 20 [(bde_entity) = "Code_doc_discd_reason", (bde_ref_type) = "code"];
+  StringValue dlv_date = 21 [(format) = "date"];
+  BoolValue dlv_date_a = 22;
+  BoolValue doc_block_a = 23;
+  SInt64Value doc_block_id = 24 [(bde_entity) = "Code_block", (bde_ref_type) = "code"];
+  SInt64Value doc_prc_info_id = 25 [(bde_entity) = "Code_doc_prc_info", (bde_ref_type) = "code"];
+  StringValue doc_prc_info_remark = 26;
+  SInt64Value doc_revs_cause_id = 27 [(bde_entity) = "Code_doc_revs_cause", (bde_ref_type) = "code"];
+  SInt64Value doc_role_id = 28 [(bde_entity) = "Code_doc_role", (bde_ref_type) = "code"];
+  StringValue due_date = 29 [(format) = "date"];
+  UInt64Value dupl_doc_id = 30 [(bde_entity) = "Doc", (bde_ref_type) = "doc"];
+  StringValue entered_vm_date = 31 [(format) = "date"];
+  StringValue expir_date = 32 [(format) = "date"];
+  StringValue extl_ref_nr = 33;
+  SInt64Value fe_bp_id = 34 [(bde_entity) = "Obj_bp", (bde_ref_type) = "obj"];
+  StringValue first_exe_date = 35 [(format) = "date"];
+  BoolValue first_exe_date_a = 36;
+  StringValue gross = 37 [(format) = "decimal"];
+  BoolValue has_postit = 38;
+  BoolValue has_work_item = 39;
+  uint64 id = 40 [(bde_entity) = "Doc", (bde_ref_type) = "doc"];
+  StringValue imarg = 41 [(format) = "decimal"];
+  BoolValue imarg_a = 42;
+  SInt64Value ins_by_sec_user_id = 43 [(bde_entity) = "User", (bde_ref_type) = "use"];
+  BoolValue instru_closing_macc_a = 44;
+  SInt64Value instru_closing_macc_id = 45 [(bde_entity) = "Obj_pos", (bde_ref_type) = "obj"];
+  BoolValue instru_settle_macc_a = 46;
+  SInt64Value instru_settle_macc_id = 47 [(bde_entity) = "Obj_pos", (bde_ref_type) = "obj"];
+  StringValue intl_ref_nr = 48;
+  BoolValue is_backdt = 49;
+  BoolValue is_del = 50;
+  BoolValue is_final = 51;
+  BoolValue is_migr = 52;
+  BoolValue is_revs = 53;
+  BoolValue is_sim = 54;
+  BoolValue isa_relv = 55;
+  repeated DocKey key_list = 56;
+  StringValue last_exe_date = 57 [(format) = "date"];
+  BoolValue last_exe_date_a = 58;
+  UInt64Value last_msg_id = 59 [(bde_entity) = "Msg", (bde_ref_type) = "msg"];
+  StringValue last_trans = 60 [(format) = "date_time"];
+  SInt64Value last_trans_sec_user_id = 61 [(bde_entity) = "User", (bde_ref_type) = "use"];
+  BoolValue marg_asset_a = 62;
+  SInt64Value marg_asset_id = 63 [(bde_entity) = "Obj_asset", (bde_ref_type) = "obj"];
+  StringValue marg_asset_price = 64 [(format) = "decimal"];
+  BoolValue marg_asset_price_a = 65;
+  BoolValue marg_book_style_a = 66;
+  SInt64Value marg_book_style_id = 67 [(bde_entity) = "Code_margr_book_style", (bde_ref_type) = "code"];
+  BoolValue marg_bp_a = 68;
+  SInt64Value marg_bp_id = 69 [(bde_entity) = "Obj_bp", (bde_ref_type) = "obj"];
+  BoolValue marg_cont_a = 70;
+  SInt64Value marg_cont_id = 71 [(bde_entity) = "Obj_cont", (bde_ref_type) = "obj"];
+  StringValue marg_contr_size = 72 [(format) = "decimal"];
+  BoolValue marg_contr_size_a = 73;
+  BoolValue marg_curry_a = 74;
+  SInt64Value marg_curry_id = 75 [(bde_entity) = "Obj_asset", (bde_ref_type) = "obj"];
+  BoolValue marg_equi_class_a = 76;
+  SInt64Value marg_equi_class_id = 77 [(bde_entity) = "Code_obj_class", (bde_ref_type) = "code"];
+  BoolValue marg_imarg_cmtd_a = 78;
+  SInt64Value marg_imarg_cmtd_id = 79 [(bde_entity) = "Code_imarg_calc_method", (bde_ref_type) = "code"];
+  StringValue marg_imarg_const_1 = 80 [(format) = "decimal"];
+  BoolValue marg_imarg_const_1_a = 81;
+  StringValue marg_imarg_const_2 = 82 [(format) = "decimal"];
+  BoolValue marg_imarg_const_2_a = 83;
+  BoolValue marg_imarg_const_type_a = 84;
+  SInt64Value marg_imarg_const_type_id = 85 [(bde_entity) = "Code_const", (bde_ref_type) = "code"];
+  BoolValue marg_macc_a = 86;
+  SInt64Value marg_macc_id = 87 [(bde_entity) = "Obj_pos", (bde_ref_type) = "obj"];
+  BoolValue marg_opt_type_a = 88;
+  SInt64Value marg_opt_type_id = 89 [(bde_entity) = "Code_opt_type", (bde_ref_type) = "code"];
+  BoolValue marg_pos_a = 90;
+  SInt64Value marg_pos_id = 91 [(bde_entity) = "Obj_pos", (bde_ref_type) = "obj"];
+  StringValue marg_qty = 92 [(format) = "decimal"];
+  BoolValue marg_qty_a = 93;
+  SInt64Value marg_sign = 94;
+  BoolValue marg_sign_a = 95;
+  StringValue marg_strike = 96 [(format) = "decimal"];
+  BoolValue marg_strike_a = 97;
+  BoolValue marg_undrly_a = 98;
+  SInt64Value marg_undrly_id = 99 [(bde_entity) = "Obj_asset", (bde_ref_type) = "obj"];
+  StringValue marg_undrly_price = 100 [(format) = "decimal"];
+  BoolValue marg_undrly_price_a = 101;
+  UInt64Value master_doc_id = 102 [(bde_entity) = "Doc", (bde_ref_type) = "doc"];
+  SInt64Value medium_id = 103 [(bde_entity) = "Code_medium", (bde_ref_type) = "code"];
+  SInt64Value meta_typ_id = 104 [(bde_entity) = "Meta_typ", (bde_ref_type) = "code"];
+  StringValue net = 105 [(format) = "decimal"];
+  SInt64Value net_curry_id = 106 [(bde_entity) = "Obj_asset", (bde_ref_type) = "obj"];
+  SInt64Value nostro_bp_id = 107 [(bde_entity) = "Obj_bp", (bde_ref_type) = "obj"];
+  BoolValue nostro_cont_a = 108;
+  SInt64Value nostro_cont_id = 109 [(bde_entity) = "Obj_cont", (bde_ref_type) = "obj"];
+  SInt64Value nostro_pos_id = 110 [(bde_entity) = "Obj_pos", (bde_ref_type) = "obj"];
+  BoolValue not_bonus_relv = 111;
+  BoolValue not_bonus_widrw_relv = 112;
+  BoolValue not_recon_storno_relv = 113;
+  BoolValue not_widrw_relv = 114;
+  SInt64Value opt_type_id = 115 [(bde_entity) = "Code_opt_type", (bde_ref_type) = "code"];
+  StringValue order_date = 116 [(format) = "date"];
+  SInt64Value order_nr = 117;
+  BoolValue order_type_a = 118;
+  SInt64Value order_type_grp_id = 119 [(bde_entity) = "Code_order_type_grp", (bde_ref_type) = "code"];
+  SInt64Value order_type_id = 120 [(bde_entity) = "Code_order_type", (bde_ref_type) = "code"];
+  StringValue ordered_by = 121;
+  UInt64Value orig_doc_id = 122 [(bde_entity) = "Doc", (bde_ref_type) = "doc"];
+  DocpOtc otc = 123;
+  repeated DocOverride override_list = 124;
+  StringValue perf_date = 125 [(format) = "date"];
+  BoolValue perf_date_a = 126;
+  SInt64Value pos_id = 127 [(bde_entity) = "Obj_pos", (bde_ref_type) = "obj"];
+  repeated DocPostit postit_list = 128;
+  StringValue prem = 129 [(format) = "decimal"];
+  SInt64Value prem_curry_id = 130 [(bde_entity) = "Obj_asset", (bde_ref_type) = "obj"];
+  StringValue prem_perc = 131 [(format) = "decimal"];
+  SInt64Value prem_xfer_aux_macc_id = 132 [(bde_entity) = "Obj_pos", (bde_ref_type) = "obj"];
+  UInt64Value ref_doc_id = 133 [(bde_entity) = "Doc", (bde_ref_type) = "doc"];
+  BoolValue resp_bp_a = 134;
+  SInt64Value resp_bp_id = 135 [(bde_entity) = "Obj_bp", (bde_ref_type) = "obj"];
+  BoolValue resp_obj_a = 136;
+  SInt64Value resp_obj_id = 137 [(bde_entity) = "Obj", (bde_ref_type) = "obj"];
+  StringValue rest_qty = 138 [(format) = "decimal"];
+  UInt64Value revs_of_doc_id = 139 [(bde_entity) = "Doc", (bde_ref_type) = "doc"];
+  SInt64Value revs_origin_user_id = 140 [(bde_entity) = "User", (bde_ref_type) = "use"];
+  SInt64Value sds_instn_id = 141 [(bde_entity) = "Code_extl_sys", (bde_ref_type) = "code"];
+  BoolValue settle_plan_a = 142;
+  SInt64Value settle_plan_id = 143 [(bde_entity) = "Code_settle_plan", (bde_ref_type) = "code"];
+  repeated DocSettlePlan settle_plan_list = 144;
+  StringValue strike = 145 [(format) = "decimal"];
+  SInt64Value strike_unit_id = 146 [(bde_entity) = "Code_listed_in", (bde_ref_type) = "code"];
+  SInt64Value tenor_id = 147 [(bde_entity) = "Code_irs_period", (bde_ref_type) = "code"];
+  SInt64Value terminal_id = 148 [(bde_entity) = "Obj_terminal", (bde_ref_type) = "obj"];
+  SInt64Value todo_templ_id = 149 [(bde_entity) = "Code_todo_templ", (bde_ref_type) = "code"];
+  SInt64Value trade_type_id = 150 [(bde_entity) = "Code_obj_class", (bde_ref_type) = "code"];
+  repeated DocTrans trans_list = 151;
+  DocpTrep trep = 152;
+  StringValue trx_date = 153 [(format) = "date"];
+  BoolValue trx_date_a = 154;
+  UInt64Value undrly_doc_id = 155 [(bde_entity) = "Doc", (bde_ref_type) = "doc"];
+  StringValue val_date = 156 [(format) = "date"];
+  BoolValue val_date_a = 157;
+  SInt64Value wfc_action_id = 158 [(bde_entity) = "Wfc_action", (bde_ref_type) = "code"];
+  SInt64Value wfc_status_id = 159 [(bde_entity) = "Wfc_status", (bde_ref_type) = "code"];
+  repeated DocTabWorkItem work_item_list = 160;
+  StringValue work_item_tag = 161;
+  StringValue order_date_tz = 162 [(format) = "date_time"];
+  SInt64Value bde_rec_version = 163;
+  SInt64Value aging_id = 164;
+  DocObjExtn obj_extn = 165;
+}
+
+message DocOverride {
+  SInt64Value override_comment_id = 1 [(bde_entity) = "Code_override_comment", (bde_ref_type) = "code"];
+  SInt64Value override_id = 2 [(bde_entity) = "Code_override", (bde_ref_type) = "code"];
+  StringValue override_text = 3;
+  SInt64Value sec_user_id = 4 [(bde_entity) = "User", (bde_ref_type) = "use"];
+  StringValue signt = 5;
+  StringValue timestamp = 6 [(format) = "date_time"];
+}
+
+message DocPostit {
+  StringValue timestamp = 1 [(format) = "date_time_no_tz"];
+  SInt64Value type_id = 2 [(bde_entity) = "Code_postit_type", (bde_ref_type) = "code"];
+  SInt64Value sub_type_id = 3 [(bde_entity) = "Code_postit_sub_type", (bde_ref_type) = "code"];
+  StringValue topic = 4;
+  StringValue text = 5;
+  SInt64Value user_id = 6 [(bde_entity) = "User", (bde_ref_type) = "use"];
+  SInt64Value ctx_id = 7 [(bde_entity) = "Code_postit_ctx", (bde_ref_type) = "code"];
+  BoolValue do_prop = 8;
+  BoolValue is_man = 9;
+  SInt64Value role_id = 10 [(bde_entity) = "User", (bde_ref_type) = "use"];
+}
+
+message DocSettlePlan {
+  SInt64Value settle_plan_id = 2 [(bde_entity) = "Code_settle_plan", (bde_ref_type) = "code"];
+  SInt64Value lifecycle_evt_id = 3 [(bde_entity) = "Code_settle_lifecycle_evt", (bde_ref_type) = "code"];
+  SInt64Value trig_asset_id = 4 [(bde_entity) = "Obj_asset", (bde_ref_type) = "obj"];
+  SInt64Value trig_mkt_id = 5 [(bde_entity) = "Obj_mkt", (bde_ref_type) = "obj"];
+  SInt64Value trig_order_type_grp_id = 6 [(bde_entity) = "Code_order_type_grp", (bde_ref_type) = "code"];
+  SInt64Value trig_order_type_id = 7 [(bde_entity) = "Code_order_type", (bde_ref_type) = "code"];
+  SInt64Value trig_pos_id = 8 [(bde_entity) = "Obj_mkt", (bde_ref_type) = "obj"];
+}
+
+message DocStructAdd {
+  StringValue name = 1;
+  repeated DocStructAddFld fld_list = 2;
+}
+
+message DocStructAddFld {
+  StringValue name = 1;
+  BoolValue bool_val = 2;
+  StringValue date_val = 3 [(format) = "date"];
+  SInt64Value id_val = 4;
+  StringValue nr_val = 5 [(format) = "decimal"];
+  StringValue text_val = 6;
+  repeated DocStructAddFld val_list = 7;
+  DocStructAdd ref_val = 8;
+  repeated DocStructAdd ref_val_list = 9;
+}
+
+message DocTabWorkItem {
+  StringValue tag = 1;
+  UInt64Value slave_doc_id = 2 [(bde_entity) = "Doc", (bde_ref_type) = "doc"];
+  StringValue close_date = 3 [(format) = "date"];
+  StringValue descn = 4;
+  BoolValue is_slave_dirty = 5;
+  BoolValue is_tight_link = 6;
+  UInt64Value master_doc_id = 7 [(bde_entity) = "Doc", (bde_ref_type) = "doc"];
+  SInt64Value seq_nr = 8;
+  StringValue subject = 9;
+  SInt64Value work_item_ctx_id = 10 [(bde_entity) = "Code_work_item_ctx", (bde_ref_type) = "code"];
+  SInt64Value work_item_status_id = 11 [(bde_entity) = "Code_work_item_status", (bde_ref_type) = "code"];
+  SInt64Value work_item_type_id = 12 [(bde_entity) = "Code_work_item_type", (bde_ref_type) = "code"];
+}
+
+message DocTrans {
+  SInt64Value seq_nr = 1;
+  StringValue timestamp = 2 [(format) = "date_time"];
+  sint64 sec_user_id = 3 [(bde_entity) = "User", (bde_ref_type) = "use"];
+  SInt64Value calc_cnt = 4;
+  SInt64Value calc_time = 5;
+  SInt64Value intf_wfc_action_id = 6 [(bde_entity) = "Wfc_action", (bde_ref_type) = "code"];
+  SInt64Value new_wfc_status_id = 7 [(bde_entity) = "Wfc_status", (bde_ref_type) = "code"];
+  SInt64Value old_wfc_status_id = 8 [(bde_entity) = "Wfc_status", (bde_ref_type) = "code"];
+  SInt64Value opn_time = 9;
+  StringValue remark = 10;
+  SInt64Value rule_time = 11;
+  SInt64Value trans_action_id = 12 [(bde_entity) = "Code_trans_action", (bde_ref_type) = "code"];
+  SInt64Value user_time = 13;
+  SInt64Value wfc_action_id = 14 [(bde_entity) = "Wfc_action", (bde_ref_type) = "code"];
+  SInt64Value wfc_time = 15;
+}
+
+message DocpOtc {
+  SInt64Value tra_capy_id = 1 [(bde_entity) = "Code_tra_capy", (bde_ref_type) = "code"];
+  SInt64Value venue_id = 2 [(bde_entity) = "Obj_mkt", (bde_ref_type) = "obj"];
+  StringValue venue_trx_nr = 3;
+  StringValue uti_key = 4;
+  SInt64Value clr_broker_cont_id = 5 [(bde_entity) = "Obj_cont", (bde_ref_type) = "obj"];
+  BoolValue is_to_be_clr = 6;
+  BoolValue is_clr = 7;
+  StringValue clr_date_time = 8 [(format) = "date_time"];
+  BoolValue calc_agt_a = 9;
+  SInt64Value calc_agt_id = 10 [(bde_entity) = "Obj_bp", (bde_ref_type) = "obj"];
+  StringValue clear_uti_key = 11;
+  BoolValue clr_broker_cont_a = 12;
+  BoolValue clr_house_a = 13;
+  SInt64Value clr_house_id = 14 [(bde_entity) = "Obj_bp", (bde_ref_type) = "obj"];
+  StringValue confirm_date_time = 15 [(format) = "date_time"];
+  SInt64Value confirm_type_id = 16 [(bde_entity) = "Code_otc_tr_confirm_type", (bde_ref_type) = "code"];
+  BoolValue fmia_trep_undrly_a = 17;
+  SInt64Value fmia_trep_undrly_id = 18 [(bde_entity) = "Obj_asset", (bde_ref_type) = "obj"];
+  BoolValue is_compr = 19;
+  BoolValue is_fmia_trep_obl_done = 20;
+  BoolValue is_fmia_trep_obl_done_a = 21;
+  BoolValue is_to_be_clr_a = 22;
+  StringValue net = 23 [(format) = "decimal"];
+  SInt64Value net_curry_id = 24 [(bde_entity) = "Obj_asset", (bde_ref_type) = "obj"];
+  StringValue nov_fee = 25 [(format) = "decimal"];
+  SInt64Value nov_fee_curry_id = 26 [(bde_entity) = "Obj_asset", (bde_ref_type) = "obj"];
+  StringValue nov_fee_xrate = 27 [(format) = "decimal"];
+  BoolValue nov_fee_xrate_a = 28;
+  SInt64Value post_nov_bp_id = 29 [(bde_entity) = "Obj_bp", (bde_ref_type) = "obj"];
+  BoolValue post_nov_cont_a = 30;
+  SInt64Value post_nov_cont_id = 31 [(bde_entity) = "Obj_cont", (bde_ref_type) = "obj"];
+  BoolValue post_nov_macc_a = 32;
+  SInt64Value post_nov_macc_id = 33 [(bde_entity) = "Obj_pos", (bde_ref_type) = "obj"];
+  SInt64Value post_nov_pos_id = 34 [(bde_entity) = "Obj_pos", (bde_ref_type) = "obj"];
+  SInt64Value pre_nov_bp_id = 35 [(bde_entity) = "Obj_bp", (bde_ref_type) = "obj"];
+  BoolValue pre_nov_cont_a = 36;
+  SInt64Value pre_nov_cont_id = 37 [(bde_entity) = "Obj_cont", (bde_ref_type) = "obj"];
+  BoolValue pre_nov_macc_a = 38;
+  SInt64Value pre_nov_macc_id = 39 [(bde_entity) = "Obj_pos", (bde_ref_type) = "obj"];
+  SInt64Value pre_nov_pos_id = 40 [(bde_entity) = "Obj_pos", (bde_ref_type) = "obj"];
+  BoolValue uti_key_a = 41;
+  SInt64Value init_cntprty_id = 42 [(bde_entity) = "Obj_bp", (bde_ref_type) = "obj"];
+  repeated DocpOtcNovFee nov_fee_list = 43;
+  BoolValue direct_link = 44;
+  StringValue emir_uti_key = 45;
+  StringValue emir_clear_uti_key = 46;
+  BoolValue is_prtry_uti = 47;
+  BoolValue is_ptrr = 48;
+  StringValue ptrr_key = 49;
+  StringValue ptrr_svc_provid = 50;
+  SInt64Value ptrr_type_id = 51 [(bde_entity) = "Code_otc_tr_ptrr_type", (bde_ref_type) = "code"];
+  StringValue rep_track_nr = 52;
+}
+
+message DocpOtcNovFee {
+  SInt64Value book_kind_id = 1 [(bde_entity) = "Code_book_kind", (bde_ref_type) = "code"];
+  SInt64Value curry_id = 2 [(bde_entity) = "Obj_asset", (bde_ref_type) = "obj"];
+  SInt64Value pay_dir_id = 3 [(bde_entity) = "Code_otc_nov_fee_pay_dir", (bde_ref_type) = "code"];
+  StringValue qty = 4 [(format) = "decimal"];
+}
+
+message DocpTrep {
+  StringValue tra_date_time = 1 [(format) = "date_time"];
+  SInt64Value exec_person_id = 2 [(bde_entity) = "Obj_person", (bde_ref_type) = "obj"];
+  SInt64Value invst_person_id = 3 [(bde_entity) = "Obj_person", (bde_ref_type) = "obj"];
+  BoolValue is_waived_nliq = 4;
+  BoolValue is_waived_oilq = 5;
+  BoolValue is_waived_pric = 6;
+  BoolValue is_waived_rfpt = 7;
+  BoolValue is_waived_size = 8;
+  BoolValue is_waived_ilqd = 9;
+  BoolValue is_lrg_otc = 10;
+  BoolValue is_ilqd_otc = 11;
+  BoolValue is_oversize_otc = 12;
+  BoolValue is_tpac_otc = 13;
+  BoolValue action_trig_ent_a = 14;
+  SInt64Value action_trig_ent_id = 15 [(bde_entity) = "Obj_bp", (bde_ref_type) = "obj"];
+  BoolValue do_thp_rep = 16;
+  BoolValue do_thp_rep_a = 17;
+  repeated DocpTrepExclDet excl_det_list = 18;
+  BoolValue exec_alg_a = 19;
+  SInt64Value exec_alg_id = 20 [(bde_entity) = "Code_trep_alg", (bde_ref_type) = "code"];
+  BoolValue exec_person_a = 21;
+  BoolValue invst_alg_a = 22;
+  SInt64Value invst_alg_id = 23 [(bde_entity) = "Code_trep_alg", (bde_ref_type) = "code"];
+  BoolValue invst_person_a = 24;
+  BoolValue is_actx_otc = 25;
+  BoolValue is_actx_otc_a = 26;
+  BoolValue is_amnd_otc = 27;
+  BoolValue is_amnd_otc_a = 28;
+  BoolValue is_bnmkr_otc = 29;
+  BoolValue is_bnmkr_otc_a = 30;
+  BoolValue is_canc_otc = 31;
+  BoolValue is_canc_otc_a = 32;
+  BoolValue is_dupl_otc = 33;
+  BoolValue is_dupl_otc_a = 34;
+  BoolValue is_exec_person_nore = 35;
+  BoolValue is_exec_person_nore_a = 36;
+  BoolValue is_ilqd_otc_a = 37;
+  BoolValue is_in_scope_sft = 38;
+  BoolValue is_in_scope_sft_a = 39;
+  BoolValue is_lrg_otc_a = 40;
+  BoolValue is_oversize_otc_a = 41;
+  BoolValue is_rpri_otc = 42;
+  BoolValue is_rpri_otc_a = 43;
+  BoolValue is_sdiv_otc = 44;
+  BoolValue is_sdiv_otc_a = 45;
+  BoolValue is_tncp_otc = 46;
+  BoolValue is_tncp_otc_a = 47;
+  BoolValue is_tpac_otc_a = 48;
+  BoolValue is_waived_ilqd_a = 49;
+  BoolValue is_waived_nliq_a = 50;
+  BoolValue is_waived_oilq_a = 51;
+  BoolValue is_waived_pric_a = 52;
+  BoolValue is_waived_rfpt_a = 53;
+  BoolValue is_waived_size_a = 54;
+  BoolValue is_xfph_otc = 55;
+  BoolValue is_xfph_otc_a = 56;
+  StringValue last_mdf_date = 57 [(format) = "date_time_no_tz"];
+  BoolValue liqp_a = 58;
+  SInt64Value liqp_id = 59 [(bde_entity) = "Code_trep_liqp_flag", (bde_ref_type) = "code"];
+  BoolValue order_type_a = 60;
+  SInt64Value order_type_id = 61 [(bde_entity) = "Code_trep_order_type", (bde_ref_type) = "code"];
+  BoolValue orig_doc_a = 62;
+  UInt64Value orig_doc_id = 63 [(bde_entity) = "Doc", (bde_ref_type) = "doc"];
+  SInt64Value part_id = 64;
+  BoolValue short_sell_a = 65;
+  SInt64Value short_sell_id = 66 [(bde_entity) = "Code_trep_short_sell", (bde_ref_type) = "code"];
+  BoolValue thp_exec_person_a = 67;
+  SInt64Value thp_exec_person_id = 68 [(bde_entity) = "Obj_person", (bde_ref_type) = "obj"];
+  BoolValue thp_invst_person_a = 69;
+  SInt64Value thp_invst_person_id = 70 [(bde_entity) = "Obj_person", (bde_ref_type) = "obj"];
+  StringValue thp_lei = 71;
+  BoolValue thp_lei_a = 72;
+  BoolValue tra_date_time_a = 73;
+  StringValue tra_date_time_frac = 74 [(format) = "decimal"];
+  BoolValue tra_date_time_frac_a = 75;
+  StringValue transm_buyer_lei = 76;
+  BoolValue transm_buyer_lei_a = 77;
+  StringValue transm_seller_lei = 78;
+  BoolValue transm_seller_lei_a = 79;
+  BoolValue transm_type_a = 80;
+  SInt64Value transm_type_id = 81 [(bde_entity) = "Code_trep_transm_type", (bde_ref_type) = "code"];
+  BoolValue trep_comdty_indi_a = 82;
+  SInt64Value trep_comdty_indi_id = 83 [(bde_entity) = "Code_trep_comdty_indi", (bde_ref_type) = "code"];
+}
+
+message DocpTrepExclDet {
+  SInt64Value aging_id = 1;
+  SInt64Value part_id = 2;
+  SInt64Value scheme_id = 3 [(bde_entity) = "Code_trep_scheme", (bde_ref_type) = "code"];
+  BoolValue trep_excl_rsn_a = 4;
+  SInt64Value trep_excl_rsn_id = 5 [(bde_entity) = "Code_trep_excl_rsn", (bde_ref_type) = "code"];
+}
+

@@ -1,0 +1,128 @@
+{
+  "$id": "https://avaloq.com/mba$code_bban_fmt.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/mba$code_bban_fmt",
+  "definitions": {
+    "code_tab_ref": {
+      "type": "object",
+      "properties": {
+        "_href": {
+          "description" : "Reference/link",
+          "type": "string"
+        },
+        "id": {
+          "description" : "Numeric reference",
+          "type": "integer"
+        },
+        "ident": {
+          "description" : "Unique symbolic reference",
+          "type": "string"
+        },
+        "intlId": {
+          "description" : "Symbolic reference",
+          "type": "string"
+        }
+      }
+    },
+    "mba$code_bban_fmts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/mba$code_bban_fmt"
+      },
+      "uniqueItems": true
+    },
+    "mba$code_bban_fmt": {
+      "type": "object",
+      "properties": {
+        "activ": {
+          "type": "boolean"
+        },
+        "banLen": {
+          "type": "number"
+        },
+        "banPos": {
+          "type": "number"
+        },
+        "bankIdLen": {
+          "type": "number"
+        },
+        "bcdFact": {
+          "type": "string"
+        },
+        "bcdLen": {
+          "type": "number"
+        },
+        "bcdMod": {
+          "type": "string"
+        },
+        "bcdPos": {
+          "type": "number"
+        },
+        "fmt": {
+          "type": "string"
+        },
+        "ibanFmt": {
+          "description" : "Referencing: `/code-iban-fmts/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "id": {
+          "type": "integer"
+        },
+        "ident": {
+          "type": "string"
+        },
+        "iidLen": {
+          "type": "number"
+        },
+        "iidPos": {
+          "type": "number"
+        },
+        "intlId": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "nameI18nList": {
+          "type": "array",
+          "items": {
+            "description" : "Full translation list for name field. Only visible within compound APIs ",
+            "allOf": [
+              { "$ref": "#/definitions/name_i18n"
+               }
+              ]
+          }
+        },
+        "posNrObjSeq": {
+          "description" : "Referencing: `/code-obj-seqs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "useBanSeqnr": {
+          "type": "boolean"
+        },
+        "userId": {
+          "type": "string"
+        }
+      }
+    },
+    "name_i18n": {
+      "type": "object",
+      "properties": {
+        "lang": {
+          "description" : "LanguageReferencing: `/code-langs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref"
+             }
+            ]
+        },
+        "text": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

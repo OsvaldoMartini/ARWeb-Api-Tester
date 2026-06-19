@@ -1,0 +1,1814 @@
+{
+  addList {
+    boolVal
+    bu {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    ctx
+    ctype
+    dataType
+    dateVal
+    idVal
+    isMultiVal
+    nrVal
+    obj {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    objAdd {
+      _href
+      id
+      ident
+      intlId
+    }
+    textVal
+    tswtzVal
+    type
+    val
+    valList {
+      dateVal
+      idVal
+      nrVal
+      seqNr
+      textVal
+      tswtzVal
+      val
+    }
+  }
+  bdeRecVersion
+  block {
+    _href
+    id
+    ident
+    intlId
+  }
+  blockValidTo
+  bu {
+    _href
+    _ident
+    id
+    keyList {
+      objKey {
+        _href
+        id
+        ident
+        intlId
+      }
+      val
+    }
+  }
+  chrgeFee
+  classifList {
+    bu {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    class {
+      _href
+      id
+      ident
+      intlId
+    }
+    classA
+    classFactor
+    cltSgmtCalc {
+      _href
+      id
+      ident
+      intlId
+    }
+    endDate
+    histStatus {
+      _href
+      id
+      ident
+      intlId
+    }
+    indivFeep {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    isInht
+    objClassif {
+      _href
+      id
+      ident
+      intlId
+    }
+    remark
+    secUser {
+      _href
+      id
+    }
+    spcdCostp {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    spcdCurry {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    spcdMaxVal
+    spcdMinVal
+    spcdMinmaxValType {
+      _href
+      id
+      ident
+      intlId
+    }
+    spcdOffsetVal
+    spcdOffsetValType {
+      _href
+      id
+      ident
+      intlId
+    }
+    spcdReason {
+      _href
+      id
+      ident
+      intlId
+    }
+    spcdVal
+    spcdValType {
+      _href
+      id
+      ident
+      intlId
+    }
+    startDate
+    timestamp
+    userRef {
+      _href
+      id
+    }
+  }
+  closeDate
+  corrMacc {
+    _href
+    _ident
+    id
+    keyList {
+      objKey {
+        _href
+        id
+        ident
+        intlId
+      }
+      val
+    }
+  }
+  ddNr
+  ddScheme {
+    _href
+    id
+    ident
+    intlId
+  }
+  ddSeqType {
+    _href
+    id
+    ident
+    intlId
+  }
+  ddText
+  ddType {
+    _href
+    id
+    ident
+    intlId
+  }
+  doc {
+    _href
+    _ident
+    id
+  }
+  expireDate
+  extn {
+    ddNr {
+      refObj {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      val
+    }
+    ddRegNr {
+      refObj {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      val
+    }
+    ddSym {
+      refObj {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      val
+    }
+    ebankMgmtMandt {
+      bu {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      class {
+        _href
+        id
+        ident
+        intlId
+      }
+      classA
+      classFactor
+      cltSgmtCalc {
+        _href
+        id
+        ident
+        intlId
+      }
+      endDate
+      histStatus {
+        _href
+        id
+        ident
+        intlId
+      }
+      indivFeep {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      isInht
+      objClassif {
+        _href
+        id
+        ident
+        intlId
+      }
+      remark
+      secUser {
+        _href
+        id
+      }
+      spcdCostp {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      spcdCurry {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      spcdMaxVal
+      spcdMinVal
+      spcdMinmaxValType {
+        _href
+        id
+        ident
+        intlId
+      }
+      spcdOffsetVal
+      spcdOffsetValType {
+        _href
+        id
+        ident
+        intlId
+      }
+      spcdReason {
+        _href
+        id
+        ident
+        intlId
+      }
+      spcdVal
+      spcdValType {
+        _href
+        id
+        ident
+        intlId
+      }
+      startDate
+      timestamp
+    }
+    ebankMgmtMandtHist {
+      bu {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      class {
+        _href
+        id
+        ident
+        intlId
+      }
+      classA
+      classFactor
+      cltSgmtCalc {
+        _href
+        id
+        ident
+        intlId
+      }
+      endDate
+      histStatus {
+        _href
+        id
+        ident
+        intlId
+      }
+      indivFeep {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      isInht
+      objClassif {
+        _href
+        id
+        ident
+        intlId
+      }
+      remark
+      secUser {
+        _href
+        id
+      }
+      spcdCostp {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      spcdCurry {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      spcdMaxVal
+      spcdMinVal
+      spcdMinmaxValType {
+        _href
+        id
+        ident
+        intlId
+      }
+      spcdOffsetVal
+      spcdOffsetValType {
+        _href
+        id
+        ident
+        intlId
+      }
+      spcdReason {
+        _href
+        id
+        ident
+        intlId
+      }
+      spcdVal
+      spcdValType {
+        _href
+        id
+        ident
+        intlId
+      }
+      startDate
+      timestamp
+    }
+    icsStatus {
+      bu {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      class {
+        _href
+        id
+        ident
+        intlId
+      }
+      classA
+      classFactor
+      cltSgmtCalc {
+        _href
+        id
+        ident
+        intlId
+      }
+      endDate
+      histStatus {
+        _href
+        id
+        ident
+        intlId
+      }
+      indivFeep {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      isInht
+      objClassif {
+        _href
+        id
+        ident
+        intlId
+      }
+      remark
+      secUser {
+        _href
+        id
+      }
+      spcdCostp {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      spcdCurry {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      spcdMaxVal
+      spcdMinVal
+      spcdMinmaxValType {
+        _href
+        id
+        ident
+        intlId
+      }
+      spcdOffsetVal
+      spcdOffsetValType {
+        _href
+        id
+        ident
+        intlId
+      }
+      spcdReason {
+        _href
+        id
+        ident
+        intlId
+      }
+      spcdVal
+      spcdValType {
+        _href
+        id
+        ident
+        intlId
+      }
+      startDate
+      timestamp
+    }
+    icsStatusHist {
+      bu {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      class {
+        _href
+        id
+        ident
+        intlId
+      }
+      classA
+      classFactor
+      cltSgmtCalc {
+        _href
+        id
+        ident
+        intlId
+      }
+      endDate
+      histStatus {
+        _href
+        id
+        ident
+        intlId
+      }
+      indivFeep {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      isInht
+      objClassif {
+        _href
+        id
+        ident
+        intlId
+      }
+      remark
+      secUser {
+        _href
+        id
+      }
+      spcdCostp {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      spcdCurry {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      spcdMaxVal
+      spcdMinVal
+      spcdMinmaxValType {
+        _href
+        id
+        ident
+        intlId
+      }
+      spcdOffsetVal
+      spcdOffsetValType {
+        _href
+        id
+        ident
+        intlId
+      }
+      spcdReason {
+        _href
+        id
+        ident
+        intlId
+      }
+      spcdVal
+      spcdValType {
+        _href
+        id
+        ident
+        intlId
+      }
+      startDate
+      timestamp
+    }
+    mba$mandtCred {
+      cont {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      macc {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+    }
+  }
+  id
+  keyList {
+    obj {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    obj1 {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    obj1Class
+    obj1IsNull
+    obj2 {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    obj2Class
+    obj2IsNull
+    obj3 {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    obj3Class
+    obj3IsNull
+    obj4 {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    obj4Class
+    obj4IsNull
+    objKey {
+      _href
+      id
+      ident
+      intlId
+    }
+    prio
+    refObj {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    ruleId
+    ruleTempl {
+      _href
+      id
+      ident
+      intlId
+    }
+    seqNr
+    trigMetaTyp {
+      _href
+      id
+      ident
+      intlId
+    }
+    trigOrderType {
+      _href
+      id
+      ident
+      intlId
+    }
+    val
+    valA
+  }
+  lastTrans {
+    doc {
+      _href
+      _ident
+      id
+    }
+    timestamp
+    userstamp
+  }
+  macc {
+    _href
+    _ident
+    id
+    keyList {
+      objKey {
+        _href
+        id
+        ident
+        intlId
+      }
+      val
+    }
+  }
+  mruDate
+  mruDoc {
+    _href
+    _ident
+    id
+  }
+  notify {
+    _href
+    id
+    ident
+    intlId
+  }
+  objName {
+    dateValid
+    dateValidTo
+    insTime
+    lang {
+      _href
+      id
+      ident
+      intlId
+    }
+    name
+    nameA
+    nameAbbr
+    nameAbbrA
+    nameIntl
+    nameIntlA
+    nameLong
+    nameLongA
+  }
+  objNameList {
+    dateValid
+    dateValidTo
+    insTime
+    lang {
+      _href
+      id
+      ident
+      intlId
+    }
+    name
+    nameA
+    nameAbbr
+    nameAbbrA
+    nameIntl
+    nameIntlA
+    nameLong
+    nameLongA
+  }
+  objSubType {
+    _href
+    id
+    ident
+    intlId
+  }
+  objType {
+    _href
+    id
+    ident
+    intlId
+  }
+  openDate
+  owner
+  ownerA
+  ownerBp {
+    _href
+    _ident
+    id
+    keyList {
+      objKey {
+        _href
+        id
+        ident
+        intlId
+      }
+      val
+    }
+  }
+  ownerBpA
+  ownerPrty {
+    addr {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    addrBldgName
+    addrBldgNr
+    addrCity
+    addrCityLoc
+    addrCountry {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    addrDept
+    addrDistrict
+    addrFloor
+    addrPostBox
+    addrRegion
+    addrRoom
+    addrStreet
+    addrStructType {
+      _href
+      id
+      ident
+      intlId
+    }
+    addrSubDept
+    addrType {
+      _href
+      id
+      ident
+      intlId
+    }
+    addrUnstruct
+    addrUnstructA
+    addrZip
+    bic
+    birthCity
+    birthCountry {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    birthDate
+    birthRegion
+    contactEmailAddr
+    contactFaxNr
+    contactMobileNr
+    contactName
+    contactNamePfx {
+      _href
+      id
+      ident
+      intlId
+    }
+    contactOth
+    contactPhoneNr
+    fld {
+      _href
+      id
+      ident
+      intlId
+    }
+    hybridAddrLn
+    identList {
+      ident
+      identScheme {
+        _href
+        id
+        ident
+        intlId
+      }
+      identSchemeText
+      issuer
+      obj {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      partId
+      partyPartId
+      seqNr
+    }
+    isAddrOvr
+    lei
+    obj {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    partId
+    residCountry {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    type {
+      _href
+      id
+      ident
+      intlId
+    }
+  }
+  ownerText
+  ownerTextA
+  payerAcc
+  payerBankClrNr
+  payerIban
+  payerName
+  payerNameA
+  payerPrty {
+    addr {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    addrBldgName
+    addrBldgNr
+    addrCity
+    addrCityLoc
+    addrCountry {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    addrDept
+    addrDistrict
+    addrFloor
+    addrPostBox
+    addrRegion
+    addrRoom
+    addrStreet
+    addrStructType {
+      _href
+      id
+      ident
+      intlId
+    }
+    addrSubDept
+    addrType {
+      _href
+      id
+      ident
+      intlId
+    }
+    addrUnstruct
+    addrUnstructA
+    addrZip
+    bic
+    birthCity
+    birthCountry {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    birthDate
+    birthRegion
+    contactEmailAddr
+    contactFaxNr
+    contactMobileNr
+    contactName
+    contactNamePfx {
+      _href
+      id
+      ident
+      intlId
+    }
+    contactOth
+    contactPhoneNr
+    fld {
+      _href
+      id
+      ident
+      intlId
+    }
+    hybridAddrLn
+    identList {
+      ident
+      identScheme {
+        _href
+        id
+        ident
+        intlId
+      }
+      identSchemeText
+      issuer
+      obj {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      partId
+      partyPartId
+      seqNr
+    }
+    isAddrOvr
+    lei
+    obj {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    partId
+    residCountry {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    type {
+      _href
+      id
+      ident
+      intlId
+    }
+  }
+  prod {
+    _href
+    _ident
+    id
+    keyList {
+      objKey {
+        _href
+        id
+        ident
+        intlId
+      }
+      val
+    }
+  }
+  prodA
+  refDd {
+    _href
+    _ident
+    id
+    keyList {
+      objKey {
+        _href
+        id
+        ident
+        intlId
+      }
+      val
+    }
+  }
+  relList {
+    f1
+    obj1 {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    obj2 {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    objRelSubType {
+      _href
+      id
+      ident
+      intlId
+    }
+    objRelType {
+      _href
+      id
+      ident
+      intlId
+    }
+    prio
+    shareRate
+    subTrl
+    trl
+  }
+  remarkList {
+    attch
+    dateValidTo
+    langList {
+      lang {
+        _href
+        id
+        ident
+        intlId
+      }
+      text
+    }
+    subType {
+      _href
+      id
+      ident
+      intlId
+    }
+    text
+    timestamp
+    topic
+    type {
+      _href
+      id
+      ident
+      intlId
+    }
+    user {
+      _href
+      id
+    }
+  }
+  sdsInstn {
+    _href
+    id
+    ident
+    intlId
+  }
+  sendNr
+  sendText
+  sortAlpha
+  sortAlphaA
+  sortNr
+  sortNrA
+  transList {
+    doc {
+      _href
+      _ident
+      id
+    }
+    timestamp
+    userstamp
+  }
+  ultmtCredr {
+    addr {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    addrBldgName
+    addrBldgNr
+    addrCity
+    addrCityLoc
+    addrCountry {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    addrDept
+    addrDistrict
+    addrFloor
+    addrPostBox
+    addrRegion
+    addrRoom
+    addrStreet
+    addrStructType {
+      _href
+      id
+      ident
+      intlId
+    }
+    addrSubDept
+    addrType {
+      _href
+      id
+      ident
+      intlId
+    }
+    addrUnstruct
+    addrUnstructA
+    addrZip
+    bic
+    birthCity
+    birthCountry {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    birthDate
+    birthRegion
+    contactEmailAddr
+    contactFaxNr
+    contactMobileNr
+    contactName
+    contactNamePfx {
+      _href
+      id
+      ident
+      intlId
+    }
+    contactOth
+    contactPhoneNr
+    fld {
+      _href
+      id
+      ident
+      intlId
+    }
+    hybridAddrLn
+    identList {
+      ident
+      identScheme {
+        _href
+        id
+        ident
+        intlId
+      }
+      identSchemeText
+      issuer
+      obj {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      partId
+      partyPartId
+      seqNr
+    }
+    isAddrOvr
+    lei
+    obj {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    partId
+    residCountry {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    type {
+      _href
+      id
+      ident
+      intlId
+    }
+  }
+  ultmtDebtor {
+    addr {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    addrBldgName
+    addrBldgNr
+    addrCity
+    addrCityLoc
+    addrCountry {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    addrDept
+    addrDistrict
+    addrFloor
+    addrPostBox
+    addrRegion
+    addrRoom
+    addrStreet
+    addrStructType {
+      _href
+      id
+      ident
+      intlId
+    }
+    addrSubDept
+    addrType {
+      _href
+      id
+      ident
+      intlId
+    }
+    addrUnstruct
+    addrUnstructA
+    addrZip
+    bic
+    birthCity
+    birthCountry {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    birthDate
+    birthRegion
+    contactEmailAddr
+    contactFaxNr
+    contactMobileNr
+    contactName
+    contactNamePfx {
+      _href
+      id
+      ident
+      intlId
+    }
+    contactOth
+    contactPhoneNr
+    fld {
+      _href
+      id
+      ident
+      intlId
+    }
+    hybridAddrLn
+    identList {
+      ident
+      identScheme {
+        _href
+        id
+        ident
+        intlId
+      }
+      identSchemeText
+      issuer
+      obj {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      partId
+      partyPartId
+      seqNr
+    }
+    isAddrOvr
+    lei
+    obj {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    partId
+    residCountry {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    type {
+      _href
+      id
+      ident
+      intlId
+    }
+  }
+}

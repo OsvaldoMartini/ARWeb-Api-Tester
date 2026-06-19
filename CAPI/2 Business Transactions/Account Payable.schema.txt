@@ -1,0 +1,1754 @@
+{
+  "$id": "https://avaloq.com/doc_accpay.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/doc_accpay",
+  "definitions": {
+    "code_tab_ref": {
+      "type": "object",
+      "properties": {
+        "_href": {
+          "description" : "Reference/link",
+          "type": "string"
+        },
+        "id": {
+          "description" : "Numeric reference",
+          "type": "integer"
+        },
+        "ident": {
+          "description" : "Unique symbolic reference",
+          "type": "string"
+        },
+        "intlId": {
+          "description" : "Symbolic reference",
+          "type": "string"
+        }
+      }
+    },
+    "code_tab_ref_action": {
+      "type": "object",
+      "properties": {
+        "_href": {
+          "description" : "Reference/link",
+          "type": "string"
+        },
+        "action": {
+          "description" : "enum reference to action",
+          "type": "string"
+        },
+        "id": {
+          "description" : "Numeric reference",
+          "type": "integer"
+        },
+        "ident": {
+          "description" : "Unique symbolic reference",
+          "type": "string"
+        },
+        "intlId": {
+          "description" : "Symbolic reference",
+          "type": "string"
+        }
+      }
+    },
+    "doc_accpay": {
+      "type": "object",
+      "properties": {
+        "addList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/doc_add"
+          }
+        },
+        "advNr": {
+          "description" : "Advice Number of DOC",
+          "type": "integer"
+        },
+        "agingId": {
+          "type": "integer"
+        },
+        "auxCredBalacc": {
+          "description" : "Credit Line Balance AccountReferencing: `/obj-balaccs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "auxCredCont": {
+          "description" : "Credit Line ContainerReferencing: `/obj-conts/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "auxCredNotePos": {
+          "description" : "Credit Note Line PositionReferencing: `/obj-poss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "auxCredPos": {
+          "description" : "Credit Line PositionReferencing: `/obj-poss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "bank": {
+          "description" : "Destination Bank (Text)",
+          "type": "string"
+        },
+        "bankA": {
+          "description" : "Auto/Manual flag of Destination Bank (Text)",
+          "type": "boolean"
+        },
+        "bankBp": {
+          "description" : "Destination Bank (BP)Referencing: `/obj-bps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "bankBpA": {
+          "description" : "Auto/Manual flag of Destination Bank (BP)",
+          "type": "boolean"
+        },
+        "bankClearNr": {
+          "description" : "Bank Clearing Number",
+          "type": "string"
+        },
+        "bankClearNrA": {
+          "description" : "Auto/Manual flag of Bank Clearing Number",
+          "type": "boolean"
+        },
+        "bankCntprty": {
+          "description" : "Destination Bank (CNTPRTY)Referencing: `/obj-cntprtys/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "bankCntprtyA": {
+          "description" : "Auto/Manual flag of Destination Bank (CNTPRTY)",
+          "type": "boolean"
+        },
+        "bdeRecVersion": {
+          "type": "integer"
+        },
+        "benefAcc": {
+          "description" : "Beneficiary Account Number",
+          "type": "string"
+        },
+        "benefAccA": {
+          "description" : "Auto/Manual flag of Beneficiary Account Number",
+          "type": "boolean"
+        },
+        "benefAddr": {
+          "description" : "Beneficiary Information/Address",
+          "type": "string"
+        },
+        "benefAddrA": {
+          "description" : "Auto/Manual flag of Beneficiary Information/Address",
+          "type": "boolean"
+        },
+        "benefBp": {
+          "description" : "Beneficiary BP (Creditor)Referencing: `/obj-bps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "benefBpA": {
+          "description" : "Auto/Manual flag of Beneficiary BP (Creditor)",
+          "type": "boolean"
+        },
+        "benefCont": {
+          "description" : "Beneficiary Container (Creditor)Referencing: `/obj-conts/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "benefContA": {
+          "description" : "Auto/Manual flag of Beneficiary Container (Creditor)",
+          "type": "boolean"
+        },
+        "benefIban": {
+          "description" : "Beneficiary IBAN",
+          "type": "string"
+        },
+        "benefIbanA": {
+          "description" : "Auto/Manual flag of Beneficiary IBAN",
+          "type": "boolean"
+        },
+        "benefInfoText": {
+          "description" : "Information Text",
+          "type": "string"
+        },
+        "benefInfoTextA": {
+          "description" : "Auto/Manual flag of Information Text",
+          "type": "boolean"
+        },
+        "benefPerson": {
+          "description" : "Beneficiary Person (within CUA)Referencing: `/obj-persons/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "benefPersonA": {
+          "description" : "Auto/Manual flag of Beneficiary Person (within CUA)",
+          "type": "boolean"
+        },
+        "benefPos": {
+          "description" : "Beneficiary Position (Creditor)Referencing: `/obj-poss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "benefPosA": {
+          "description" : "Auto/Manual flag of Beneficiary Position (Creditor)",
+          "type": "boolean"
+        },
+        "benefVatNr": {
+          "description" : "Beneficiary VAT Nr",
+          "type": "string"
+        },
+        "benefVatNrA": {
+          "description" : "Auto/Manual flag of Beneficiary VAT Nr",
+          "type": "boolean"
+        },
+        "bookCredNoteSep": {
+          "description" : "Book credit note amount separately",
+          "type": "boolean"
+        },
+        "bookCredNoteSepA": {
+          "description" : "Auto/Manual flag of Book credit note amount separately",
+          "type": "boolean"
+        },
+        "bookDoc": {
+          "description" : "Link to the order where the bookings are doneReferencing: `/doc-books/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/doc_ref" }
+          ]
+        },
+        "bookKind": {
+          "description" : "Booking KindReferencing: `/code-book-kinds/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "bu": {
+          "description" : "Business unit of order itselfReferencing: `/obj-bps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "cdscntAmount": {
+          "description" : "Cash Discount (Amount)",
+          "type": "number"
+        },
+        "cdscntBhv": {
+          "description" : "Cash Discount BehaviourReferencing: `/code-accpay-cdscnt-bhvs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "cdscntBhvA": {
+          "description" : "Auto/Manual flag of Cash Discount Behaviour",
+          "type": "boolean"
+        },
+        "cdscntDueDate": {
+          "description" : "Cash Discount Due Date",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "cdscntRate": {
+          "description" : "Cash Discount Rate (%)",
+          "type": "number"
+        },
+        "cdscntRateA": {
+          "description" : "Auto/Manual flag of Cash Discount Rate (%)",
+          "type": "boolean"
+        },
+        "cdscntTerm": {
+          "description" : "Cash Discount Term (Days)",
+          "type": "integer"
+        },
+        "cdscntTermA": {
+          "description" : "Auto/Manual flag of Cash Discount Term (Days)",
+          "type": "boolean"
+        },
+        "codeLine": {
+          "description" : "Code Line",
+          "type": "string"
+        },
+        "codeLineTrl": {
+          "description" : "Code Line",
+          "type": "string"
+        },
+        "credChkList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/doc_cred_chk"
+          }
+        },
+        "credNoteAmount": {
+          "description" : "Credit Note Amount (Discount)",
+          "type": "number"
+        },
+        "credNoteAmountA": {
+          "description" : "Auto/Manual flag of Credit Note Amount (Discount)",
+          "type": "boolean"
+        },
+        "credPrty": {
+          "$ref": "#/definitions/doc_tab_trx_party"
+        },
+        "curry": {
+          "description" : "Invoice CurrencyReferencing: `/obj-assets/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "curryA": {
+          "description" : "Auto/Manual flag of Invoice Currency",
+          "type": "boolean"
+        },
+        "destBankPrty": {
+          "$ref": "#/definitions/doc_tab_trx_party"
+        },
+        "doAccrExpns": {
+          "description" : "Accrue Expenses?",
+          "type": "boolean"
+        },
+        "doAccrExpnsA": {
+          "description" : "Auto/Manual flag of Accrue Expenses?",
+          "type": "boolean"
+        },
+        "docBlock": {
+          "description" : "Block CodeReferencing: `/code-blocks/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "docBlockA": {
+          "description" : "Block Code",
+          "type": "boolean"
+        },
+        "docPrcInfo": {
+          "description" : "process info idReferencing: `/code-doc-prc-infos/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "docPrcInfoRemark": {
+          "description" : "process info remark",
+          "type": "string"
+        },
+        "docRole": {
+          "description" : "Order roleReferencing: `/code-doc-roles/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "dueDate": {
+          "description" : "Due Date",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "duplDoc": {
+          "description" : "The original order of which this one is a duplicate ofReferencing: `/docs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/doc_ref" }
+          ]
+        },
+        "enteredVmDate": {
+          "description" : "date order entered visum monitoring",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "extlRefNr": {
+          "description" : "External reference number",
+          "type": "string"
+        },
+        "extn": {
+          "$ref": "#/definitions/doc_accpay_extn"
+        },
+        "grossAmount": {
+          "description" : "Invoice Amount",
+          "type": "number"
+        },
+        "grossAmountA": {
+          "description" : "Auto/Manual flag of Invoice Amount",
+          "type": "boolean"
+        },
+        "hasPostit": {
+          "description" : "Has order a post-it",
+          "type": "boolean"
+        },
+        "hasWorkItem": {
+          "type": "boolean"
+        },
+        "id": {
+          "description" : "IDReferencing: `/docs/{id}`",
+          "type": "integer"
+        },
+        "infoText": {
+          "description" : "Information Text",
+          "type": "string"
+        },
+        "insBySecUser": {
+          "description" : "Order created by userReferencing: `/users/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/user_ref" }
+          ]
+        },
+        "intlRefNr": {
+          "description" : "Internal reference number",
+          "type": "string"
+        },
+        "invcDate": {
+          "description" : "Invoice Date",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "invcDateA": {
+          "description" : "Auto/Manual flag of Invoice Date",
+          "type": "boolean"
+        },
+        "invcRefNr": {
+          "description" : "Payment Reference Nr.",
+          "type": "string"
+        },
+        "invcRefNrA": {
+          "description" : "Auto/Manual flag of Payment Reference Nr.",
+          "type": "boolean"
+        },
+        "isBenefSinstrLkp": {
+          "description" : "Is Standing Instructions entry?",
+          "type": "boolean"
+        },
+        "isBenefSinstrLkpA": {
+          "description" : "Is Standing Instructions entry Auto?",
+          "type": "boolean"
+        },
+        "isDel": {
+          "description" : "is order deleted",
+          "type": "boolean"
+        },
+        "isFinal": {
+          "description" : "Is order in a final status?",
+          "type": "boolean"
+        },
+        "isInvcAccr": {
+          "description" : "Is invoice accrual?",
+          "type": "boolean"
+        },
+        "isOutpayMan": {
+          "description" : "Is Out-Payment order generation manually triggered (i.e. by param/wfc)?",
+          "type": "boolean"
+        },
+        "isOutpayManA": {
+          "description" : "Auto/Manual flag of Is Out-Payment order generation manually triggered (i.e. by param/wfc)?",
+          "type": "boolean"
+        },
+        "isSim": {
+          "description" : "Is the order a simulation?",
+          "type": "boolean"
+        },
+        "keyList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/doc_key"
+          }
+        },
+        "lastMsg": {
+          "description" : "Last message IDReferencing: `/msgs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "lastTrans": {
+          "description" : "Last transition",
+          "type": "string"
+          ,
+            "format": "date-time"
+        },
+        "lastTransSecUser": {
+          "description" : "Last transition userReferencing: `/users/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/user_ref" }
+          ]
+        },
+        "masterDoc": {
+          "description" : "Return the master doc of the current docReferencing: `/docs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/doc_ref" }
+          ]
+        },
+        "medium": {
+          "description" : "Communication medium, e.g. phone, fax, etc.Referencing: `/code-mediums/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mediumA": {
+          "description" : "Auto/Manual flag of Communication medium, e.g. phone, fax, etc.",
+          "type": "boolean"
+        },
+        "metaTyp": {
+          "description" : "Meta typeReferencing: `/meta-typs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "netAmount": {
+          "description" : "Due Amount",
+          "type": "number"
+        },
+        "orderAddr": {
+          "description" : "Ordering Customer Information/Address",
+          "type": "string"
+        },
+        "orderAddrA": {
+          "description" : "Auto/Manual flag of Ordering Customer Information/Address",
+          "type": "boolean"
+        },
+        "orderBp": {
+          "description" : "Ordering Customer BPReferencing: `/obj-bps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "orderBpA": {
+          "description" : "Auto/Manual flag of Ordering Customer BP",
+          "type": "boolean"
+        },
+        "orderCont": {
+          "description" : "Ordering Customer ContainerReferencing: `/obj-conts/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "orderContA": {
+          "description" : "Auto/Manual flag of Ordering Customer Container",
+          "type": "boolean"
+        },
+        "orderCua": {
+          "description" : "Ordering Customer CUAReferencing: `/obj-cuas/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "orderCuaA": {
+          "description" : "Auto/Manual flag of Ordering Customer CUA",
+          "type": "boolean"
+        },
+        "orderCuaObj": {
+          "description" : "Ordering Customer Accounting ObjectReferencing: `/objs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "orderCuaObjA": {
+          "description" : "Auto/Manual flag of Ordering Customer Accounting Object",
+          "type": "boolean"
+        },
+        "orderDate": {
+          "description" : "Order date",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "orderDateTz": {
+          "description" : "Order date",
+          "type": "string"
+          ,
+            "format": "date-time"
+        },
+        "orderMacc": {
+          "description" : "Ordering Customer Money AccountReferencing: `/obj-poss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "orderMaccA": {
+          "description" : "Auto/Manual flag of Ordering Customer Money Account",
+          "type": "boolean"
+        },
+        "orderNr": {
+          "description" : "Reference no.",
+          "type": "integer"
+        },
+        "orderType": {
+          "description" : "Order typeReferencing: `/code-order-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "orderTypeA": {
+          "description" : "Auto/Manual flag of Order type",
+          "type": "boolean"
+        },
+        "orderTypeGrp": {
+          "description" : "Order type groupReferencing: `/code-order-type-grps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "orderedBy": {
+          "description" : "Ordered by",
+          "type": "string"
+        },
+        "outpayChqNr": {
+          "description" : "Cheque Processing Order: (mandatory) Cheque Nr",
+          "type": "string"
+        },
+        "outpayDoc": {
+          "description" : "Reference Out-Payment Order (DOC_ID)Referencing: `/docs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/doc_ref" }
+          ]
+        },
+        "outpayDocTrl": {
+          "description" : "Reference Out-Payment Order (DOC_ID) - TRL",
+          "type": "string"
+        },
+        "outpayType": {
+          "description" : "Out-Payment TypeReferencing: `/meta-typs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "outpayTypeA": {
+          "description" : "Auto/Manual flag of Out-Payment Type",
+          "type": "boolean"
+        },
+        "overrideList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/doc_override"
+          }
+        },
+        "payDueDate": {
+          "description" : "Invoice Payment Due Date",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "payDueDateA": {
+          "description" : "Auto/Manual flag of Invoice Payment Due Date",
+          "type": "boolean"
+        },
+        "payOrderType": {
+          "description" : "Order Type for slave Payment OrderReferencing: `/code-order-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "payOrderTypeA": {
+          "description" : "Auto/Manual flag of Order Type for slave Payment Order",
+          "type": "boolean"
+        },
+        "postitList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/doc_postit"
+          }
+        },
+        "qrCode": {
+          "description" : "QR-Code",
+          "type": "string"
+        },
+        "qrCodeTrl": {
+          "description" : "QR-Code",
+          "type": "string"
+        },
+        "recurDateOffset": {
+          "description" : "Recurring Date OffsetReferencing: `/code-date-offsets/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "recurInvcDateDe": {
+          "description" : "Recurring Invoice Date (date expression)",
+          "type": "string"
+        },
+        "recurPeriod": {
+          "description" : "PeriodicityReferencing: `/code-pay-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "recurPeriodCnt": {
+          "description" : "Number of executions",
+          "type": "integer"
+        },
+        "recurPeriodCntA": {
+          "description" : "Auto/Manual flag of Number of executions",
+          "type": "boolean"
+        },
+        "recurPeriodEnd": {
+          "description" : "Last Payment Due Date",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "recurPeriodEndA": {
+          "description" : "Auto/Manual flag of Last Payment Due Date",
+          "type": "boolean"
+        },
+        "recurPeriodStart": {
+          "description" : "First Payment Due Date",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "recurSvcDlvEndDe": {
+          "description" : "Recurring Service Dlv. to (date expression)",
+          "type": "string"
+        },
+        "recurSvcDlvStartDe": {
+          "description" : "Recurring Service Dlv. from (date expression)",
+          "type": "string"
+        },
+        "refAccpayDoc": {
+          "description" : "Reference Order (Accounts Payable for Invoice Accruals only)Referencing: `/docs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/doc_ref" }
+          ]
+        },
+        "refDoc": {
+          "description" : "Reference orderReferencing: `/docs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/doc_ref" }
+          ]
+        },
+        "refObj": {
+          "description" : "Reference Position ObjectReferencing: `/obj-poss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "refRecurDoc": {
+          "description" : "Ref. Recurring Order (Template)Referencing: `/docs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/doc_ref" }
+          ]
+        },
+        "refRecurRefDate": {
+          "description" : "Ref. Recurring Order (Template): (Period) Reference Date",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "refRecurSchedDate": {
+          "description" : "Ref. Recurring Order (Template): Scheduled (Invoice) Date",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "respBp": {
+          "description" : "Responsible Business PartnerReferencing: `/obj-bps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "respBpA": {
+          "description" : "Responsible Business Partner a/m",
+          "type": "boolean"
+        },
+        "respObj": {
+          "description" : "Responsible ObjectReferencing: `/objs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "respObjA": {
+          "description" : "Responsible Object a/m",
+          "type": "boolean"
+        },
+        "sbu": {
+          "description" : "Sub Business Unit (Branch)Referencing: `/obj-bps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "sbuA": {
+          "description" : "Auto/Manual flag of Sub Business Unit (Branch)",
+          "type": "boolean"
+        },
+        "sdsInstn": {
+          "description" : "SDS instance IDReferencing: `/code-extl-syss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "svcDlvEndDate": {
+          "description" : "Service Delivery (To)",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "svcDlvStartDate": {
+          "description" : "Service Delivery From",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "terminal": {
+          "description" : "Terminal where advice of order was printedReferencing: `/obj-terminals/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "todoTempl": {
+          "description" : "ToDo TemplateReferencing: `/code-todo-templs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "transList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/doc_trans"
+          }
+        },
+        "useSundryAcc": {
+          "description" : "Use Sundry Account?",
+          "type": "boolean"
+        },
+        "useSundryAccA": {
+          "description" : "Auto/Manual flag of Use Sundry Account?",
+          "type": "boolean"
+        },
+        "wfcAction": {
+          "description" : "Workflow ActionReferencing: `/wfc-action-accpays/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref_action" }
+          ]
+        },
+        "wfcStatus": {
+          "description" : "Workflow  statusReferencing: `/wfc-status-accpays/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "workItemList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/doc_tab_work_item"
+          }
+        }
+      }
+    },
+    "doc_accpay_extn": {
+      "type": "object",
+      "properties": {
+        "accpay$mba$invcNr": {
+          "description" : "invoice number",
+          "type": "string"
+        },
+        "afsDocId": {
+          "description" : "AFS Order ID",
+          "type": "string"
+        },
+        "afsExtlRefNr": {
+          "description" : "AFS external reference number",
+          "type": "string"
+        },
+        "api1RefNr": {
+          "description" : "Primary API external reference number",
+          "type": "string"
+        },
+        "api2RefNr": {
+          "description" : "Secondary API external reference number",
+          "type": "string"
+        },
+        "dxsCtxId": {
+          "description" : "DXS context ID",
+          "type": "string"
+        },
+        "dxsEntityExtlRef": {
+          "description" : "DXS entity external reference",
+          "type": "string"
+        },
+        "mba$authEdtRvwCompLvList": {
+          "type": "array",
+          "items": {
+            "description": "Authorization: comp lv that need to authorize for specific edt rvw in jtg",
+            "type": "string"
+          }
+        },
+        "mba$authorEdtRvwJtgList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/number"
+          }
+        },
+        "mba$blockAprvUserList": {
+          "type": "array",
+          "items": {
+            "description": "List of Users having approved the Compliance Blocking CodesReferencing: `/users/{id}`",
+            "allOf": [
+              { "$ref": "#/definitions/user_ref" }
+            ]
+          }
+        },
+        "mba$blockJtgList": {
+          "description" : "Current List of matching compliance block IDs with the corresponding JTG IDs",
+          "type": "string"
+        },
+        "mba$blockRemnJtgList": {
+          "type": "array",
+          "items": {
+            "description": "List of JTG still required to approve the Compliance Blocking CodesReferencing: `/mba$code-job-type-grps/{id}`",
+            "allOf": [
+              { "$ref": "#/definitions/code_tab_ref" }
+            ]
+          }
+        },
+        "mba$ccPastAuthorUserList": {
+          "type": "array",
+          "items": {
+            "description": "Authorization: User List for current jtg (Credit Check)Referencing: `/users/{id}`",
+            "allOf": [
+              { "$ref": "#/definitions/user_ref" }
+            ]
+          }
+        },
+        "mba$credChkAuthCompLvList": {
+          "type": "array",
+          "items": {
+            "description": "Authorization: comp lv that need to authorize in jtg (Credit Check)",
+            "type": "string"
+          }
+        },
+        "mba$credChkAuthorJtgList": {
+          "type": "array",
+          "items": {
+            "description": "JTG to authorize the order. Indication, which jtg has to author (Credit Check).Referencing: `/mba$code-job-type-grps/{id}`",
+            "allOf": [
+              { "$ref": "#/definitions/code_tab_ref" }
+            ]
+          }
+        },
+        "mba$credChkCmt": {
+          "type": "array",
+          "items": {
+            "description": "Comment of the Decision (Credit Check)",
+            "type": "string"
+          }
+        },
+        "mba$credChkRestr": {
+          "type": "array",
+          "items": {
+            "description": "Additional Restriction List (Credit Check)",
+            "type": "string"
+          }
+        },
+        "mba$docErrType": {
+          "description" : "Order Processing Error TypeReferencing: `/mba$code-doc-err-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$edtRvwJtgList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/number"
+          }
+        },
+        "mba$edtRvwUserList": {
+          "type": "array",
+          "items": {
+            "description": "Last user to edited the order for jtg (as listed in mba$edt_rvw_jtg_list)Referencing: `/users/{id}`",
+            "allOf": [
+              { "$ref": "#/definitions/user_ref" }
+            ]
+          }
+        },
+        "mba$iAuthEdtRvwCompLvLst": {
+          "type": "array",
+          "items": {
+            "description": "Authorization:initial comp lv that need to authorize for specific edt rvw in jtg",
+            "type": "string"
+          }
+        },
+        "mba$iCredChkAuthCompLvLt": {
+          "type": "array",
+          "items": {
+            "description": "Authorization:initial comp lv that need to authorize in jtg (Credit Check)",
+            "type": "string"
+          }
+        },
+        "mba$initPayAmt": {
+          "description" : "Initial Payment Amount",
+          "type": "number"
+        },
+        "mba$instrDet": {
+          "description" : "Instruction Details",
+          "type": "string"
+        },
+        "mba$invcBlockReason": {
+          "description" : "Block Invoice Reason",
+          "type": "string"
+        },
+        "mba$invcHoldbackAmount": {
+          "description" : "Invoice Holdback Amount",
+          "type": "string"
+        },
+        "mba$invcLink": {
+          "description" : "Invoice Link",
+          "type": "string"
+        },
+        "mba$isBookPrevPrd": {
+          "description" : "Booking Previous Period",
+          "type": "boolean"
+        },
+        "mba$isDfltValSet": {
+          "description" : "Have default values been applied",
+          "type": "boolean"
+        },
+        "mba$isFia": {
+          "description" : "Fixed Asset Accounting",
+          "type": "boolean"
+        },
+        "mba$isInvcBlock": {
+          "description" : "Block Invoice",
+          "type": "boolean"
+        },
+        "mba$isInvcHoldback": {
+          "description" : "Invoice Holdback",
+          "type": "boolean"
+        },
+        "mba$isProvision": {
+          "description" : "Provision",
+          "type": "boolean"
+        },
+        "mba$lswfInsJtg": {
+          "description" : "Job Type Group that inserted the orderReferencing: `/mba$code-job-type-grps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$lswfJtg": {
+          "description" : "Current job type group owning the statusReferencing: `/mba$code-job-type-grps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$lswfLastSwfIntfWfaId": {
+          "description" : "Last interface action used",
+          "type": "number"
+        },
+        "mba$lswfLastSwfWfaId": {
+          "description" : "Last workflow action used",
+          "type": "number"
+        },
+        "mba$lswfLastSwfWfsId": {
+          "description" : "Communication to next department",
+          "type": "number"
+        },
+        "mba$lswfNextJtg": {
+          "description" : "Next job type group owning the statusReferencing: `/mba$code-job-type-grps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$lswfNextJtgInfo": {
+          "description" : "Communication to next job type group",
+          "type": "string"
+        },
+        "mba$lswfNextRa": {
+          "description" : "Next Routing Action for Linkable Sub-WorkflowReferencing: `/mba$code-lswf-raps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$lswfNextSwf": {
+          "description" : "Next Linkable Sub-Workflow in WorkflowReferencing: `/mba$code-lswfs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$lswfPrevSwf": {
+          "description" : "Previous Linkable Sub-Workflow in WorkflowReferencing: `/mba$code-lswfs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$lswfRa": {
+          "description" : "Current Routing Action for Linkable Sub-WorkflowReferencing: `/mba$code-lswf-raps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$lswfSwf": {
+          "description" : "Current Linkable Sub-Workflow in WorkflowReferencing: `/mba$code-lswfs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$lswfUc": {
+          "description" : "Use Case assigned to the orderReferencing: `/mba$code-lswf-ucs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$mediumA": {
+          "description" : "Medium A/M flag",
+          "type": "boolean"
+        },
+        "mba$mediumPhoneNr": {
+          "description" : "Reference phone number to be registered in case of a phone call",
+          "type": "string"
+        },
+        "mba$pastAuthorUserList": {
+          "type": "array",
+          "items": {
+            "description": "Authorization: User List for current jtgReferencing: `/users/{id}`",
+            "allOf": [
+              { "$ref": "#/definitions/user_ref" }
+            ]
+          }
+        },
+        "mba$srcFund": {
+          "description" : "Source of FundsReferencing: `/mba$code-src-funds/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "pkpSvcRsvIdent": {
+          "description" : "Position Keeping Service: Reservation/advice identifier",
+          "type": "string"
+        }
+      }
+    },
+    "doc_accpays": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/doc_accpay"
+      },
+      "uniqueItems": true
+    },
+    "doc_add": {
+      "type": "object",
+      "properties": {
+        "docAdd": {
+          "description" : "Referencing: `/code-doc-adds/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "valList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/doc_add_val"
+          }
+        }
+      }
+    },
+    "doc_add_val": {
+      "type": "object",
+      "properties": {
+        "dateVal": {
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "idVal": {
+          "type": "integer"
+        },
+        "nrVal": {
+          "type": "number"
+        },
+        "textVal": {
+          "type": "string"
+        },
+        "tswtzVal": {
+          "type": "string"
+          ,
+            "format": "date-time"
+        }
+      }
+    },
+    "doc_cred_chk": {
+      "type": "object",
+      "properties": {
+        "credChkEvt": {
+          "description" : "The type of credit check eventReferencing: `/code-cred-chk-evts/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "newViolAmount": {
+          "description" : "The new violation amount related to the credit check event",
+          "type": "number"
+        },
+        "oldViolAmount": {
+          "description" : "The prior violation amount related to the credit check event",
+          "type": "number"
+        },
+        "refPos": {
+          "description" : "The position which was booked by the transaction causing the increaseReferencing: `/obj-poss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "secUser": {
+          "description" : "The user involved in the credit check eventReferencing: `/users/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/user_ref" }
+          ]
+        },
+        "timestamp": {
+          "description" : "The timestamp of the credit check event",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "violPos": {
+          "description" : "The position with a violation increaseReferencing: `/obj-poss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        }
+      }
+    },
+    "doc_key": {
+      "type": "object",
+      "properties": {
+        "docKey": {
+          "description" : "Referencing: `/code-doc-keys/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "val": {
+          "type": "string"
+        }
+      }
+    },
+    "doc_override": {
+      "type": "object",
+      "properties": {
+        "override": {
+          "description" : "Override codeReferencing: `/code-overrides/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "overrideComment": {
+          "description" : "CommentReferencing: `/code-override-comments/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "overrideText": {
+          "description" : "Override text",
+          "type": "string"
+        },
+        "secUser": {
+          "description" : "UserReferencing: `/users/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/user_ref" }
+          ]
+        },
+        "signt": {
+          "description" : "Signature",
+          "type": "string"
+        },
+        "timestamp": {
+          "description" : "Timestamp",
+          "type": "string"
+          ,
+            "format": "date-time"
+        }
+      }
+    },
+    "doc_postit": {
+      "type": "object",
+      "properties": {
+        "ctx": {
+          "description" : "TextReferencing: `/code-postit-ctxs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "doProp": {
+          "description" : "Is postit propagated",
+          "type": "boolean"
+        },
+        "id": {
+          "description" : "ID",
+          "type": "string"
+        },
+        "isMan": {
+          "description" : "Is manualally entered",
+          "type": "boolean"
+        },
+        "role": {
+          "description" : "RoleReferencing: `/users/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/user_ref" }
+          ]
+        },
+        "subType": {
+          "description" : "SubtypeReferencing: `/code-postit-sub-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "text": {
+          "description" : "Text",
+          "type": "string"
+        },
+        "timestamp": {
+          "description" : "Timestamp",
+          "type": "string"
+          ,
+            "format": "date-time-no-tz"
+        },
+        "topic": {
+          "description" : "Topic",
+          "type": "string"
+        },
+        "type": {
+          "description" : "TypeReferencing: `/code-postit-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "user": {
+          "description" : "Inserted byReferencing: `/users/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/user_ref" }
+          ]
+        }
+      }
+    },
+    "doc_ref": {
+      "type": "object",
+      "properties": {
+        "_href": {
+          "description" : "Reference/link",
+          "type": "string"
+        },
+        "_ident": {
+          "description" : "Only used for workItem use cases, cross-reference in workItem context.",
+          "type": "string"
+        },
+        "id": {
+          "description" : "Numeric reference",
+          "type": "integer"
+        }
+      }
+    },
+    "doc_tab_trx_party": {
+      "type": "object",
+      "properties": {
+        "addr": {
+          "description" : "AddressReferencing: `/obj-addrs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "addrBldgName": {
+          "description" : "Building name",
+          "type": "string"
+        },
+        "addrBldgNr": {
+          "description" : "Building number",
+          "type": "string"
+        },
+        "addrCity": {
+          "description" : "City",
+          "type": "string"
+        },
+        "addrCityLoc": {
+          "description" : "Location within the city",
+          "type": "string"
+        },
+        "addrCountry": {
+          "description" : "Postal countryReferencing: `/obj-countrys/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "addrDept": {
+          "description" : "Department",
+          "type": "string"
+        },
+        "addrDistrict": {
+          "description" : "District",
+          "type": "string"
+        },
+        "addrFloor": {
+          "description" : "Floor",
+          "type": "string"
+        },
+        "addrPostBox": {
+          "description" : "Post Box",
+          "type": "string"
+        },
+        "addrRegion": {
+          "description" : "Country region",
+          "type": "string"
+        },
+        "addrRoom": {
+          "description" : "Room",
+          "type": "string"
+        },
+        "addrStreet": {
+          "description" : "Street name",
+          "type": "string"
+        },
+        "addrStructType": {
+          "description" : "Address structureReferencing: `/code-mx-addr-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "addrSubDept": {
+          "description" : "Sub-department",
+          "type": "string"
+        },
+        "addrType": {
+          "description" : "Postal address typeReferencing: `/code-trx-party-addr-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "addrUnstruct": {
+          "description" : "Unstructured address",
+          "type": "string"
+        },
+        "addrUnstructA": {
+          "description" : "Unstructured address (auto flag)",
+          "type": "boolean"
+        },
+        "addrZip": {
+          "description" : "Zip/Postcode",
+          "type": "string"
+        },
+        "bic": {
+          "description" : "Business Identifier Code",
+          "type": "string"
+        },
+        "birthCity": {
+          "description" : "Birth city",
+          "type": "string"
+        },
+        "birthCountry": {
+          "description" : "Birth countryReferencing: `/obj-countrys/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "birthDate": {
+          "description" : "Birthdate",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "birthRegion": {
+          "description" : "Birth country region",
+          "type": "string"
+        },
+        "contactEmailAddr": {
+          "description" : "Contact email",
+          "type": "string"
+        },
+        "contactFaxNr": {
+          "description" : "Contact fax number",
+          "type": "string"
+        },
+        "contactMobileNr": {
+          "description" : "Contact mobile number",
+          "type": "string"
+        },
+        "contactName": {
+          "description" : "Contact name",
+          "type": "string"
+        },
+        "contactNamePfx": {
+          "description" : "Contact name prefixReferencing: `/code-trx-party-name-pfxs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "contactOth": {
+          "description" : "Contact details (other)",
+          "type": "string"
+        },
+        "contactPhoneNr": {
+          "description" : "Contact phone number",
+          "type": "string"
+        },
+        "hybridAddrLn": {
+          "description" : "Hybrid address line",
+          "type": "string"
+        },
+        "identList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/doc_tab_trx_party_ident"
+          }
+        },
+        "isAddrOvr": {
+          "description" : "Override",
+          "type": "boolean"
+        },
+        "lei": {
+          "description" : "Legal Entity Identifier",
+          "type": "string"
+        },
+        "name": {
+          "description" : "Party name",
+          "type": "string"
+        },
+        "partId": {
+          "description" : "Part ID",
+          "type": "integer"
+        },
+        "partyFld": {
+          "description" : "Party fieldReferencing: `/code-trx-party-flds/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "partyType": {
+          "description" : "Party typeReferencing: `/code-trx-party-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "residCountry": {
+          "description" : "Country of residenceReferencing: `/obj-countrys/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        }
+      }
+    },
+    "doc_tab_trx_party_ident": {
+      "type": "object",
+      "properties": {
+        "ident": {
+          "description" : "Person/Organisation ID",
+          "type": "string"
+        },
+        "identScheme": {
+          "description" : "ID SchemeReferencing: `/code-trx-party-ident-schemes/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "identSchemeText": {
+          "description" : "ID Scheme",
+          "type": "string"
+        },
+        "issuer": {
+          "description" : "ID Issuer",
+          "type": "string"
+        },
+        "seqNr": {
+          "description" : "Sequence Number",
+          "type": "integer"
+        }
+      }
+    },
+    "doc_tab_work_item": {
+      "type": "object",
+      "properties": {
+        "closeDate": {
+          "description" : "Close Date",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "descn": {
+          "description" : "Description",
+          "type": "string"
+        },
+        "isSlaveDirty": {
+          "description" : "Is dirty ?",
+          "type": "boolean"
+        },
+        "isTightLink": {
+          "description" : "Is Linked",
+          "type": "boolean"
+        },
+        "masterDoc": {
+          "description" : "Master OrderReferencing: `/docs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/doc_ref" }
+          ]
+        },
+        "seqNr": {
+          "description" : "Sequence no.",
+          "type": "integer"
+        },
+        "slaveDoc": {
+          "description" : "OrderReferencing: `/docs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/doc_ref" }
+          ]
+        },
+        "subject": {
+          "description" : "Subject",
+          "type": "string"
+        },
+        "tag": {
+          "description" : "Tag",
+          "type": "string"
+        },
+        "workItemCtx": {
+          "description" : "Work Item ContextReferencing: `/code-work-item-ctxs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "workItemStatus": {
+          "description" : "Work Item StatusReferencing: `/code-work-item-statuss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "workItemType": {
+          "description" : "Work Item TypeReferencing: `/code-work-item-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        }
+      }
+    },
+    "doc_trans": {
+      "type": "object",
+      "properties": {
+        "calcCnt": {
+          "type": "integer"
+        },
+        "calcTime": {
+          "type": "integer"
+        },
+        "intfWfcAction": {
+          "description" : "Workflow Interface ActionReferencing: `/wfc-action-accpays/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "newWfcStatus": {
+          "description" : "Workflow StatusReferencing: `/wfc-status-accpays/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "oldWfcStatus": {
+          "description" : "Workflow StatusReferencing: `/wfc-status-accpays/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "opnTime": {
+          "type": "integer"
+        },
+        "remark": {
+          "description" : "Remark",
+          "type": "string"
+        },
+        "ruleTime": {
+          "type": "integer"
+        },
+        "secUser": {
+          "description" : "UserReferencing: `/users/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/user_ref" }
+          ]
+        },
+        "seqNr": {
+          "description" : "Sequence no.",
+          "type": "integer"
+        },
+        "timestamp": {
+          "description" : "Timestamp",
+          "type": "string"
+          ,
+            "format": "date-time"
+        },
+        "transAction": {
+          "description" : "TransitionReferencing: `/code-trans-actions/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "userTime": {
+          "type": "integer"
+        },
+        "wfcAction": {
+          "description" : "Workflow ActionReferencing: `/wfc-action-accpays/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "wfcTime": {
+          "type": "integer"
+        }
+      }
+    },
+    "number": {
+      "type": "object",
+      "properties": {
+      }
+    },
+    "obj_key_ref_": {
+      "type": "object",
+      "properties": {
+        "objKey": {
+          "description" : "Referencing: `/code-obj-keys/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "val": {
+          "description" : "Key value",
+          "type": "string"
+        }
+      }
+    },
+    "obj_ref": {
+      "type": "object",
+      "properties": {
+        "_href": {
+          "description" : "Reference/link",
+          "type": "string"
+        },
+        "_ident": {
+          "description" : "Only used for workItem use cases, cross-reference in workItem context.",
+          "type": "string"
+        },
+        "id": {
+          "description" : "Numeric reference",
+          "type": "integer"
+        },
+        "keyList": {
+          "type": "array",
+          "items": {
+            "description": "Key value object reference ",
+            "allOf": [
+              { "$ref": "#/definitions/obj_key_ref_" }
+            ]
+          }
+        }
+      }
+    },
+    "user_ref": {
+      "type": "object",
+      "properties": {
+        "_href": {
+          "description" : "Reference/link",
+          "type": "string"
+        },
+        "id": {
+          "description" : "Numeric reference",
+          "type": "integer"
+        }
+      }
+    }
+  }
+}

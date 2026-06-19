@@ -1,0 +1,1781 @@
+{
+  "openapi" : "3.0.2",
+  "security" : [ {
+    "bearerAuth" : [ ]
+  } ],
+  "info" : {
+    "title" : "FX Swap API",
+    "version" : "3.18.0",
+    "x-avq$categories" : [ "capi" ]
+  },
+  "servers" : [ {
+    "url" : "/api1/",
+    "description" : "Development server"
+  } ],
+  "paths" : {
+    "/doc-fxsws" : {
+      "get" : {
+        "tags" : [ "API endpoints" ],
+        "summary" : "Get FX Swap orders.",
+        "description" : "Get a collection of `FX Swap` orders.\nThe result set can be restricted through filter parameter.\nOnly `FX Swap` orders will be returned that can be accessed by the user (security applied).\nPaging is supported with parameters *limit* and *offset*.\n",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/Filter"
+        }, {
+          "$ref" : "#/components/parameters/DocPool"
+        }, {
+          "$ref" : "#/components/parameters/PageLimit"
+        }, {
+          "$ref" : "#/components/parameters/PageOffset"
+        }, {
+          "$ref" : "#/components/parameters/HrefActive"
+        }, {
+          "$ref" : "#/components/parameters/IncludeInactive"
+        }, {
+          "$ref" : "#/components/parameters/Accept-Encoding"
+        }, {
+          "$ref" : "#/components/parameters/Accept-Language"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful response",
+            "headers" : {
+              "Content-Language" : {
+                "$ref" : "#/components/headers/Content-Language"
+              },
+              "X-Has-Next-Page" : {
+                "$ref" : "#/components/headers/X-Has-Next-Page"
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/doc_fxsw"
+                  }
+                }
+              }
+            }
+          },
+          "default" : {
+            "$ref" : "#/components/responses/Problem"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "API endpoints" ],
+        "summary" : "Create a new FX Swap order",
+        "requestBody" : {
+          "required" : true,
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/doc_fxsw"
+              }
+            },
+            "application/xml" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/doc_fxsw"
+              }
+            }
+          }
+        },
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/X-Request-ID"
+        }, {
+          "$ref" : "#/components/parameters/Accept-Encoding"
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "Successfully created a new `FX Swap` order",
+            "headers" : {
+              "Location" : {
+                "$ref" : "#/components/headers/Location"
+              },
+              "ETag" : {
+                "$ref" : "#/components/headers/ETag"
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "id" : {
+                      "type" : "integer",
+                      "format" : "int64",
+                      "example" : 123456
+                    },
+                    "bdeRecVersion" : {
+                      "type" : "integer",
+                      "format" : "int64",
+                      "example" : 1618390720445656
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default" : {
+            "$ref" : "#/components/responses/Problem"
+          }
+        }
+      }
+    },
+    "/doc-fxsws/{doc_fxsw_id}" : {
+      "get" : {
+        "tags" : [ "API endpoints" ],
+        "summary" : "Get a FX Swap order",
+        "description" : "*Get a `FX Swap` order by ID*.\nOnly `FX Swap` order will be returned that can be accessed by the user (security applied).\nIf user does not have access to resource, not found error will be returned instead of unauthorized - to disallow attacks.\n",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "doc_fxsw_id",
+          "schema" : {
+            "type" : "string"
+          },
+          "required" : true,
+          "description" : "ID of the `FX Swap` order to get"
+        }, {
+          "$ref" : "#/components/parameters/HrefActive"
+        }, {
+          "$ref" : "#/components/parameters/IncludeInactive"
+        }, {
+          "$ref" : "#/components/parameters/Accept-Encoding"
+        }, {
+          "$ref" : "#/components/parameters/If-None-Match"
+        }, {
+          "$ref" : "#/components/parameters/Accept-Language"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful response",
+            "headers" : {
+              "Content-Language" : {
+                "$ref" : "#/components/headers/Content-Language"
+              },
+              "ETag" : {
+                "$ref" : "#/components/headers/ETag"
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/doc_fxsw"
+                }
+              }
+            }
+          },
+          "304" : {
+            "description" : "Not modified"
+          },
+          "default" : {
+            "$ref" : "#/components/responses/Problem"
+          }
+        }
+      },
+      "patch" : {
+        "tags" : [ "API endpoints" ],
+        "summary" : "Modify/update an existing FX Swap order",
+        "description" : "*Partially modify/update an existing `FX Swap` order identified by ID*.\nOnly `FX Swap` order will be replaced that can be accessed by the user (security applied).\nIf user does not have access to resource, not found error will be returned instead of unauthorized - to disallow attacks.\n",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "doc_fxsw_id",
+          "schema" : {
+            "type" : "string"
+          },
+          "required" : true,
+          "description" : "ID of the `FX Swap` order to modify/update"
+        }, {
+          "$ref" : "#/components/parameters/If-Match"
+        }, {
+          "$ref" : "#/components/parameters/X-Request-ID"
+        }, {
+          "$ref" : "#/components/parameters/Accept-Encoding"
+        } ],
+        "requestBody" : {
+          "required" : true,
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/doc_fxsw"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Request successfully processed",
+            "headers" : {
+              "ETag" : {
+                "$ref" : "#/components/headers/ETag"
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "id" : {
+                      "type" : "integer",
+                      "format" : "int64",
+                      "example" : 123456
+                    },
+                    "bdeRecVersion" : {
+                      "type" : "integer",
+                      "format" : "int64",
+                      "example" : 1618390720445656
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default" : {
+            "$ref" : "#/components/responses/Problem"
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "securitySchemes" : {
+      "bearerAuth" : {
+        "type" : "http",
+        "scheme" : "bearer",
+        "bearerFormat" : "JWT"
+      }
+    },
+    "schemas" : {
+      "code_tab_ref" : {
+        "title" : "code_tab_ref",
+        "type" : "object",
+        "properties" : {
+          "_href" : {
+            "description" : "Reference/link",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "id" : {
+            "description" : "Numeric reference",
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "ident" : {
+            "description" : "Unique symbolic reference",
+            "type" : "string"
+          },
+          "intlId" : {
+            "description" : "Symbolic reference",
+            "type" : "string",
+            "readOnly" : true
+          }
+        }
+      },
+      "code_tab_ref_action" : {
+        "title" : "code_tab_ref_action",
+        "type" : "object",
+        "properties" : {
+          "_href" : {
+            "description" : "Reference/link",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "action" : {
+            "enum" : [ "hold", "proceed", "discard" ],
+            "example" : "hold",
+            "description" : "enum reference to action",
+            "type" : "string",
+            "writeOnly" : true
+          },
+          "id" : {
+            "description" : "Numeric reference",
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "ident" : {
+            "description" : "Unique symbolic reference",
+            "type" : "string"
+          },
+          "intlId" : {
+            "description" : "Symbolic reference",
+            "type" : "string",
+            "readOnly" : true
+          }
+        }
+      },
+      "doc_add" : {
+        "title" : "doc_add",
+        "type" : "object",
+        "properties" : {
+          "docAdd" : {
+            "description" : "Referencing: `/code-doc-adds/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "valList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/doc_add_val"
+            },
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_generic"
+          }
+        }
+      },
+      "doc_add_val" : {
+        "title" : "doc_add_val",
+        "type" : "object",
+        "properties" : {
+          "dateVal" : {
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "idVal" : {
+            "type" : "integer",
+            "format" : "int32",
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "nrVal" : {
+            "type" : "number",
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "textVal" : {
+            "type" : "string",
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "tswtzVal" : {
+            "type" : "string",
+            "format" : "date-time",
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_generic"
+          }
+        }
+      },
+      "doc_fxsw" : {
+        "title" : "doc_fxsw",
+        "type" : "object",
+        "properties" : {
+          "addList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/doc_add"
+            },
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "advText" : {
+            "description" : "Text for Advice",
+            "type" : "string"
+          },
+          "agingId" : {
+            "type" : "integer",
+            "format" : "int32",
+            "readOnly" : true
+          },
+          "bdeRecVersion" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "bp" : {
+            "description" : "Business Partner<br>Referencing: `/obj-bps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "broker" : {
+            "description" : "Broker<br>Referencing: `/obj-bps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "bu" : {
+            "description" : "Business unit of order itself<br>Referencing: `/obj-bps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "buyBookText1" : {
+            "description" : "Book Text",
+            "type" : "string"
+          },
+          "buyBookText2" : {
+            "description" : "Book Text",
+            "type" : "string"
+          },
+          "buyCurry1" : {
+            "description" : "Currency<br>Referencing: `/obj-assets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "buyCurry2" : {
+            "description" : "Currency<br>Referencing: `/obj-assets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "buyMacc1" : {
+            "description" : "Money Account<br>Referencing: `/obj-poss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "buyMacc2" : {
+            "description" : "Money Account<br>Referencing: `/obj-poss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "buyQty1" : {
+            "description" : "Quantity",
+            "type" : "number"
+          },
+          "buyQty2" : {
+            "description" : "Quantity",
+            "type" : "number"
+          },
+          "buyTextTempl1" : {
+            "description" : "Text Template<br>Referencing: `/code-doc-texts/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "buyTextTempl2" : {
+            "description" : "Text Template<br>Referencing: `/code-doc-texts/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "cfi" : {
+            "description" : "CFI Code",
+            "type" : "string"
+          },
+          "clrAsset1" : {
+            "description" : "Clearing Asset<br>Referencing: `/obj-assets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "clrAsset2" : {
+            "description" : "Clearing Asset<br>Referencing: `/obj-assets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "cntprtyBp" : {
+            "description" : "Foreign Entity<br>Referencing: `/obj-bps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "cont" : {
+            "description" : "Container<br>Referencing: `/obj-conts/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "dealFwdRate1" : {
+            "description" : "Deal Fwd Spread",
+            "type" : "number"
+          },
+          "dealFwdRate1A" : {
+            "description" : "Auto Forward Spread",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "dealFwdRate2" : {
+            "description" : "Deal Fwd Spread",
+            "type" : "number"
+          },
+          "dealSpotRate1" : {
+            "description" : "Deal Spot Rate",
+            "type" : "number"
+          },
+          "dealSpotRate1A" : {
+            "description" : "Auto Deal Spot Rate",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "dealSpotRate2" : {
+            "description" : "Deal Spot Rate",
+            "type" : "number"
+          },
+          "extn" : {
+            "$ref" : "#/components/schemas/doc_fxsw_extn"
+          },
+          "foDomiCountry" : {
+            "description" : "Domicile<br>Referencing: `/obj-countrys/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "fxSwapLeg1" : {
+            "description" : "FX Swap Leg 1<br>Referencing: `/doc-fxtrs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/doc_ref"
+            } ],
+            "readOnly" : true
+          },
+          "fxSwapLeg2" : {
+            "description" : "FX Swap Leg 2<br>Referencing: `/doc-fxtrs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/doc_ref"
+            } ],
+            "readOnly" : true
+          },
+          "id" : {
+            "description" : "ID<br>Referencing: `/docs/{id}`",
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "insBySecUser" : {
+            "description" : "Order created by user<br>Referencing: `/users/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/user_ref"
+            } ]
+          },
+          "isFinal" : {
+            "description" : "Is order in a final status?",
+            "type" : "boolean"
+          },
+          "isUnevenswap" : {
+            "description" : "Uneven swap?",
+            "type" : "boolean"
+          },
+          "isin" : {
+            "description" : "ISIN",
+            "type" : "string"
+          },
+          "keyList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/doc_key"
+            },
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "lastTrans" : {
+            "description" : "Last transition",
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "maturityDate1" : {
+            "description" : "Maturity Date",
+            "type" : "string",
+            "format" : "date"
+          },
+          "maturityDate2" : {
+            "description" : "Maturity Date",
+            "type" : "string",
+            "format" : "date"
+          },
+          "medium" : {
+            "description" : "Communication medium, e.g. phone, fax, etc.<br>Referencing: `/code-mediums/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "metaTyp" : {
+            "description" : "Meta type<br>Referencing: `/meta-typs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "orderDate" : {
+            "description" : "Order date",
+            "type" : "string",
+            "format" : "date"
+          },
+          "orderDateTz" : {
+            "description" : "Order date",
+            "type" : "string",
+            "format" : "date-time",
+            "readOnly" : true
+          },
+          "orderType" : {
+            "description" : "Order type<br>Referencing: `/code-order-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "orderTypeGrp" : {
+            "description" : "Order type group<br>Referencing: `/code-order-type-grps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "orderedBy" : {
+            "description" : "Ordered by",
+            "type" : "string"
+          },
+          "otc" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/docp_otc"
+            } ],
+            "readOnly" : true
+          },
+          "otg" : {
+            "description" : "Order Type Group<br>Referencing: `/code-order-type-grps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "period1" : {
+            "description" : "Period",
+            "type" : "string"
+          },
+          "period2" : {
+            "description" : "Period",
+            "type" : "string"
+          },
+          "postitList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/doc_postit"
+            }
+          },
+          "sellBookText1" : {
+            "description" : "Book Text",
+            "type" : "string"
+          },
+          "sellBookText2" : {
+            "description" : "Book Text",
+            "type" : "string"
+          },
+          "sellCurry1" : {
+            "description" : "Currency<br>Referencing: `/obj-assets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "sellCurry2" : {
+            "description" : "Currency<br>Referencing: `/obj-assets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "sellMacc1" : {
+            "description" : "Money Account<br>Referencing: `/obj-poss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "sellMacc2" : {
+            "description" : "Money Account<br>Referencing: `/obj-poss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "sellQty1" : {
+            "description" : "Quantity",
+            "type" : "number"
+          },
+          "sellQty2" : {
+            "description" : "Quantity",
+            "type" : "number"
+          },
+          "sellTextTempl1" : {
+            "description" : "Text Template<br>Referencing: `/code-doc-texts/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "sellTextTempl2" : {
+            "description" : "Text Template<br>Referencing: `/code-doc-texts/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "spotDate" : {
+            "description" : "Spot",
+            "type" : "string",
+            "format" : "date"
+          },
+          "tradeKind" : {
+            "description" : "Trade Kind<br>Referencing: `/code-obj-classs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "transList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/doc_trans"
+            }
+          },
+          "trdrRate1" : {
+            "description" : "Trader Rate",
+            "type" : "number"
+          },
+          "trxDate" : {
+            "description" : "Transaction date",
+            "type" : "string",
+            "format" : "date"
+          },
+          "wfcAction" : {
+            "description" : "Workflow Action<br>Referencing: `/wfc-action-fxsws/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref_action"
+            } ]
+          },
+          "wfcStatus" : {
+            "description" : "Workflow  status<br>Referencing: `/wfc-status-fxsws/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          }
+        }
+      },
+      "doc_fxsw_extn" : {
+        "title" : "doc_fxsw_extn",
+        "type" : "object",
+        "properties" : {
+          "afsDocId" : {
+            "description" : "AFS Order ID",
+            "type" : "string"
+          },
+          "afsExtlRefNr" : {
+            "description" : "AFS external reference number",
+            "type" : "string"
+          },
+          "api1RefNr" : {
+            "description" : "Primary API external reference number",
+            "type" : "string"
+          },
+          "api2RefNr" : {
+            "description" : "Secondary API external reference number",
+            "type" : "string"
+          },
+          "dxsCtxId" : {
+            "description" : "DXS context ID",
+            "type" : "string"
+          },
+          "dxsEntityExtlRef" : {
+            "description" : "DXS entity external reference",
+            "type" : "string"
+          },
+          "mba$authEdtRvwCompLvList" : {
+            "description" : "Authorization: comp lv that need to authorize for specific edt rvw in jtg",
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "mba$authorEdtRvwJtgList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/number"
+            }
+          },
+          "mba$blockAprvUserList" : {
+            "description" : "List of Users having approved the Compliance Blocking Codes<br>Referencing: `/users/{id}`",
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/user_ref"
+            }
+          },
+          "mba$blockJtgList" : {
+            "description" : "Current List of matching compliance block IDs with the corresponding JTG IDs",
+            "type" : "string"
+          },
+          "mba$blockRemnJtgList" : {
+            "description" : "List of JTG still required to approve the Compliance Blocking Codes<br>Referencing: `/mba$code-job-type-grps/{id}`",
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            }
+          },
+          "mba$ccPastAuthorUserList" : {
+            "description" : "Authorization: User List for current jtg (Credit Check)<br>Referencing: `/users/{id}`",
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/user_ref"
+            }
+          },
+          "mba$credChkAuthCompLvList" : {
+            "description" : "Authorization: comp lv that need to authorize in jtg (Credit Check)",
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "mba$credChkAuthorJtgList" : {
+            "description" : "JTG to authorize the order. Indication, which jtg has to author (Credit Check).<br>Referencing: `/mba$code-job-type-grps/{id}`",
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            }
+          },
+          "mba$credChkCmt" : {
+            "description" : "Comment of the Decision (Credit Check)",
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "mba$credChkRestr" : {
+            "description" : "Additional Restriction List (Credit Check)",
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "mba$doInprChkUpd" : {
+            "description" : "Investor Protection Check",
+            "type" : "boolean"
+          },
+          "mba$docErrType" : {
+            "description" : "Order Processing Error Type<br>Referencing: `/mba$code-doc-err-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "mba$edtRvwJtgList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/number"
+            }
+          },
+          "mba$edtRvwUserList" : {
+            "description" : "Last user to edited the order for jtg (as listed in mba$edt_rvw_jtg_list)<br>Referencing: `/users/{id}`",
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/user_ref"
+            }
+          },
+          "mba$iAuthEdtRvwCompLvLst" : {
+            "description" : "Authorization:initial comp lv that need to authorize for specific edt rvw in jtg",
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "mba$iCredChkAuthCompLvLt" : {
+            "description" : "Authorization:initial comp lv that need to authorize in jtg (Credit Check)",
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "mba$instrDet" : {
+            "description" : "Instruction Details",
+            "type" : "string"
+          },
+          "mba$isDfltValSet" : {
+            "description" : "Have default values been applied",
+            "type" : "boolean"
+          },
+          "mba$lswfInsJtg" : {
+            "description" : "Job Type Group that inserted the order<br>Referencing: `/mba$code-job-type-grps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "mba$lswfJtg" : {
+            "description" : "Current job type group owning the status<br>Referencing: `/mba$code-job-type-grps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "mba$lswfLastSwfIntfWfaId" : {
+            "description" : "Last interface action used",
+            "type" : "number"
+          },
+          "mba$lswfLastSwfWfaId" : {
+            "description" : "Last workflow action used",
+            "type" : "number"
+          },
+          "mba$lswfLastSwfWfsId" : {
+            "description" : "Communication to next department",
+            "type" : "number"
+          },
+          "mba$lswfNextJtg" : {
+            "description" : "Next job type group owning the status<br>Referencing: `/mba$code-job-type-grps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "mba$lswfNextJtgInfo" : {
+            "description" : "Communication to next job type group",
+            "type" : "string"
+          },
+          "mba$lswfNextRa" : {
+            "description" : "Next Routing Action for Linkable Sub-Workflow<br>Referencing: `/mba$code-lswf-raps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "mba$lswfNextSwf" : {
+            "description" : "Next Linkable Sub-Workflow in Workflow<br>Referencing: `/mba$code-lswfs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "mba$lswfPrevSwf" : {
+            "description" : "Previous Linkable Sub-Workflow in Workflow<br>Referencing: `/mba$code-lswfs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "mba$lswfRa" : {
+            "description" : "Current Routing Action for Linkable Sub-Workflow<br>Referencing: `/mba$code-lswf-raps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "mba$lswfSwf" : {
+            "description" : "Current Linkable Sub-Workflow in Workflow<br>Referencing: `/mba$code-lswfs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "mba$lswfUc" : {
+            "description" : "Use Case assigned to the order<br>Referencing: `/mba$code-lswf-ucs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "mba$mediumA" : {
+            "description" : "Medium A/M flag",
+            "type" : "boolean"
+          },
+          "mba$mediumPhoneNr" : {
+            "description" : "Reference phone number to be registered in case of a phone call",
+            "type" : "string"
+          },
+          "mba$pastAuthorUserList" : {
+            "description" : "Authorization: User List for current jtg<br>Referencing: `/users/{id}`",
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/user_ref"
+            }
+          },
+          "mba$srcFund" : {
+            "description" : "Source of Funds<br>Referencing: `/mba$code-src-funds/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "onBehalfTexRefFxsw" : {
+            "description" : "On Behalf TEX Trade Reference",
+            "type" : "string"
+          },
+          "pkpSvcRsvIdent" : {
+            "description" : "Position Keeping Service: Reservation/advice identifier",
+            "type" : "string"
+          },
+          "texBhfSubId" : {
+            "description" : "TEX On Behalf of Sub ID",
+            "type" : "string"
+          },
+          "texCompetingQuotes" : {
+            "description" : "TEX Competing Quotes",
+            "type" : "string"
+          },
+          "texDlvToSubId" : {
+            "description" : "TEX Deliver to subunit",
+            "type" : "string"
+          },
+          "texExecAdv" : {
+            "description" : "TEX Execution Advice",
+            "type" : "string"
+          },
+          "texQuoteReqFxswId" : {
+            "description" : "TEX Quote Request ID",
+            "type" : "string"
+          },
+          "texRefFxsw" : {
+            "description" : "TEX Reference Number",
+            "type" : "string"
+          },
+          "texSendCompId" : {
+            "description" : "TEX Sender component",
+            "type" : "string"
+          },
+          "texTrgCompId" : {
+            "description" : "TEX Target component",
+            "type" : "string"
+          },
+          "utiFxsw" : {
+            "description" : "Unique Transaction Identifier for OTC Trade Reporting",
+            "type" : "string"
+          }
+        }
+      },
+      "doc_fxsws" : {
+        "title" : "List of doc_fxsw",
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/doc_fxsw"
+        },
+        "uniqueItems" : true
+      },
+      "doc_key" : {
+        "title" : "doc_key",
+        "type" : "object",
+        "properties" : {
+          "docKey" : {
+            "description" : "Referencing: `/code-doc-keys/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "val" : {
+            "type" : "string",
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_generic"
+          }
+        }
+      },
+      "doc_postit" : {
+        "title" : "doc_postit",
+        "type" : "object",
+        "properties" : {
+          "subType" : {
+            "description" : "Subtype<br>Referencing: `/code-postit-sub-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "text" : {
+            "description" : "Text",
+            "type" : "string"
+          },
+          "timestamp" : {
+            "description" : "Timestamp",
+            "type" : "string",
+            "format" : "date-time-no-tz"
+          },
+          "topic" : {
+            "description" : "Topic",
+            "type" : "string"
+          },
+          "type" : {
+            "description" : "Type<br>Referencing: `/code-postit-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "user" : {
+            "description" : "Inserted by<br>Referencing: `/users/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/user_ref"
+            } ]
+          }
+        }
+      },
+      "doc_ref" : {
+        "title" : "doc_ref",
+        "type" : "object",
+        "properties" : {
+          "_href" : {
+            "description" : "Reference/link",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "_ident" : {
+            "description" : "Only used for workItem use cases, cross-reference in workItem context.",
+            "type" : "string",
+            "writeOnly" : true
+          },
+          "id" : {
+            "description" : "Numeric reference",
+            "type" : "integer",
+            "format" : "int64"
+          }
+        }
+      },
+      "doc_trans" : {
+        "title" : "doc_trans",
+        "type" : "object",
+        "properties" : {
+          "calcCnt" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "calcTime" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "intfWfcAction" : {
+            "description" : "Workflow Interface Action<br>Referencing: `/wfc-action-fxsws/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "newWfcStatus" : {
+            "description" : "Workflow Status<br>Referencing: `/wfc-status-fxsws/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "oldWfcStatus" : {
+            "description" : "Workflow Status<br>Referencing: `/wfc-status-fxsws/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "opnTime" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "remark" : {
+            "description" : "Remark",
+            "type" : "string"
+          },
+          "ruleTime" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "secUser" : {
+            "description" : "User<br>Referencing: `/users/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/user_ref"
+            } ]
+          },
+          "seqNr" : {
+            "description" : "Sequence no.",
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "timestamp" : {
+            "description" : "Timestamp",
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "transAction" : {
+            "description" : "Transition<br>Referencing: `/code-trans-actions/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "userTime" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "wfcAction" : {
+            "description" : "Workflow Action<br>Referencing: `/wfc-action-fxsws/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "wfcTime" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }
+      },
+      "docp_otc" : {
+        "title" : "docp_otc",
+        "type" : "object",
+        "properties" : {
+          "calcAgt" : {
+            "description" : "Calculation Agent<br>Referencing: `/obj-bps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "calcAgtA" : {
+            "description" : "Auto/Manual flag of Calculation Agent",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "clearUtiKey" : {
+            "description" : "Cleared Unique Transaction Identifier",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "clrBrokerCont" : {
+            "description" : "Clearing Broker Container<br>Referencing: `/obj-conts/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "clrBrokerContA" : {
+            "description" : "Auto/Manual flag of Clearing Broker Container",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "clrDateTime" : {
+            "description" : "Indicates the date and time at which the transaction was cleared. Does not contain fractions.",
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "clrHouse" : {
+            "description" : "Clearing House<br>Referencing: `/obj-bps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "clrHouseA" : {
+            "description" : "Auto/Manual flag of Clearing House",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "confirmDateTime" : {
+            "description" : "Indicates the date and time at which the transaction was confirmed. Does not contain fractions.",
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "confirmType" : {
+            "description" : "Indicates whether the transaction was confirmed for example electronically, manually or not.<br>Referencing: `/code-otc-tr-confirm-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "directLink" : {
+            "description" : "Directly linked to commercial activity or treasury financing",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "emirClearUtiKey" : {
+            "description" : "EMIR Cleared Unique Transaction Identifier",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "emirUtiKey" : {
+            "description" : "EMIR Unique Transaction Identifier",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "fmiaTrepUndrly" : {
+            "description" : "FMIA Transaction Reporting-relevant underlying asset<br>Referencing: `/obj-assets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "fmiaTrepUndrlyA" : {
+            "description" : "Auto/Manual flag of FMIA Transaction Reporting-relevant underlying asset",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "initCntprty" : {
+            "description" : "Initial Counterparty<br>Referencing: `/obj-bps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "isClr" : {
+            "description" : "Indicates whether the transaction has been cleared.",
+            "type" : "boolean"
+          },
+          "isCompr" : {
+            "description" : "Compression Exercise",
+            "type" : "boolean"
+          },
+          "isFmiaTrepOblDone" : {
+            "description" : "FMIA Transaction Reporting obligation fulfilled",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "isFmiaTrepOblDoneA" : {
+            "description" : "Auto/Manual flag of FMIA Transaction Reporting obligation fulfilled",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "isPrtryUti" : {
+            "description" : "Indicates whether UTI is propietary (old)",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "isPtrr" : {
+            "description" : "Indicates whether the Contract results from a PTRR (Post Trade Risk Reduction) Operation",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "isToBeClr" : {
+            "description" : "Indicates whether the transaction should be submitted to clearing.",
+            "type" : "boolean"
+          },
+          "isToBeClrA" : {
+            "description" : "Auto/Manual flag of Indicates whether the transaction should be submitted to clearing.",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "net" : {
+            "description" : "Novation fee amount in net currency",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "netCurry" : {
+            "description" : "Net currency<br>Referencing: `/obj-assets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "novFee" : {
+            "description" : "Novation fee amount in fee currency",
+            "type" : "number"
+          },
+          "novFeeCurry" : {
+            "description" : "Novation fee currency<br>Referencing: `/obj-assets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "novFeeList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/docp_otc_nov_fee"
+            }
+          },
+          "novFeeXrate" : {
+            "description" : "Novation fee xrate",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "novFeeXrateA" : {
+            "description" : "Auto/Manual flag of Novation fee xrate",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "postNovBp" : {
+            "description" : "Post-novation BP<br>Referencing: `/obj-bps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "postNovCont" : {
+            "description" : "Post-novation Container<br>Referencing: `/obj-conts/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "postNovContA" : {
+            "description" : "Auto/Manual flag of Post-novation Container",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "postNovMacc" : {
+            "description" : "Post-novation MACC<br>Referencing: `/obj-poss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "postNovMaccA" : {
+            "description" : "Auto/Manual flag of Post-novation MACC",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "postNovPos" : {
+            "description" : "Post-novation Position<br>Referencing: `/obj-poss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "preNovBp" : {
+            "description" : "Pre-novation BP<br>Referencing: `/obj-bps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "preNovCont" : {
+            "description" : "Pre-novation Container<br>Referencing: `/obj-conts/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "preNovContA" : {
+            "description" : "Auto/Manual flag of Pre-novation Container",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "preNovMacc" : {
+            "description" : "Pre-novation MACC<br>Referencing: `/obj-poss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "preNovMaccA" : {
+            "description" : "Auto/Manual flag of Pre-novation MACC",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "preNovPos" : {
+            "description" : "Pre-novation Position<br>Referencing: `/obj-poss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "ptrrKey" : {
+            "description" : "PTRR ID",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "ptrrSvcProvid" : {
+            "description" : "PTRR Service Provider",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "ptrrType" : {
+            "description" : "PTRR Type<br>Referencing: `/code-otc-tr-ptrr-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "repTrackNr" : {
+            "description" : "Report Tracking Number",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "traCapy" : {
+            "description" : "Trading Capacity<br>Referencing: `/code-tra-capys/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "utiKey" : {
+            "description" : "Unique Transaction Identifier",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "utiKeyA" : {
+            "description" : "Auto/Manual flag of Unique Transaction Identifier",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "venue" : {
+            "description" : "Venue<br>Referencing: `/obj-mkts/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "venueTrxNr" : {
+            "description" : "Venue Transaction Identification Number",
+            "type" : "string"
+          }
+        }
+      },
+      "docp_otc_nov_fee" : {
+        "title" : "docp_otc_nov_fee",
+        "type" : "object",
+        "properties" : {
+          "bookKind" : {
+            "description" : "Book kind<br>Referencing: `/code-book-kinds/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "curry" : {
+            "description" : "Currency<br>Referencing: `/obj-assets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "payDir" : {
+            "description" : "Fee payment direction<br>Referencing: `/code-otc-nov-fee-pay-dirs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "qty" : {
+            "description" : "Quantity",
+            "type" : "number"
+          }
+        }
+      },
+      "number" : {
+        "title" : "number",
+        "type" : "object"
+      },
+      "obj_key_ref_" : {
+        "title" : "obj_key_ref_",
+        "type" : "object",
+        "properties" : {
+          "objKey" : {
+            "description" : "Referencing: `/code-obj-keys/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "val" : {
+            "description" : "Key value",
+            "type" : "string"
+          }
+        }
+      },
+      "obj_ref" : {
+        "title" : "obj_ref",
+        "type" : "object",
+        "properties" : {
+          "_href" : {
+            "description" : "Reference/link",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "_ident" : {
+            "description" : "Only used for workItem use cases, cross-reference in workItem context.",
+            "type" : "string",
+            "writeOnly" : true
+          },
+          "id" : {
+            "description" : "Numeric reference",
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "keyList" : {
+            "description" : "Key value object reference ",
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_key_ref_"
+            },
+            "writeOnly" : true
+          }
+        }
+      },
+      "user_ref" : {
+        "title" : "user_ref",
+        "type" : "object",
+        "properties" : {
+          "_href" : {
+            "description" : "Reference/link",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "id" : {
+            "description" : "Numeric reference",
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }
+      },
+      "validationResult" : {
+        "title" : "validationResult",
+        "type" : "object",
+        "properties" : {
+          "displText" : {
+            "type" : "string",
+            "readOnly" : true
+          },
+          "ovrHasRight" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "ref" : {
+            "description" : "Referencing: `/code_ui_errs/{id}` or `/code_overrides/{id}`",
+            "readOnly" : true,
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "resType" : {
+            "description" : "Referencing: `/code_err_types/{id}`",
+            "readOnly" : true,
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "ovrSignt" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }
+      }
+    },
+    "headers" : {
+      "Content-Language" : {
+        "schema" : {
+          "type" : "string"
+        }
+      },
+      "X-Has-Next-Page" : {
+        "schema" : {
+          "type" : "string"
+        }
+      },
+      "Location" : {
+        "schema" : {
+          "type" : "string"
+        },
+        "description" : "Location of the created resource"
+      },
+      "ETag" : {
+        "schema" : {
+          "type" : "string"
+        },
+        "description" : "Current entity-tag"
+      }
+    },
+    "parameters" : {
+      "Filter" : {
+        "name" : "filter",
+        "in" : "query",
+        "description" : "Expression to reduce the result set",
+        "schema" : {
+          "type" : "string"
+        }
+      },
+      "DocPool" : {
+        "name" : "docPool",
+        "style" : "deepObject",
+        "explode" : true,
+        "in" : "query",
+        "description" : "Expression to assign a docPool to reduce the result set <br> Example: <br> docPool[intlId]=stex_client_opn&docPool[objIdList]=22334,55667&docPool[refDateFrom] = 2023-05-01",
+        "schema" : {
+          "type" : "object",
+          "required" : [ "intlId" ],
+          "properties" : {
+            "intlId" : {
+              "type" : "string",
+              "example" : "stex_client_opn"
+            },
+            "objIdList" : {
+              "type" : "string",
+              "example" : "2222,3333,5555"
+            },
+            "refDateFrom" : {
+              "type" : "string",
+              "format" : "date"
+            },
+            "refDateTo" : {
+              "type" : "string",
+              "format" : "date"
+            }
+          }
+        }
+      },
+      "PageLimit" : {
+        "name" : "limit",
+        "in" : "query",
+        "description" : "Limits the number of items on a page",
+        "schema" : {
+          "type" : "integer",
+          "default" : 5,
+          "minimum" : 1,
+          "maximum" : 200
+        }
+      },
+      "PageOffset" : {
+        "name" : "offset",
+        "in" : "query",
+        "description" : "Number of records to be skipped before selecting the result set",
+        "schema" : {
+          "type" : "integer",
+          "minimum" : 0
+        }
+      },
+      "HrefActive" : {
+        "name" : "href",
+        "in" : "query",
+        "description" : "Activates the href",
+        "schema" : {
+          "type" : "boolean"
+        }
+      },
+      "IncludeInactive" : {
+        "name" : "include_inactive",
+        "in" : "query",
+        "description" : "Includes inactive data",
+        "schema" : {
+          "type" : "boolean"
+        }
+      },
+      "If-None-Match" : {
+        "name" : "If-None-Match",
+        "in" : "header",
+        "description" : "Specifies version known by client",
+        "schema" : {
+          "type" : "string"
+        },
+        "required" : false
+      },
+      "If-Match" : {
+        "name" : "If-Match",
+        "in" : "header",
+        "description" : "Specifies entity-tag known by client",
+        "schema" : {
+          "type" : "string"
+        },
+        "required" : false
+      },
+      "Accept-Encoding" : {
+        "name" : "Accept-Encoding",
+        "in" : "header",
+        "description" : "Compression scheme<br/> Warning: HTTP compression might not lead to better performance",
+        "schema" : {
+          "type" : "string"
+        },
+        "example" : "gzip, deflate",
+        "required" : false
+      },
+      "Accept-Language" : {
+        "name" : "Accept-Language",
+        "in" : "header",
+        "description" : "Specifies the language and locale that the client prefers",
+        "schema" : {
+          "type" : "string"
+        },
+        "example" : "de-CH, en-US",
+        "required" : false
+      },
+      "X-Request-ID" : {
+        "name" : "X-Request-ID",
+        "in" : "header",
+        "description" : "Specifies the request id in UUID format. If not provided, it will be generated automatically.",
+        "schema" : {
+          "type" : "string",
+          "format" : "uuid"
+        },
+        "required" : false
+      }
+    },
+    "responses" : {
+      "Problem" : {
+        "description" : "RFC7807 Problem",
+        "content" : {
+          "application/problem+json" : {
+            "schema" : {
+              "type" : "object",
+              "properties" : {
+                "type" : {
+                  "type" : "string"
+                },
+                "title" : {
+                  "type" : "string"
+                },
+                "status" : {
+                  "type" : "number",
+                  "format" : "integer"
+                },
+                "detail" : {
+                  "type" : "string"
+                },
+                "messages" : {
+                  "type" : "array",
+                  "readOnly" : true,
+                  "items" : {
+                    "type" : "string"
+                  }
+                },
+                "validationResults" : {
+                  "type" : "array",
+                  "readOnly" : true,
+                  "items" : {
+                    "$ref" : "#/components/schemas/validationResult"
+                  }
+                }
+              },
+              "additionalProperties" : true,
+              "required" : [ "type", "title", "status" ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

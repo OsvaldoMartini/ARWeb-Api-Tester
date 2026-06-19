@@ -1,0 +1,26 @@
+{
+  closeDate
+  id
+  name
+  oracleUser
+  refObj {
+    _href
+    _ident
+    id
+    keyList {
+      objKey {
+        _href
+        id
+        ident
+        intlId
+      }
+      val
+    }
+  }
+  userType {
+    _href
+    id
+    ident
+    intlId
+  }
+}

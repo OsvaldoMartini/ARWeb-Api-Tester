@@ -1,0 +1,285 @@
+{
+  "$id": "https://avaloq.com/msg.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/msg",
+  "definitions": {
+    "code_tab_ref": {
+      "type": "object",
+      "properties": {
+        "_href": {
+          "description" : "Reference/link",
+          "type": "string"
+        },
+        "id": {
+          "description" : "Numeric reference",
+          "type": "integer"
+        },
+        "ident": {
+          "description" : "Unique symbolic reference",
+          "type": "string"
+        },
+        "intlId": {
+          "description" : "Symbolic reference",
+          "type": "string"
+        }
+      }
+    },
+    "code_tab_ref_action": {
+      "type": "object",
+      "properties": {
+        "_href": {
+          "description" : "Reference/link",
+          "type": "string"
+        },
+        "action": {
+          "description" : "enum reference to action",
+          "type": "string"
+        },
+        "id": {
+          "description" : "Numeric reference",
+          "type": "integer"
+        },
+        "ident": {
+          "description" : "Unique symbolic reference",
+          "type": "string"
+        },
+        "intlId": {
+          "description" : "Symbolic reference",
+          "type": "string"
+        }
+      }
+    },
+    "doc_ref": {
+      "type": "object",
+      "properties": {
+        "_href": {
+          "description" : "Reference/link",
+          "type": "string"
+        },
+        "_ident": {
+          "description" : "Only used for workItem use cases, cross-reference in workItem context.",
+          "type": "string"
+        },
+        "id": {
+          "description" : "Numeric reference",
+          "type": "integer"
+        }
+      }
+    },
+    "msg": {
+      "type": "object",
+      "properties": {
+        "bu": {
+          "description" : "BU IDReferencing: `/obj-bps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "dir": {
+          "description" : "Direction (\"i\" | \"o\" | \"io\")",
+          "type": "string"
+        },
+        "doc": {
+          "description" : "OrderReferencing: `/docs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/doc_ref" }
+          ]
+        },
+        "extlErrCode": {
+          "description" : "External error code",
+          "type": "string"
+        },
+        "extlRefNr": {
+          "description" : "External reference number",
+          "type": "string"
+        },
+        "extlStatus": {
+          "description" : "External message status",
+          "type": "string"
+        },
+        "f1": {
+          "description" : "Generic field f1. f1 is indexed for fast searches. If you are customizing a standard network delivered by Avaloq, we recommend that you do not use these fields or contact the business team which provided the network, in order to avoid usage conflicts. Message properties should be used instead. It is safe to use this field if you are customizing your own network.",
+          "type": "string"
+        },
+        "f10": {
+          "description" : "Generic field f10. If you are customizing a standard network delivered by Avaloq, we recommend that you do not use these fields or contact the business team which provided the network, in order to avoid usage conflicts. Message properties should be used instead. It is safe to use this field if you are customizing your own network.",
+          "type": "string"
+        },
+        "f2": {
+          "description" : "Generic field f2. f2 to f4 are part of a multi-column index that consists of meta_msg_id, the timestamp, f2, f3, f4.  If you are customizing a standard network delivered by Avaloq, we recommend that you do not use these fields or contact the business team which provided the network, in order to avoid usage conflicts. Message properties should be used instead. It is safe to use this field if you are customizing your own network.",
+          "type": "string"
+        },
+        "f3": {
+          "description" : "Generic field f3. f2 to f4 are part of a multi-column index that consists of meta_msg_id, the timestamp, f2, f3, f4.  If you are customizing a standard network delivered by Avaloq, we recommend that you do not use these fields or contact the business team which provided the network, in order to avoid usage conflicts. Message properties should be used instead. It is safe to use this field if you are customizing your own network.",
+          "type": "string"
+        },
+        "f4": {
+          "description" : "Generic field f4. f2 to f4 are part of a multi-column index that consists of meta_msg_id, the timestamp, f2, f3, f4.  If you are customizing a standard network delivered by Avaloq, we recommend that you do not use these fields or contact the business team which provided the network, in order to avoid usage conflicts. Message properties should be used instead. It is safe to use this field if you are customizing your own network.",
+          "type": "string"
+        },
+        "f5": {
+          "description" : "Generic field f5. If you are customizing a standard network delivered by Avaloq, we recommend that you do not use these fields or contact the business team which provided the network, in order to avoid usage conflicts. Message properties should be used instead. It is safe to use this field if you are customizing your own network.",
+          "type": "string"
+        },
+        "f6": {
+          "description" : "Generic field f6. If you are customizing a standard network delivered by Avaloq, we recommend that you do not use these fields or contact the business team which provided the network, in order to avoid usage conflicts. Message properties should be used instead. It is safe to use this field if you are customizing your own network.",
+          "type": "string"
+        },
+        "f7": {
+          "description" : "Generic field f7. If you are customizing a standard network delivered by Avaloq, we recommend that you do not use these fields or contact the business team which provided the network, in order to avoid usage conflicts. Message properties should be used instead. It is safe to use this field if you are customizing your own network.",
+          "type": "string"
+        },
+        "f8": {
+          "description" : "Generic field f8. If you are customizing a standard network delivered by Avaloq, we recommend that you do not use these fields or contact the business team which provided the network, in order to avoid usage conflicts. Message properties should be used instead. It is safe to use this field if you are customizing your own network.",
+          "type": "string"
+        },
+        "f9": {
+          "description" : "Generic field f9. If you are customizing a standard network delivered by Avaloq, we recommend that you do not use these fields or contact the business team which provided the network, in order to avoid usage conflicts. Message properties should be used instead. It is safe to use this field if you are customizing your own network.",
+          "type": "string"
+        },
+        "id": {
+          "description" : "Message IDReferencing: `/msgs/{id}`",
+          "type": "integer"
+        },
+        "metaMsg": {
+          "description" : "Message typeReferencing: `/meta-msgs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "msgStatus": {
+          "description" : "Message statusReferencing: `/code-msg-statuss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "netw": {
+          "description" : "NetworkReferencing: `/code-netws/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "rcvBp": {
+          "description" : "Business PartnerReferencing: `/obj-bps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "rcvBpClearNr": {
+          "description" : "Number",
+          "type": "string"
+        },
+        "sendBp": {
+          "description" : "Business PartnerReferencing: `/obj-bps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "sendBpClearNr": {
+          "description" : "Send",
+          "type": "string"
+        },
+        "sendDatePlan": {
+          "description" : "Send date plan",
+          "type": "string"
+          ,
+            "format": "date-time-no-tz"
+        },
+        "t1": {
+          "description" : "Generic field f96. If you are customizing a standard network delivered by Avaloq, we recommend that you do not use these fields or contact the business team which provided the network, in order to avoid usage conflicts. Message properties should be used instead. It is safe to use this field if you are customizing your own network.",
+          "type": "string"
+        },
+        "t2": {
+          "description" : "Generic field f97. If you are customizing a standard network delivered by Avaloq, we recommend that you do not use these fields or contact the business team which provided the network, in order to avoid usage conflicts. Message properties should be used instead. It is safe to use this field if you are customizing your own network.",
+          "type": "string"
+        },
+        "t3": {
+          "description" : "Generic field f98. If you are customizing a standard network delivered by Avaloq, we recommend that you do not use these fields or contact the business team which provided the network, in order to avoid usage conflicts. Message properties should be used instead. It is safe to use this field if you are customizing your own network.",
+          "type": "string"
+        },
+        "t4": {
+          "description" : "Generic field f99. If you are customizing a standard network delivered by Avaloq, we recommend that you do not use these fields or contact the business team which provided the network, in order to avoid usage conflicts. Message properties should be used instead. It is safe to use this field if you are customizing your own network.",
+          "type": "string"
+        },
+        "t5": {
+          "description" : "Generic field f100. If you are customizing a standard network delivered by Avaloq, we recommend that you do not use these fields or contact the business team which provided the network, in order to avoid usage conflicts. Message properties should be used instead. It is safe to use this field if you are customizing your own network.",
+          "type": "string"
+        },
+        "timestamp": {
+          "description" : "Time when message was inserted",
+          "type": "string"
+          ,
+            "format": "date-time-no-tz"
+        },
+        "x1": {
+          "description" : "Generic field f11, used for tag 103 in Swift header (Block 3). If you are customizing a standard network delivered by Avaloq, we recommend that you do not use these fields or contact the business team which provided the network, in order to avoid usage conflicts. Message properties should be used instead. It is safe to use this field if you are customizing your own network.",
+          "type": "string"
+        },
+        "x2": {
+          "description" : "Generic field f12, used for Message Prio in Swift header (Block 2). If you are customizing a standard network delivered by Avaloq, we recommend that you do not use these fields or contact the business team which provided the network, in order to avoid usage conflicts. Message properties should be used instead. It is safe to use this field if you are customizing your own network.",
+          "type": "string"
+        },
+        "x3": {
+          "description" : "Generic field f13, used for Validation Flag (tag 119) in Swift header (Block 3). If you are customizing a standard network delivered by Avaloq, we recommend that you do not use these fields or contact the business team which provided the network, in order to avoid usage conflicts. Message properties should be used instead. It is safe to use this field if you are customizing your own network.",
+          "type": "string"
+        },
+        "x4": {
+          "description" : "Generic field f14, used for Banking Prio (tag 113) in Swift header (Block 3). If you are customizing a standard network delivered by Avaloq, we recommend that you do not use these fields or contact the business team which provided the network, in order to avoid usage conflicts. Message properties should be used instead. It is safe to use this field if you are customizing your own network.",
+          "type": "string"
+        },
+        "x5": {
+          "description" : "Generic field f15, used for UETR (tag 121) in Swift header (Block 3). If you are customizing a standard network delivered by Avaloq, we recommend that you do not use these fields or contact the business team which provided the network, in order to avoid usage conflicts. Message properties should be used instead. It is safe to use this field if you are customizing your own network.",
+          "type": "string"
+        }
+      }
+    },
+    "msgs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/msg"
+      },
+      "uniqueItems": true
+    },
+    "obj_key_ref_": {
+      "type": "object",
+      "properties": {
+        "objKey": {
+          "description" : "Referencing: `/code-obj-keys/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "val": {
+          "description" : "Key value",
+          "type": "string"
+        }
+      }
+    },
+    "obj_ref": {
+      "type": "object",
+      "properties": {
+        "_href": {
+          "description" : "Reference/link",
+          "type": "string"
+        },
+        "_ident": {
+          "description" : "Only used for workItem use cases, cross-reference in workItem context.",
+          "type": "string"
+        },
+        "id": {
+          "description" : "Numeric reference",
+          "type": "integer"
+        },
+        "keyList": {
+          "type": "array",
+          "items": {
+            "description": "Key value object reference ",
+            "allOf": [
+              { "$ref": "#/definitions/obj_key_ref_" }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

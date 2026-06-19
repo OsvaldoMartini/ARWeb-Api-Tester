@@ -1,0 +1,5490 @@
+{
+  "openapi" : "3.0.2",
+  "security" : [ {
+    "bearerAuth" : [ ]
+  } ],
+  "info" : {
+    "title" : "Position API",
+    "version" : "3.31.0",
+    "x-avq$categories" : [ "capi" ]
+  },
+  "servers" : [ {
+    "url" : "/api1/",
+    "description" : "Development server"
+  } ],
+  "paths" : {
+    "/obj-poss" : {
+      "get" : {
+        "tags" : [ "API endpoints" ],
+        "summary" : "Get Position objects.",
+        "description" : "Get a collection of `Position` objects.\nThe result set can be restricted through filter parameter.\nOnly `Position` objects will be returned that can be accessed by the user (security applied).\nPaging is supported with parameters *limit* and *offset*.\n",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/Filter"
+        }, {
+          "$ref" : "#/components/parameters/PageLimit"
+        }, {
+          "$ref" : "#/components/parameters/PageOffset"
+        }, {
+          "$ref" : "#/components/parameters/HrefActive"
+        }, {
+          "$ref" : "#/components/parameters/IncludeInactive"
+        }, {
+          "$ref" : "#/components/parameters/Accept-Encoding"
+        }, {
+          "$ref" : "#/components/parameters/Accept-Language"
+        }, {
+          "$ref" : "#/components/parameters/PartList"
+        }, {
+          "$ref" : "#/components/parameters/SOP"
+        }, {
+          "$ref" : "#/components/parameters/EOP"
+        }, {
+          "$ref" : "#/components/parameters/EvalDate"
+        }, {
+          "$ref" : "#/components/parameters/DateType"
+        }, {
+          "$ref" : "#/components/parameters/InclZeroPos"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful response",
+            "headers" : {
+              "Content-Language" : {
+                "$ref" : "#/components/headers/Content-Language"
+              },
+              "X-Has-Next-Page" : {
+                "$ref" : "#/components/headers/X-Has-Next-Page"
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/obj_pos"
+                  }
+                }
+              }
+            }
+          },
+          "default" : {
+            "$ref" : "#/components/responses/Problem"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "API endpoints" ],
+        "summary" : "Create a new Position object",
+        "requestBody" : {
+          "required" : true,
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/obj_pos"
+              }
+            },
+            "application/xml" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/obj_pos"
+              }
+            }
+          }
+        },
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/X-Request-ID"
+        }, {
+          "$ref" : "#/components/parameters/Accept-Encoding"
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "Successfully created a new `Position` object",
+            "headers" : {
+              "Location" : {
+                "$ref" : "#/components/headers/Location"
+              },
+              "ETag" : {
+                "$ref" : "#/components/headers/ETag"
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "id" : {
+                      "type" : "integer",
+                      "format" : "int64",
+                      "example" : 123456
+                    },
+                    "bdeRecVersion" : {
+                      "type" : "integer",
+                      "format" : "int64",
+                      "example" : 1618390720445656
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "202" : {
+            "description" : "Successfully accepted a new `Position` object",
+            "headers" : {
+              "Location" : {
+                "$ref" : "#/components/headers/Location"
+              },
+              "ETag" : {
+                "$ref" : "#/components/headers/ETag"
+              }
+            }
+          },
+          "default" : {
+            "$ref" : "#/components/responses/Problem"
+          }
+        }
+      }
+    },
+    "/obj-poss/{obj_pos_id}" : {
+      "get" : {
+        "tags" : [ "API endpoints" ],
+        "summary" : "Get a Position object",
+        "description" : "*Get a `Position` object by ID*.\nOnly `Position` object will be returned that can be accessed by the user (security applied).\nIf user does not have access to resource, not found error will be returned instead of unauthorized - to disallow attacks.\n",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "obj_pos_id",
+          "schema" : {
+            "type" : "string"
+          },
+          "required" : true,
+          "description" : "ID of the `Position` object to get"
+        }, {
+          "$ref" : "#/components/parameters/HrefActive"
+        }, {
+          "$ref" : "#/components/parameters/IncludeInactive"
+        }, {
+          "$ref" : "#/components/parameters/Accept-Encoding"
+        }, {
+          "$ref" : "#/components/parameters/If-None-Match"
+        }, {
+          "$ref" : "#/components/parameters/Accept-Language"
+        }, {
+          "$ref" : "#/components/parameters/PartList"
+        }, {
+          "$ref" : "#/components/parameters/SOP"
+        }, {
+          "$ref" : "#/components/parameters/EOP"
+        }, {
+          "$ref" : "#/components/parameters/EvalDate"
+        }, {
+          "$ref" : "#/components/parameters/DateType"
+        }, {
+          "$ref" : "#/components/parameters/InclZeroPos"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful response",
+            "headers" : {
+              "Content-Language" : {
+                "$ref" : "#/components/headers/Content-Language"
+              },
+              "ETag" : {
+                "$ref" : "#/components/headers/ETag"
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/obj_pos"
+                }
+              }
+            }
+          },
+          "304" : {
+            "description" : "Not modified"
+          },
+          "default" : {
+            "$ref" : "#/components/responses/Problem"
+          }
+        }
+      },
+      "patch" : {
+        "tags" : [ "API endpoints" ],
+        "summary" : "Modify/update an existing Position object",
+        "description" : "*Partially modify/update an existing `Position` object identified by ID*.\nOnly `Position` object will be replaced that can be accessed by the user (security applied).\nIf user does not have access to resource, not found error will be returned instead of unauthorized - to disallow attacks.\n",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "obj_pos_id",
+          "schema" : {
+            "type" : "string"
+          },
+          "required" : true,
+          "description" : "ID of the `Position` object to modify/update"
+        }, {
+          "$ref" : "#/components/parameters/If-Match"
+        }, {
+          "$ref" : "#/components/parameters/X-Request-ID"
+        }, {
+          "$ref" : "#/components/parameters/Accept-Encoding"
+        } ],
+        "requestBody" : {
+          "required" : true,
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/obj_pos"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Request successfully processed",
+            "headers" : {
+              "ETag" : {
+                "$ref" : "#/components/headers/ETag"
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "id" : {
+                      "type" : "integer",
+                      "format" : "int64",
+                      "example" : 123456
+                    },
+                    "bdeRecVersion" : {
+                      "type" : "integer",
+                      "format" : "int64",
+                      "example" : 1618390720445656
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "202" : {
+            "description" : "Successfully accepted the modification of `Position` object",
+            "headers" : {
+              "Location" : {
+                "$ref" : "#/components/headers/Location"
+              },
+              "ETag" : {
+                "$ref" : "#/components/headers/ETag"
+              }
+            }
+          },
+          "default" : {
+            "$ref" : "#/components/responses/Problem"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "API endpoints" ],
+        "summary" : "Delete a Position object",
+        "description" : "*Delete a `Position` object by ID*.\nOnly `Position` object will be deleted that can be accessed by the user (security applied).\nIf user does not have access to resource, not found error will be returned instead of unauthorized - to disallow attacks.\n",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "obj_pos_id",
+          "schema" : {
+            "type" : "string"
+          },
+          "required" : true,
+          "description" : "ID of the `Position` object to modify/update"
+        }, {
+          "$ref" : "#/components/parameters/X-Request-ID"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Request successfully processed"
+          },
+          "default" : {
+            "$ref" : "#/components/responses/Problem"
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "securitySchemes" : {
+      "bearerAuth" : {
+        "type" : "http",
+        "scheme" : "bearer",
+        "bearerFormat" : "JWT"
+      }
+    },
+    "schemas" : {
+      "caldr" : {
+        "title" : "caldr",
+        "type" : "object",
+        "properties" : {
+          "bindDateList" : {
+            "type" : "string",
+            "readOnly" : true
+          },
+          "dayList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/caldr_day"
+            },
+            "readOnly" : true
+          },
+          "endDate" : {
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "exPeriodOffsetExpr" : {
+            "description" : "Ex-Date Offset",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "exclLastBrkPeriod" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "fixDateCaldrList" : {
+            "type" : "string",
+            "readOnly" : true
+          },
+          "fixDateOffset" : {
+            "description" : "Referencing: `/code-date-offsets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "fixDateOffsetExpr" : {
+            "type" : "string",
+            "readOnly" : true
+          },
+          "fixPeriodRef" : {
+            "description" : "Referencing: `/code-period-refs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "freq" : {
+            "type" : "integer",
+            "format" : "int32",
+            "readOnly" : true
+          },
+          "isPeriodBind" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "isUpfront" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "period" : {
+            "description" : "Referencing: `/code-pay-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "periodCnt" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "periodEnd" : {
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "periodEndA" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "periodList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/caldr_period"
+            }
+          },
+          "periodStart" : {
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "periodStartA" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "periodicity" : {
+            "type" : "string",
+            "readOnly" : true
+          },
+          "refDateCaldrList" : {
+            "type" : "string",
+            "readOnly" : true
+          },
+          "refDateOffset" : {
+            "description" : "Referencing: `/code-date-offsets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "refDateOffsetExpr" : {
+            "type" : "string",
+            "readOnly" : true
+          },
+          "startDate" : {
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "trxDateCaldrList" : {
+            "type" : "string",
+            "readOnly" : true
+          },
+          "trxDateOffset" : {
+            "description" : "Referencing: `/code-date-offsets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "trxDateOffsetExpr" : {
+            "type" : "string",
+            "readOnly" : true
+          },
+          "valDateCaldrList" : {
+            "type" : "string",
+            "readOnly" : true
+          },
+          "valDateOffset" : {
+            "description" : "Referencing: `/code-date-offsets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "valDateOffsetExpr" : {
+            "type" : "string",
+            "readOnly" : true
+          }
+        }
+      },
+      "caldr_day" : {
+        "title" : "caldr_day",
+        "type" : "object",
+        "properties" : {
+          "day" : {
+            "type" : "integer",
+            "format" : "int32",
+            "readOnly" : true
+          },
+          "month" : {
+            "type" : "integer",
+            "format" : "int32",
+            "readOnly" : true
+          }
+        }
+      },
+      "caldr_period" : {
+        "title" : "caldr_period",
+        "type" : "object",
+        "properties" : {
+          "annQty" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "annQtyA" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "eop" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "eopA" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "eopPlan" : {
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "exPeriodDate" : {
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "exPeriodDateA" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "fixDate" : {
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "fixDateA" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "histStatus" : {
+            "description" : "Referencing: `/code-hist-statuss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "isManual" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "isSusp" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "noticeDateFrom" : {
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "noticeDateTo" : {
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "noticeDays" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "price" : {
+            "type" : "number"
+          },
+          "priceA" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "prob" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "qty" : {
+            "type" : "number"
+          },
+          "qtyA" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "refDate" : {
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "refNr" : {
+            "type" : "string",
+            "readOnly" : true
+          },
+          "sop" : {
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "sopA" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "sopPlan" : {
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "trxDate" : {
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "trxDateA" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "valDate" : {
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "valDateA" : {
+            "type" : "boolean",
+            "readOnly" : true
+          }
+        }
+      },
+      "code_tab_ref" : {
+        "title" : "code_tab_ref",
+        "type" : "object",
+        "properties" : {
+          "_href" : {
+            "description" : "Reference/link",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "id" : {
+            "description" : "Numeric reference",
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "ident" : {
+            "description" : "Unique symbolic reference",
+            "type" : "string"
+          },
+          "intlId" : {
+            "description" : "Symbolic reference",
+            "type" : "string",
+            "readOnly" : true
+          }
+        }
+      },
+      "code_tab_ref_action" : {
+        "title" : "code_tab_ref_action",
+        "type" : "object",
+        "properties" : {
+          "action" : {
+            "enum" : [ "hold", "proceed", "discard" ],
+            "example" : "hold",
+            "description" : "enum reference to action",
+            "type" : "string",
+            "writeOnly" : true
+          },
+          "id" : {
+            "description" : "Numeric reference",
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "ident" : {
+            "description" : "Unique symbolic reference",
+            "type" : "string"
+          }
+        }
+      },
+      "compo_accr_contri" : {
+        "title" : "compo_accr_contri",
+        "type" : "object",
+        "properties" : {
+          "accrFirst" : {
+            "description" : "Accrual start",
+            "type" : "string",
+            "format" : "date-time-no-tz",
+            "readOnly" : true
+          },
+          "accrFixMode" : {
+            "description" : "Fixing Mode<br>Referencing: `/code-accr-fix-modes/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "accrLast" : {
+            "description" : "Accrual end",
+            "type" : "string",
+            "format" : "date-time-no-tz",
+            "readOnly" : true
+          },
+          "accrRateType" : {
+            "description" : "Type<br>Referencing: `/code-accr-rate-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "compoId" : {
+            "description" : "Component",
+            "type" : "integer",
+            "format" : "int32",
+            "readOnly" : true
+          },
+          "contriExtnType" : {
+            "description" : "Extension Type<br>Referencing: `/code-contri-extn-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "factor" : {
+            "description" : "Factor",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "fixList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/compo_accr_contri_fix"
+            },
+            "readOnly" : true
+          },
+          "irc" : {
+            "description" : "Interest<br>Referencing: `/obj-assets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "name" : {
+            "description" : "Name",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "priceType" : {
+            "description" : "Price Type<br>Referencing: `/code-price-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          }
+        }
+      },
+      "compo_accr_contri_fix" : {
+        "title" : "compo_accr_contri_fix",
+        "type" : "object",
+        "properties" : {
+          "effDate" : {
+            "type" : "string",
+            "format" : "date-time-no-tz",
+            "readOnly" : true
+          },
+          "histStatus" : {
+            "description" : "Referencing: `/code-hist-statuss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "intrDate" : {
+            "type" : "string",
+            "format" : "date-time-no-tz",
+            "readOnly" : true
+          },
+          "intrRate" : {
+            "type" : "number",
+            "readOnly" : true
+          }
+        }
+      },
+      "compo_accr_grad" : {
+        "title" : "compo_accr_grad",
+        "type" : "object",
+        "properties" : {
+          "accrFirst" : {
+            "description" : "Start of capital binding",
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "accrGradCaptBound" : {
+            "description" : "Graduation Type<br>Referencing: `/code-accr-grad-capt-bounds/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "accrGradStruct" : {
+            "description" : "Graduation Structure<br>Referencing: `/code-accr-grad-structs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "accrItemType" : {
+            "description" : "Graduation Item Type<br>Referencing: `/code-accr-item-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "accrLast" : {
+            "description" : "End of capital binding",
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "cap" : {
+            "description" : "Cap",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "contriList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/compo_accr_contri"
+            },
+            "readOnly" : true
+          },
+          "floor" : {
+            "description" : "Floor",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "intrCalcMethod" : {
+            "description" : "Interest Calculation Method<br>Referencing: `/code-intr-calc-methods/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "key" : {
+            "description" : "Key",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "objType" : {
+            "description" : "Level<br>Referencing: `/code-obj-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          }
+        }
+      },
+      "compo_intr" : {
+        "title" : "compo_intr",
+        "type" : "object",
+        "properties" : {
+          "accrFirst" : {
+            "description" : "compo.start_date under a different name. Start of accrual time.",
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "accrFirstA" : {
+            "description" : "compo.start_date_a under a different name. Start of accrual time.",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "accrGradMode" : {
+            "description" : "Referencing: `/code-accr-grad-modes/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "accrLast" : {
+            "description" : "compo.end_date under a different name. End of accrual time.",
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "accrLastA" : {
+            "description" : "compo.end_date_a under a different name. End of accrual time.",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "accrMethod" : {
+            "description" : "Referencing: `/code-intr-accr-methods/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "calcRateMtd" : {
+            "description" : "Calc Rate method<br>Referencing: `/code-calc-rate-mtds/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "calcRateRu" : {
+            "description" : "Calc Rate rounding unit",
+            "type" : "integer",
+            "format" : "int32",
+            "readOnly" : true
+          },
+          "cap" : {
+            "description" : "Maximum rate (CAP)",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "captCalcType" : {
+            "description" : "Referencing: `/code-period-refs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "captCalcTypeA" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "captLotType" : {
+            "description" : "Referencing: `/code-be-lot-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "commMaxAmount" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "commMinAmount" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "compoAfList" : {
+            "description" : "Referencing: `/code-compo-af-lists/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "compoStruct" : {
+            "description" : "Referencing: `/code-accr-structs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "compoType" : {
+            "description" : "Referencing: `/code-compo-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "curry" : {
+            "description" : "Referencing: `/obj-assets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "curryA" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "endDate" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "endDateA" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "factor" : {
+            "description" : "Generic component factor (e.g. Capital factor of yield components or Short/Long factor of conversion components)",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "factorPeriodRef" : {
+            "description" : "This field specifies if and for what date the historized asset correction factor will be applied to the capital (SOP, EOP)<br>Referencing: `/code-period-refs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "fixCaldr" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/caldr"
+            } ],
+            "readOnly" : true
+          },
+          "floor" : {
+            "description" : "Minimum rate (FLOOR)",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "gradList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/compo_accr_grad"
+            },
+            "readOnly" : true
+          },
+          "hasSepFixCaldr" : {
+            "description" : "Does the component have a fixing calendar separate from the processing calendar?",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "id" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "intrCalcExpr" : {
+            "description" : "Referencing: `/code-intr-calc-exprs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "intrCalcExprA" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "intrCalcMethod" : {
+            "description" : "Referencing: `/code-intr-calc-methods/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "intrCalcMethodA" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "intrCalcType" : {
+            "description" : "Referencing: `/code-period-refs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "intrRateFix" : {
+            "description" : "Fix interest rate on compo, only defined for a fix compo",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "intrRateList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/intr_rate_rec"
+            },
+            "readOnly" : true
+          },
+          "isFix" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "isLimitOdraft" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "key" : {
+            "type" : "integer",
+            "format" : "int32",
+            "readOnly" : true
+          },
+          "lockoutPeriod" : {
+            "description" : "Lockout period",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "minim" : {
+            "description" : "Minimum chargeable interest (per period)",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "minimCurry" : {
+            "description" : "Minimum chargeable interest currency<br>Referencing: `/obj-assets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "observEndOffset" : {
+            "description" : "Observation End offset",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "observEndRef" : {
+            "description" : "Observation End reference<br>Referencing: `/code-period-refs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "observStartOffset" : {
+            "description" : "Observation Start offset",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "observStartRef" : {
+            "description" : "Observation Start reference<br>Referencing: `/code-period-refs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "prcCaldr" : {
+            "$ref" : "#/components/schemas/caldr"
+          },
+          "rateQuotePeriod" : {
+            "description" : "Periodicity of the interest quotation<br>Referencing: `/code-pay-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "startDate" : {
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "startDateA" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "useCalcRate" : {
+            "description" : "Use Calc Rate",
+            "type" : "boolean",
+            "readOnly" : true
+          }
+        }
+      },
+      "compo_macc" : {
+        "title" : "compo_macc",
+        "type" : "object",
+        "properties" : {
+          "compoId" : {
+            "type" : "integer",
+            "format" : "int32",
+            "readOnly" : true
+          },
+          "compoMacc" : {
+            "description" : "Referencing: `/obj-poss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "compoType" : {
+            "description" : "Referencing: `/code-compo-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "seqNr" : {
+            "type" : "integer",
+            "format" : "int32",
+            "readOnly" : true
+          }
+        }
+      },
+      "doc_ref" : {
+        "title" : "doc_ref",
+        "type" : "object",
+        "properties" : {
+          "_href" : {
+            "description" : "Reference/link",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "_ident" : {
+            "description" : "Only used for workItem use cases, cross-reference in workItem context.",
+            "type" : "string",
+            "writeOnly" : true
+          },
+          "id" : {
+            "description" : "Numeric reference",
+            "type" : "integer",
+            "format" : "int64"
+          }
+        }
+      },
+      "intr_rate_rec" : {
+        "title" : "intr_rate_rec",
+        "type" : "object",
+        "properties" : {
+          "bound1" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "bound2" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "bound3" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "bound4" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "bound5" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "bound6" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "bound7" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "bound8" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "bound9" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "eop" : {
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "rate" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "rate1" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "rate1AccrRateGrp1" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "rate1AccrRateGrp2" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "rate1AccrRateGrp3" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "rate2" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "rate2AccrRateGrp1" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "rate2AccrRateGrp2" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "rate2AccrRateGrp3" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "rate3" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "rate3AccrRateGrp1" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "rate3AccrRateGrp2" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "rate3AccrRateGrp3" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "rate4" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "rate4AccrRateGrp1" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "rate4AccrRateGrp2" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "rate4AccrRateGrp3" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "rate5" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "rate5AccrRateGrp1" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "rate5AccrRateGrp2" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "rate5AccrRateGrp3" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "rate6" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "rate6AccrRateGrp1" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "rate6AccrRateGrp2" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "rate6AccrRateGrp3" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "rate7" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "rate7AccrRateGrp1" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "rate7AccrRateGrp2" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "rate7AccrRateGrp3" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "rate8" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "rate8AccrRateGrp1" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "rate8AccrRateGrp2" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "rate8AccrRateGrp3" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "rate9" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "rate9AccrRateGrp1" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "rate9AccrRateGrp2" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "rate9AccrRateGrp3" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "sop" : {
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          }
+        }
+      },
+      "mba_add_acc_descn" : {
+        "title" : "mba$add_acc_descn",
+        "type" : "object",
+        "properties" : {
+          "isPrivPlace" : {
+            "type" : "boolean"
+          },
+          "legAddAccDescn" : {
+            "type" : "string"
+          },
+          "legEquityGrp" : {
+            "description" : "Referencing: `/mba$code-leg-equity-grps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "legPrivPlaceVal" : {
+            "type" : "number"
+          },
+          "legRiskWeightVal" : {
+            "type" : "number"
+          },
+          "overCollatCoverPool" : {
+            "type" : "number"
+          }
+        }
+      },
+      "mba_cash_mngt" : {
+        "title" : "mba$cash_mngt",
+        "type" : "object",
+        "properties" : {
+          "minBal" : {
+            "type" : "number"
+          }
+        }
+      },
+      "mba_compli_block_list" : {
+        "title" : "mba$compli_block_list",
+        "type" : "object",
+        "properties" : {
+          "compliBlockList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/mba_compli_block_list_mba_compli_block"
+            }
+          }
+        }
+      },
+      "mba_compli_block_list_mba_compli_block" : {
+        "title" : "mba$compli_block_list_mba$compli_block",
+        "type" : "object",
+        "properties" : {
+          "manualComplianceBlock" : {
+            "type" : "string"
+          },
+          "remark" : {
+            "type" : "string"
+          },
+          "responsibleUser" : {
+            "description" : "Referencing: `/users/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/user_ref"
+            } ]
+          },
+          "validFrom" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "validTo" : {
+            "type" : "string",
+            "format" : "date"
+          }
+        }
+      },
+      "mba_docm" : {
+        "title" : "mba$docm",
+        "type" : "object",
+        "properties" : {
+          "docmList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/mba_docm_mba_docm_det"
+            }
+          }
+        }
+      },
+      "mba_docm_mba_docm_det" : {
+        "title" : "mba$docm_mba$docm_det",
+        "type" : "object",
+        "properties" : {
+          "accrEnTrl" : {
+            "description" : "Referencing: `/mba$code-accr-en-trls/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "action" : {
+            "description" : "Referencing: `/mba$code-actions/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "actionA" : {
+            "type" : "boolean"
+          },
+          "addDate" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "addUser" : {
+            "description" : "Referencing: `/obj-persons/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "arcvDate" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "arcvId" : {
+            "type" : "string"
+          },
+          "comment" : {
+            "type" : "string"
+          },
+          "country" : {
+            "description" : "Referencing: `/obj-countrys/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "countryA" : {
+            "type" : "boolean"
+          },
+          "deferralReason" : {
+            "description" : "Referencing: `/code-deferral-reasons/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "deferredDate" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "deferredDateA" : {
+            "type" : "boolean"
+          },
+          "docm" : {
+            "description" : "Referencing: `/obj-docms/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "docmDetCtrl" : {
+            "description" : "Referencing: `/obj-docms/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "docmNr" : {
+            "type" : "string"
+          },
+          "docmRes" : {
+            "description" : "Referencing: `/mba$code-docm-ress/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "docmType" : {
+            "description" : "Referencing: `/mba$code-docm-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "expirDate" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "expirDateA" : {
+            "type" : "boolean"
+          },
+          "fullName" : {
+            "type" : "string"
+          },
+          "idNr" : {
+            "type" : "string"
+          },
+          "isFatcaRelv" : {
+            "type" : "boolean"
+          },
+          "issueDate" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "issuer" : {
+            "type" : "string"
+          },
+          "needsPrint" : {
+            "type" : "boolean"
+          },
+          "printDate" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "refersToObjId" : {
+            "type" : "number"
+          },
+          "reqType" : {
+            "description" : "Referencing: `/mba$code-req-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "signDate" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "signDateA" : {
+            "type" : "boolean"
+          },
+          "signDuePeriod" : {
+            "type" : "number"
+          },
+          "signUser" : {
+            "description" : "Referencing: `/obj-persons/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "state" : {
+            "description" : "Referencing: `/code-country-states/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "stateA" : {
+            "type" : "boolean"
+          },
+          "urlAddr" : {
+            "type" : "string"
+          },
+          "user" : {
+            "type" : "string"
+          }
+        }
+      },
+      "mba_last_seq_nr" : {
+        "title" : "mba$last_seq_nr",
+        "type" : "object",
+        "properties" : {
+          "stcollNr" : {
+            "type" : "number"
+          },
+          "stordNr" : {
+            "type" : "number"
+          }
+        }
+      },
+      "mba_name_extn" : {
+        "title" : "mba$name_extn",
+        "type" : "object",
+        "properties" : {
+          "nameExtn" : {
+            "type" : "string"
+          }
+        }
+      },
+      "mba_recon" : {
+        "title" : "mba$recon",
+        "type" : "object",
+        "properties" : {
+          "lastManDate" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "lastManUser" : {
+            "type" : "string"
+          }
+        }
+      },
+      "mba_rsp" : {
+        "title" : "mba$rsp",
+        "type" : "object",
+        "properties" : {
+          "rspList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/mba_rsp_mba_rsp_det"
+            }
+          }
+        }
+      },
+      "mba_rsp_mba_rsp_det" : {
+        "title" : "mba$rsp_mba$rsp_det",
+        "type" : "object",
+        "properties" : {
+          "amount" : {
+            "type" : "number"
+          },
+          "asset" : {
+            "description" : "Referencing: `/obj-assets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "contrNr" : {
+            "type" : "string"
+          },
+          "crtnDate" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "endDate" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "freq" : {
+            "description" : "Referencing: `/mba$code-rsp-freqs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "planType" : {
+            "description" : "Referencing: `/mba$code-rsp-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "startDate" : {
+            "type" : "string",
+            "format" : "date"
+          }
+        }
+      },
+      "obj_add" : {
+        "title" : "obj_add",
+        "type" : "object",
+        "properties" : {
+          "boolVal" : {
+            "description" : "Value",
+            "type" : "boolean",
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "bu" : {
+            "description" : "Business Unit<br>Referencing: `/obj-bps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "dateVal" : {
+            "description" : "Value",
+            "type" : "string",
+            "format" : "date",
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "idVal" : {
+            "description" : "Value",
+            "type" : "integer",
+            "format" : "int32",
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "nrVal" : {
+            "description" : "Value",
+            "type" : "number",
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "objAdd" : {
+            "description" : "Referencing: `/code-obj-adds/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "textVal" : {
+            "description" : "Value",
+            "type" : "string",
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "tswtzVal" : {
+            "description" : "Value",
+            "type" : "string",
+            "format" : "date-time",
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "valList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_add_val"
+            },
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_generic"
+          }
+        }
+      },
+      "obj_add_val" : {
+        "title" : "obj_add_val",
+        "type" : "object",
+        "properties" : {
+          "dateVal" : {
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "idVal" : {
+            "type" : "integer",
+            "format" : "int32",
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "nrVal" : {
+            "type" : "number",
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "seqNr" : {
+            "type" : "integer",
+            "format" : "int32",
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "textVal" : {
+            "type" : "string",
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "tswtzVal" : {
+            "type" : "string",
+            "format" : "date-time",
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_generic"
+          }
+        }
+      },
+      "obj_classif" : {
+        "title" : "obj_classif",
+        "type" : "object",
+        "properties" : {
+          "bu" : {
+            "description" : "Business Unit<br>Referencing: `/obj-bps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "class" : {
+            "description" : "Class<br>Referencing: `/code-obj-classs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "classA" : {
+            "description" : "Automatic",
+            "type" : "boolean",
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "classFactor" : {
+            "description" : "Factor",
+            "type" : "number",
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "cltSgmtCalc" : {
+            "description" : "Calculated Client Segment<br>Referencing: `/code-person-mktng-sgmts/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "endDate" : {
+            "description" : "Valid until",
+            "type" : "string",
+            "format" : "date",
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "histStatus" : {
+            "description" : "Hist Status<br>Referencing: `/code-hist-statuss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "indivFeep" : {
+            "description" : "Indiv. Fee Profile<br>Referencing: `/obj-feeps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "isInht" : {
+            "description" : "Is Inherited",
+            "type" : "boolean",
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "objClassif" : {
+            "description" : "Referencing: `/code-obj-classifs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "remark" : {
+            "description" : "Remark",
+            "type" : "string",
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "secUser" : {
+            "description" : "User<br>Referencing: `/users/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/user_ref"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "spcdCostp" : {
+            "description" : "SPCD Cost Profile<br>Referencing: `/obj-costps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "spcdCurry" : {
+            "description" : "SPCD Currency<br>Referencing: `/obj-assets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "spcdMaxVal" : {
+            "description" : "SPCD Maximum",
+            "type" : "number",
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "spcdMinVal" : {
+            "description" : "SPCD Minimum",
+            "type" : "number",
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "spcdMinmaxValType" : {
+            "description" : "SPCD Min/Max Type<br>Referencing: `/code-cost-ovr-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "spcdOffsetVal" : {
+            "description" : "SPCD Offset",
+            "type" : "number",
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "spcdOffsetValType" : {
+            "description" : "SPCD Offset Type<br>Referencing: `/code-cost-ovr-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "spcdReason" : {
+            "description" : "SPCD Reason<br>Referencing: `/code-cost-ovr-reasons/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "spcdVal" : {
+            "description" : "SPCD Value",
+            "type" : "number",
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "spcdValType" : {
+            "description" : "SPCD Value Type<br>Referencing: `/code-cost-ovr-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "startDate" : {
+            "description" : "Valid from",
+            "type" : "string",
+            "format" : "date",
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "timestamp" : {
+            "description" : "Timestamp",
+            "type" : "string",
+            "format" : "date-time",
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "userRef" : {
+            "description" : "Responsible User<br>Referencing: `/users/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/user_ref"
+            } ],
+            "x-additionalFieldType" : "extn_generic"
+          }
+        }
+      },
+      "obj_classif_" : {
+        "title" : "obj_classif_",
+        "type" : "object",
+        "properties" : {
+          "bu" : {
+            "description" : "Business Unit<br>Referencing: `/obj-bps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "class" : {
+            "description" : "Class<br>Referencing: `/code-obj-classs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "classA" : {
+            "description" : "Class a/m",
+            "type" : "boolean",
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "classFactor" : {
+            "description" : "Class factor",
+            "type" : "number",
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "cltSgmtCalc" : {
+            "description" : "Client segment calculation<br>Referencing: `/code-person-mktng-sgmts/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "endDate" : {
+            "description" : "Valid Until",
+            "type" : "string",
+            "format" : "date",
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "histStatus" : {
+            "description" : "Hist status<br>Referencing: `/code-hist-statuss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "indivFeep" : {
+            "description" : "Individual feep<br>Referencing: `/obj-feeps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "isInht" : {
+            "description" : "Is inherited",
+            "type" : "boolean",
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "objClassif" : {
+            "description" : "Referencing: `/code-obj-classifs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "remark" : {
+            "description" : "Remark",
+            "type" : "string",
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "secUser" : {
+            "description" : "Sec user<br>Referencing: `/users/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/user_ref"
+            } ],
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "spcdCostp" : {
+            "description" : "SPCD Cost Profile<br>Referencing: `/obj-costps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "spcdCurry" : {
+            "description" : "SPCD Currency<br>Referencing: `/obj-assets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "spcdMaxVal" : {
+            "description" : "SPCD Maximum",
+            "type" : "number",
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "spcdMinVal" : {
+            "description" : "SPCD Minimum",
+            "type" : "number",
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "spcdMinmaxValType" : {
+            "description" : "SPCD Min/Max Type<br>Referencing: `/code-cost-ovr-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "spcdOffsetVal" : {
+            "description" : "SPCD Offset",
+            "type" : "number",
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "spcdOffsetValType" : {
+            "description" : "SPCD Offset Type<br>Referencing: `/code-cost-ovr-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "spcdReason" : {
+            "description" : "SPCD Reason<br>Referencing: `/code-cost-ovr-reasons/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "spcdVal" : {
+            "description" : "SPCD Value",
+            "type" : "number",
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "spcdValType" : {
+            "description" : "SPCD Value Type<br>Referencing: `/code-cost-ovr-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "startDate" : {
+            "description" : "Valid from",
+            "type" : "string",
+            "format" : "date",
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "timestamp" : {
+            "description" : "Timestamp",
+            "type" : "string",
+            "format" : "date-time",
+            "x-additionalFieldType" : "extn_curr_classif"
+          }
+        }
+      },
+      "obj_classif_set_" : {
+        "title" : "obj_classif_set_",
+        "type" : "object",
+        "properties" : {
+          "bu" : {
+            "description" : "Business Unit<br>Referencing: `/obj-bps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "class" : {
+            "description" : "Class<br>Referencing: `/code-obj-classs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "classA" : {
+            "description" : "Class a/m",
+            "type" : "boolean",
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "classFactor" : {
+            "description" : "Class factor",
+            "type" : "number",
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "cltSgmtCalc" : {
+            "description" : "Client segment calculation<br>Referencing: `/code-person-mktng-sgmts/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "endDate" : {
+            "description" : "Valid Until",
+            "type" : "string",
+            "format" : "date",
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "indivFeep" : {
+            "description" : "Individual feep<br>Referencing: `/obj-feeps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "isInht" : {
+            "description" : "Is inherited",
+            "type" : "boolean",
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "objClassif" : {
+            "description" : "Referencing: `/code-obj-classifs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "remark" : {
+            "description" : "Remark",
+            "type" : "string",
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "spcdCostp" : {
+            "description" : "SPCD Cost Profile<br>Referencing: `/obj-costps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "spcdCurry" : {
+            "description" : "SPCD Currency<br>Referencing: `/obj-assets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "spcdMaxVal" : {
+            "description" : "SPCD Maximum",
+            "type" : "number",
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "spcdMinVal" : {
+            "description" : "SPCD Minimum",
+            "type" : "number",
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "spcdMinmaxValType" : {
+            "description" : "SPCD Min/Max Type<br>Referencing: `/code-cost-ovr-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "spcdOffsetVal" : {
+            "description" : "SPCD Offset",
+            "type" : "number",
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "spcdOffsetValType" : {
+            "description" : "SPCD Offset Type<br>Referencing: `/code-cost-ovr-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "spcdReason" : {
+            "description" : "SPCD Reason<br>Referencing: `/code-cost-ovr-reasons/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "spcdVal" : {
+            "description" : "SPCD Value",
+            "type" : "number",
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "spcdValType" : {
+            "description" : "SPCD Value Type<br>Referencing: `/code-cost-ovr-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "startDate" : {
+            "description" : "Valid from",
+            "type" : "string",
+            "format" : "date",
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "timestamp" : {
+            "description" : "Timestamp",
+            "type" : "string",
+            "format" : "date-time",
+            "x-additionalFieldType" : "extn_curr_classif"
+          }
+        }
+      },
+      "obj_dfacc_ref" : {
+        "title" : "obj_dfacc_ref",
+        "type" : "object",
+        "properties" : {
+          "bp" : {
+            "description" : "Business Partner<br>Referencing: `/obj-bps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "cont" : {
+            "description" : "Container<br>Referencing: `/obj-conts/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "curry" : {
+            "description" : "Currency<br>Referencing: `/obj-assets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "dfaccRuleType" : {
+            "description" : "Result Type<br>Referencing: `/code-dfacc-rule-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "macc" : {
+            "description" : "Account<br>Referencing: `/obj-poss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "ruleTempl" : {
+            "description" : "Template<br>Referencing: `/code-rule-templs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          }
+        }
+      },
+      "obj_key" : {
+        "title" : "obj_key",
+        "type" : "object",
+        "properties" : {
+          "obj" : {
+            "description" : "Referencing: `/objs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "obj1" : {
+            "description" : "Objects<br>Referencing: `/objs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "obj1Class" : {
+            "description" : "Object Class",
+            "type" : "string",
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "obj1IsNull" : {
+            "description" : "Empty",
+            "type" : "boolean",
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "obj2" : {
+            "description" : "Objects<br>Referencing: `/objs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "obj2Class" : {
+            "description" : "Object Class",
+            "type" : "string",
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "obj2IsNull" : {
+            "description" : "Empty",
+            "type" : "boolean",
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "obj3" : {
+            "description" : "Objects<br>Referencing: `/objs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "obj3Class" : {
+            "description" : "Object Class",
+            "type" : "string",
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "obj3IsNull" : {
+            "description" : "Empty",
+            "type" : "boolean",
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "obj4" : {
+            "description" : "Objects<br>Referencing: `/objs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "obj4Class" : {
+            "description" : "Object Class",
+            "type" : "string",
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "obj4IsNull" : {
+            "description" : "Empty",
+            "type" : "boolean",
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "objKey" : {
+            "description" : "Referencing: `/code-obj-keys/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "prio" : {
+            "description" : "Priority",
+            "type" : "string",
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "refObj" : {
+            "description" : "Reference<br>Referencing: `/objs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "ruleId" : {
+            "description" : "Rule",
+            "type" : "integer",
+            "format" : "int32",
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "ruleTempl" : {
+            "description" : "Template<br>Referencing: `/code-rule-templs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "seqNr" : {
+            "type" : "integer",
+            "format" : "int32",
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "trigMetaTyp" : {
+            "description" : "Triggering Meta Typ<br>Referencing: `/meta-typs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "trigOrderType" : {
+            "description" : "Triggering Order Type<br>Referencing: `/code-order-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "val" : {
+            "description" : "Value",
+            "type" : "string",
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "valA" : {
+            "description" : "Automatic",
+            "type" : "boolean",
+            "x-additionalFieldType" : "extn_generic"
+          }
+        }
+      },
+      "obj_key_ref_" : {
+        "title" : "obj_key_ref_",
+        "type" : "object",
+        "properties" : {
+          "objKey" : {
+            "description" : "Referencing: `/code-obj-keys/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "val" : {
+            "description" : "Key value",
+            "type" : "string"
+          }
+        }
+      },
+      "obj_key_single_" : {
+        "title" : "obj_key_single_",
+        "type" : "object",
+        "properties" : {
+          "refObj" : {
+            "description" : "Reference object<br>Referencing: `/objs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "val" : {
+            "description" : "Value",
+            "type" : "string"
+          }
+        }
+      },
+      "obj_minstr" : {
+        "title" : "obj_minstr",
+        "type" : "object",
+        "properties" : {
+          "addr" : {
+            "description" : "Persisted Mailing address (Table MINSTR)<br>Referencing: `/obj-addrs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "id" : {
+            "type" : "integer",
+            "format" : "int32",
+            "readOnly" : true
+          },
+          "isActive" : {
+            "description" : "Is active (when mailing instruction is not active, it will never be used and the products will not be generated)",
+            "type" : "boolean"
+          },
+          "itemList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_minstr_item"
+            }
+          },
+          "lang" : {
+            "description" : "Language<br>Referencing: `/code-langs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "langSrc" : {
+            "description" : "Language source<br>Referencing: `/code-mail-lang-srcs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "mailAction" : {
+            "description" : "Mailing action (eg. A-Post, B-Post, keep, etc.)<br>Referencing: `/code-mail-actions/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "mailEvt" : {
+            "description" : "Mailing event (eg. OK cours, etc.)<br>Referencing: `/code-mail-evts/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "mailFreq" : {
+            "description" : "Streaming frequency (eg. daily, monthly, etc.)<br>Referencing: `/code-mail-freqs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "minstrTempl" : {
+            "description" : "Mailing instruction template<br>Referencing: `/minstr-templs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          }
+        }
+      },
+      "obj_minstr_item" : {
+        "title" : "obj_minstr_item",
+        "type" : "object",
+        "properties" : {
+          "copyCnt" : {
+            "type" : "integer",
+            "format" : "int32",
+            "readOnly" : true
+          },
+          "genFreq" : {
+            "description" : "Referencing: `/code-gen-freqs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "mail" : {
+            "description" : "Referencing: `/code-mails/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "mquant" : {
+            "description" : "Referencing: `/code-mquants/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "mreplMtd" : {
+            "description" : "Referencing: `/code-mrepl-mtds/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "origCnt" : {
+            "type" : "integer",
+            "format" : "int32",
+            "readOnly" : true
+          }
+        }
+      },
+      "obj_name" : {
+        "title" : "obj_name",
+        "type" : "object",
+        "properties" : {
+          "dateValid" : {
+            "description" : "Date Valid",
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "dateValidTo" : {
+            "description" : "Date Valid to",
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "insTime" : {
+            "description" : "Insertion Time",
+            "type" : "string",
+            "format" : "date-time",
+            "readOnly" : true
+          },
+          "lang" : {
+            "description" : "Language<br>Referencing: `/code-langs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "name" : {
+            "description" : "Name",
+            "type" : "string"
+          },
+          "nameA" : {
+            "description" : "Name Auto Flag",
+            "type" : "string"
+          },
+          "nameAbbr" : {
+            "description" : "Abbreviation",
+            "type" : "string"
+          },
+          "nameAbbrA" : {
+            "description" : "Abbreviation Auto Flag",
+            "type" : "string"
+          },
+          "nameIntl" : {
+            "description" : "Internal Name",
+            "type" : "string"
+          },
+          "nameIntlA" : {
+            "description" : "Internal Name Auto Flag",
+            "type" : "string"
+          },
+          "nameLong" : {
+            "description" : "Long Name",
+            "type" : "string"
+          },
+          "nameLongA" : {
+            "description" : "Long Name Auto Flag",
+            "type" : "string"
+          }
+        }
+      },
+      "obj_pos" : {
+        "title" : "obj_pos",
+        "type" : "object",
+        "properties" : {
+          "_ident" : {
+            "description" : "Only used for workItem usecases, definition of a crossreference in workItem context",
+            "type" : "string",
+            "writeOnly" : true
+          },
+          "addList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_add"
+            },
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "asset" : {
+            "description" : "Asset linked to the position<br>Referencing: `/obj-assets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "balacc" : {
+            "description" : "Link to the balance account. Only set for ledger positions used for customer accounting.<br>Referencing: `/obj-balaccs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "bdeRecVersion" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "beBkmLotType" : {
+            "description" : "Position lot type in primary accounting standard<br>Referencing: `/code-be-lot-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "beBkmLotType2" : {
+            "description" : "Position lot type in secondary accounting standard<br>Referencing: `/code-be-lot-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "bePkoMulti" : {
+            "description" : "Specifies how the position is booked in a multi gaap environment<br>Referencing: `/code-be-pko-multis/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "block" : {
+            "description" : "Block code<br>Referencing: `/code-blocks/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "blockList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/pos_block"
+            },
+            "readOnly" : true
+          },
+          "blockText" : {
+            "description" : "Block text",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "bp" : {
+            "description" : "Business partner of the container the position belongs to<br>Referencing: `/obj-bps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "bu" : {
+            "description" : "Business unit<br>Referencing: `/obj-bps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "classifList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_classif"
+            },
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "closeBookDoc" : {
+            "description" : "Closing Book Order<br>Referencing: `/docs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/doc_ref"
+            } ],
+            "readOnly" : true
+          },
+          "closeDate" : {
+            "description" : "Closing date",
+            "type" : "string",
+            "format" : "date"
+          },
+          "cnt" : {
+            "description" : "Position counter",
+            "type" : "integer",
+            "format" : "int32",
+            "readOnly" : true
+          },
+          "collatRuleOvrList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/pos_collat_rule"
+            }
+          },
+          "compoComm" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/compo_intr"
+            } ],
+            "readOnly" : true
+          },
+          "compoMaccList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/compo_macc"
+            },
+            "readOnly" : true
+          },
+          "compoRetro" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/compo_intr"
+            } ],
+            "readOnly" : true
+          },
+          "cont" : {
+            "description" : "Container the position belongs to<br>Referencing: `/obj-conts/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "credBlockList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/pos_cred_block"
+            },
+            "readOnly" : true
+          },
+          "credCompoIntr" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/compo_intr"
+            } ],
+            "readOnly" : true
+          },
+          "cuaAsset" : {
+            "description" : "Link to the asset for a asset dedicated position. Only set for customer accounting.<br>Referencing: `/obj-assets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "custBp" : {
+            "description" : "Custodian business partner<br>Referencing: `/obj-bps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "custCont" : {
+            "description" : "Custodian container<br>Referencing: `/obj-conts/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "debCompoIntr" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/compo_intr"
+            } ],
+            "readOnly" : true
+          },
+          "dfaccRefList" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_dfacc_ref"
+            } ],
+            "readOnly" : true
+          },
+          "doc" : {
+            "description" : "Document id if the object is being modified<br>Referencing: `/docs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/doc_ref"
+            } ]
+          },
+          "docmRelList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_rel_docm"
+            }
+          },
+          "extn" : {
+            "$ref" : "#/components/schemas/obj_pos_extn"
+          },
+          "histAssetList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_pos_asset"
+            },
+            "readOnly" : true
+          },
+          "id" : {
+            "description" : "ID<br>Referencing: `/objs/{id}`",
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "isBlocked" : {
+            "description" : "Is position blocked",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "keyList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_key"
+            },
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "lastTrans" : {
+            "$ref" : "#/components/schemas/obj_trans"
+          },
+          "minstrList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_minstr"
+            }
+          },
+          "obj" : {
+            "description" : "Only used for workItem usecases, reference to an existing entity<br>\nReferencing: `/obj-poss/{id}`<br>\n",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "writeOnly" : true
+          },
+          "objAddrList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_rel_addr"
+            }
+          },
+          "objName" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_name"
+            } ],
+            "readOnly" : true
+          },
+          "objNameList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_name"
+            },
+            "readOnly" : true
+          },
+          "objSubType" : {
+            "description" : "Object sub-type<br>Referencing: `/code-obj-sub-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "objType" : {
+            "description" : "Object type<br>Referencing: `/code-obj-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "openBookDoc" : {
+            "description" : "Opening Book Order<br>Referencing: `/docs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/doc_ref"
+            } ],
+            "readOnly" : true
+          },
+          "openDate" : {
+            "description" : "Opening date of the position. The parameters have only an impact for\n                               security positions and asset aggregation. If i_force_last_zero is set to false the\n                               return value is max(pos.open_date, asset.open_date). If it's set to true the open_date\n                               for security positions and asset aggregations is that date when the quantity of\n                               the position became unequal to 0 the last time. If that date corresponds to the first booking event\n                               and a start date is defined in obj, the start date from the table obj is returned.\n                               If i_alw_pos_id_chg is used in combination with i_force_last_zero all positions with the same asset,\n                               container and currency are considered in case position balance has been transfered between such positions.\n",
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "person" : {
+            "description" : "Link to the person for a beneficiary dedicated position. Only set for customer accounting.<br>Referencing: `/obj-persons/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "posMetalList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/pos_metal"
+            },
+            "readOnly" : true
+          },
+          "psafeBp" : {
+            "description" : "Place of safekeeping<br>Referencing: `/obj-bps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "reconLotType" : {
+            "description" : "Reconciliation type<br>Referencing: `/code-recon-lot-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "refCurry" : {
+            "description" : "Position reference currency<br>Referencing: `/obj-assets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "refDoc" : {
+            "description" : "Reference order<br>Referencing: `/docs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/doc_ref"
+            } ],
+            "readOnly" : true
+          },
+          "refObj" : {
+            "description" : "Reference object<br>Referencing: `/objs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "relList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_rel"
+            }
+          },
+          "remark" : {
+            "description" : "The \"standard\" obj remark",
+            "type" : "string"
+          },
+          "remarkList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_remark"
+            }
+          },
+          "sbu" : {
+            "description" : "Sub Business Unit<br>Referencing: `/obj-bps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "sdsInstn" : {
+            "description" : "SDS instance ID<br>Referencing: `/code-extl-syss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "secPosType" : {
+            "description" : "Security position type, e.g. slb_lent, clta_rcv, cltm, etc.<br>Referencing: `/code-sec-pos-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "sign" : {
+            "description" : "Position sign: -1 Short, 0 Long",
+            "type" : "integer",
+            "format" : "int32",
+            "readOnly" : true
+          },
+          "sortAlpha" : {
+            "description" : "Alpha-numeric sort value",
+            "type" : "string"
+          },
+          "sortNr" : {
+            "description" : "Numeric sort value",
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "transList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_trans"
+            }
+          },
+          "ts" : {
+            "type" : "array",
+            "items" : {
+              "description" : "Time Series.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: time_series\n",
+              "$ref" : "#/components/schemas/timeseries"
+            },
+            "readOnly" : true
+          },
+          "widrwNoticeList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/pos_widrw_notice"
+            },
+            "readOnly" : true
+          }
+        },
+        "oneOf" : [ {
+          "$ref" : "#/components/schemas/position_pillar"
+        }, {
+          "$ref" : "#/components/schemas/booking_pillar"
+        }, {
+          "$ref" : "#/components/schemas/performance_pillar"
+        }, {
+          "$ref" : "#/components/schemas/credit_pillar"
+        }, {
+          "$ref" : "#/components/schemas/avl_qty_pillar"
+        } ]
+      },
+      "obj_pos_asset" : {
+        "title" : "obj_pos_asset",
+        "type" : "object",
+        "properties" : {
+          "asset" : {
+            "description" : "Asset<br>Referencing: `/obj-assets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "effDate" : {
+            "description" : "Effective date",
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "insDoc" : {
+            "description" : "Inserted by Order<br>Referencing: `/docs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/doc_ref"
+            } ],
+            "readOnly" : true
+          },
+          "insSecUser" : {
+            "description" : "Inserted by User<br>Referencing: `/users/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/user_ref"
+            } ],
+            "readOnly" : true
+          },
+          "insTimestamp" : {
+            "description" : "Inserted on Date",
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "pos" : {
+            "description" : "Position (Money Account)<br>Referencing: `/obj-poss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          }
+        }
+      },
+      "obj_pos_extn" : {
+        "title" : "obj_pos_extn",
+        "type" : "object",
+        "properties" : {
+          "confirmPayeeOptOut" : {
+            "$ref" : "#/components/schemas/obj_classif_",
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "confirmPayeeOptOutHist" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_classif_"
+            },
+            "readOnly" : true
+          },
+          "contrRenewal" : {
+            "description" : "Contract renewal kind<br>Referencing: `/code-contr-renewals/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "frsDfltExpMacc" : {
+            "$ref" : "#/components/schemas/obj_classif_",
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "frsDfltExpMaccHist" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_classif_"
+            },
+            "readOnly" : true
+          },
+          "frsTypeIntrRateMacc" : {
+            "$ref" : "#/components/schemas/obj_classif_",
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "frsTypeIntrRateMaccHist" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_classif_"
+            },
+            "readOnly" : true
+          },
+          "fxtrLastMt304ExtlRefNr" : {
+            "description" : "FXTR last MT304 reference",
+            "type" : "string"
+          },
+          "imp" : {
+            "description" : "Impairment<br>Referencing: `/code-consts/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "lastMt3x0ExtlRefNr" : {
+            "description" : "Last SWIFT Message reference",
+            "type" : "string"
+          },
+          "legAccessAccPos" : {
+            "$ref" : "#/components/schemas/obj_classif_",
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "legAccessAccPosHist" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_classif_"
+            },
+            "readOnly" : true
+          },
+          "legAllocatedBasis" : {
+            "$ref" : "#/components/schemas/obj_classif_",
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "legAllocatedBasisHist" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_classif_"
+            },
+            "readOnly" : true
+          },
+          "legCorepTradPosPos" : {
+            "$ref" : "#/components/schemas/obj_classif_",
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "legCorepTradPosPosHist" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_classif_"
+            },
+            "readOnly" : true
+          },
+          "legEligFundPos" : {
+            "$ref" : "#/components/schemas/obj_classif_",
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "legEligFundPosHist" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_classif_"
+            },
+            "readOnly" : true
+          },
+          "legEligRetailPos" : {
+            "$ref" : "#/components/schemas/obj_classif_",
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "legEligRetailPosHist" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_classif_"
+            },
+            "readOnly" : true
+          },
+          "legFairvAssessPos" : {
+            "$ref" : "#/components/schemas/obj_classif_",
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "legFairvAssessPosHist" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_classif_"
+            },
+            "readOnly" : true
+          },
+          "legHkCapyPos" : {
+            "$ref" : "#/components/schemas/obj_classif_",
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "legHkCapyPosHist" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_classif_"
+            },
+            "readOnly" : true
+          },
+          "legLegalAccnt" : {
+            "$ref" : "#/components/schemas/obj_classif_",
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "legLegalAccntHist" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_classif_"
+            },
+            "readOnly" : true
+          },
+          "legLiqRetailIndic" : {
+            "$ref" : "#/components/schemas/obj_classif_",
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "legLiqRetailIndicHist" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_classif_"
+            },
+            "readOnly" : true
+          },
+          "legLiquidAvailPos" : {
+            "$ref" : "#/components/schemas/obj_classif_",
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "legLiquidAvailPosHist" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_classif_"
+            },
+            "readOnly" : true
+          },
+          "legLiquidEligPos" : {
+            "$ref" : "#/components/schemas/obj_classif_",
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "legLiquidEligPosHist" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_classif_"
+            },
+            "readOnly" : true
+          },
+          "legLiquidMngtFunctPos" : {
+            "$ref" : "#/components/schemas/obj_classif_",
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "legLiquidMngtFunctPosHist" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_classif_"
+            },
+            "readOnly" : true
+          },
+          "legPctOperRelPos" : {
+            "description" : "Operational relationship (percentage)",
+            "type" : "number"
+          },
+          "legPledgedPos" : {
+            "$ref" : "#/components/schemas/obj_classif_",
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "legPledgedPosHist" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_classif_"
+            },
+            "readOnly" : true
+          },
+          "legPosStatusPos" : {
+            "$ref" : "#/components/schemas/obj_classif_",
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "legPosStatusPosHist" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_classif_"
+            },
+            "readOnly" : true
+          },
+          "legPurposePos" : {
+            "$ref" : "#/components/schemas/obj_classif_",
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "legPurposePosHist" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_classif_"
+            },
+            "readOnly" : true
+          },
+          "legRecoursePosLedger" : {
+            "$ref" : "#/components/schemas/obj_classif_",
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "legRecoursePosLedgerHist" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_classif_"
+            },
+            "readOnly" : true
+          },
+          "legRiskIndiMacc" : {
+            "$ref" : "#/components/schemas/obj_classif_",
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "legRiskIndiMaccHist" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_classif_"
+            },
+            "readOnly" : true
+          },
+          "legSftSubCvaPos" : {
+            "$ref" : "#/components/schemas/obj_classif_",
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "legSftSubCvaPosHist" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_classif_"
+            },
+            "readOnly" : true
+          },
+          "legStresWidrwPos" : {
+            "$ref" : "#/components/schemas/obj_classif_",
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "legStresWidrwPosHist" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_classif_"
+            },
+            "readOnly" : true
+          },
+          "legTmpWaivedPos" : {
+            "$ref" : "#/components/schemas/obj_classif_",
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "legTmpWaivedPosHist" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_classif_"
+            },
+            "readOnly" : true
+          },
+          "legTypeAssmtPos" : {
+            "$ref" : "#/components/schemas/obj_classif_",
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "legTypeAssmtPosHist" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_classif_"
+            },
+            "readOnly" : true
+          },
+          "legTypeDeductionPos" : {
+            "$ref" : "#/components/schemas/obj_classif_",
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "legTypeDeductionPosHist" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_classif_"
+            },
+            "readOnly" : true
+          },
+          "maccAccrGradSplit" : {
+            "$ref" : "#/components/schemas/obj_classif_",
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "maccAccrGradSplitHist" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_classif_"
+            },
+            "readOnly" : true
+          },
+          "maccCapt" : {
+            "description" : "MACC Capital",
+            "type" : "number"
+          },
+          "maccEncryptedKey" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_key_single_"
+            }
+          },
+          "maccFeepAccSpcd" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_classif_set_"
+            },
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "maccFeepAccSpcdDet" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_classif_set_"
+            },
+            "readOnly" : true
+          },
+          "maccFeepGenDoc" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_classif_set_"
+            },
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "maccFeepGenDocDet" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_classif_set_"
+            },
+            "readOnly" : true
+          },
+          "maccRdmpt" : {
+            "description" : "MACC Redemption",
+            "type" : "number"
+          },
+          "maccRevn" : {
+            "description" : "MACC Revenue",
+            "type" : "number"
+          },
+          "mba$addAccDescn" : {
+            "$ref" : "#/components/schemas/mba_add_acc_descn"
+          },
+          "mba$cashMngt" : {
+            "$ref" : "#/components/schemas/mba_cash_mngt"
+          },
+          "mba$compliBlockList" : {
+            "$ref" : "#/components/schemas/mba_compli_block_list"
+          },
+          "mba$docm" : {
+            "$ref" : "#/components/schemas/mba_docm"
+          },
+          "mba$hasIdxStord" : {
+            "$ref" : "#/components/schemas/obj_classif_",
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "mba$hasIdxStordHist" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_classif_"
+            },
+            "readOnly" : true
+          },
+          "mba$isExclCashMngt" : {
+            "$ref" : "#/components/schemas/obj_classif_",
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "mba$isExclCashMngtHist" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_classif_"
+            },
+            "readOnly" : true
+          },
+          "mba$lastSeqNr" : {
+            "$ref" : "#/components/schemas/mba_last_seq_nr"
+          },
+          "mba$maccExemptFee" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_classif_set_"
+            },
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "mba$maccExemptFeeDet" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_classif_set_"
+            },
+            "readOnly" : true
+          },
+          "mba$nameExtn" : {
+            "$ref" : "#/components/schemas/mba_name_extn"
+          },
+          "mba$posExtlId" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_key"
+            }
+          },
+          "mba$posExtlRecon" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_key_single_"
+            }
+          },
+          "mba$posLgcy" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_key_single_"
+            }
+          },
+          "mba$posTech" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_key_single_"
+            }
+          },
+          "mba$recon" : {
+            "$ref" : "#/components/schemas/mba_recon"
+          },
+          "mba$reconPrd" : {
+            "$ref" : "#/components/schemas/obj_classif_",
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "mba$reconPrdHist" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_classif_"
+            },
+            "readOnly" : true
+          },
+          "mba$rsp" : {
+            "$ref" : "#/components/schemas/mba_rsp"
+          },
+          "mba$status" : {
+            "$ref" : "#/components/schemas/obj_classif_",
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "mba$statusHist" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_classif_"
+            },
+            "readOnly" : true
+          },
+          "mba$type" : {
+            "$ref" : "#/components/schemas/obj_classif_",
+            "x-additionalFieldType" : "extn_curr_classif"
+          },
+          "mba$typeHist" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_classif_"
+            },
+            "readOnly" : true
+          },
+          "pos950PageNr" : {
+            "description" : "Swift MT950 Page nr",
+            "type" : "string"
+          },
+          "posAnacredContr" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_key_single_"
+            }
+          },
+          "posBacsSun" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_key_single_"
+            }
+          },
+          "posExtl" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_key_single_"
+            }
+          },
+          "posIban" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_key_single_"
+            }
+          },
+          "posNr" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_key_single_"
+            }
+          },
+          "posQrIban" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_key_single_"
+            }
+          },
+          "posSym" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_key_single_"
+            }
+          }
+        }
+      },
+      "obj_poss" : {
+        "title" : "List of obj_pos",
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/obj_pos"
+        },
+        "uniqueItems" : true
+      },
+      "obj_ref" : {
+        "title" : "obj_ref",
+        "type" : "object",
+        "properties" : {
+          "_href" : {
+            "description" : "Reference/link",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "_ident" : {
+            "description" : "Only used for workItem usecases, crossreference in workItem context",
+            "type" : "string",
+            "writeOnly" : true
+          },
+          "id" : {
+            "description" : "Numeric reference",
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "keyList" : {
+            "description" : "Key value object reference ",
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_key_ref_"
+            },
+            "writeOnly" : true
+          }
+        }
+      },
+      "obj_rel" : {
+        "title" : "obj_rel",
+        "type" : "object",
+        "properties" : {
+          "f1" : {
+            "type" : "number"
+          },
+          "obj1" : {
+            "description" : "Referencing: `/objs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "obj2" : {
+            "description" : "Referencing: `/objs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "objRelSubType" : {
+            "description" : "Referencing: `/code-obj-rel-sub-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "objRelType" : {
+            "description" : "Referencing: `/code-obj-rel-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "prio" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "shareRate" : {
+            "description" : "Sharing Rate (Sharing)",
+            "type" : "number"
+          },
+          "subTrl" : {
+            "type" : "string"
+          },
+          "trl" : {
+            "type" : "string"
+          }
+        }
+      },
+      "obj_rel_addr" : {
+        "title" : "obj_rel_addr",
+        "type" : "object",
+        "properties" : {
+          "addr" : {
+            "description" : "Address<br>Referencing: `/obj-addrs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "isMain" : {
+            "description" : "Is Main Address",
+            "type" : "boolean"
+          },
+          "isResid" : {
+            "description" : "Residence",
+            "type" : "boolean"
+          }
+        }
+      },
+      "obj_rel_docm" : {
+        "title" : "obj_rel_docm",
+        "type" : "object",
+        "properties" : {
+          "deferralDate" : {
+            "description" : "Deferral Date (Document)",
+            "type" : "string",
+            "format" : "date-time-no-tz"
+          },
+          "deferralReason" : {
+            "description" : "Deferral Reason (Document)<br>Referencing: `/code-deferral-reasons/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "expirDate" : {
+            "description" : "Expiration Date (Document)",
+            "type" : "string",
+            "format" : "date-time-no-tz"
+          },
+          "name" : {
+            "type" : "string",
+            "readOnly" : true
+          },
+          "obj" : {
+            "description" : "Object<br>Referencing: `/objs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "objDocm" : {
+            "description" : "Document<br>Referencing: `/obj-docms/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "objRelSubType" : {
+            "description" : "Object relation sub type<br>Referencing: `/code-obj-rel-sub-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "signDate" : {
+            "description" : "Signature Date (Document)",
+            "type" : "string",
+            "format" : "date-time-no-tz"
+          },
+          "text" : {
+            "description" : "Additional Text (Document)",
+            "type" : "string"
+          },
+          "version" : {
+            "description" : "Version (Document)",
+            "type" : "string"
+          }
+        }
+      },
+      "obj_remark" : {
+        "title" : "obj_remark",
+        "type" : "object",
+        "properties" : {
+          "attch" : {
+            "type" : "string"
+          },
+          "dateValidTo" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "langList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_remark_det"
+            }
+          },
+          "subType" : {
+            "description" : "Referencing: `/code-remark-sub-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "text" : {
+            "type" : "string"
+          },
+          "timestamp" : {
+            "type" : "string",
+            "format" : "date-time-no-tz"
+          },
+          "topic" : {
+            "type" : "string"
+          },
+          "type" : {
+            "description" : "Referencing: `/code-remark-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "user" : {
+            "description" : "Referencing: `/users/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/user_ref"
+            } ]
+          }
+        }
+      },
+      "obj_remark_det" : {
+        "title" : "obj_remark_det",
+        "type" : "object",
+        "properties" : {
+          "lang" : {
+            "description" : "Referencing: `/code-langs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "text" : {
+            "type" : "string"
+          }
+        }
+      },
+      "obj_trans" : {
+        "title" : "obj_trans",
+        "type" : "object",
+        "properties" : {
+          "doc" : {
+            "description" : "Referencing: `/docs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/doc_ref"
+            } ],
+            "readOnly" : true
+          },
+          "timestamp" : {
+            "type" : "string",
+            "format" : "date-time-no-tz",
+            "readOnly" : true
+          },
+          "userstamp" : {
+            "type" : "string",
+            "readOnly" : true
+          }
+        }
+      },
+      "pos_block" : {
+        "title" : "pos_block",
+        "type" : "object",
+        "properties" : {
+          "beLotType" : {
+            "description" : "Referencing: `/code-be-lot-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "block" : {
+            "description" : "Referencing: `/code-blocks/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "fromDoc" : {
+            "description" : "Referencing: `/docs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/doc_ref"
+            } ],
+            "readOnly" : true
+          },
+          "pos" : {
+            "description" : "Referencing: `/obj-poss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "remark" : {
+            "type" : "string",
+            "readOnly" : true
+          },
+          "secUser" : {
+            "description" : "Referencing: `/users/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/user_ref"
+            } ],
+            "readOnly" : true
+          },
+          "timestamp" : {
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "toDoc" : {
+            "description" : "Referencing: `/docs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/doc_ref"
+            } ],
+            "readOnly" : true
+          },
+          "trigQty" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "userRef" : {
+            "description" : "Referencing: `/users/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/user_ref"
+            } ],
+            "readOnly" : true
+          },
+          "validFrom" : {
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "validTo" : {
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "versionNr" : {
+            "type" : "integer",
+            "format" : "int32",
+            "readOnly" : true
+          }
+        }
+      },
+      "pos_collat_rule" : {
+        "title" : "pos_collat_rule",
+        "type" : "object",
+        "properties" : {
+          "calcHcfx" : {
+            "type" : "boolean"
+          },
+          "calcHcfxM" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "calcHcm" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "collatFilterList" : {
+            "type" : "string",
+            "readOnly" : true
+          },
+          "collatLotDistr" : {
+            "description" : "Referencing: `/code-collat-lot-distrs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "collatLotDistrM" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "collatValCmtdM" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "collatValType" : {
+            "description" : "Referencing: `/code-collat-val-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "comment" : {
+            "type" : "string"
+          },
+          "const1" : {
+            "type" : "number"
+          },
+          "const1M" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "const2" : {
+            "type" : "number"
+          },
+          "const2M" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "credPosSectCond" : {
+            "description" : "Referencing: `/code-cred-pos-sect-conds/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "credRiskMtd" : {
+            "description" : "Referencing: `/code-cred-risk-mtds/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "doCredChk" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "fact" : {
+            "type" : "number"
+          },
+          "factM" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "hasDynWeight" : {
+            "type" : "boolean"
+          },
+          "hasDynWeightM" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "hasPriceOvr" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "invalid" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "isInDynWeightPool" : {
+            "type" : "boolean"
+          },
+          "isInDynWeightPoolM" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "isSeizable" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "method" : {
+            "description" : "Referencing: `/code-collat-val-cmtds/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "propOrder" : {
+            "type" : "integer",
+            "format" : "int32",
+            "readOnly" : true
+          },
+          "qtySign" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "useShareNet" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "validFrom" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "validTo" : {
+            "type" : "string",
+            "format" : "date"
+          }
+        }
+      },
+      "pos_cred_block" : {
+        "title" : "pos_cred_block",
+        "type" : "object",
+        "properties" : {
+          "beLotType" : {
+            "description" : "Lot type of credit blocking<br>Referencing: `/code-be-lot-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "book1Doc" : {
+            "description" : "The order the blocking opening was booked with<br>Referencing: `/docs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/doc_ref"
+            } ],
+            "readOnly" : true
+          },
+          "book2Doc" : {
+            "description" : "The order the blocking closing was booked with<br>Referencing: `/docs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/doc_ref"
+            } ],
+            "readOnly" : true
+          },
+          "credBlockKind" : {
+            "description" : "Type of Credit Blocking<br>Referencing: `/code-blocks/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "mdfTime" : {
+            "description" : "Timestamp when this history version was written",
+            "type" : "string",
+            "format" : "date-time",
+            "readOnly" : true
+          },
+          "qty" : {
+            "description" : "Capital blocking quantity (in Pos-Ref-Curry)",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "remark" : {
+            "description" : "Comment for the blocking",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "secUser" : {
+            "description" : "The user who created this blocking history version<br>Referencing: `/users/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/user_ref"
+            } ],
+            "readOnly" : true
+          },
+          "userRef" : {
+            "description" : "Responsible user<br>Referencing: `/users/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/user_ref"
+            } ],
+            "readOnly" : true
+          },
+          "validFrom" : {
+            "description" : "Valid from date of this blocking",
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "validTo" : {
+            "description" : "Valid to date of this blocking",
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "versionNr" : {
+            "description" : "Version number",
+            "type" : "integer",
+            "format" : "int32",
+            "readOnly" : true
+          }
+        }
+      },
+      "pos_metal" : {
+        "title" : "pos_metal",
+        "type" : "object",
+        "properties" : {
+          "barNr" : {
+            "description" : "Bar Number",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "fineness" : {
+            "description" : "Fineness",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "histStatus" : {
+            "description" : "Referencing: `/code-hist-statuss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "mint" : {
+            "description" : "Mint<br>Referencing: `/objs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "palletNr" : {
+            "description" : "Pallet Number",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "pos" : {
+            "description" : "Referencing: `/obj-poss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "prodYear" : {
+            "description" : "Production Year",
+            "type" : "integer",
+            "format" : "int32",
+            "readOnly" : true
+          },
+          "rcvdFromBp" : {
+            "description" : "Received from<br>Referencing: `/obj-bps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "remark" : {
+            "description" : "Remark",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "secUser" : {
+            "description" : "User<br>Referencing: `/users/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/user_ref"
+            } ],
+            "readOnly" : true
+          },
+          "timestamp" : {
+            "description" : "Timestamp",
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "validFrom" : {
+            "description" : "Valid from",
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "validTo" : {
+            "description" : "Valid to",
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "vault" : {
+            "description" : "Vault",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "weight" : {
+            "description" : "Weight",
+            "type" : "number",
+            "readOnly" : true
+          }
+        }
+      },
+      "pos_widrw_notice" : {
+        "title" : "pos_widrw_notice",
+        "type" : "object",
+        "properties" : {
+          "beLotType" : {
+            "description" : "Lot type id for withdrawal notice<br>Referencing: `/code-be-lot-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "comment" : {
+            "description" : "Comment to a withdrawal notice",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "dateOfNotice" : {
+            "description" : "Date of notice",
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "id" : {
+            "description" : "Withdrawal notice id",
+            "type" : "integer",
+            "format" : "int32",
+            "readOnly" : true
+          },
+          "prio" : {
+            "description" : "Withdrawal Notice Priority",
+            "type" : "integer",
+            "format" : "int32",
+            "readOnly" : true
+          },
+          "qty" : {
+            "description" : "Withdrawal notice amount",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "refSecUser" : {
+            "description" : "Reference user<br>Referencing: `/users/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/user_ref"
+            } ],
+            "readOnly" : true
+          },
+          "secUser" : {
+            "description" : "The user who created this withdrawal notice<br>Referencing: `/users/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/user_ref"
+            } ],
+            "readOnly" : true
+          },
+          "status" : {
+            "description" : "Withdrawal notice status (active, entered, inactive)<br>Referencing: `/code-consts/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "timestamp" : {
+            "description" : "Timestamp",
+            "type" : "string",
+            "format" : "date-time",
+            "readOnly" : true
+          },
+          "validFrom" : {
+            "description" : "Withdrawal notice due date",
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "validTo" : {
+            "description" : "Withdrawal notice expiry",
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "widrwNoticeType" : {
+            "description" : "Withdrawal Notice Type<br>Referencing: `/code-widrw-notice-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          }
+        }
+      },
+      "user_ref" : {
+        "title" : "user_ref",
+        "type" : "object",
+        "properties" : {
+          "_href" : {
+            "description" : "Reference/link",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "id" : {
+            "description" : "Numeric reference",
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }
+      },
+      "xrate_pin_ref" : {
+        "title" : "xrate_pin_ref",
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "readOnly" : true
+          }
+        }
+      },
+      "obj_id_ref" : {
+        "title" : "obj_id_ref",
+        "type" : "object",
+        "properties" : {
+          "_href" : {
+            "description" : "Reference/link",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "id" : {
+            "description" : "Numeric reference",
+            "type" : "integer",
+            "format" : "int32",
+            "readOnly" : true
+          }
+        }
+      },
+      "code_tab_id_ref" : {
+        "title" : "code_tab_id_ref",
+        "type" : "object",
+        "properties" : {
+          "_href" : {
+            "description" : "Reference/link",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "id" : {
+            "description" : "Numeric reference",
+            "type" : "integer",
+            "format" : "int32",
+            "readOnly" : true
+          }
+        }
+      },
+      "timeseries" : {
+        "title" : "timeseries",
+        "type" : "object",
+        "properties" : {
+          "curry" : {
+            "description" : "Referencing: `/obj-assets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_id_ref"
+            } ],
+            "readOnly" : true
+          },
+          "effDate" : {
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "mdDomn" : {
+            "description" : "Referencing: `/code-md-domns/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_id_ref"
+            } ],
+            "readOnly" : true
+          },
+          "mdScen" : {
+            "description" : "Referencing: `/code-md-scens/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_id_ref"
+            } ],
+            "readOnly" : true
+          },
+          "mdStatus" : {
+            "description" : "Referencing: `/code-md-statuss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_id_ref"
+            } ],
+            "readOnly" : true
+          },
+          "mkt" : {
+            "description" : "Referencing: `/obj-mkts/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_id_ref"
+            } ],
+            "readOnly" : true
+          },
+          "mktTimestamp" : {
+            "type" : "string",
+            "format" : "date-time",
+            "readOnly" : true
+          },
+          "mostRecent" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "pin" : {
+            "description" : "Referencing: `/xrate-pins/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/xrate_pin_ref"
+            } ],
+            "readOnly" : true
+          },
+          "priceQuoteType" : {
+            "description" : "Referencing: `/code-price-quote-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_id_ref"
+            } ],
+            "readOnly" : true
+          },
+          "priceSrc" : {
+            "description" : "Referencing: `/code-price-srcs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_id_ref"
+            } ],
+            "readOnly" : true
+          },
+          "prio" : {
+            "type" : "integer",
+            "readOnly" : true
+          },
+          "signt" : {
+            "type" : "integer",
+            "readOnly" : true
+          },
+          "signt2" : {
+            "type" : "integer",
+            "readOnly" : true
+          },
+          "val1" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "val2" : {
+            "type" : "number",
+            "readOnly" : true
+          }
+        }
+      },
+      "credit_id_ref" : {
+        "title" : "credit_id_ref",
+        "type" : "object",
+        "readOnly" : true,
+        "properties" : {
+          "id" : {
+            "description" : "The ACP ID of the reference.\n",
+            "type" : "number",
+            "readOnly" : true
+          }
+        }
+      },
+      "performance_pillar" : {
+        "title" : "performance_pillar",
+        "type" : "object",
+        "properties" : {
+          "mwrr" : {
+            "description" : "Money-weighted rate of return.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: performance_pos\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "twrr" : {
+            "description" : "Time Weighted Rate of Return (True Time Weighted Rate of Return).<br>\n**_Only visible within compound APIs_**<br>\nOverlay: performance_pos\n",
+            "type" : "number",
+            "readOnly" : true
+          }
+        }
+      },
+      "position_pillar" : {
+        "title" : "position_pillar",
+        "type" : "object",
+        "readOnly" : true,
+        "properties" : {
+          "accrBu" : {
+            "description" : "Accrual in BU reference currency as per reference date.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: position\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "accrCommBu" : {
+            "description" : "Accrued commission in BU reference currency as per reference date.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: position\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "accrCommCredBu" : {
+            "description" : "Credit accrued commission in BU currency.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: position\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "accrCommCredPos" : {
+            "description" : "Accrued commission in position currency as per reference date.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: position\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "accrCommCredRef" : {
+            "description" : "Credit accrued commission in reference currency.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: position\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "accrCommDebBu" : {
+            "description" : "Debit accrued commission in BU currency.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: position\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "accrCommDebPos" : {
+            "description" : "Debit accrued commission in position currency.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: position\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "accrCommDebRef" : {
+            "description" : "Debit accrued commission in reference currency.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: position\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "accrCommPos" : {
+            "description" : "Accrued commission in position currency as per reference date.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: position\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "accrCommRef" : {
+            "description" : "Accrued commission in position value in container currency resp. reference currency as per reference date.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: position\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "accrCredBu" : {
+            "description" : "Credit accrual in BU reference currency as per reference date.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: position\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "accrCredPos" : {
+            "description" : "Credit accrual in position currency as per reference date.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: position\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "accrCredRef" : {
+            "description" : "Credit accrual in container currency resp. reference currency as per reference date.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: position\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "accrDebBu" : {
+            "description" : "Debit accrual in BU reference currency as per reference date.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: position\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "accrDebPos" : {
+            "description" : "Debit accrual in position currency as per reference date.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: position\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "accrDebRef" : {
+            "description" : "Debit accrual in container currency resp. reference currency as per reference date.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: position\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "accrPos" : {
+            "description" : "Accrual in position currency as per reference date.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: position\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "accrRef" : {
+            "description" : "Accrual in position value in container currency resp. reference currency as per reference date.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: position\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "currValBu" : {
+            "description" : "Position value in BU reference currency as per reference date.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: position\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "currValPos" : {
+            "description" : "Position value in position currency as per reference date.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: position\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "currValRef" : {
+            "description" : "Position value in container currency resp. reference currency as per reference date.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: position\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "histValPos" : {
+            "description" : "Historic book value in position currency.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: position\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "histValRef" : {
+            "description" : "Historic (book) value in reference currency.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: position\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "qty" : {
+            "description" : "Quantity.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: position\n",
+            "type" : "number",
+            "readOnly" : true
+          }
+        }
+      },
+      "booking_pillar" : {
+        "title" : "booking_pillar",
+        "type" : "object",
+        "properties" : {
+          "bookList" : {
+            "type" : "array",
+            "items" : {
+              "description" : "**_The field is deprecated, please use the /books endpoint_**<br>\n**_Only visible within compound APIs_**<br>\nReferencing: `/books/{id}`<br>\nOverlay: book\nBack-property: pos\n",
+              "allOf" : [ {
+                "$ref" : "#/components/schemas/obj_ref"
+              } ]
+            },
+            "readOnly" : true,
+            "deprecated" : true
+          }
+        }
+      },
+      "collat_det" : {
+        "title" : "collat_det",
+        "type" : "object",
+        "properties" : {
+          "collat" : {
+            "description" : "The financing involved in this assignment.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_det\n",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/credit_id_ref"
+            } ],
+            "readOnly" : true
+          },
+          "collatDetSerpilType" : {
+            "description" : "Type of allocation slice (code_collat_det_serpil_type).<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_det\n",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/credit_id_ref"
+            } ],
+            "readOnly" : true
+          },
+          "collatLot" : {
+            "description" : "Collateral lot ID of the allocation slice (code_collat_lot).<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_det\n",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/credit_id_ref"
+            } ],
+            "readOnly" : true
+          },
+          "grantCont" : {
+            "description" : "The granting container ACP ID (coverage, collateral).<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_det\n",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/credit_id_ref"
+            } ],
+            "readOnly" : true
+          },
+          "grantOffset" : {
+            "description" : "The sum of all slices for the granting position preceding this slice.<br>\nThis offset indicates how much credit equivalent ot the granting position<br>\nis being used with a higher priority than this slice.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_det\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "grantPos" : {
+            "description" : "The granting position ACP ID (coverage, collateral).<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_det\n",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/credit_id_ref"
+            } ],
+            "readOnly" : true
+          },
+          "grantVal100" : {
+            "description" : "100% Credit Equivalent of granting position.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_det\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "hcScaleFact" : {
+            "description" : "Haircut scale factor.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_det\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "hccVal" : {
+            "description" : "Collateral haircut.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_det\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "hceVal" : {
+            "description" : "Exposure haircut.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_det\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "hcfxVal" : {
+            "description" : "Currency mismatch haircut.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_det\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "hcmVal" : {
+            "description" : "Currency mismatch haircut.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_det\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "isBlank" : {
+            "description" : "Indicates a blank limit allocation slice if true.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_det\n",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "isExtl" : {
+            "description" : "Indicates an external limit allocation slice if true.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_det\n",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "lgdEffVal" : {
+            "description" : "Effecitve loss given default.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_det\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "limitCont" : {
+            "description" : "The limit container ACP ID.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_det\n",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/credit_id_ref"
+            } ],
+            "readOnly" : true
+          },
+          "limitPos" : {
+            "description" : "The limit position ACP ID.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_det\n",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/credit_id_ref"
+            } ],
+            "readOnly" : true
+          },
+          "optimFigFact" : {
+            "description" : "Optimization figure factor of this slice for LP-based allocations.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_det\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "rcvCont" : {
+            "description" : "The receiving container ACP ID (usage, liability).<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_det\n",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/credit_id_ref"
+            } ],
+            "readOnly" : true
+          },
+          "rcvOffset" : {
+            "description" : "The sum of all slices for the receiving position preceding this slice.<br>\nThis offset indicates how much credit equivalent of the receiving position<br>\nis being covered with a higher priority than this slice..<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_det\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "rcvPos" : {
+            "description" : "The receiving position ACP ID (usage, liability).<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_det\n",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/credit_id_ref"
+            } ],
+            "readOnly" : true
+          },
+          "rcvVal100" : {
+            "description" : "100% Credit Equivalent of receiving position.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_det\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "undrlyOffset" : {
+            "description" : "The sum of all slices for the underlying position preceding this slice.<br>\nThis offset indicates how much credit equivalent of the realty position<br>\nis being used with a higher priority than this slice.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_det\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "undrlyPos" : {
+            "description" : "The underlying realty position in slices where granting position is a real security position.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_det\n",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/credit_id_ref"
+            } ],
+            "readOnly" : true
+          },
+          "val" : {
+            "description" : "The Credit Equivalent Granted/Received.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_det\n",
+            "type" : "number",
+            "readOnly" : true
+          }
+        }
+      },
+      "credit_pillar" : {
+        "title" : "credit_pillar",
+        "type" : "object",
+        "properties" : {
+          "collat" : {
+            "description" : "Credit equivalent of pledged and unpledged collateral. Sum of collat_unpledged + collat_pledge<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "collat100" : {
+            "description" : "Credit equivalent of pledged and unpledged collateral at 100%. Sum of collat_unpledged100 + collat_pledge100<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "collatFilter" : {
+            "description" : "The matching collateral filters of this position (code_collat_filter).<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/credit_id_ref"
+            },
+            "readOnly" : true
+          },
+          "collatPledge" : {
+            "description" : "Credit equivalent of pledged collateral.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "collatPledge100" : {
+            "description" : "Credit equivalent of pledged collateral at 100%.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "collatPledgeAssign" : {
+            "description" : "Credit equivalent of assigned pledged collateral.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "collatPledgeAssign100" : {
+            "description" : "Credit equivalent of assigned pledged collateral at 100%.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "collatPledgeAssignLimitExcess" : {
+            "description" : "Credit equivalent of pledged collateral assigned over the spoken limit amount.<br>\nThe field only contains a value if the feature 'enbl_assign_limit_excess' is enabled<br>\non a collateral valuation type used.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "collatPledgeFree" : {
+            "description" : "Credit equivalent of free pledged collateral.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "collatPledgeFree100" : {
+            "description" : "Credit equivalent of free pledged collateral at 100%.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "collatPledgeRsv" : {
+            "description" : "Credit equivalent of reserved pledged realsec collateral.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "collatPledgeRsv100" : {
+            "description" : "Credit equivalent of reserved realsec collateral at 100%.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "collatUnpledged" : {
+            "description" : "Credit equivalent of unpledged collateral.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "collatUnpledged100" : {
+            "description" : "Credit equivalent of unpledged collateral at 100%.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "collatValCmtd" : {
+            "description" : "Collateral valuation calculation method (code_collat_val_cmtd).<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/credit_id_ref"
+            } ],
+            "readOnly" : true
+          },
+          "collatValSerpilType" : {
+            "description" : "Type of position (code_collat_val_serpil_type).<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/credit_id_ref"
+            } ],
+            "readOnly" : true
+          },
+          "cpoolNetPos" : {
+            "description" : "Cash pool netting position. Only filled for maccs in virtual cash pools with valuation method 'virt_cpool_net'.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/credit_id_ref"
+            } ],
+            "readOnly" : true
+          },
+          "credPosSect" : {
+            "description" : "Credit position section (code_cred_pos_sect).<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/credit_id_ref"
+            } ],
+            "readOnly" : true
+          },
+          "credRiskMtd" : {
+            "description" : "Credit risk method (code_cred_risk_mtd).<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/credit_id_ref"
+            } ],
+            "readOnly" : true
+          },
+          "err" : {
+            "description" : "ID of error that occured during position valuation (code_finae_err)<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/credit_id_ref"
+            } ],
+            "readOnly" : true
+          },
+          "fact" : {
+            "description" : "Loanable Factor<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "hccVal" : {
+            "description" : "Collateral haircut.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "hceVal" : {
+            "description" : "Exposure haircut.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "hcfxVal" : {
+            "description" : "Currency mismatch haircut.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "hcmVal" : {
+            "description" : "Maturity mismatch haircut.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "inPledge" : {
+            "description" : "True if position is referenced by a financing object. Attention, returns '-' for limit positions!<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "lgdEffVal" : {
+            "description" : "Effective loss given default.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "lgdUnsecVal" : {
+            "description" : "Unsecured loss given default.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "liab" : {
+            "description" : "Debit credit equivalent of liabilities. Sum of all liabilites (liabUnauth + liabAuth).<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "liab100" : {
+            "description" : "Debit credit equivalent of liabilities. Sum of all liabilites at 100% (liab_unauth100 + liab_auth100).<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "liabAuth" : {
+            "description" : "Authorised liabilities (including overdrafts).<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "liabAuth100" : {
+            "description" : "Authorised liabilities at 100% (including overdrafts).<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "liabAuthBlank" : {
+            "description" : "Authorised blank covered liabilities.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "liabAuthCovered" : {
+            "description" : "Authorised covered liabilities.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "liabAuthCoveredLimitExcess" : {
+            "description" : "Authorised liabilities over the limit amount covered by collaterals.<br>\nThe field only contains a value if the feature 'enbl_assign_limit_excess' is enabled<br>\non a collateral valuation type used.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "liabAuthUnsec" : {
+            "description" : "Authorised unsecured Liabilities (Overdrafts short of cover).<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "liabUnauth" : {
+            "description" : "Unauthorised liabilities.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "limitCcf" : {
+            "description" : "Credit conversion factor. Can be used on LIMIT POS only, otherwise it will return null.<br>\nUsed for calculating EAD (Exposure at default) and is always 0<br>\nfor limit types for which EAD is not calculated (see limit_ead field).<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "limitCover" : {
+            "description" : "Coverage of limit including blank coverage.<br>\nRedundant sum of limit_usage_covered + limit_usage_blank + limit_dispo_assigned + limit_dispo_blank + limit_dispo_unassigned<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "limitDispo" : {
+            "description" : "Dispo of limit confirmed and unconfirmed. Redundant sum of limit_dispo_assigned + limit_dispo_blank + limit_dispo_unassigned<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "limitDispoConfirmed" : {
+            "description" : "Confirmed dispo of limit. Redundant sum of limit_dispo_assigned + limit_dispo_blank.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "limitEad" : {
+            "description" : "Exposure at default. Can be used on LIMIT POS only, otherwise it will return null.<br>\nEquals to limit_unused * limit_ccf.<br>\nOnly calculated for 'Liability covered' and 'Blank internal' limits.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "limitExcessCovered" : {
+            "description" : "Amount of collateral assigned to liabilities within this limit in excess of spoken limit amount.<br>\nThe field only contains a value if the feature 'enbl_assign_limit_excess' is enabled<br>\non a collateral valuation type used.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "limitKind" : {
+            "description" : "Kind of limit (code_obj_class).<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/credit_id_ref"
+            } ],
+            "readOnly" : true
+          },
+          "limitOverdraft" : {
+            "description" : "Overdraft amount of spoken limit. Collaterals covering the Limit are not considered, only liabilities receiving from the limit.<br>\nIs only greater than 0 if 'limit_unused' field is 0 (i.e. liabilities greater than limit).<br>\nFor syndicated limits, returns only the bank's own part of the overdraft amount.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "limitSpoken" : {
+            "description" : "Spoken Limit.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "limitSpokenBlank" : {
+            "description" : "Spoken blank amount of Limit.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "limitUndercover" : {
+            "description" : "Undercover of external limits which must be covered but are not fully covered.<br>\nThe confirmed dispo (limit_dispo_assigned) is reduced by the undercoverage of the limit.<br>\nUndercover = limit_spoken - limit_cover. The Credit Conversion Factor (CCF) is ignored.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "limitUnsec" : {
+            "description" : "Uncovered portion of spoken limit for internal limits (which does not have to be fully covered).<br>\nThe Credit Conversion Factor (CCF) is ignored.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "limitUnused" : {
+            "description" : "Unused amount of spoken limit. Collaterals covering the Limit are not considered, only liabilities receiving from the limit.<br>\nIs only greater than 0 if 'limit_overdraft' field is 0 (i.e. liabilities smaller than limit).<br>\nFor syndicated limits, returns only the bank's own part of the unused amount.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "limitUsage" : {
+            "description" : "Usage of limit. Redundant sum of limit_usage_covered + limit_usage_blank.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "limitUsageBlank" : {
+            "description" : "Authorised blank covered portion of limit usage (coverage provided by Bank).<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "pledgeSliceList" : {
+            "description" : "List of all collateral allocation slices where the position is involved.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_det\n",
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/collat_det"
+            },
+            "readOnly" : true
+          },
+          "propOrder" : {
+            "description" : "The processing order for this position (1 means first).<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "realtyGrossLtv" : {
+            "description" : "Gross loan-to-value ratio of realty (realty_usage + realty_rsv)/val100.<br>\nThis includes external usages and reservations to fully realsec-covered limits.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "realtyLtv" : {
+            "description" : "Loan-to-value ratio of realty realty_usage/val100. This includes also external usages.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "realtyRsv" : {
+            "description" : "Realty value reserved (but not assigned) to full realsec-covered limits.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "realtyUsage" : {
+            "description" : "Used realty value assigned to liabilities or limits. This also includes usages by external real securities on this realty.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "syndOwnRate" : {
+            "description" : "Own Credit Rate on Syndicate<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "val" : {
+            "description" : "Loanable / Coverable Value<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "val100" : {
+            "description" : "Credit Equivalent at 100% (market value) after netting and/or other consolidations.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "val100Orig" : {
+            "description" : "Credit Equivalent at 100% (market value) before netting and/or other consolidations.<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "valOffset" : {
+            "description" : "Value Offset (e.g. Accruals, Unrealized Profit)<br>\n**_Only visible within compound APIs_**<br>\nOverlay: credit_risk_val\n",
+            "type" : "number",
+            "readOnly" : true
+          }
+        }
+      },
+      "avl_qty_det" : {
+        "title" : "avl_qty_det",
+        "type" : "object",
+        "properties" : {
+          "atrxSeqNr" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "avlQty" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "timestamp" : {
+            "type" : "string",
+            "format" : "date-time",
+            "readOnly" : true
+          }
+        }
+      },
+      "avl_qty_pillar" : {
+        "title" : "avl_qty_pillar",
+        "type" : "object",
+        "properties" : {
+          "avlQtyDet" : {
+            "description" : "<p>Available quantity object for a Money Account.<br>\nIt provide details about the credit situation that affect cash availability.</p>\n**_Only visible within compound APIs_**<br>\nOverlay: position_avl_qty\n",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/avl_qty_det"
+            } ],
+            "readOnly" : true
+          }
+        }
+      },
+      "validationResult" : {
+        "title" : "validationResult",
+        "type" : "object",
+        "properties" : {
+          "displText" : {
+            "type" : "string",
+            "readOnly" : true
+          },
+          "ovrHasRight" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "ref" : {
+            "description" : "Referencing: `/code_ui_errs/{id}` or `/code_overrides/{id}`",
+            "readOnly" : true,
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "resType" : {
+            "description" : "Referencing: `/code_err_types/{id}`",
+            "readOnly" : true,
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "ovrSignt" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }
+      }
+    },
+    "headers" : {
+      "Content-Language" : {
+        "schema" : {
+          "type" : "string"
+        }
+      },
+      "X-Has-Next-Page" : {
+        "schema" : {
+          "type" : "string"
+        }
+      },
+      "Location" : {
+        "schema" : {
+          "type" : "string"
+        },
+        "description" : "Location of the created resource"
+      },
+      "ETag" : {
+        "schema" : {
+          "type" : "string"
+        },
+        "description" : "Current entity-tag"
+      }
+    },
+    "parameters" : {
+      "Filter" : {
+        "name" : "filter",
+        "in" : "query",
+        "description" : "Expression to reduce the result set",
+        "schema" : {
+          "type" : "string"
+        }
+      },
+      "PageLimit" : {
+        "name" : "limit",
+        "in" : "query",
+        "description" : "Limits the number of items on a page",
+        "schema" : {
+          "type" : "integer",
+          "default" : 5,
+          "minimum" : 1,
+          "maximum" : 200
+        }
+      },
+      "PageOffset" : {
+        "name" : "offset",
+        "in" : "query",
+        "description" : "Number of records to be skipped before selecting the result set",
+        "schema" : {
+          "type" : "integer",
+          "minimum" : 0
+        }
+      },
+      "HrefActive" : {
+        "name" : "href",
+        "in" : "query",
+        "description" : "Activates the href",
+        "schema" : {
+          "type" : "boolean"
+        }
+      },
+      "IncludeInactive" : {
+        "name" : "include_inactive",
+        "in" : "query",
+        "description" : "Includes inactive data",
+        "schema" : {
+          "type" : "boolean"
+        }
+      },
+      "If-None-Match" : {
+        "name" : "If-None-Match",
+        "in" : "header",
+        "description" : "Specifies version known by client",
+        "schema" : {
+          "type" : "string"
+        },
+        "required" : false
+      },
+      "If-Match" : {
+        "name" : "If-Match",
+        "in" : "header",
+        "description" : "Specifies entity-tag known by client",
+        "schema" : {
+          "type" : "string"
+        },
+        "required" : false
+      },
+      "Accept-Encoding" : {
+        "name" : "Accept-Encoding",
+        "in" : "header",
+        "description" : "Compression scheme<br/> Warning: HTTP compression might not lead to better performance",
+        "schema" : {
+          "type" : "string"
+        },
+        "example" : "gzip, deflate",
+        "required" : false
+      },
+      "Accept-Language" : {
+        "name" : "Accept-Language",
+        "in" : "header",
+        "description" : "Specifies the language and locale that the client prefers",
+        "schema" : {
+          "type" : "string"
+        },
+        "example" : "de-CH, en-US",
+        "required" : false
+      },
+      "X-Request-ID" : {
+        "name" : "X-Request-ID",
+        "in" : "header",
+        "description" : "Specifies the request id in UUID format. If not provided, it will be generated automatically.",
+        "schema" : {
+          "type" : "string",
+          "format" : "uuid"
+        },
+        "required" : false
+      },
+      "PartList" : {
+        "name" : "part_list",
+        "in" : "query",
+        "description" : "Controls whether pillar information should be included.<br>\nThe value is a comma-separated list of elements from the set {static, val, perf}.<br>\nAt most one of val and perf can be included.\n",
+        "schema" : {
+          "type" : "string"
+        },
+        "deprecated" : true
+      },
+      "EvalDate" : {
+        "name" : "eval_date",
+        "in" : "query",
+        "description" : "<h3>Credit Risk/Position Pillar parameters</h3>\n<p>Position evaluation date.<br>\nCan be used to specify the evaluation date on requests using shapes including credit risk or position pillar data.</p>\n",
+        "schema" : {
+          "type" : "string",
+          "format" : "date"
+        }
+      },
+      "DateType" : {
+        "name" : "date_type",
+        "in" : "query",
+        "description" : "<p>Position evaluation date type.<br>\nCan be used to specify the evaluation date type when using shapes including credit risk, position pillar data, or available quantity.</p>\n",
+        "schema" : {
+          "type" : "string",
+          "enum" : [ "trx", "val", "ref", "veri", "book", "perf" ]
+        }
+      },
+      "InclZeroPos" : {
+        "name" : "incl_zero_pos",
+        "in" : "query",
+        "description" : "<p>Include zero positions.<br>\nCan be used to specify if zero balance positions should be included in the result when using shapes including position pillar data.<br>\nAllowed only if <b>avaloq-position-keeping</b> component is deployed in constellation.</p>\n",
+        "schema" : {
+          "type" : "boolean"
+        }
+      },
+      "SOP" : {
+        "name" : "sop",
+        "in" : "query",
+        "description" : "<h3>Performance Pillar parameters</h3>\n<p>Date from which the performance is measured.<br>\nRequired when using shapes including performance pillar data.<p>\n",
+        "schema" : {
+          "type" : "string",
+          "format" : "date"
+        }
+      },
+      "EOP" : {
+        "name" : "eop",
+        "in" : "query",
+        "description" : "<p>Date until which the performance is measured.<br>\nRequired when using shapes including performance pillar data.<p>\n",
+        "schema" : {
+          "type" : "string",
+          "format" : "date"
+        }
+      }
+    },
+    "responses" : {
+      "Problem" : {
+        "description" : "RFC7807 Problem",
+        "content" : {
+          "application/problem+json" : {
+            "schema" : {
+              "type" : "object",
+              "properties" : {
+                "type" : {
+                  "type" : "string"
+                },
+                "title" : {
+                  "type" : "string"
+                },
+                "status" : {
+                  "type" : "number",
+                  "format" : "integer"
+                },
+                "detail" : {
+                  "type" : "string"
+                },
+                "messages" : {
+                  "type" : "array",
+                  "readOnly" : true,
+                  "items" : {
+                    "type" : "string"
+                  }
+                },
+                "validationResults" : {
+                  "type" : "array",
+                  "readOnly" : true,
+                  "items" : {
+                    "$ref" : "#/components/schemas/validationResult"
+                  }
+                }
+              },
+              "additionalProperties" : true,
+              "required" : [ "type", "title", "status" ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,5085 @@
+{
+  "openapi" : "3.0.2",
+  "security" : [ {
+    "bearerAuth" : [ ]
+  } ],
+  "info" : {
+    "title" : "Fiduciary Deposit API",
+    "version" : "3.13.1",
+    "x-avq$categories" : [ "capi" ]
+  },
+  "servers" : [ {
+    "url" : "/api1/",
+    "description" : "Development server"
+  } ],
+  "paths" : {
+    "/doc-fidds" : {
+      "get" : {
+        "tags" : [ "API endpoints" ],
+        "summary" : "Get Fiduciary Deposit orders.",
+        "description" : "Get a collection of `Fiduciary Deposit` orders.\nThe result set can be restricted through filter parameter.\nOnly `Fiduciary Deposit` orders will be returned that can be accessed by the user (security applied).\nPaging is supported with parameters *limit* and *offset*.\n",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/Filter"
+        }, {
+          "$ref" : "#/components/parameters/DocPool"
+        }, {
+          "$ref" : "#/components/parameters/PageLimit"
+        }, {
+          "$ref" : "#/components/parameters/PageOffset"
+        }, {
+          "$ref" : "#/components/parameters/HrefActive"
+        }, {
+          "$ref" : "#/components/parameters/IncludeInactive"
+        }, {
+          "$ref" : "#/components/parameters/Accept-Encoding"
+        }, {
+          "$ref" : "#/components/parameters/Accept-Language"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful response",
+            "headers" : {
+              "Content-Language" : {
+                "$ref" : "#/components/headers/Content-Language"
+              },
+              "X-Has-Next-Page" : {
+                "$ref" : "#/components/headers/X-Has-Next-Page"
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/doc_fidd"
+                  }
+                }
+              }
+            }
+          },
+          "default" : {
+            "$ref" : "#/components/responses/Problem"
+          }
+        }
+      }
+    },
+    "/doc-fidds/{doc_fidd_id}" : {
+      "get" : {
+        "tags" : [ "API endpoints" ],
+        "summary" : "Get a Fiduciary Deposit order",
+        "description" : "*Get a `Fiduciary Deposit` order by ID*.\nOnly `Fiduciary Deposit` order will be returned that can be accessed by the user (security applied).\nIf user does not have access to resource, not found error will be returned instead of unauthorized - to disallow attacks.\n",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "doc_fidd_id",
+          "schema" : {
+            "type" : "string"
+          },
+          "required" : true,
+          "description" : "ID of the `Fiduciary Deposit` order to get"
+        }, {
+          "$ref" : "#/components/parameters/HrefActive"
+        }, {
+          "$ref" : "#/components/parameters/IncludeInactive"
+        }, {
+          "$ref" : "#/components/parameters/Accept-Encoding"
+        }, {
+          "$ref" : "#/components/parameters/If-None-Match"
+        }, {
+          "$ref" : "#/components/parameters/Accept-Language"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful response",
+            "headers" : {
+              "Content-Language" : {
+                "$ref" : "#/components/headers/Content-Language"
+              },
+              "ETag" : {
+                "$ref" : "#/components/headers/ETag"
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/doc_fidd"
+                }
+              }
+            }
+          },
+          "304" : {
+            "description" : "Not modified"
+          },
+          "default" : {
+            "$ref" : "#/components/responses/Problem"
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "securitySchemes" : {
+      "bearerAuth" : {
+        "type" : "http",
+        "scheme" : "bearer",
+        "bearerFormat" : "JWT"
+      }
+    },
+    "schemas" : {
+      "code_tab_ref" : {
+        "title" : "code_tab_ref",
+        "type" : "object",
+        "properties" : {
+          "_href" : {
+            "description" : "Reference/link",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "id" : {
+            "description" : "Numeric reference",
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "ident" : {
+            "description" : "Unique symbolic reference",
+            "type" : "string"
+          },
+          "intlId" : {
+            "description" : "Symbolic reference",
+            "type" : "string",
+            "readOnly" : true
+          }
+        }
+      },
+      "code_tab_ref_action" : {
+        "title" : "code_tab_ref_action",
+        "type" : "object",
+        "properties" : {
+          "_href" : {
+            "description" : "Reference/link",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "action" : {
+            "enum" : [ "hold", "proceed", "discard" ],
+            "example" : "hold",
+            "description" : "enum reference to action",
+            "type" : "string",
+            "writeOnly" : true
+          },
+          "id" : {
+            "description" : "Numeric reference",
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "ident" : {
+            "description" : "Unique symbolic reference",
+            "type" : "string"
+          },
+          "intlId" : {
+            "description" : "Symbolic reference",
+            "type" : "string",
+            "readOnly" : true
+          }
+        }
+      },
+      "doc_add" : {
+        "title" : "doc_add",
+        "type" : "object",
+        "properties" : {
+          "docAdd" : {
+            "description" : "Referencing: `/code-doc-adds/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "valList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/doc_add_val"
+            },
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_generic"
+          }
+        }
+      },
+      "doc_add_val" : {
+        "title" : "doc_add_val",
+        "type" : "object",
+        "properties" : {
+          "dateVal" : {
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "idVal" : {
+            "type" : "integer",
+            "format" : "int32",
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "nrVal" : {
+            "type" : "number",
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "textVal" : {
+            "type" : "string",
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "tswtzVal" : {
+            "type" : "string",
+            "format" : "date-time",
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_generic"
+          }
+        }
+      },
+      "doc_caldr_period" : {
+        "title" : "doc_caldr_period",
+        "type" : "object",
+        "properties" : {
+          "annQty" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "annQtyA" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "eop" : {
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "eopA" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "eopPlan" : {
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "exPeriodDate" : {
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "exPeriodDateA" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "fixDate" : {
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "fixDateA" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "histStatus" : {
+            "description" : "Referencing: `/code-hist-statuss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "isManual" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "isSusp" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "noticeDateFrom" : {
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "noticeDateTo" : {
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "noticeDays" : {
+            "type" : "integer",
+            "format" : "int32",
+            "readOnly" : true
+          },
+          "price" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "priceA" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "prob" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "qty" : {
+            "type" : "number",
+            "readOnly" : true
+          },
+          "qtyA" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "refDate" : {
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "refNr" : {
+            "type" : "string",
+            "readOnly" : true
+          },
+          "sop" : {
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "sopA" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "sopPlan" : {
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "trxDate" : {
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "trxDateA" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "valDate" : {
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "valDateA" : {
+            "type" : "boolean",
+            "readOnly" : true
+          }
+        }
+      },
+      "doc_compo_intr" : {
+        "title" : "doc_compo_intr",
+        "type" : "object",
+        "properties" : {
+          "accrFirst" : {
+            "description" : "Start date of accrual",
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "accrFirstA" : {
+            "description" : "Start of accrual time set automatically",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "accrLast" : {
+            "description" : "End of accrual time",
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "accrLastA" : {
+            "description" : "End of accrual time set automatically",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "accrMethod" : {
+            "description" : "Accrual method<br>Referencing: `/code-intr-accr-methods/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "afType" : {
+            "description" : "Type of asset flow<br>Referencing: `/code-compo-af-lists/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "calcRateMtd" : {
+            "description" : "Calc Rate method<br>Referencing: `/code-calc-rate-mtds/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "calcRateRu" : {
+            "description" : "Calc Rate rounding unit",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "cap" : {
+            "description" : "Maximum rate (CAP)",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "compoStruct" : {
+            "description" : "Accrual structure<br>Referencing: `/code-accr-structs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "curry" : {
+            "description" : "Interest currency<br>Referencing: `/obj-assets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "curryA" : {
+            "description" : "Interest currency set automatically",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "endDate" : {
+            "description" : "End date of payment(s)",
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "factor" : {
+            "description" : "Factor applied to the interest paid",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "factorPeriodRef" : {
+            "description" : "This field specifies if and for what date the historized asset correction factor will be applied to the capital (SOP, EOP)<br>Referencing: `/code-period-refs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "floor" : {
+            "description" : "Minimum rate (FLOOR)",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "fxFactor" : {
+            "description" : "Fixed exchange rate applied to bonds nominal in case of dual currency bonds",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "intrCalcExpr" : {
+            "description" : "Interest calculation expression<br>Referencing: `/code-intr-calc-exprs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "intrCalcExprA" : {
+            "description" : "Interest calculation expression set automatically",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "intrCalcMethod" : {
+            "description" : "Interest calculation method<br>Referencing: `/code-intr-calc-methods/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "intrCalcMethodA" : {
+            "description" : "Interest calculation method set automatically",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "isFix" : {
+            "description" : "Is fix rate",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "isLimitOdraft" : {
+            "description" : "Is limit overdraft component",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "lockoutPeriod" : {
+            "description" : "Lockout period",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "observEndOffset" : {
+            "description" : "Observation End offset",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "observEndRef" : {
+            "description" : "Observation End reference<br>Referencing: `/code-period-refs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "observStartOffset" : {
+            "description" : "Observation Start offset",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "observStartRef" : {
+            "description" : "Observation Start reference<br>Referencing: `/code-period-refs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "prcCaldr" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/doc_tab_caldr"
+            } ],
+            "readOnly" : true
+          },
+          "seqNr" : {
+            "description" : "Sequence number",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "startDate" : {
+            "description" : "Start date of payment(s)",
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "useCalcRate" : {
+            "description" : "Use Calc Rate",
+            "type" : "boolean",
+            "readOnly" : true
+          }
+        }
+      },
+      "doc_cost_entry" : {
+        "title" : "doc_cost_entry",
+        "type" : "object",
+        "properties" : {
+          "amount" : {
+            "description" : "Amount",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "amountCalc" : {
+            "description" : "Calculated amount",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "amountSpcd" : {
+            "description" : "Amount of the special conditions calculation",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "bookKind" : {
+            "description" : "Booking kind<br>Referencing: `/code-book-kinds/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "bvgInclType" : {
+            "description" : "Type specifying if this cost is included in the gross book value<br>Referencing: `/code-cost-bv-incl-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "bvnInclType" : {
+            "description" : "Type specifying if this cost is included in the net book value<br>Referencing: `/code-cost-bv-incl-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "costChrgType" : {
+            "description" : "Cost charge type, e.g. client, bank, vat, all in, etc.<br>Referencing: `/code-cost-chrg-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "costChrgTypeA" : {
+            "description" : "Cost charge type set automatically",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "costQtyType" : {
+            "description" : "Base quantity used for the cost calculation<br>Referencing: `/code-cost-qty-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "costQtyTypeA" : {
+            "description" : "Base quantity used for the cost calculation set automatically",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "isIncl" : {
+            "description" : "Is cost calculated and booked by the meta typ",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "isManual" : {
+            "description" : "Is cost manual. Returns + if the cost is not set by the cost engine so that it must be set by the user.",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "isOrigCost" : {
+            "description" : "The cost is the original cost returned by the cost engine and not manually modified in any way",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "isVatIncl" : {
+            "description" : "VAT is included in amount",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "isVatrfIncl" : {
+            "description" : "VATRF is included in VAT amount",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "origRate" : {
+            "description" : "Rate of the cost relative to the base quantity (before spcd override) ",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "origVal" : {
+            "description" : "Amount (before spcd override) ",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "ovrA" : {
+            "description" : "Override set automatically",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "ovrCurry" : {
+            "description" : "Override currency<br>Referencing: `/obj-assets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "ovrCurryA" : {
+            "description" : "Override Currency set automatically",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "ovrMinMax" : {
+            "description" : "Minimum / maximum cost limits of the rule are ignored",
+            "type" : "boolean"
+          },
+          "ovrPossible" : {
+            "description" : "Is a override of the cost possible. Returns - when the values produced by the cost engine can not be overridden.",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "ovrType" : {
+            "description" : "Type of the cost override (null means that there is no override of the value)<br>Referencing: `/code-cost-ovr-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "ovrVal" : {
+            "description" : "Override value",
+            "type" : "number"
+          },
+          "ovrXrate" : {
+            "description" : "Override xrate",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "ovrXrateA" : {
+            "description" : "Override xrate set automatically",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "priPos" : {
+            "description" : "Primary Booking Position<br>Referencing: `/obj-poss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "priPosCurry" : {
+            "description" : "Currency of Primary Booking Position<br>Referencing: `/obj-assets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "priPosVal" : {
+            "description" : "Value of Primary Booking Position",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "propType" : {
+            "description" : "Propagation type of cost<br>Referencing: `/code-cost-prop-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "publRate" : {
+            "description" : "Rate of the cost relative to the base quantity (calculated with public cost profile) - Price hierarchy feature ",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "publVal" : {
+            "description" : "Amount (calculate with public cost profile) - Price hierarchy feature",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "rate" : {
+            "description" : "Rate of the cost relative to the base quantity ",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "sel" : {
+            "description" : "Cost selected<br>Referencing: `/code-ovr-bools/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "spcdClassif" : {
+            "description" : "Special Condition Classification<br>Referencing: `/code-obj-classifs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "vat" : {
+            "description" : "Value added tax (VAT)",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "vatA" : {
+            "description" : "Value added tax (VAT) set automatically",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "vatEvt" : {
+            "description" : "VAT event<br>Referencing: `/code-vat-evts/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "vatEvt2" : {
+            "description" : "Second VAT event<br>Referencing: `/code-vat-evts/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "vatLiabSplitRate" : {
+            "description" : "Percentage of amount that is liable to VAT",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "vatNr" : {
+            "description" : "VAT number",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "vatNrA" : {
+            "description" : "VAT number set automatically",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "vatRate" : {
+            "description" : "VAT rate",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "vatRateA" : {
+            "description" : "VAT rate set automatically",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "vatrf" : {
+            "description" : "Refund",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "vatrfFact" : {
+            "description" : "Refund Factor",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "vatrfXrate" : {
+            "description" : "VAT refund exchange rate",
+            "type" : "number",
+            "readOnly" : true
+          }
+        }
+      },
+      "doc_cost_list" : {
+        "title" : "doc_cost_list",
+        "type" : "object",
+        "properties" : {
+          "curry" : {
+            "description" : "Currency<br>Referencing: `/obj-assets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "entryList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/doc_cost_entry"
+            }
+          },
+          "rowNr" : {
+            "description" : "Row Number",
+            "type" : "integer",
+            "format" : "int32",
+            "readOnly" : true
+          }
+        }
+      },
+      "doc_cred_chk" : {
+        "title" : "doc_cred_chk",
+        "type" : "object",
+        "properties" : {
+          "credChkEvt" : {
+            "description" : "The type of credit check event<br>Referencing: `/code-cred-chk-evts/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "newViolAmount" : {
+            "description" : "The new violation amount related to the credit check event",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "oldViolAmount" : {
+            "description" : "The prior violation amount related to the credit check event",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "refPos" : {
+            "description" : "The position which was booked by the transaction causing the increase<br>Referencing: `/obj-poss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "secUser" : {
+            "description" : "The user involved in the credit check event<br>Referencing: `/users/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/user_ref"
+            } ],
+            "readOnly" : true
+          },
+          "timestamp" : {
+            "description" : "The timestamp of the credit check event",
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "violPos" : {
+            "description" : "The position with a violation increase<br>Referencing: `/obj-poss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          }
+        }
+      },
+      "doc_fidd" : {
+        "title" : "doc_fidd",
+        "type" : "object",
+        "properties" : {
+          "accrEop" : {
+            "description" : "Date until which the interest and commission are accrued",
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "accrEopA" : {
+            "description" : "Auto/Manual flag of Date until which the interest and commission are accrued",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "addList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/doc_add"
+            },
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "advNr" : {
+            "description" : "Advice Number of DOC",
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "advTextCred" : {
+            "type" : "string"
+          },
+          "advTextCredA" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "advTextDeb" : {
+            "type" : "string"
+          },
+          "advTextDebA" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "agingId" : {
+            "type" : "integer",
+            "format" : "int32",
+            "readOnly" : true
+          },
+          "allowProposOvr" : {
+            "description" : "Is an override of the counterparty proposition tolerated?",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "asset" : {
+            "description" : "Asset<br>Referencing: `/obj-assets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "auxBp" : {
+            "description" : "Auxiliary Business Partner<br>Referencing: `/obj-bps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "auxCont" : {
+            "description" : "Auxiliary Container<br>Referencing: `/obj-conts/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "bdeRecVersion" : {
+            "type" : "integer",
+            "format" : "int32",
+            "readOnly" : true
+          },
+          "bookDoc" : {
+            "description" : "Link to the order where the bookings are done<br>Referencing: `/doc-books/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/doc_ref"
+            } ]
+          },
+          "bookTextCred" : {
+            "type" : "string"
+          },
+          "bookTextCredA" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "bookTextDeb" : {
+            "type" : "string"
+          },
+          "bookTextDebA" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "bookTextTemplCred" : {
+            "description" : "Referencing: `/code-doc-texts/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "bookTextTemplCredA" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "bookTextTemplDeb" : {
+            "description" : "Referencing: `/code-doc-texts/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "bookTextTemplDebA" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "bu" : {
+            "description" : "Business unit of order itself<br>Referencing: `/obj-bps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "caldrSyncMode" : {
+            "description" : "Calendar Sync Mode<br>Referencing: `/code-fidd-caldr-sync-modes/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "caldrSyncModeA" : {
+            "description" : "Calendar Sync Mode",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "captAuxPos" : {
+            "description" : "Principal Auxiliary Position<br>Referencing: `/obj-poss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "captMacc" : {
+            "description" : "Principal Money Account<br>Referencing: `/obj-poss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "captMaccA" : {
+            "description" : " ",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "commAccr" : {
+            "description" : "Accrued Commission",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "commAccrA" : {
+            "description" : "Accrued Commission",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "commBaseIrc" : {
+            "description" : "Base Commission IRC<br>Referencing: `/obj-assets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "commBaseIrcA" : {
+            "description" : "Base Commission IRC",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "commBaseRate" : {
+            "description" : "Base Commission Rate",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "commBaseRateA" : {
+            "description" : "Base Commission Rate",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "commCalcMtd" : {
+            "description" : "Comm Calc Method<br>Referencing: `/code-intr-calc-methods/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "commCalcMtdA" : {
+            "description" : "Comm Calc Method",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "commCompo" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/doc_compo_intr"
+            } ],
+            "readOnly" : true
+          },
+          "commIrc" : {
+            "description" : "Alias for comm_base_irc_id<br>Referencing: `/obj-assets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "commIrcA" : {
+            "description" : "Alias for comm_base_irc_a",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "commMinim" : {
+            "description" : "Minimum",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "commMinimA" : {
+            "description" : "Minimum",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "commMinimCurry" : {
+            "description" : "Min. currency<br>Referencing: `/obj-assets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "commMinimCurryA" : {
+            "description" : "Min. currency",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "commPeriod" : {
+            "description" : "Payment Period<br>Referencing: `/code-pay-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "commPeriodA" : {
+            "description" : "Payment Period",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "commRate" : {
+            "description" : "Commission Rate",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "commRateA" : {
+            "description" : "Alias for comm_base_rate_a",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "contrprtyBp" : {
+            "description" : "Contracting party Business Partner<br>Referencing: `/obj-bps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "contrprtyCont" : {
+            "description" : "Contracting party Container<br>Referencing: `/obj-conts/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "contrprtyPos" : {
+            "description" : "Contracting party Position<br>Referencing: `/obj-poss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "costList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/doc_cost_list"
+            }
+          },
+          "credChkList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/doc_cred_chk"
+            },
+            "readOnly" : true
+          },
+          "discdReason" : {
+            "description" : "The reason for discarding this order<br>Referencing: `/code-doc-discd-reasons/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "docBlock" : {
+            "description" : "Block Code<br>Referencing: `/code-blocks/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "docBlockA" : {
+            "description" : "Block Code",
+            "type" : "boolean"
+          },
+          "docPrcInfo" : {
+            "description" : "process info id<br>Referencing: `/code-doc-prc-infos/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "docPrcInfoRemark" : {
+            "description" : "process info remark",
+            "type" : "string"
+          },
+          "docRevsCause" : {
+            "description" : "Reversal Cause<br>Referencing: `/code-doc-revs-causes/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "docRole" : {
+            "description" : "Order role<br>Referencing: `/code-doc-roles/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "dueDate" : {
+            "description" : "Due Date",
+            "type" : "string",
+            "format" : "date"
+          },
+          "duplDoc" : {
+            "description" : "The original order of which this one is a duplicate of<br>Referencing: `/docs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/doc_ref"
+            } ]
+          },
+          "enteredVmDate" : {
+            "description" : "date order entered visum monitoring",
+            "type" : "string",
+            "format" : "date"
+          },
+          "exclCntprtyBp" : {
+            "description" : "Excluded counterparty BP<br>Referencing: `/obj-bps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "exclCntprtyClass" : {
+            "description" : "Excluded counterparty BP class<br>Referencing: `/code-obj-classs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "expirDate" : {
+            "description" : "Expiry date",
+            "type" : "string",
+            "format" : "date"
+          },
+          "extlRefNr" : {
+            "description" : "External reference number",
+            "type" : "string"
+          },
+          "extn" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/doc_fidd_extn"
+            } ],
+            "readOnly" : true
+          },
+          "feBp" : {
+            "description" : "Broker business partner<br>Referencing: `/obj-bps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "hasPostit" : {
+            "description" : "Has order a post-it",
+            "type" : "boolean"
+          },
+          "hasWorkItem" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "id" : {
+            "description" : "ID<br>Referencing: `/docs/{id}`",
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "inpr" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/docp_inpr"
+            } ],
+            "readOnly" : true
+          },
+          "insBySecUser" : {
+            "description" : "Order created by user<br>Referencing: `/users/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/user_ref"
+            } ]
+          },
+          "instrMaccMtd" : {
+            "description" : "Instructed MACCs calculation method<br>Referencing: `/code-fidd-instr-macc-mtds/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "intlRefNr" : {
+            "description" : "Internal reference number",
+            "type" : "string"
+          },
+          "intrAccr" : {
+            "description" : "Accr Interest",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "intrAccrNeg" : {
+            "description" : "Negative Accrued Interest",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "intrAccrPostv" : {
+            "description" : "Positive Accrued Interest",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "intrAdjustIrc" : {
+            "description" : "Interest Adjustment IRC<br>Referencing: `/obj-assets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "intrAdjustIrcA" : {
+            "description" : "Interest Adjustment IRC",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "intrAdjustRate" : {
+            "description" : "Interest Adjust Rate",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "intrAdjustRateA" : {
+            "description" : "Interest Adjust Rate",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "intrBaseIrc" : {
+            "description" : "Interest Base IRC<br>Referencing: `/obj-assets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "intrBaseIrcA" : {
+            "description" : "Interest Base IRC",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "intrBaseRate" : {
+            "description" : "Interest Base Rate",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "intrBaseRateA" : {
+            "description" : "Interest Base Rate",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "intrCompo" : {
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/doc_compo_intr"
+            } ],
+            "readOnly" : true
+          },
+          "intrPeriod" : {
+            "description" : "Payment Period<br>Referencing: `/code-pay-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "intrPeriodA" : {
+            "description" : "Payment Period",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "intrRateTot" : {
+            "description" : "Total Interest Rate",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "isBackdt" : {
+            "description" : "Is backdated transaction",
+            "type" : "boolean"
+          },
+          "isCntprtyPos" : {
+            "description" : "Is the fiduciary position a countertrade position?",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "isDel" : {
+            "description" : "is order deleted",
+            "type" : "boolean"
+          },
+          "isFinal" : {
+            "description" : "Is order in a final status?",
+            "type" : "boolean"
+          },
+          "isMigr" : {
+            "description" : "Is migration transaction",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "isRevs" : {
+            "description" : "Is reversal transaction (reversal w/o original)",
+            "type" : "boolean"
+          },
+          "isSim" : {
+            "description" : "Is the order a simulation?",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "isaRelv" : {
+            "description" : "ISA relevant",
+            "type" : "boolean"
+          },
+          "keyList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/doc_key"
+            },
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "lastMsg" : {
+            "description" : "Last message ID<br>Referencing: `/msgs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "lastTrans" : {
+            "description" : "Last transition",
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "lastTransSecUser" : {
+            "description" : "Last transition user<br>Referencing: `/users/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/user_ref"
+            } ],
+            "readOnly" : true
+          },
+          "masterDoc" : {
+            "description" : "Return the master doc of the current doc<br>Referencing: `/docs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/doc_ref"
+            } ]
+          },
+          "maturityDate" : {
+            "description" : "Maturity Date",
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "maturityDateA" : {
+            "description" : "Maturity Date",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "medium" : {
+            "description" : "Communication medium, e.g. phone, fax, etc.<br>Referencing: `/code-mediums/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "metaTyp" : {
+            "description" : "Meta type<br>Referencing: `/meta-typs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "net" : {
+            "description" : "Net",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "netCost" : {
+            "description" : "Cost",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "netRevn" : {
+            "description" : "Net Revenue",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "notBonusRelv" : {
+            "description" : "not bonus relevant",
+            "type" : "boolean"
+          },
+          "notBonusWidrwRelv" : {
+            "description" : "not bonus withdrawal relevant",
+            "type" : "boolean"
+          },
+          "notReconStornoRelv" : {
+            "description" : "Not Reconciliation Storno Relevant",
+            "type" : "boolean"
+          },
+          "notWidrwRelv" : {
+            "description" : "not withdrawal relevant",
+            "type" : "boolean"
+          },
+          "opnDate" : {
+            "description" : "Date this position was opened",
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "orderDate" : {
+            "description" : "Order date",
+            "type" : "string",
+            "format" : "date"
+          },
+          "orderDateTz" : {
+            "description" : "Order date",
+            "type" : "string",
+            "format" : "date-time",
+            "readOnly" : true
+          },
+          "orderNr" : {
+            "description" : "Reference no.",
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "orderType" : {
+            "description" : "Order type<br>Referencing: `/code-order-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "orderTypeA" : {
+            "description" : "Auto/Manual flag of Order type",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "orderTypeGrp" : {
+            "description" : "Order type group<br>Referencing: `/code-order-type-grps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "orderedBy" : {
+            "description" : "Ordered by",
+            "type" : "string"
+          },
+          "origDoc" : {
+            "description" : "The original order of which this one is a rectificate of<br>\nReferencing: `/doc-fidds/{id}`\n",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/doc_ref"
+            } ],
+            "readOnly" : true
+          },
+          "overrideList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/doc_override"
+            }
+          },
+          "perfDate" : {
+            "description" : "Performance date",
+            "type" : "string",
+            "format" : "date"
+          },
+          "perfDateA" : {
+            "description" : "Is performance date set automatically",
+            "type" : "boolean"
+          },
+          "period" : {
+            "description" : "Period<br>Referencing: `/code-fidd-periods/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "periodA" : {
+            "description" : "Period",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "posBalNew" : {
+            "description" : "Amount After",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "posBalOld" : {
+            "description" : "Amount Before",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "postitList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/doc_postit"
+            }
+          },
+          "prodivOfDoc" : {
+            "description" : "The order this is a prodiverse for<br>Referencing: `/doc-fidds/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/doc_ref"
+            } ],
+            "readOnly" : true
+          },
+          "propdCntprtyBp" : {
+            "description" : "Proposed counterparty BP<br>Referencing: `/obj-bps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "propdCntprtyClass" : {
+            "description" : "Proposed counterparty BP class<br>Referencing: `/code-obj-classs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "qty" : {
+            "description" : "Amount",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "rdmptTrxDate" : {
+            "description" : "Trade Date Redemption",
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "rdmptTrxDateA" : {
+            "description" : "Trade Date Redemption",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "recon2ItemList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/doc_tab_recon2"
+            },
+            "readOnly" : true
+          },
+          "rectiDoc" : {
+            "description" : "**_Only visible within compound APIs_**<br>\nThe rectificate of this order.<br>\nReferencing: `/doc-fidds/{id}`<br>\nBack-property: origDoc\n",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/doc_ref"
+            } ],
+            "readOnly" : true
+          },
+          "refDoc" : {
+            "description" : "Reference order<br>Referencing: `/docs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/doc_ref"
+            } ]
+          },
+          "renwOfPos" : {
+            "description" : "Renewed Position<br>Referencing: `/obj-poss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "respBp" : {
+            "description" : "Responsible Business Partner<br>Referencing: `/obj-bps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "respBpA" : {
+            "description" : "Responsible Business Partner a/m",
+            "type" : "boolean"
+          },
+          "respObj" : {
+            "description" : "Responsible Object<br>Referencing: `/objs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "respObjA" : {
+            "description" : "Responsible Object a/m",
+            "type" : "boolean"
+          },
+          "revnAuxPos" : {
+            "description" : "Revenue Auxiliary Position<br>Referencing: `/obj-poss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "revnMacc" : {
+            "description" : "Revenue Money Account<br>Referencing: `/obj-poss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "revnMaccA" : {
+            "description" : " ",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "revsOfDoc" : {
+            "description" : "The original order for which the actual order is the reversal<br>Referencing: `/docs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/doc_ref"
+            } ]
+          },
+          "revsOriginUser" : {
+            "description" : "Originator<br>Referencing: `/users/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/user_ref"
+            } ]
+          },
+          "sdsInstn" : {
+            "description" : "SDS instance ID<br>Referencing: `/code-extl-syss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "settlePlan" : {
+            "description" : "Settlement plan<br>Referencing: `/code-settle-plans/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "settlePlanA" : {
+            "description" : "Settlement plan",
+            "type" : "boolean"
+          },
+          "settlePlanList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/doc_settle_plan"
+            },
+            "readOnly" : true
+          },
+          "terminal" : {
+            "description" : "Terminal where advice of order was printed<br>Referencing: `/obj-terminals/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "todoTempl" : {
+            "description" : "ToDo Template<br>Referencing: `/code-todo-templs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "transList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/doc_trans"
+            }
+          },
+          "trxDate" : {
+            "description" : "Transaction date",
+            "type" : "string",
+            "format" : "date"
+          },
+          "trxDateA" : {
+            "description" : "Auto/Manual flag of Transaction date",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "unwindDoc" : {
+            "description" : "The unwind order this order is replacing in the pool.<br>Referencing: `/doc-fidds/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/doc_ref"
+            } ],
+            "readOnly" : true
+          },
+          "valDate" : {
+            "description" : "Value date",
+            "type" : "string",
+            "format" : "date"
+          },
+          "valDateA" : {
+            "description" : "Auto/Manual flag of Value date",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "wfcAction" : {
+            "description" : "Workflow Action<br>Referencing: `/wfc-action-fidds/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref_action"
+            } ]
+          },
+          "wfcStatus" : {
+            "description" : "Workflow  status<br>Referencing: `/wfc-status-fidds/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "workItemList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/doc_tab_work_item"
+            },
+            "readOnly" : true
+          },
+          "xrateList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/doc_xrate"
+            },
+            "readOnly" : true
+          }
+        }
+      },
+      "doc_fidd_extn" : {
+        "title" : "doc_fidd_extn",
+        "type" : "object",
+        "properties" : {
+          "afsDocId" : {
+            "description" : "AFS Order ID",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "afsExtlRefNr" : {
+            "description" : "AFS external reference number",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "api1RefNr" : {
+            "description" : "Primary API external reference number",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "api2RefNr" : {
+            "description" : "Secondary API external reference number",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "dxsCtxId" : {
+            "description" : "DXS context ID",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "dxsEntityExtlRef" : {
+            "description" : "DXS entity external reference",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "mba$authEdtRvwCompLvList" : {
+            "description" : "Authorization: comp lv that need to authorize for specific edt rvw in jtg",
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            },
+            "readOnly" : true
+          },
+          "mba$authorEdtRvwJtgList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/number"
+            },
+            "readOnly" : true
+          },
+          "mba$blockAprvUserList" : {
+            "description" : "List of Users having approved the Compliance Blocking Codes<br>Referencing: `/users/{id}`",
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/user_ref"
+            },
+            "readOnly" : true
+          },
+          "mba$blockJtgList" : {
+            "description" : "Current List of matching compliance block IDs with the corresponding JTG IDs",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "mba$blockRemnJtgList" : {
+            "description" : "List of JTG still required to approve the Compliance Blocking Codes<br>Referencing: `/mba$code-job-type-grps/{id}`",
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            },
+            "readOnly" : true
+          },
+          "mba$ccPastAuthorUserList" : {
+            "description" : "Authorization: User List for current jtg (Credit Check)<br>Referencing: `/users/{id}`",
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/user_ref"
+            },
+            "readOnly" : true
+          },
+          "mba$credChkAuthCompLvList" : {
+            "description" : "Authorization: comp lv that need to authorize in jtg (Credit Check)",
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            },
+            "readOnly" : true
+          },
+          "mba$credChkAuthorJtgList" : {
+            "description" : "JTG to authorize the order. Indication, which jtg has to author (Credit Check).<br>Referencing: `/mba$code-job-type-grps/{id}`",
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            },
+            "readOnly" : true
+          },
+          "mba$credChkCmt" : {
+            "description" : "Comment of the Decision (Credit Check)",
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            },
+            "readOnly" : true
+          },
+          "mba$credChkRestr" : {
+            "description" : "Additional Restriction List (Credit Check)",
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            },
+            "readOnly" : true
+          },
+          "mba$docErrType" : {
+            "description" : "Order Processing Error Type<br>Referencing: `/mba$code-doc-err-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "mba$edtRvwJtgList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/number"
+            },
+            "readOnly" : true
+          },
+          "mba$edtRvwUserList" : {
+            "description" : "Last user to edited the order for jtg (as listed in mba$edt_rvw_jtg_list)<br>Referencing: `/users/{id}`",
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/user_ref"
+            },
+            "readOnly" : true
+          },
+          "mba$iAuthEdtRvwCompLvLst" : {
+            "description" : "Authorization:initial comp lv that need to authorize for specific edt rvw in jtg",
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            },
+            "readOnly" : true
+          },
+          "mba$iCredChkAuthCompLvLt" : {
+            "description" : "Authorization:initial comp lv that need to authorize in jtg (Credit Check)",
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            },
+            "readOnly" : true
+          },
+          "mba$instrDet" : {
+            "description" : "Instruction Details",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "mba$isDfltValSet" : {
+            "description" : "Have default values been applied",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "mba$lswfInsJtg" : {
+            "description" : "Job Type Group that inserted the order<br>Referencing: `/mba$code-job-type-grps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "mba$lswfJtg" : {
+            "description" : "Current job type group owning the status<br>Referencing: `/mba$code-job-type-grps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "mba$lswfLastSwfIntfWfaId" : {
+            "description" : "Last interface action used",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "mba$lswfLastSwfWfaId" : {
+            "description" : "Last workflow action used",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "mba$lswfLastSwfWfsId" : {
+            "description" : "Communication to next department",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "mba$lswfNextJtg" : {
+            "description" : "Next job type group owning the status<br>Referencing: `/mba$code-job-type-grps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "mba$lswfNextJtgInfo" : {
+            "description" : "Communication to next job type group",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "mba$lswfNextRa" : {
+            "description" : "Next Routing Action for Linkable Sub-Workflow<br>Referencing: `/mba$code-lswf-raps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "mba$lswfNextSwf" : {
+            "description" : "Next Linkable Sub-Workflow in Workflow<br>Referencing: `/mba$code-lswfs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "mba$lswfPrevSwf" : {
+            "description" : "Previous Linkable Sub-Workflow in Workflow<br>Referencing: `/mba$code-lswfs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "mba$lswfRa" : {
+            "description" : "Current Routing Action for Linkable Sub-Workflow<br>Referencing: `/mba$code-lswf-raps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "mba$lswfSwf" : {
+            "description" : "Current Linkable Sub-Workflow in Workflow<br>Referencing: `/mba$code-lswfs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "mba$lswfUc" : {
+            "description" : "Use Case assigned to the order<br>Referencing: `/mba$code-lswf-ucs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "mba$mediumA" : {
+            "description" : "Medium A/M flag",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "mba$mediumPhoneNr" : {
+            "description" : "Reference phone number to be registered in case of a phone call",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "mba$pastAuthorUserList" : {
+            "description" : "Authorization: User List for current jtg<br>Referencing: `/users/{id}`",
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/user_ref"
+            },
+            "readOnly" : true
+          },
+          "mba$srcFund" : {
+            "description" : "Source of Funds<br>Referencing: `/mba$code-src-funds/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "pkpSvcRsvIdent" : {
+            "description" : "Position Keeping Service: Reservation/advice identifier",
+            "type" : "string",
+            "readOnly" : true
+          }
+        }
+      },
+      "doc_fidds" : {
+        "title" : "List of doc_fidd",
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/doc_fidd"
+        },
+        "uniqueItems" : true
+      },
+      "doc_key" : {
+        "title" : "doc_key",
+        "type" : "object",
+        "properties" : {
+          "docKey" : {
+            "description" : "Referencing: `/code-doc-keys/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_generic"
+          },
+          "val" : {
+            "type" : "string",
+            "readOnly" : true,
+            "x-additionalFieldType" : "extn_generic"
+          }
+        }
+      },
+      "doc_override" : {
+        "title" : "doc_override",
+        "type" : "object",
+        "properties" : {
+          "override" : {
+            "description" : "Override code<br>Referencing: `/code-overrides/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "overrideComment" : {
+            "description" : "Comment<br>Referencing: `/code-override-comments/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "overrideText" : {
+            "description" : "Override text",
+            "type" : "string"
+          },
+          "secUser" : {
+            "description" : "User<br>Referencing: `/users/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/user_ref"
+            } ]
+          },
+          "signt" : {
+            "description" : "Signature",
+            "type" : "string"
+          },
+          "timestamp" : {
+            "description" : "Timestamp",
+            "type" : "string",
+            "format" : "date-time"
+          }
+        }
+      },
+      "doc_postit" : {
+        "title" : "doc_postit",
+        "type" : "object",
+        "properties" : {
+          "subType" : {
+            "description" : "Subtype<br>Referencing: `/code-postit-sub-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "text" : {
+            "description" : "Text",
+            "type" : "string"
+          },
+          "timestamp" : {
+            "description" : "Timestamp",
+            "type" : "string",
+            "format" : "date-time-no-tz"
+          },
+          "topic" : {
+            "description" : "Topic",
+            "type" : "string"
+          },
+          "type" : {
+            "description" : "Type<br>Referencing: `/code-postit-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "user" : {
+            "description" : "Inserted by<br>Referencing: `/users/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/user_ref"
+            } ]
+          }
+        }
+      },
+      "doc_ref" : {
+        "title" : "doc_ref",
+        "type" : "object",
+        "properties" : {
+          "_href" : {
+            "description" : "Reference/link",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "_ident" : {
+            "description" : "Only used for workItem use cases, cross-reference in workItem context.",
+            "type" : "string",
+            "writeOnly" : true
+          },
+          "id" : {
+            "description" : "Numeric reference",
+            "type" : "integer",
+            "format" : "int64"
+          }
+        }
+      },
+      "doc_settle_plan" : {
+        "title" : "doc_settle_plan",
+        "type" : "object",
+        "properties" : {
+          "lifecycleEvt" : {
+            "description" : "Life cycle event<br>Referencing: `/code-settle-lifecycle-evts/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "settlePlan" : {
+            "description" : "Settlement plan<br>Referencing: `/code-settle-plans/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "trigAsset" : {
+            "description" : "Triggering asset<br>Referencing: `/obj-assets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "trigMkt" : {
+            "description" : "Triggering market<br>Referencing: `/obj-mkts/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "trigOrderType" : {
+            "description" : "Triggering order type<br>Referencing: `/code-order-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "trigOrderTypeGrp" : {
+            "description" : "Triggering order type group<br>Referencing: `/code-order-type-grps/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "trigPos" : {
+            "description" : "Triggering position<br>Referencing: `/obj-mkts/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          }
+        }
+      },
+      "doc_tab_caldr" : {
+        "title" : "doc_tab_caldr",
+        "type" : "object",
+        "properties" : {
+          "bindDateList" : {
+            "type" : "string",
+            "readOnly" : true
+          },
+          "endDate" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "exPeriodOffsetExpr" : {
+            "description" : "Ex-Date Offset",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "exclLastBrkPeriod" : {
+            "type" : "boolean"
+          },
+          "fixDateCaldrList" : {
+            "type" : "string",
+            "readOnly" : true
+          },
+          "fixDateOffset" : {
+            "description" : "Referencing: `/code-date-offsets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "fixDateOffsetExpr" : {
+            "type" : "string",
+            "readOnly" : true
+          },
+          "fixPeriodRef" : {
+            "description" : "Referencing: `/code-period-refs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "freq" : {
+            "type" : "number"
+          },
+          "isPeriodBind" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "isUpfront" : {
+            "type" : "boolean"
+          },
+          "period" : {
+            "description" : "Referencing: `/code-pay-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "periodCnt" : {
+            "type" : "number"
+          },
+          "periodEnd" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "periodEndA" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "periodList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/doc_caldr_period"
+            },
+            "readOnly" : true
+          },
+          "periodStart" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "periodStartA" : {
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "periodicity" : {
+            "type" : "string"
+          },
+          "refDateCaldrList" : {
+            "type" : "string",
+            "readOnly" : true
+          },
+          "refDateOffset" : {
+            "description" : "Referencing: `/code-date-offsets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "refDateOffsetExpr" : {
+            "type" : "string",
+            "readOnly" : true
+          },
+          "startDate" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "trxDateCaldrList" : {
+            "type" : "string",
+            "readOnly" : true
+          },
+          "trxDateOffset" : {
+            "description" : "Referencing: `/code-date-offsets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "trxDateOffsetExpr" : {
+            "type" : "string",
+            "readOnly" : true
+          },
+          "valDateCaldrList" : {
+            "type" : "string",
+            "readOnly" : true
+          },
+          "valDateOffset" : {
+            "description" : "Referencing: `/code-date-offsets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "valDateOffsetExpr" : {
+            "type" : "string",
+            "readOnly" : true
+          }
+        }
+      },
+      "doc_tab_recon2" : {
+        "title" : "doc_tab_recon2",
+        "type" : "object",
+        "properties" : {
+          "amount" : {
+            "description" : "Amount",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "assetInfo" : {
+            "description" : "Asset Information",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "debCred" : {
+            "description" : "Balance of Credits / Debits",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "delIssueDoc" : {
+            "description" : "Deleted Issue Doc ID<br>Referencing: `/docs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/doc_ref"
+            } ],
+            "readOnly" : true
+          },
+          "docTabRef" : {
+            "description" : "Reference",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "editMode" : {
+            "description" : "Edit Mode",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "entryDate" : {
+            "description" : "Entry Date",
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "flowLinkKey" : {
+            "description" : "Flow Link Key",
+            "type" : "integer",
+            "format" : "int32",
+            "readOnly" : true
+          },
+          "fundsCode" : {
+            "description" : "Funds Code",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "isExtl" : {
+            "description" : "Is External",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "issueDoc" : {
+            "description" : "Issue Doc ID<br>Referencing: `/docs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/doc_ref"
+            } ],
+            "readOnly" : true
+          },
+          "matchQtyDiff" : {
+            "description" : "Diff. quantity",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "matchValDateDiff" : {
+            "description" : "Value date diff.",
+            "type" : "integer",
+            "format" : "int32",
+            "readOnly" : true
+          },
+          "narr" : {
+            "description" : "Narrative",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "pos" : {
+            "description" : "Position<br>Referencing: `/obj-poss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "qty" : {
+            "description" : "Quantity",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "qtyType" : {
+            "description" : "Quantity Type",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "recon2ItemStatus" : {
+            "description" : "Status<br>Referencing: `/code-recon2-item-statuss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "recon2MatchCmtd" : {
+            "description" : "Matching Method<br>Referencing: `/code-recon2-match-cmtds/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "reconLotType" : {
+            "description" : "Reconciliation Lot Type<br>Referencing: `/code-recon-lot-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "ref1" : {
+            "description" : "Reference",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "ref2" : {
+            "description" : "Reference",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "ref3" : {
+            "description" : "Reference",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "ref4" : {
+            "description" : "Reference",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "ref5" : {
+            "description" : "Reference",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "ref6" : {
+            "description" : "Reference",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "seqNr" : {
+            "description" : "Sequence no.",
+            "type" : "integer",
+            "format" : "int32",
+            "readOnly" : true
+          },
+          "trxType" : {
+            "description" : "Transaction Type",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "valDate" : {
+            "description" : "Value Date",
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          }
+        }
+      },
+      "doc_tab_work_item" : {
+        "title" : "doc_tab_work_item",
+        "type" : "object",
+        "properties" : {
+          "closeDate" : {
+            "description" : "Close Date",
+            "type" : "string",
+            "format" : "date"
+          },
+          "descn" : {
+            "description" : "Description",
+            "type" : "string"
+          },
+          "isSlaveDirty" : {
+            "description" : "Is dirty ?",
+            "type" : "boolean"
+          },
+          "isTightLink" : {
+            "description" : "Is Linked",
+            "type" : "boolean"
+          },
+          "masterDoc" : {
+            "description" : "Master Order<br>Referencing: `/docs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/doc_ref"
+            } ]
+          },
+          "seqNr" : {
+            "description" : "Sequence no.",
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "slaveDoc" : {
+            "description" : "Order<br>Referencing: `/docs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/doc_ref"
+            } ]
+          },
+          "subject" : {
+            "description" : "Subject",
+            "type" : "string"
+          },
+          "tag" : {
+            "description" : "Tag",
+            "type" : "string"
+          },
+          "workItemCtx" : {
+            "description" : "Work Item Context<br>Referencing: `/code-work-item-ctxs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "workItemStatus" : {
+            "description" : "Work Item Status<br>Referencing: `/code-work-item-statuss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "workItemType" : {
+            "description" : "Work Item Type<br>Referencing: `/code-work-item-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          }
+        }
+      },
+      "doc_trans" : {
+        "title" : "doc_trans",
+        "type" : "object",
+        "properties" : {
+          "calcCnt" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "calcTime" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "intfWfcAction" : {
+            "description" : "Workflow Interface Action<br>Referencing: `/wfc-action-fidds/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "newWfcStatus" : {
+            "description" : "Workflow Status<br>Referencing: `/wfc-status-fidds/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "oldWfcStatus" : {
+            "description" : "Workflow Status<br>Referencing: `/wfc-status-fidds/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "opnTime" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "remark" : {
+            "description" : "Remark",
+            "type" : "string"
+          },
+          "ruleTime" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "secUser" : {
+            "description" : "User<br>Referencing: `/users/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/user_ref"
+            } ]
+          },
+          "seqNr" : {
+            "description" : "Sequence no.",
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "timestamp" : {
+            "description" : "Timestamp",
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "transAction" : {
+            "description" : "Transition<br>Referencing: `/code-trans-actions/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "userTime" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "wfcAction" : {
+            "description" : "Workflow Action<br>Referencing: `/wfc-action-fidds/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "wfcTime" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }
+      },
+      "doc_xrate" : {
+        "title" : "doc_xrate",
+        "type" : "object",
+        "properties" : {
+          "brkRtngChan" : {
+            "description" : "Broker Routing Channel<br>Referencing: `/code-rtng-chans/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "brkRtngChanA" : {
+            "description" : "Broker Routing Channel set automatically",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "buyCurry" : {
+            "description" : "Currency bank buys<br>Referencing: `/obj-assets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "buyNostroCont" : {
+            "description" : "Buy nostro container<br>Referencing: `/obj-conts/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "buyNostroContA" : {
+            "description" : "Buy nostro container set automatically",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "buyQty" : {
+            "description" : "Quantity bank buys",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "buyQtyA" : {
+            "description" : "Quantity bank buys set automatically",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "buySplitRateDigits" : {
+            "description" : "Digits",
+            "type" : "integer",
+            "format" : "int32",
+            "readOnly" : true
+          },
+          "buySplitRateDigitsA" : {
+            "description" : "Digits",
+            "type" : "integer",
+            "format" : "int32",
+            "readOnly" : true
+          },
+          "buySplitRatePict" : {
+            "description" : "Picture",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "buySplitRatePictA" : {
+            "description" : "Picture",
+            "type" : "integer",
+            "format" : "int32",
+            "readOnly" : true
+          },
+          "cpaAsset" : {
+            "description" : "CPA Asset<br>Referencing: `/obj-assets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "cpaAssetFromSplit" : {
+            "description" : "From Split CPA Asset<br>Referencing: `/obj-assets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "cpaAssetToSplit" : {
+            "description" : "To Split CPA Asset<br>Referencing: `/obj-assets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "dealFwdRate" : {
+            "description" : "Deal forward exchange rate",
+            "type" : "number"
+          },
+          "dealFwdRateA" : {
+            "description" : "Deal forward exchange rate set automatically",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "dealFwdRatePretty" : {
+            "description" : "Pretty deal forward exchange rate",
+            "type" : "string"
+          },
+          "dealRate" : {
+            "description" : "Deal exchange rate",
+            "type" : "number"
+          },
+          "dealRateA" : {
+            "description" : "Deal exchange rate set automatically",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "dealRatePretty" : {
+            "description" : "Pretty deal exchange rate",
+            "type" : "string"
+          },
+          "dealSpotRate" : {
+            "description" : "Deal spot exchange rate",
+            "type" : "number"
+          },
+          "dealSpotRateA" : {
+            "description" : "Deal spot exchange rate set automatically",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "dealSpotRatePretty" : {
+            "description" : "Pretty deal spot exchange rate",
+            "type" : "string"
+          },
+          "digits" : {
+            "description" : "Number of decimal digits of xrate convention",
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "digitsA" : {
+            "description" : "Number of decimal digits of xrate convention set automatically",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "fromCurry" : {
+            "description" : "From currency<br>Referencing: `/obj-assets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "fromDeprate" : {
+            "description" : "Deposit rate of source currency",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "fromQty" : {
+            "description" : "From/fixed quantity",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "fwdBpsQtyCmtd" : {
+            "description" : "Calculation method for market forward spread and bps as Amount<br>Referencing: `/code-fwd-bps-qty-cmtds/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "fwdSpread" : {
+            "description" : "Spread on fwd market rate",
+            "type" : "number"
+          },
+          "fwdSpreadA" : {
+            "description" : "Spread on fwd market rate set automatically",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "fwdSpreadBuCurry" : {
+            "description" : "Forward Spread in bank currency (currently equal to nostro currency)",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "fwdSpreadBuCurryA" : {
+            "description" : "Forward Spread on in bank currency (currently equal to nostro currency) set automatically",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "fwdSpreadFromCurry" : {
+            "description" : "Forward Spread as Amount in from currency",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "fwdSpreadOrig" : {
+            "description" : "Forward Spread before SPCD were applied",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "fwdSpreadToCurry" : {
+            "description" : "Forward Spread as Amount in to currency",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "fxtCont" : {
+            "description" : "FX Trading Nostro Container<br>Referencing: `/obj-conts/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "fxtContA" : {
+            "description" : "FX Trading Nostro Container set automatically",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "fxtDoSplit" : {
+            "description" : "Split Option on Trading Container",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "fxtDoSplitA" : {
+            "description" : "Split Option set automatically",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "isin" : {
+            "description" : "International Securities Identification Number",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "mktFwdBps" : {
+            "description" : "Market forward bps",
+            "type" : "number"
+          },
+          "mktFwdBpsA" : {
+            "description" : "Market forward bps set automatically",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "mktFwdBpsBuCurry" : {
+            "description" : "Forward BPS as Amount in bank currency (currently equal to nostro currency)",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "mktFwdBpsBuySplit" : {
+            "description" : "Buy split market forward bps",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "mktFwdBpsBuySplitA" : {
+            "description" : "Buy split market forward bps set automatically",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "mktFwdBpsFromCurry" : {
+            "description" : "Forward BPS as Amount in from currency",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "mktFwdBpsSellSplit" : {
+            "description" : "Sell split rate of market forward rate",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "mktFwdBpsSellSplitA" : {
+            "description" : "Sell split rate of market forward rate set automatically",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "mktFwdBpsToCurry" : {
+            "description" : "Forward BPS as Amount in to currency",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "mktFwdRate" : {
+            "description" : "Market forward exchange rate",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "mktFwdRateA" : {
+            "description" : "Market forward exchange rate set automatically",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "mktFwdRateBuySplit" : {
+            "description" : "Buy split rate of market forward rate",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "mktFwdRateBuySplitA" : {
+            "description" : "Buy split rate of market forward rate set automatically",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "mktFwdRateBuySplitCalc" : {
+            "description" : "Market Forward Rate",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "mktFwdRatePretty" : {
+            "description" : "Pretty market forward exchange rate",
+            "type" : "string"
+          },
+          "mktFwdRateSellSplit" : {
+            "description" : "Sell split rate of market forward rate",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "mktFwdRateSellSplitA" : {
+            "description" : "Sell split rate of market forward rate set automatically",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "mktFwdRateSellSplitCalc" : {
+            "description" : "Market Forward Rate",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "mktRate" : {
+            "description" : "Market exchange rate",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "mktRateA" : {
+            "description" : "Market exchange rate set automatically",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "mktRateBuySplit" : {
+            "description" : "Buy split rate of market rate",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "mktRateBuySplitA" : {
+            "description" : "Buy split rate of market rate set automatically",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "mktRateSellSplit" : {
+            "description" : "Sell split rate of market rate",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "mktRateSellSplitA" : {
+            "description" : "Sell split rate of market rate set automatically",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "mktSpotFeed" : {
+            "description" : "Market spot exchange feed",
+            "type" : "number"
+          },
+          "mktSpotFeedA" : {
+            "description" : "Market spot exchange feed set automatically",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "mktSpotFeedBuySplit" : {
+            "description" : "Buy split feed of market spot rate",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "mktSpotFeedBuySplitA" : {
+            "description" : "Buy split rate of market spot feed set automatically",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "mktSpotFeedPretty" : {
+            "description" : "Pretty market spot exchange feed",
+            "type" : "string"
+          },
+          "mktSpotFeedSellSplit" : {
+            "description" : "Sell split rate of market spot feed",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "mktSpotFeedSellSplitA" : {
+            "description" : "Sell split rate of market spot feed set automatically",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "mktSpotRate" : {
+            "description" : "Trader spot exchange rate (Market Feed + Trader Spread)",
+            "type" : "number"
+          },
+          "mktSpotRateA" : {
+            "description" : "Trader spot exchange rate  set automatically",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "mktSpotRateBuySplit" : {
+            "description" : "Buy split rate of trader spot rate",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "mktSpotRateBuySplitA" : {
+            "description" : "Buy split rate of trader spot rate set automatically",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "mktSpotRateBuySplitCalc" : {
+            "description" : "Market Spot Rate",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "mktSpotRatePretty" : {
+            "description" : "Pretty Trader spot exchange rate ",
+            "type" : "string"
+          },
+          "mktSpotRateSellSplit" : {
+            "description" : "Sell split rate of trader spot rate",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "mktSpotRateSellSplitA" : {
+            "description" : "Sell split rate of trader spot rate set automatically",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "mktSpotRateSellSplitCalc" : {
+            "description" : "Market Spot Rate",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "pict" : {
+            "description" : "Picture of xrate convention",
+            "type" : "string"
+          },
+          "pictA" : {
+            "description" : "Picture of xrate convention set automatically",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "priceType" : {
+            "description" : "Price type of exchange rate<br>Referencing: `/code-price-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "priceTypeA" : {
+            "description" : "Price type of exchange rate set automatically",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "rateSplitToBuCurry" : {
+            "description" : "Rate between split currency and bu currency",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "refDate" : {
+            "description" : "Reference date of the market exchange rates<br>Referencing: `/code-consts/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "refDateA" : {
+            "description" : "Reference date of the market exchange rates set automatically",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "refDateOffset" : {
+            "description" : "Reference date offset",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "refDateOffsetA" : {
+            "description" : "Reference date offset set automatically",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "rsvDoc" : {
+            "description" : "Reservation order ID<br>Referencing: `/doc-fxtrs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/doc_ref"
+            } ],
+            "readOnly" : true
+          },
+          "sellCurry" : {
+            "description" : "Currency bank sells<br>Referencing: `/obj-assets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "sellNostroCont" : {
+            "description" : "Sell nostro container<br>Referencing: `/obj-conts/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "sellNostroContA" : {
+            "description" : "Sell nostro container set automatically",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "sellQty" : {
+            "description" : "Quantity bank sells",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "sellQtyA" : {
+            "description" : "Quantity bank sells set automatically",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "sellSplitRateDigits" : {
+            "description" : "Digits",
+            "type" : "integer",
+            "format" : "int32",
+            "readOnly" : true
+          },
+          "sellSplitRateDigitsA" : {
+            "description" : "Digits",
+            "type" : "integer",
+            "format" : "int32",
+            "readOnly" : true
+          },
+          "sellSplitRatePict" : {
+            "description" : "Picture",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "sellSplitRatePictA" : {
+            "description" : "Picture",
+            "type" : "integer",
+            "format" : "int32",
+            "readOnly" : true
+          },
+          "seqNr" : {
+            "description" : "Sequence number of the exchange rate",
+            "type" : "integer",
+            "format" : "int32",
+            "readOnly" : true
+          },
+          "splitCurry" : {
+            "description" : "Split Ref Currency<br>Referencing: `/obj-assets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "splitCurryA" : {
+            "description" : "Split Ref Currency",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "spotSpread" : {
+            "description" : "Spot Spread on spot market rate",
+            "type" : "number"
+          },
+          "spotSpread2" : {
+            "description" : "Spot Spread 2 on spot market rate",
+            "type" : "number"
+          },
+          "spotSpread2A" : {
+            "description" : "Spread 2 on spot market rate set automatically",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "spotSpread2Orig" : {
+            "description" : "Spread 2 before SPCD were applied",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "spotSpreadA" : {
+            "description" : "Spread on spot market rate set automatically",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "spotSpreadBuCurry" : {
+            "description" : "Spread on market spot rate in bank currency (currently equal to nostro currency)",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "spotSpreadBuCurry2" : {
+            "description" : "Spread 2 on market spot rate in bank currency (currently equal to nostro currency)",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "spotSpreadBuCurry2A" : {
+            "description" : "Spread 2 on market spot rate in bank currency (currently equal to nostro currency) set automatically",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "spotSpreadBuCurryA" : {
+            "description" : "Spread on market spot rate in bank currency (currently equal to nostro currency) set automatically",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "spotSpreadOrig" : {
+            "description" : "Spread before SPCD were applied",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "timestamp" : {
+            "description" : "Timestamp",
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "toCurry" : {
+            "description" : "To currency<br>Referencing: `/obj-assets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "toDeprate" : {
+            "description" : "Deposit rate of target currency",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "toQty" : {
+            "description" : "To/calculated quantity",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "toQtyNet" : {
+            "description" : "To/calculated net quantity (with mkt_rate): Empty for Orders before Rel 2.7.2!",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "tradeDate" : {
+            "description" : "Trade Date",
+            "type" : "string",
+            "format" : "date",
+            "readOnly" : true
+          },
+          "tradeDateA" : {
+            "description" : "Trade Date set automatically",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "traderSpotSpread" : {
+            "description" : "Trader-Spread on spot market rate",
+            "type" : "number"
+          },
+          "traderSpotSpreadA" : {
+            "description" : "Trader Spread on spot market rate set automatically",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "xrateA" : {
+            "description" : "Is true if any aspect of the exchange rate (including nostro, convention, ...) is automatically calculated and not modified by hand.",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "xrateCnvt" : {
+            "description" : "Exchange rate quoting convention<br>Referencing: `/code-mp-xrate-cnvts/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "xrateCnvtA" : {
+            "description" : "Exchange rate quoting convention set automatically",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "xrateMethod" : {
+            "description" : "Exchange rate calculation method<br>Referencing: `/code-xrate-methods/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "xrateMethodA" : {
+            "description" : "Exchange rate calculation method set automatically",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "xrateStatus" : {
+            "description" : "Exchange rate status, e.g. floating, frozen, etc.<br>Referencing: `/code-mp-xrate-statuss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          }
+        }
+      },
+      "docp_inpr" : {
+        "title" : "docp_inpr",
+        "type" : "object",
+        "properties" : {
+          "advsClientList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/docp_inpr_client"
+            }
+          },
+          "advsLoc" : {
+            "description" : "Advisor location at the time of advice.<br>Referencing: `/obj-countrys/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "advsLocA" : {
+            "description" : "Auto/Manual flag of Advisor location at the time of advice.",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "busiCtx" : {
+            "description" : "The business context in which the rules are to\n          be evaluated.<br>Referencing: `/code-invstr-prot-busi-ctxs/{id}`\n",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "cont" : {
+            "description" : "The container under discussion. The owner of\n          that container is also used for filtering the person lookup for\n          'advs_client_list.person_id'.<br>Referencing: `/obj-conts/{id}`\n",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "doc" : {
+            "description" : "Doc_id<br>Referencing: `/docs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/doc_ref"
+            } ],
+            "readOnly" : true
+          },
+          "dur" : {
+            "description" : "Duration of the meeting.<br>Referencing: `/code-invstr-prot-durs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "durA" : {
+            "description" : "Auto/Manual flag of Duration of the meeting.",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "finalVersionSeqNr" : {
+            "description" : "The sequence number of the final version.",
+            "type" : "integer",
+            "format" : "int32",
+            "readOnly" : true
+          },
+          "frze" : {
+            "description" : "Set to TRUE (+) in order to freeze the rules and\n          the fields; FALSE in order to have the rules be re-evaluted upon changes\n          in the order.\n",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "intive" : {
+            "description" : "Initiative: client or investment advisor.<br>Referencing: `/code-invstr-prot-intives/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "intiveA" : {
+            "description" : "Auto/Manual flag of Initiative: client or investment advisor.",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "invstAdvs" : {
+            "description" : "Investment advisor - either a business partner\n          (BP) or person, depending on the organisational structure activation.<br>Referencing: `/objs/{id}`\n",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "invstAdvsA" : {
+            "description" : "Auto/Manual flag of Investment advisor - either a business partner\n          (BP) or person, depending on the organisational structure activation.\n",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "ips" : {
+            "description" : "The selected investment policy statement (IPS).<br>Referencing: `/obj-ipss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "meetingDate" : {
+            "description" : "Date and time of the meeting, converted to local\n          time zone.\n",
+            "type" : "string",
+            "format" : "date-time-no-tz"
+          },
+          "meetingDateA" : {
+            "description" : "Auto/Manual flag of Date and time of the meeting, converted to local\n          time zone.\n",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "overallStatus" : {
+            "description" : "The overall investor protection status of the final version.<br>Referencing: `/code-invstr-prot-statuss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "refDoc" : {
+            "description" : "Reference order for which the investor\n          protection rules have already been evaluated and which created this\n          order (to which this investor protection part is attached).<br>Referencing: `/docs/{id}`\n",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/doc_ref"
+            } ],
+            "readOnly" : true
+          },
+          "scusList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/docp_inpr_cus"
+            }
+          },
+          "scusOverStatus" : {
+            "description" : "Overall service custom teststatus.<br>Referencing: `/code-invstr-prot-statuss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "sdocmOverStatus" : {
+            "description" : "Overall service information document status\n          (okay, restricted, not okay).<br>Referencing: `/code-invstr-prot-statuss/{id}`\n",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "sindList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/docp_inpr_indu"
+            }
+          },
+          "sindOverStatus" : {
+            "description" : "Overall service information duty status.<br>Referencing: `/code-invstr-prot-statuss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "sindmOverState" : {
+            "description" : "Overall service information document state\n          (required, received, handed over, ...).<br>Referencing: `/code-invstr-prot-docm-states/{id}`\n",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "svcDocmList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/docp_inpr_docm"
+            }
+          },
+          "svcList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/docp_inpr_svc"
+            }
+          },
+          "svcOverStatus" : {
+            "description" : "Overall advisory service status.<br>Referencing: `/code-invstr-prot-statuss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "svcType" : {
+            "description" : "The provided bank service respective degree of\n          advice given: Advice Given, Opinion Given, Direct Execution, ...<br>Referencing: `/code-invstr-prot-svc-types/{id}`\n",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "svcTypeA" : {
+            "description" : "Auto/Manual flag of The provided bank service respective degree of\n          advice given: Advice Given, Opinion Given, Direct Execution, ...\n",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "versList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/docp_inpr_vers"
+            }
+          }
+        }
+      },
+      "docp_inpr_apof" : {
+        "title" : "docp_inpr_apof",
+        "type" : "object",
+        "properties" : {
+          "legalNorm" : {
+            "description" : "Legal norm for which this applicable offering is evaluated.<br>Referencing: `/code-invstr-prot-legal-norms/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "ovr" : {
+            "description" : "Applicable offering override code.<br>Referencing: `/code-overrides/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "ovrJustifTempl" : {
+            "description" : "Justification template for the override of the applicable offering status.<br>Referencing: `/code-invstr-prot-justifs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "ovrJustifTemplA" : {
+            "description" : "Auto/Manual flag of Justification template for the override of the applicable offering status.",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "ovrJustifText" : {
+            "description" : "Justification text for the override of the applicable offering status.",
+            "type" : "string"
+          },
+          "partId" : {
+            "description" : "Part ID",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "person" : {
+            "description" : "Advised client for whom this applicable offering is evaluated.<br>Referencing: `/obj-persons/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "replyOvr" : {
+            "description" : "Set to TRUE in order to override the 'apof_rule_reply_id'; valid 'apof_ovr_id' required.",
+            "type" : "boolean"
+          },
+          "rule" : {
+            "description" : "The rule identifier.<br>Referencing: `/code-invstr-prot-rules/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "ruleDiag" : {
+            "description" : "The rule diagnosis (error or result type).<br>Referencing: `/code-invstr-prot-rule-diags/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "ruleMsgKeyOrVal" : {
+            "description" : "The encoded, translatable text (or the\n          non-translatable text itself) for the message explaining the (negative)\n          applicable offering reply. Use 'rule_msg' or alternatively\n          bre_text.text#text in order to display the (translated) text.\n",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "ruleReply" : {
+            "description" : "The reply of the applicable offering rule service.<br>Referencing: `/code-invstr-prot-rule-replys/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "status" : {
+            "description" : "Applicable offering status.<br>Referencing: `/code-invstr-prot-statuss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          }
+        }
+      },
+      "docp_inpr_asset" : {
+        "title" : "docp_inpr_asset",
+        "type" : "object",
+        "properties" : {
+          "acusList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/docp_inpr_cus"
+            }
+          },
+          "acusOverStatus" : {
+            "description" : "Overall asset custom test status.<br>Referencing: `/code-invstr-prot-statuss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "advReasonTempl" : {
+            "description" : "Template for the advice reason.<br>Referencing: `/code-invstr-prot-adv-reasons/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "advReasonTemplA" : {
+            "description" : "Auto/Manual flag of Template for the advice reason.",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "advReasonText" : {
+            "description" : "The reason for the advice.",
+            "type" : "string"
+          },
+          "aindList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/docp_inpr_indu"
+            }
+          },
+          "aindOverStatus" : {
+            "description" : "Overall asset information duty status.<br>Referencing: `/code-invstr-prot-statuss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "apofList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/docp_inpr_apof"
+            }
+          },
+          "apofOverStatus" : {
+            "description" : "Overall asset applicable offering status.<br>Referencing: `/code-invstr-prot-statuss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "asset" : {
+            "description" : "The asset being discussed.<br>Referencing: `/obj-assets/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "assetComment" : {
+            "description" : "Asset comment.",
+            "type" : "string"
+          },
+          "atstList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/docp_inpr_atst"
+            }
+          },
+          "atstOverStatus" : {
+            "description" : "Overall appropriateness status.<br>Referencing: `/code-invstr-prot-statuss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "docmList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/docp_inpr_docm"
+            }
+          },
+          "docmOverStatus" : {
+            "description" : "Overall asset information document status\n          (okay, restricted, not okay).<br>Referencing: `/code-invstr-prot-statuss/{id}`\n",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "indmOverState" : {
+            "description" : "Overall asset information document state\n          (required, received, handed over, ...).<br>Referencing: `/code-invstr-prot-docm-states/{id}`\n",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "mkt" : {
+            "description" : "The market on which the asset is going to be traded.<br>Referencing: `/obj-mkts/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "optimInstr" : {
+            "description" : "The optimiser instruction which has been set for the position on the actual order (e.g. REBALP).<br>Referencing: `/code-optim-instrs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "partId" : {
+            "description" : "Part ID",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "pos" : {
+            "description" : "The position which is on either buy, hold or sell.<br>Referencing: `/obj-poss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "qty" : {
+            "description" : "The quantity by which the position is changed: positive for buy, negative for sell.",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "remark" : {
+            "description" : "The remark which has been added to the position on the actual order (e.g. REBALP).",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "solic" : {
+            "description" : "Solicitation: whether the discussed asset is recommended or on client request.<br>Referencing: `/code-invstr-prot-solics/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          }
+        }
+      },
+      "docp_inpr_atst" : {
+        "title" : "docp_inpr_atst",
+        "type" : "object",
+        "properties" : {
+          "existKnowlExper" : {
+            "description" : "The existing knowledge and experience (K&E) of the client as a comma separated list.",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "legalNorm" : {
+            "description" : "Legal norm for which this appropriateness test is evaluated.<br>Referencing: `/code-invstr-prot-legal-norms/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "ovr" : {
+            "description" : "A-test override code.<br>Referencing: `/code-overrides/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "ovrJustifTempl" : {
+            "description" : "Justification template for the override of the a-test status.<br>Referencing: `/code-invstr-prot-justifs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "ovrJustifTemplA" : {
+            "description" : "Auto/Manual flag of Justification template for the override of the a-test status.",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "ovrJustifText" : {
+            "description" : "Justification text for the override of the a-test status.",
+            "type" : "string"
+          },
+          "partId" : {
+            "description" : "Part ID",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "person" : {
+            "description" : "Advised client for which this appropriateness test is evaluated.<br>Referencing: `/obj-persons/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "replyOvr" : {
+            "description" : "Set to TRUE in order to override the 'rule_reply_id'; valid 'ovr_id' required.",
+            "type" : "boolean"
+          },
+          "requKnowlExper" : {
+            "description" : "The required knowledge and experience (K&E) for the asset (in the parent ASSET part).",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "rule" : {
+            "description" : "The rule identifier.<br>Referencing: `/code-invstr-prot-rules/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "ruleDiag" : {
+            "description" : "The rule diagnosis (error or result type).<br>Referencing: `/code-invstr-prot-rule-diags/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "ruleReply" : {
+            "description" : "The reply of the a-test rule service.<br>Referencing: `/code-invstr-prot-rule-replys/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "status" : {
+            "description" : "A-test status.<br>Referencing: `/code-invstr-prot-statuss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "succ" : {
+            "description" : "Indicates whether the client has successfully passed the a-test (true) or not (false).",
+            "type" : "boolean",
+            "readOnly" : true
+          }
+        }
+      },
+      "docp_inpr_client" : {
+        "title" : "docp_inpr_client",
+        "type" : "object",
+        "properties" : {
+          "involv" : {
+            "description" : "Client involvement: mandatory or optional.<br>Referencing: `/code-invstr-prot-involvs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "legalNormList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/docp_inpr_legal"
+            }
+          },
+          "loc" : {
+            "description" : "Client location at the time of advice.<br>Referencing: `/obj-countrys/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "manual" : {
+            "description" : "Indicates whether the client was manually added (TRUE) or due to the stakeholder nomination rule (FALSE).",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "medium" : {
+            "description" : "The medium (Face to Face, Phone, E-Mail, ...) by which the service is provided to this client.<br>Referencing: `/code-invstr-prot-mediums/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "partId" : {
+            "description" : "Part ID",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "person" : {
+            "description" : "Advised client.<br>Referencing: `/obj-persons/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "role" : {
+            "description" : "Client role.<br>Referencing: `/code-invstr-prot-roles/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "rule" : {
+            "description" : "The rule identifier.<br>Referencing: `/code-invstr-prot-rules/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "ruleDiag" : {
+            "description" : "The rule diagnosis (error or result type).<br>Referencing: `/code-invstr-prot-rule-diags/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          }
+        }
+      },
+      "docp_inpr_cobe" : {
+        "title" : "docp_inpr_cobe",
+        "type" : "object",
+        "properties" : {
+          "legalNorm" : {
+            "description" : "Legal norm for which this cost-benefit test is evaluated.<br>Referencing: `/code-invstr-prot-legal-norms/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "ovr" : {
+            "description" : "Cost-benefit test override code.<br>Referencing: `/code-overrides/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "ovrJustifTempl" : {
+            "description" : "Justification template for the override of the\n          cost-benefit test status.<br>Referencing: `/code-invstr-prot-justifs/{id}`\n",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "ovrJustifText" : {
+            "description" : "Justification text for the override of the\n          cost-benefit test status.\n",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "partId" : {
+            "description" : "Part ID",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "person" : {
+            "description" : "Advised client for which this cost-benefit test is evaluated.<br>Referencing: `/obj-persons/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "replyOvr" : {
+            "description" : "Set to TRUE in order to override the\n          'cobe_rule_reply_id'; valid 'cobe_ovr_id' required.\n",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "rule" : {
+            "description" : "The rule identifier.<br>Referencing: `/code-invstr-prot-rules/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "ruleDiag" : {
+            "description" : "The rule diagnosis (error or result type).<br>Referencing: `/code-invstr-prot-rule-diags/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "ruleMsgCtx" : {
+            "description" : "The context which provides the parameters,\n          separated by semicolon (INVSTR_PROT_CONST.C_CTX_SEP), for the message\n          placeholders (&1, &2 etc.) in 'rule_msg_key_or_val'.\n",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "ruleMsgKeyOrVal" : {
+            "description" : "The OUT_TEXT_NORM key (or the non-translatable\n          text itself) for the message explaining the (negative) cost-benefit test\n          reply.  Use 'rule_msg' in order to display the (translated) text.\n",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "ruleReply" : {
+            "description" : "The reply of the cost-benefit test rule service (CSS function).<br>Referencing: `/code-invstr-prot-rule-replys/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "status" : {
+            "description" : "Cost-benefit test status.<br>Referencing: `/code-invstr-prot-statuss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          }
+        }
+      },
+      "docp_inpr_cus" : {
+        "title" : "docp_inpr_cus",
+        "type" : "object",
+        "properties" : {
+          "legalNorm" : {
+            "description" : "Legal norm for which this custom test is evaluated.<br>Referencing: `/code-invstr-prot-legal-norms/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "ovr" : {
+            "description" : "Custom test override code.<br>Referencing: `/code-overrides/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "ovrJustifTempl" : {
+            "description" : "Justification template for the override of the\n          custom test status.<br>Referencing: `/code-invstr-prot-justifs/{id}`\n",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "ovrJustifTemplA" : {
+            "description" : "Auto/Manual flag of Justification template for the override of the\n          custom test status.\n",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "ovrJustifText" : {
+            "description" : "Justification text for the override of the\n          custom test status.\n",
+            "type" : "string"
+          },
+          "partId" : {
+            "description" : "Part ID",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "person" : {
+            "description" : "Advised client for which this custom test is evaluated.<br>Referencing: `/obj-persons/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "replyOvr" : {
+            "description" : "Set to TRUE in order to override the\n          'cobe_rule_reply_id'; valid 'cobe_ovr_id' required.\n",
+            "type" : "boolean"
+          },
+          "rule" : {
+            "description" : "The rule identifier.<br>Referencing: `/code-invstr-prot-rules/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "ruleDiag" : {
+            "description" : "The rule diagnosis (error or result type).<br>Referencing: `/code-invstr-prot-rule-diags/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "ruleMsgCtx" : {
+            "description" : "The context which provides the parameters,\n          separated by semicolon (INVSTR_PROT_CONST.C_CTX_SEP), for the message\n          placeholders (&1, &2 etc.) in 'rule_msg_key_or_val'.\n",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "ruleMsgKeyOrVal" : {
+            "description" : "The OUT_TEXT_NORM key (or the non-translatable\n          text itself) for the message explaining the (negative) custom test\n          reply.  Use 'rule_msg' in order to display the (translated) text.\n",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "ruleReply" : {
+            "description" : "The reply of the custom test rule service (CSS function).<br>Referencing: `/code-invstr-prot-rule-replys/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "status" : {
+            "description" : "Custom test status.<br>Referencing: `/code-invstr-prot-statuss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          }
+        }
+      },
+      "docp_inpr_docm" : {
+        "title" : "docp_inpr_docm",
+        "type" : "object",
+        "properties" : {
+          "altLangList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/docp_inpr_lang"
+            },
+            "readOnly" : true
+          },
+          "avlLangList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/docp_inpr_lang"
+            },
+            "readOnly" : true
+          },
+          "cltConf" : {
+            "description" : "Indicates whether the client has confirmed\n          or rejected the information document.<br>Referencing: `/code-invstr-prot-clt-confs/{id}`\n",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "docmDistr" : {
+            "description" : "Indicates the way the document is to be\n          distributed, specifically whether it is mandatory or optional, or whether\n          it is to be retrieved manually and personally handed over.<br>Referencing: `/code-invstr-prot-docm-distrs/{id}`\n",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "docmState" : {
+            "description" : "Information document state (Required, Received,\n          Handed Over, ...).<br>Referencing: `/code-invstr-prot-docm-states/{id}`\n",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "docmType" : {
+            "description" : "The type of the information document,\n          for instance PIB or PRIIP-KID. The actually received document type is\n          stored in 'rcvd_docm_type_id'.<br>Referencing: `/code-info-docm-types/{id}`\n",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "jusCountry" : {
+            "description" : "The jurisdiction for which the information\n          document is to be generated.<br>Referencing: `/obj-countrys/{id}`\n",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "lang" : {
+            "description" : "The language in which the information document\n          is to be generated.<br>Referencing: `/code-langs/{id}`\n",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "legalNorm" : {
+            "description" : "The Legal norm for which the information document\n          is required.<br>Referencing: `/code-invstr-prot-legal-norms/{id}`\n",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "manual" : {
+            "description" : "Indicates whether the information document was\n          manually added (TRUE) or due to the information duty rule (FALSE).\n",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "ovDocmState" : {
+            "description" : "Overall information document state (Required,\n          Received, Handed Over, ...) which takes the 'docm_state_id' and the\n          'clt_conf_id' into account.<br>Referencing: `/code-invstr-prot-docm-states/{id}`\n",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "ovr" : {
+            "description" : "Information document override code.<br>Referencing: `/code-overrides/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "ovrJustifTempl" : {
+            "description" : "Justification template for the override of the\n          information document status.<br>Referencing: `/code-invstr-prot-justifs/{id}`\n",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "ovrJustifTemplA" : {
+            "description" : "Auto/Manual flag of Justification template for the override of the\n          information document status.\n",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "ovrJustifText" : {
+            "description" : "Justification text for the override of the\n          information document status.\n",
+            "type" : "string"
+          },
+          "partId" : {
+            "description" : "Part ID",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "person" : {
+            "description" : "Advised client for which the information document\n          is required.<br>Referencing: `/obj-persons/{id}`\n",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ]
+          },
+          "postTrade" : {
+            "description" : "Indicates whether the document can be delivered\n          post-trade or not.<br>Referencing: `/code-invstr-prot-post-trades/{id}`\n",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "prefLang" : {
+            "description" : "The preferred language which has been determined\n          by the information document detail rule service.<br>Referencing: `/code-langs/{id}`\n",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "rcvdDocmType" : {
+            "description" : "The received type of the information document,\n          for instance PIB or PRIIP-KID. In most cases this is expected to be\n          equal to 'docm_type_id', except if the requested document type could\n          not be retrieved and alternative documents have been specified.<br>Referencing: `/code-info-docm-types/{id}`\n",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "rcvdLang" : {
+            "description" : "The received language of the information\n          document. In most cases this is expected to be equal to 'lang_id', except\n          if the requested document language could not be retrieved and\n          alternative languages have been specified.<br>Referencing: `/code-langs/{id}`\n",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "requ" : {
+            "description" : "Indicates whether the information document needs\n          to be retrieved or not.\n",
+            "type" : "boolean"
+          },
+          "rtrvOvr" : {
+            "description" : "Information document retrieval override checkbox.",
+            "type" : "boolean"
+          },
+          "rtrvTime" : {
+            "description" : "Information document retrieval date and time,\n          converted to local time zone.\n",
+            "type" : "string",
+            "format" : "date-time-no-tz",
+            "readOnly" : true
+          },
+          "rule" : {
+            "description" : "The rule identifier.<br>Referencing: `/code-invstr-prot-rules/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "ruleCltConf" : {
+            "description" : "Indicates whether a client confirmation for\n          the information document is required or not.<br>Referencing: `/code-invstr-prot-clt-confs/{id}`\n",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "ruleDiag" : {
+            "description" : "The rule diagnosis (error or result type).<br>Referencing: `/code-invstr-prot-rule-diags/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "ruleDocmDistr" : {
+            "description" : "The distribution which has been determined by\n          the information duty rule service. Also refer to 'docm_distr_id'.<br>Referencing: `/code-invstr-prot-docm-distrs/{id}`\n",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "ruleJusCountry" : {
+            "description" : "The jurisdiction which has been determined by\n          the information document detail rule service.<br>Referencing: `/obj-countrys/{id}`\n",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "statusMsgCtx" : {
+            "description" : "The context which provides the parameters,\n          separated by semicolon (INVSTR_PROT_CONST.C_CTX_SEP), for the message\n          placeholders (&1, &2 etc.) in 'status_msg_key_val'.\n",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "statusMsgKeyVal" : {
+            "description" : "The OUT_TEXT_NORM key (or the non-translatable\n          text itself) for the information document retrieval status\n          message. Use 'status_msg' in order to display the (translated) text.\n",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "uuid" : {
+            "description" : "Information document universally unique\n          identifier (UUID).\n",
+            "type" : "string",
+            "readOnly" : true
+          }
+        }
+      },
+      "docp_inpr_indu" : {
+        "title" : "docp_inpr_indu",
+        "type" : "object",
+        "properties" : {
+          "agingId" : {
+            "description" : "ID",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "doc" : {
+            "description" : "Doc_id<br>Referencing: `/docs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/doc_ref"
+            } ],
+            "readOnly" : true
+          },
+          "docm" : {
+            "description" : "Required client document.<br>Referencing: `/obj-docms/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "docmDistr" : {
+            "description" : "Defines the information document distribution,\n          for instance mandatory, optional or post-trade delivery.<br>Referencing: `/code-invstr-prot-docm-distrs/{id}`\n",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "docmExists" : {
+            "description" : "Indicates whether the required client document\n          exists (true) or not (false).\n",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "docmOwns" : {
+            "description" : "Ownership of the required client document:\n          person, BP, CONT, IPS.<br>Referencing: `/code-invstr-prot-docm-ownss/{id}`\n",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "docmType" : {
+            "description" : "The information document type (e.g. PIB or KIID).<br>Referencing: `/code-info-docm-types/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "docmValid" : {
+            "description" : "Indicates whether the required client document\n          has a valid signature (signed, not expired).\n",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "infoDuty" : {
+            "description" : "The kind of information duty: information\n          document, client document or disclaimer (text).<br>Referencing: `/code-invstr-prot-info-dutys/{id}`\n",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "legalNorm" : {
+            "description" : "Legal norm for which this asset information duty\n          is required.<br>Referencing: `/code-invstr-prot-legal-norms/{id}`\n",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "ovr" : {
+            "description" : "Information duty override code<br>Referencing: `/code-overrides/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "ovrJustifTempl" : {
+            "description" : "Justification template for the override of the\n          information duty status.<br>Referencing: `/code-invstr-prot-justifs/{id}`\n",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "ovrJustifTemplA" : {
+            "description" : "Auto/Manual flag of Justification template for the override of the\n          information duty status.\n",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "ovrJustifText" : {
+            "description" : "Justification text for the override of the\n          information duty status.\n",
+            "type" : "string"
+          },
+          "partId" : {
+            "description" : "Part ID",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "person" : {
+            "description" : "Advised client for whom this asset information\n          duty is required.<br>Referencing: `/obj-persons/{id}`\n",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "postTrade" : {
+            "description" : "Indicates whether the document can be delivered\n          post-trade or not.<br>Referencing: `/code-invstr-prot-post-trades/{id}`\n",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "replyOvr" : {
+            "description" : "Set to TRUE in order to override the\n          'docm_exists', 'docm_valid' result; valid 'ovr_id' required.\n",
+            "type" : "boolean"
+          },
+          "rule" : {
+            "description" : "The rule identifier.<br>Referencing: `/code-invstr-prot-rules/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "ruleDiag" : {
+            "description" : "The rule diagnosis (error or result type).<br>Referencing: `/code-invstr-prot-rule-diags/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "ruleMsgKeyOrVal" : {
+            "description" : "The encoded, translatable text (or the\n          non-translatable text itself) according to 'info_duty_id', for instance\n          a disclaimer text or an explanation why a given information document is\n          required. Use 'rule_msg' or alternatively bre_text.text#text in order to\n          display the (translated) text.\n",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "status" : {
+            "description" : "Information duty status.<br>Referencing: `/code-invstr-prot-statuss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          }
+        }
+      },
+      "docp_inpr_lang" : {
+        "title" : "docp_inpr_lang",
+        "type" : "object",
+        "properties" : {
+          "lang" : {
+            "description" : "The ID of the language.<br>Referencing: `/code-langs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "partId" : {
+            "description" : "Part ID",
+            "type" : "number",
+            "readOnly" : true
+          }
+        }
+      },
+      "docp_inpr_legal" : {
+        "title" : "docp_inpr_legal",
+        "type" : "object",
+        "properties" : {
+          "aTest" : {
+            "description" : "An appropiateness test is needed when set to TRUE.",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "apofTest" : {
+            "description" : "Applicable offering test is needed when set to TRUE.",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "cbTest" : {
+            "description" : "A cost-benefit test is needed when set to TRUE.",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "customTest" : {
+            "description" : "A custom test is needed when set to TRUE.",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "induTest" : {
+            "description" : "Information duty is needed when set to TRUE.",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "legalNorm" : {
+            "description" : "Legal Norm.<br>Referencing: `/code-invstr-prot-legal-norms/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "sTest" : {
+            "description" : "A suitability test is needed when set to TRUE.",
+            "type" : "boolean",
+            "readOnly" : true
+          }
+        }
+      },
+      "docp_inpr_restr" : {
+        "title" : "docp_inpr_restr",
+        "type" : "object",
+        "properties" : {
+          "restr" : {
+            "description" : "The restriction which implements the s-test.<br>Referencing: `/obj-restrs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "status" : {
+            "description" : "S-test status.<br>Referencing: `/code-invstr-prot-statuss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          }
+        }
+      },
+      "docp_inpr_stst" : {
+        "title" : "docp_inpr_stst",
+        "type" : "object",
+        "properties" : {
+          "ststLegalNorm" : {
+            "description" : "Legal norm for which this suitability test is evaluated.<br>Referencing: `/code-invstr-prot-legal-norms/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "ststPerson" : {
+            "description" : "Advised client for which this suitability test is evaluated.<br>Referencing: `/obj-persons/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "ststRestr" : {
+            "description" : "The restriction which implements the s-test.<br>Referencing: `/obj-restrs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          }
+        }
+      },
+      "docp_inpr_svc" : {
+        "title" : "docp_inpr_svc",
+        "type" : "object",
+        "properties" : {
+          "legalNorm" : {
+            "description" : "Legal norm for which this advisory service rule service is evaluated.<br>Referencing: `/code-invstr-prot-legal-norms/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "ovr" : {
+            "description" : "Advisory service override code.<br>Referencing: `/code-overrides/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "ovrJustifTempl" : {
+            "description" : "Justification template for the override of the\n          advisory service status.<br>Referencing: `/code-invstr-prot-justifs/{id}`\n",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "ovrJustifTemplA" : {
+            "description" : "Auto/Manual flag of Justification template for the override of the\n          advisory service status.\n",
+            "type" : "boolean",
+            "readOnly" : true
+          },
+          "ovrJustifText" : {
+            "description" : "Justification text for the override of the\n          advisory service status.\n",
+            "type" : "string"
+          },
+          "partId" : {
+            "description" : "Part ID",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "person" : {
+            "description" : "Advised client for whom this service is offered.<br>Referencing: `/obj-persons/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/obj_ref"
+            } ],
+            "readOnly" : true
+          },
+          "replyOvr" : {
+            "description" : "Set to TRUE in order to override the\n          'rule_reply_id'; valid 'ovr_id' required.\n",
+            "type" : "boolean"
+          },
+          "rule" : {
+            "description" : "The rule identifier.<br>Referencing: `/code-invstr-prot-rules/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "ruleDiag" : {
+            "description" : "The rule diagnosis (error or result type).<br>Referencing: `/code-invstr-prot-rule-diags/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "ruleMsgKeyOrVal" : {
+            "description" : "The encoded, translatable text (or the\n          non-translatable text itself) for the message explaining the (negative)\n          advisory service reply. Use 'rule_msg' or alternatively\n          bre_text.text#text in order to display the (translated) text.\n",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "ruleReply" : {
+            "description" : "The reply of the advisory service rule service.<br>Referencing: `/code-invstr-prot-rule-replys/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "status" : {
+            "description" : "Advisory service status.<br>Referencing: `/code-invstr-prot-statuss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          }
+        }
+      },
+      "docp_inpr_vers" : {
+        "title" : "docp_inpr_vers",
+        "type" : "object",
+        "properties" : {
+          "acusOverStatus" : {
+            "description" : "Overall asset custom test status.<br>Referencing: `/code-invstr-prot-statuss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "aindOverStatus" : {
+            "description" : "Overall asset information duty status.<br>Referencing: `/code-invstr-prot-statuss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "apofOverStatus" : {
+            "description" : "Overall applicable offering status.<br>Referencing: `/code-invstr-prot-statuss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "assetList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/docp_inpr_asset"
+            }
+          },
+          "atstOverStatus" : {
+            "description" : "Overall appropriateness status.<br>Referencing: `/code-invstr-prot-statuss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "cobeList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/docp_inpr_cobe"
+            },
+            "readOnly" : true
+          },
+          "cobeOverStatus" : {
+            "description" : "Overall cost-benefit test status.<br>Referencing: `/code-invstr-prot-statuss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "cusOverStatus" : {
+            "description" : "Overall custom test status: the combination of\n          asset ('vers.acus_over_status_id') and service information duty\n          ('inpr.scus_over_status_id') status.<br>Referencing: `/code-invstr-prot-statuss/{id}`\n",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "docmOverStatus" : {
+            "description" : "Overall asset information document status.<br>Referencing: `/code-invstr-prot-statuss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "induOverStatus" : {
+            "description" : "Overall information duty status: the combination\n          of asset ('vers.aind_over_status_id') and service information duty\n          ('inpr.sind_over_status_id') status.<br>Referencing: `/code-invstr-prot-statuss/{id}`\n",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "motivTempl" : {
+            "description" : "Motivation template.<br>Referencing: `/code-invstr-prot-motivs/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "motivText" : {
+            "description" : "Motivation text for the advisory protocol.",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "overallStatus" : {
+            "description" : "Overall investor protection status.<br>Referencing: `/code-invstr-prot-statuss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "partId" : {
+            "description" : "Part ID",
+            "type" : "number",
+            "readOnly" : true
+          },
+          "restrList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/docp_inpr_restr"
+            },
+            "readOnly" : true
+          },
+          "restrOverStatus" : {
+            "description" : "Overall suitability status.<br>Referencing: `/code-invstr-prot-statuss/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "ststList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/docp_inpr_stst"
+            },
+            "readOnly" : true
+          },
+          "supplmntTempl" : {
+            "description" : "Supplementary note template.<br>Referencing: `/code-invstr-prot-suppl-notes/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ],
+            "readOnly" : true
+          },
+          "supplmntText" : {
+            "description" : "Supplementary note text for the advisory protocol.",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "versionId" : {
+            "description" : "The ID of the corresponding version of the order.",
+            "type" : "number",
+            "readOnly" : true
+          }
+        }
+      },
+      "number" : {
+        "title" : "number",
+        "type" : "object"
+      },
+      "obj_key_ref_" : {
+        "title" : "obj_key_ref_",
+        "type" : "object",
+        "properties" : {
+          "objKey" : {
+            "description" : "Referencing: `/code-obj-keys/{id}`",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/code_tab_ref"
+            } ]
+          },
+          "val" : {
+            "description" : "Key value",
+            "type" : "string"
+          }
+        }
+      },
+      "obj_ref" : {
+        "title" : "obj_ref",
+        "type" : "object",
+        "properties" : {
+          "_href" : {
+            "description" : "Reference/link",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "_ident" : {
+            "description" : "Only used for workItem use cases, cross-reference in workItem context.",
+            "type" : "string",
+            "writeOnly" : true
+          },
+          "id" : {
+            "description" : "Numeric reference",
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "keyList" : {
+            "description" : "Key value object reference ",
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/obj_key_ref_"
+            },
+            "writeOnly" : true
+          }
+        }
+      },
+      "user_ref" : {
+        "title" : "user_ref",
+        "type" : "object",
+        "properties" : {
+          "_href" : {
+            "description" : "Reference/link",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "id" : {
+            "description" : "Numeric reference",
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }
+      }
+    },
+    "headers" : {
+      "Content-Language" : {
+        "schema" : {
+          "type" : "string"
+        }
+      },
+      "X-Has-Next-Page" : {
+        "schema" : {
+          "type" : "string"
+        }
+      },
+      "Location" : {
+        "schema" : {
+          "type" : "string"
+        },
+        "description" : "Location of the created resource"
+      },
+      "ETag" : {
+        "schema" : {
+          "type" : "string"
+        },
+        "description" : "Current entity-tag"
+      }
+    },
+    "parameters" : {
+      "Filter" : {
+        "name" : "filter",
+        "in" : "query",
+        "description" : "Expression to reduce the result set",
+        "schema" : {
+          "type" : "string"
+        }
+      },
+      "DocPool" : {
+        "name" : "docPool",
+        "style" : "deepObject",
+        "explode" : true,
+        "in" : "query",
+        "description" : "Expression to assign a docPool to reduce the result set <br> Example: <br> docPool[intlId]=stex_client_opn&docPool[objIdList]=22334,55667&docPool[refDateFrom] = 2023-05-01",
+        "schema" : {
+          "type" : "object",
+          "required" : [ "intlId" ],
+          "properties" : {
+            "intlId" : {
+              "type" : "string",
+              "example" : "stex_client_opn"
+            },
+            "objIdList" : {
+              "type" : "string",
+              "example" : "2222,3333,5555"
+            },
+            "refDateFrom" : {
+              "type" : "string",
+              "format" : "date"
+            },
+            "refDateTo" : {
+              "type" : "string",
+              "format" : "date"
+            }
+          }
+        }
+      },
+      "PageLimit" : {
+        "name" : "limit",
+        "in" : "query",
+        "description" : "Limits the number of items on a page",
+        "schema" : {
+          "type" : "integer",
+          "default" : 5,
+          "minimum" : 1,
+          "maximum" : 200
+        }
+      },
+      "PageOffset" : {
+        "name" : "offset",
+        "in" : "query",
+        "description" : "Number of records to be skipped before selecting the result set",
+        "schema" : {
+          "type" : "integer",
+          "minimum" : 0
+        }
+      },
+      "HrefActive" : {
+        "name" : "href",
+        "in" : "query",
+        "description" : "Activates the href",
+        "schema" : {
+          "type" : "boolean"
+        }
+      },
+      "IncludeInactive" : {
+        "name" : "include_inactive",
+        "in" : "query",
+        "description" : "Includes inactive data",
+        "schema" : {
+          "type" : "boolean"
+        }
+      },
+      "If-None-Match" : {
+        "name" : "If-None-Match",
+        "in" : "header",
+        "description" : "Specifies version known by client",
+        "schema" : {
+          "type" : "string"
+        },
+        "required" : false
+      },
+      "If-Match" : {
+        "name" : "If-Match",
+        "in" : "header",
+        "description" : "Specifies entity-tag known by client",
+        "schema" : {
+          "type" : "string"
+        },
+        "required" : false
+      },
+      "Accept-Encoding" : {
+        "name" : "Accept-Encoding",
+        "in" : "header",
+        "description" : "Compression scheme<br/> Warning: HTTP compression might not lead to better performance",
+        "schema" : {
+          "type" : "string"
+        },
+        "example" : "gzip, deflate",
+        "required" : false
+      },
+      "Accept-Language" : {
+        "name" : "Accept-Language",
+        "in" : "header",
+        "description" : "Specifies the language and locale that the client prefers",
+        "schema" : {
+          "type" : "string"
+        },
+        "example" : "de-CH, en-US",
+        "required" : false
+      },
+      "X-Request-ID" : {
+        "name" : "X-Request-ID",
+        "in" : "header",
+        "description" : "Specifies the request id in UUID format. If not provided, it will be generated automatically.",
+        "schema" : {
+          "type" : "string",
+          "format" : "uuid"
+        },
+        "required" : false
+      }
+    },
+    "responses" : {
+      "Problem" : {
+        "description" : "RFC7807 Problem",
+        "content" : {
+          "application/problem+json" : {
+            "schema" : {
+              "type" : "object",
+              "properties" : {
+                "type" : {
+                  "type" : "string"
+                },
+                "title" : {
+                  "type" : "string"
+                },
+                "status" : {
+                  "type" : "number",
+                  "format" : "integer"
+                },
+                "detail" : {
+                  "type" : "string"
+                }
+              },
+              "additionalProperties" : true,
+              "required" : [ "type", "title", "status" ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,299 @@
+{
+  "$id": "https://avaloq.com/evt.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/evt",
+  "definitions": {
+    "book": {
+      "type": "object",
+      "properties": {
+        "bookDate": {
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "bookKind": {
+          "description" : "Referencing: `/code-book-kinds/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "bookValPos": {
+          "type": "number"
+        },
+        "bookValRef": {
+          "type": "number"
+        },
+        "doc": {
+          "description" : "Referencing: `/docs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/doc_ref" }
+          ]
+        },
+        "evtStatus": {
+          "description" : "Referencing: `/code-evt-statuss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "extlBookText": {
+          "type": "string"
+        },
+        "metaTyp": {
+          "description" : "Referencing: `/meta-typs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "orderType": {
+          "description" : "Referencing: `/code-order-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "perfDate": {
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "pko": {
+          "description" : "Referencing: `/code-be-pkos/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "pos": {
+          "description" : "Referencing: `/obj-poss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "qty": {
+          "type": "number"
+        },
+        "refCurry": {
+          "description" : "Referencing: `/obj-assets/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "trxDate": {
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "trxValPos": {
+          "type": "number"
+        },
+        "trxValRef": {
+          "type": "number"
+        },
+        "valDate": {
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "veriAtrxSeqNr": {
+          "type": "number"
+        },
+        "veriDate": {
+          "type": "string"
+          ,
+            "format": "date"
+        }
+      }
+    },
+    "code_tab_ref": {
+      "type": "object",
+      "properties": {
+        "_href": {
+          "description" : "Reference/link",
+          "type": "string"
+        },
+        "id": {
+          "description" : "Numeric reference",
+          "type": "integer"
+        },
+        "ident": {
+          "description" : "Unique symbolic reference",
+          "type": "string"
+        },
+        "intlId": {
+          "description" : "Symbolic reference",
+          "type": "string"
+        }
+      }
+    },
+    "code_tab_ref_action": {
+      "type": "object",
+      "properties": {
+        "_href": {
+          "description" : "Reference/link",
+          "type": "string"
+        },
+        "action": {
+          "description" : "enum reference to action",
+          "type": "string"
+        },
+        "id": {
+          "description" : "Numeric reference",
+          "type": "integer"
+        },
+        "ident": {
+          "description" : "Unique symbolic reference",
+          "type": "string"
+        },
+        "intlId": {
+          "description" : "Symbolic reference",
+          "type": "string"
+        }
+      }
+    },
+    "doc_ref": {
+      "type": "object",
+      "properties": {
+        "_href": {
+          "description" : "Reference/link",
+          "type": "string"
+        },
+        "_ident": {
+          "description" : "Only used for workItem use cases, cross-reference in workItem context.",
+          "type": "string"
+        },
+        "id": {
+          "description" : "Numeric reference",
+          "type": "integer"
+        }
+      }
+    },
+    "evt": {
+      "type": "object",
+      "properties": {
+        "bookDate": {
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "bookList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/book"
+          }
+        },
+        "doc": {
+          "description" : "Referencing: `/docs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/doc_ref" }
+          ]
+        },
+        "evtStatus": {
+          "description" : "Referencing: `/code-evt-statuss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "id": {
+          "description" : "IDReferencing: `/objs/{id}`",
+          "type": "integer"
+        },
+        "metaTyp": {
+          "description" : "Referencing: `/meta-typs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "orderType": {
+          "description" : "Referencing: `/code-order-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "perfDate": {
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "pko": {
+          "description" : "Referencing: `/code-be-pkos/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "pktSeqNr": {
+          "type": "number"
+        },
+        "refCurry": {
+          "description" : "Referencing: `/obj-assets/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "trxDate": {
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "valDate": {
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "veriAtrxSeqNr": {
+          "type": "number"
+        },
+        "veriDate": {
+          "type": "string"
+          ,
+            "format": "date"
+        }
+      }
+    },
+    "evts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/evt"
+      },
+      "uniqueItems": true
+    },
+    "obj_key_ref_": {
+      "type": "object",
+      "properties": {
+        "objKey": {
+          "description" : "Referencing: `/code-obj-keys/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "val": {
+          "description" : "Key value",
+          "type": "string"
+        }
+      }
+    },
+    "obj_ref": {
+      "type": "object",
+      "properties": {
+        "_href": {
+          "description" : "Reference/link",
+          "type": "string"
+        },
+        "_ident": {
+          "description" : "Only used for workItem use cases, cross-reference in workItem context.",
+          "type": "string"
+        },
+        "id": {
+          "description" : "Numeric reference",
+          "type": "integer"
+        },
+        "keyList": {
+          "type": "array",
+          "items": {
+            "description": "Key value object reference ",
+            "allOf": [
+              { "$ref": "#/definitions/obj_key_ref_" }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

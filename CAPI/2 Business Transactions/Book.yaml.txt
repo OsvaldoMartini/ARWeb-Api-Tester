@@ -1,0 +1,1602 @@
+openapi: "3.0.2"
+security:
+  - bearerAuth: []
+
+info:
+  title: "Book API"
+  version: "3.11.1"
+  x-avq$categories:
+    - capi
+
+servers:
+- url: "/api1/"
+  description: "Development server"
+
+paths:
+  /doc-books:
+    get:
+      tags:
+      - API endpoints
+      summary: Get Book orders.
+      description: |
+        Get a collection of `Book` orders.
+        The result set can be restricted through filter parameter.
+        Only `Book` orders will be returned that can be accessed by the user (security applied).
+        Paging is supported with parameters *limit* and *offset*.
+    
+      parameters:
+      - $ref: '#/components/parameters/Filter'
+      - $ref: '#/components/parameters/DocPool'
+      - $ref: '#/components/parameters/PageLimit'
+      - $ref: '#/components/parameters/PageOffset'
+      - $ref: '#/components/parameters/HrefActive'
+      - $ref: '#/components/parameters/IncludeInactive'
+      - $ref: '#/components/parameters/Accept-Encoding'
+      - $ref: '#/components/parameters/Accept-Language'
+    
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            Content-Language:
+              $ref: '#/components/headers/Content-Language'
+            X-Has-Next-Page:
+              $ref: '#/components/headers/X-Has-Next-Page'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/doc_book'
+        'default':
+          $ref: '#/components/responses/Problem'
+    post:
+      tags:
+      - API endpoints
+      summary: Create a new Book order
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/doc_book'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/doc_book'
+      parameters:
+      - $ref: '#/components/parameters/X-Request-ID'
+      - $ref: '#/components/parameters/Accept-Encoding'
+      responses:
+        '201':
+          description: Successfully created a new `Book` order
+          headers:
+            Location:
+              $ref: '#/components/headers/Location'
+            ETag:
+              $ref: '#/components/headers/ETag'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    format: int64
+                    example: 123456
+                  bdeRecVersion:
+                    type: integer
+                    format: int64
+                    example: 1618390720445656
+        'default':
+          $ref: '#/components/responses/Problem'
+
+  /doc-books/{doc_book_id}:
+    get:
+      tags:
+      - API endpoints
+      summary: "Get a Book order"
+      description: |
+        *Get a `Book` order by ID*.
+        Only `Book` order will be returned that can be accessed by the user (security applied).
+        If user does not have access to resource, not found error will be returned instead of unauthorized - to disallow attacks.
+      parameters:
+      - in: path
+        name: doc_book_id
+        schema:
+          type: string
+        required: true
+        description: ID of the `Book` order to get
+      - $ref: '#/components/parameters/HrefActive'
+      - $ref: '#/components/parameters/IncludeInactive'
+      - $ref: '#/components/parameters/Accept-Encoding'
+      - $ref: '#/components/parameters/If-None-Match'
+      - $ref: '#/components/parameters/Accept-Language'
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            Content-Language:
+              $ref: '#/components/headers/Content-Language'
+            ETag:
+              $ref: '#/components/headers/ETag'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/doc_book'
+        '304':
+          description: Not modified
+        'default':
+          $ref: '#/components/responses/Problem'
+    patch:
+      tags:
+      - API endpoints
+      summary: "Modify/update an existing Book order"
+      description: |
+        *Partially modify/update an existing `Book` order identified by ID*.
+        Only `Book` order will be replaced that can be accessed by the user (security applied).
+        If user does not have access to resource, not found error will be returned instead of unauthorized - to disallow attacks.
+      parameters:
+      - in: path
+        name: doc_book_id
+        schema:
+          type: string
+        required: true
+        description: ID of the `Book` order to modify/update
+      - $ref: '#/components/parameters/If-Match'
+      - $ref: '#/components/parameters/X-Request-ID'
+      - $ref: '#/components/parameters/Accept-Encoding'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/doc_book'
+      responses:
+        '200':
+          description: Request successfully processed
+          headers:
+            ETag:
+              $ref: '#/components/headers/ETag'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    format: int64
+                    example: 123456
+                  bdeRecVersion:
+                    type: integer
+                    format: int64
+                    example: 1618390720445656
+        'default':
+          $ref: '#/components/responses/Problem'
+
+
+components:
+  securitySchemes:
+    bearerAuth:            # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT    # optional, arbitrary value for documentation purposes
+
+  schemas:
+    code_tab_ref:
+      title: code_tab_ref
+      type: object
+      properties:
+        _href:
+          description: "Reference/link"
+          type: string
+          readOnly: true
+        id:
+          description: "Numeric reference"
+          type: integer
+          format: int32
+        ident:
+          description: "Unique symbolic reference"
+          type: string
+        intlId:
+          description: "Symbolic reference"
+          type: string
+          readOnly: true
+    code_tab_ref_action:
+      title: code_tab_ref_action
+      type: object
+      properties:
+        _href:
+          description: "Reference/link"
+          type: string
+          readOnly: true
+        action:
+          enum: [hold, proceed, discard]
+          example: hold
+          description: "enum reference to action"
+          type: string
+          writeOnly: true
+        id:
+          description: "Numeric reference"
+          type: integer
+          format: int32
+        ident:
+          description: "Unique symbolic reference"
+          type: string
+        intlId:
+          description: "Symbolic reference"
+          type: string
+          readOnly: true
+    doc_add:
+      title: doc_add
+      type: object
+      properties:
+        docAdd:
+          description: "Referencing: `/code-doc-adds/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+          x-additionalFieldType: extn_generic
+        valList:
+          type: array
+          items:
+            $ref: '#/components/schemas/doc_add_val'
+          readOnly: true
+          x-additionalFieldType: extn_generic
+    doc_add_val:
+      title: doc_add_val
+      type: object
+      properties:
+        dateVal:
+          type: string
+          format: date
+          readOnly: true
+          x-additionalFieldType: extn_generic
+        idVal:
+          type: integer
+          format: int32
+          readOnly: true
+          x-additionalFieldType: extn_generic
+        nrVal:
+          type: number
+          readOnly: true
+          x-additionalFieldType: extn_generic
+        textVal:
+          type: string
+          readOnly: true
+          x-additionalFieldType: extn_generic
+        tswtzVal:
+          type: string
+          format: date-time
+          readOnly: true
+          x-additionalFieldType: extn_generic
+    doc_book:
+      title: doc_book
+      type: object
+      properties:
+        addList:
+          type: array
+          items:
+            $ref: '#/components/schemas/doc_add'
+          x-additionalFieldType: extn_generic
+        advNr:
+          description: "Advice Number of DOC"
+          type: integer
+          format: int32
+        agingId:
+          type: integer
+          format: int32
+          readOnly: true
+        bdeRecVersion:
+          type: integer
+          format: int32
+        bookDoc:
+          description: "Link to the order where the bookings are done<br>Referencing: `/doc-books/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/doc_ref'
+        bookKind:
+          description: "Booking kind<br>Referencing: `/code-book-kinds/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        bookList:
+          type: array
+          items:
+            $ref: '#/components/schemas/doc_book_book'
+        bu:
+          description: "Business unit of order itself<br>Referencing: `/obj-bps/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        credChkList:
+          type: array
+          items:
+            $ref: '#/components/schemas/doc_cred_chk'
+          readOnly: true
+        discdReason:
+          description: "The reason for discarding this order<br>Referencing: `/code-doc-discd-reasons/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        docBlock:
+          description: "Block Code<br>Referencing: `/code-blocks/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        docBlockA:
+          description: "Block Code"
+          type: boolean
+        docPrcInfo:
+          description: "process info id<br>Referencing: `/code-doc-prc-infos/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        docPrcInfoRemark:
+          description: "process info remark"
+          type: string
+        docRevsCause:
+          description: "Reversal Cause<br>Referencing: `/code-doc-revs-causes/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        docRole:
+          description: "Order role<br>Referencing: `/code-doc-roles/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        doneDate:
+          description: "Done date"
+          type: string
+          format: date
+          readOnly: true
+        dueDate:
+          description: "Due Date"
+          type: string
+          format: date
+        duplDoc:
+          description: "The original order of which this one is a duplicate of<br>Referencing: `/docs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/doc_ref'
+        enteredVmDate:
+          description: "date order entered visum monitoring"
+          type: string
+          format: date
+        expirDate:
+          description: "Expiry date"
+          type: string
+          format: date
+        expirDateA:
+          description: "Is expiry date set automatically"
+          type: boolean
+        extlRefNr:
+          description: "External reference number"
+          type: string
+        extn:
+          $ref: '#/components/schemas/doc_book_extn'
+        feBp:
+          description: "Broker business partner<br>Referencing: `/obj-bps/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        hasPostit:
+          description: "Has order a post-it"
+          type: boolean
+        hasWorkItem:
+          type: boolean
+          readOnly: true
+        id:
+          description: "Referencing: `/doc-books/{id}`"
+          type: integer
+          format: int64
+          readOnly: true
+        insBySecUser:
+          description: "Order created by user<br>Referencing: `/users/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/user_ref'
+        intlRefNr:
+          description: "Internal reference number"
+          type: string
+        isBackdt:
+          description: "Is backdated transaction"
+          type: boolean
+        isDel:
+          description: "is order deleted"
+          type: boolean
+        isFinal:
+          description: "Is order in a final status?"
+          type: boolean
+        isMigr:
+          description: "Is migration transaction"
+          type: boolean
+          readOnly: true
+        isRevs:
+          description: "Is reversal transaction (reversal w/o original)"
+          type: boolean
+        isSim:
+          description: "Is the order a simulation?"
+          type: boolean
+          readOnly: true
+        isaRelv:
+          description: "ISA relevant"
+          type: boolean
+        keyList:
+          type: array
+          items:
+            $ref: '#/components/schemas/doc_key'
+          x-additionalFieldType: extn_generic
+        lastMsg:
+          description: "Last message ID<br>Referencing: `/msgs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        lastTrans:
+          description: "Last transition"
+          type: string
+          format: date-time
+        lastTransSecUser:
+          description: "Last transition user<br>Referencing: `/users/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/user_ref'
+          readOnly: true
+        masterDoc:
+          description: "Return the master doc of the current doc<br>Referencing: `/docs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/doc_ref'
+        medium:
+          description: "Communication medium, e.g. phone, fax, etc.<br>Referencing: `/code-mediums/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        metaTyp:
+          description: "Meta type<br>Referencing: `/meta-typs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        notBonusRelv:
+          description: "not bonus relevant"
+          type: boolean
+        notBonusWidrwRelv:
+          description: "not bonus withdrawal relevant"
+          type: boolean
+        notReconStornoRelv:
+          description: "Not Reconciliation Storno Relevant"
+          type: boolean
+        notWidrwRelv:
+          description: "not withdrawal relevant"
+          type: boolean
+        orderDate:
+          description: "Order date"
+          type: string
+          format: date
+        orderDateTz:
+          description: "Order date"
+          type: string
+          format: date-time
+          readOnly: true
+        orderNr:
+          description: "Reference no."
+          type: integer
+          format: int32
+        orderType:
+          description: "Order type<br>Referencing: `/code-order-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        orderTypeGrp:
+          description: "Order type group<br>Referencing: `/code-order-type-grps/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        orderedBy:
+          description: "Ordered by"
+          type: string
+        origDoc:
+          description: |
+            The original order of which this one is a rectificate of<br>
+            Referencing: `/doc-books/{id}`
+          allOf:
+            - $ref: '#/components/schemas/doc_ref'
+          readOnly: true
+        origMetaTyp:
+          description: "Business type of original order<br>Referencing: `/meta-typs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        origOrderTyp:
+          description: "Order type of original order<br>Referencing: `/code-order-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        overrideList:
+          type: array
+          items:
+            $ref: '#/components/schemas/doc_override'
+        perfDate:
+          description: "Performance date"
+          type: string
+          format: date
+        perfDateA:
+          description: "Is performance date set automatically"
+          type: boolean
+        pko:
+          description: "Position Keeping Occurence<br>Referencing: `/code-be-pkos/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        pkoCtxId:
+          description: "PKO Context"
+          type: integer
+          format: int32
+          readOnly: true
+        postitList:
+          type: array
+          items:
+            $ref: '#/components/schemas/doc_postit'
+        questrCtactList:
+          type: array
+          items:
+            $ref: '#/components/schemas/doc_ctact2'
+        recon2ItemList:
+          type: array
+          items:
+            $ref: '#/components/schemas/doc_tab_recon2'
+          readOnly: true
+        rectiDoc:
+          description: |
+            **_Only visible within compound APIs_**<br>
+            The rectificate of this order.<br>
+            Referencing: `/doc-books/{id}`<br>
+            Back-property: origDoc
+          allOf:
+            - $ref: '#/components/schemas/doc_ref'
+          readOnly: true
+        refDoc:
+          description: "Reference order<br>Referencing: `/docs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/doc_ref'
+        respBp:
+          description: "Responsible Business Partner<br>Referencing: `/obj-bps/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        respBpA:
+          description: "Responsible Business Partner a/m"
+          type: boolean
+        respObj:
+          description: "Responsible Object<br>Referencing: `/objs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        respObjA:
+          description: "Responsible Object a/m"
+          type: boolean
+        revsOfDoc:
+          description: "The original order for which the actual order is the reversal<br>Referencing: `/docs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/doc_ref'
+        revsOriginUser:
+          description: "Originator<br>Referencing: `/users/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/user_ref'
+        sdsInstn:
+          description: "SDS instance ID<br>Referencing: `/code-extl-syss/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        settlePlan:
+          description: "Settlement plan<br>Referencing: `/code-settle-plans/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        settlePlanA:
+          description: "Settlement plan"
+          type: boolean
+        terminal:
+          description: "Terminal where advice of order was printed<br>Referencing: `/obj-terminals/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        todoTempl:
+          description: "ToDo Template<br>Referencing: `/code-todo-templs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        transList:
+          type: array
+          items:
+            $ref: '#/components/schemas/doc_trans'
+        trxDate:
+          description: "Transaction date"
+          type: string
+          format: date
+        trxDateA:
+          description: "Is transaction date set automatically"
+          type: boolean
+        valDate:
+          description: "Value date"
+          type: string
+          format: date
+        valDateA:
+          description: "Is value date set automatically"
+          type: boolean
+        wfcAction:
+          description: "Workflow Action<br>Referencing: `/wfc-action-books/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref_action'
+        wfcStatus:
+          description: "Workflow  status<br>Referencing: `/wfc-status-books/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        workItemList:
+          type: array
+          items:
+            $ref: '#/components/schemas/doc_tab_work_item'
+          readOnly: true
+    doc_book_book:
+      title: doc_book_book
+      type: object
+      properties:
+        pos:
+          description: "Position<br>Referencing: `/obj-poss/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        qty1:
+          description: "Quantity 1"
+          type: number
+    doc_book_extn:
+      title: doc_book_extn
+      type: object
+      properties:
+        afsDocId:
+          description: "AFS Order ID"
+          type: string
+        afsExtlRefNr:
+          description: "AFS external reference number"
+          type: string
+        api1RefNr:
+          description: "Primary API external reference number"
+          type: string
+        api2RefNr:
+          description: "Secondary API external reference number"
+          type: string
+        dxsCtxId:
+          description: "DXS context ID"
+          type: string
+        dxsEntityExtlRef:
+          description: "DXS entity external reference"
+          type: string
+        mba$authEdtRvwCompLvList:
+          description: "Authorization: comp lv that need to authorize for specific edt rvw in jtg"
+          type: array
+          items:
+            type: string
+        mba$authorEdtRvwJtgList:
+          type: array
+          items:
+            $ref: '#/components/schemas/number'
+        mba$blockAprvUserList:
+          description: "List of Users having approved the Compliance Blocking Codes<br>Referencing: `/users/{id}`"
+          type: array
+          items:
+            $ref: '#/components/schemas/user_ref'
+        mba$blockJtgList:
+          description: "Current List of matching compliance block IDs with the corresponding JTG IDs"
+          type: string
+        mba$blockRemnJtgList:
+          description: "List of JTG still required to approve the Compliance Blocking Codes<br>Referencing: `/mba$code-job-type-grps/{id}`"
+          type: array
+          items:
+            $ref: '#/components/schemas/code_tab_ref'
+        mba$ccPastAuthorUserList:
+          description: "Authorization: User List for current jtg (Credit Check)<br>Referencing: `/users/{id}`"
+          type: array
+          items:
+            $ref: '#/components/schemas/user_ref'
+        mba$credChkAuthCompLvList:
+          description: "Authorization: comp lv that need to authorize in jtg (Credit Check)"
+          type: array
+          items:
+            type: string
+        mba$credChkAuthorJtgList:
+          description: "JTG to authorize the order. Indication, which jtg has to author (Credit Check).<br>Referencing: `/mba$code-job-type-grps/{id}`"
+          type: array
+          items:
+            $ref: '#/components/schemas/code_tab_ref'
+        mba$credChkCmt:
+          description: "Comment of the Decision (Credit Check)"
+          type: array
+          items:
+            type: string
+        mba$credChkRestr:
+          description: "Additional Restriction List (Credit Check)"
+          type: array
+          items:
+            type: string
+        mba$docErrType:
+          description: "Order Processing Error Type<br>Referencing: `/mba$code-doc-err-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        mba$edtRvwJtgList:
+          type: array
+          items:
+            $ref: '#/components/schemas/number'
+        mba$edtRvwUserList:
+          description: "Last user to edited the order for jtg (as listed in mba$edt_rvw_jtg_list)<br>Referencing: `/users/{id}`"
+          type: array
+          items:
+            $ref: '#/components/schemas/user_ref'
+        mba$iAuthEdtRvwCompLvLst:
+          description: "Authorization:initial comp lv that need to authorize for specific edt rvw in jtg"
+          type: array
+          items:
+            type: string
+        mba$iCredChkAuthCompLvLt:
+          description: "Authorization:initial comp lv that need to authorize in jtg (Credit Check)"
+          type: array
+          items:
+            type: string
+        mba$instrDet:
+          description: "Instruction Details"
+          type: string
+        mba$isDfltValSet:
+          description: "Have default values been applied"
+          type: boolean
+        mba$lswfInsJtg:
+          description: "Job Type Group that inserted the order<br>Referencing: `/mba$code-job-type-grps/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        mba$lswfJtg:
+          description: "Current job type group owning the status<br>Referencing: `/mba$code-job-type-grps/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        mba$lswfLastSwfIntfWfaId:
+          description: "Last interface action used"
+          type: number
+        mba$lswfLastSwfWfaId:
+          description: "Last workflow action used"
+          type: number
+        mba$lswfLastSwfWfsId:
+          description: "Communication to next department"
+          type: number
+        mba$lswfNextJtg:
+          description: "Next job type group owning the status<br>Referencing: `/mba$code-job-type-grps/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        mba$lswfNextJtgInfo:
+          description: "Communication to next job type group"
+          type: string
+        mba$lswfNextRa:
+          description: "Next Routing Action for Linkable Sub-Workflow<br>Referencing: `/mba$code-lswf-raps/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        mba$lswfNextSwf:
+          description: "Next Linkable Sub-Workflow in Workflow<br>Referencing: `/mba$code-lswfs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        mba$lswfPrevSwf:
+          description: "Previous Linkable Sub-Workflow in Workflow<br>Referencing: `/mba$code-lswfs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        mba$lswfRa:
+          description: "Current Routing Action for Linkable Sub-Workflow<br>Referencing: `/mba$code-lswf-raps/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        mba$lswfSwf:
+          description: "Current Linkable Sub-Workflow in Workflow<br>Referencing: `/mba$code-lswfs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        mba$lswfUc:
+          description: "Use Case assigned to the order<br>Referencing: `/mba$code-lswf-ucs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        mba$mediumA:
+          description: "Medium A/M flag"
+          type: boolean
+        mba$mediumPhoneNr:
+          description: "Reference phone number to be registered in case of a phone call"
+          type: string
+        mba$pastAuthorUserList:
+          description: "Authorization: User List for current jtg<br>Referencing: `/users/{id}`"
+          type: array
+          items:
+            $ref: '#/components/schemas/user_ref'
+        mba$srcFund:
+          description: "Source of Funds<br>Referencing: `/mba$code-src-funds/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        pkpSvcRsvIdent:
+          description: "Position Keeping Service: Reservation/advice identifier"
+          type: string
+    doc_books:
+      title: List of doc_book
+      type: array
+      items:
+        $ref: '#/components/schemas/doc_book'
+      uniqueItems: true
+    doc_cred_chk:
+      title: doc_cred_chk
+      type: object
+      properties:
+        credChkEvt:
+          description: "The type of credit check event<br>Referencing: `/code-cred-chk-evts/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        newViolAmount:
+          description: "The new violation amount related to the credit check event"
+          type: number
+          readOnly: true
+        oldViolAmount:
+          description: "The prior violation amount related to the credit check event"
+          type: number
+          readOnly: true
+        refPos:
+          description: "The position which was booked by the transaction causing the increase<br>Referencing: `/obj-poss/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          readOnly: true
+        secUser:
+          description: "The user involved in the credit check event<br>Referencing: `/users/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/user_ref'
+          readOnly: true
+        timestamp:
+          description: "The timestamp of the credit check event"
+          type: string
+          format: date
+          readOnly: true
+        violPos:
+          description: "The position with a violation increase<br>Referencing: `/obj-poss/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          readOnly: true
+    doc_ctact2:
+      title: doc_ctact2
+      type: object
+      properties:
+        actionList:
+          type: array
+          items:
+            $ref: '#/components/schemas/doc_ctact2_action'
+        addr:
+          description: "Used Address<br>Referencing: `/obj-addrs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        addrA:
+          description: "Used Address Automatic"
+          type: boolean
+        attch:
+          description: "Attachment"
+          type: string
+        attchA:
+          description: "Attachment Automatic"
+          type: boolean
+        campgnCltReaction:
+          description: "Campaign Client Reaction"
+          type: string
+        campgnDoc:
+          description: "Campaign Order<br>Referencing: `/docs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/doc_ref'
+        campgnRespKey:
+          description: "Campaign Response Key"
+          type: string
+        chan:
+          description: "Channel<br>Referencing: `/code-ctact2-chans/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        chanA:
+          description: "Channel Automatic"
+          type: boolean
+        cltStisfct:
+          description: "Client Satisfaction<br>Referencing: `/code-ctact2-clt-stisfcts/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        contentLong:
+          description: "Action Content CLOB version"
+          type: string
+        ctactArea:
+          description: "Contact Area<br>Referencing: `/code-ctact2-areas/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        ctactAreaA:
+          description: "Contact Area Automatic"
+          type: boolean
+        ctactEndDate:
+          description: "Contact Date/Time to"
+          type: string
+          format: date-time
+        ctactEndDateA:
+          description: "Contact Date/Time to Automatic"
+          type: boolean
+        ctactMedium:
+          description: "Medium<br>Referencing: `/code-ctact2-mediums/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        ctactMediumA:
+          description: "Medium Automatic"
+          type: boolean
+        ctactRespObj:
+          description: "Responsible<br>Referencing: `/objs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        ctactRespObjA:
+          description: "Responsible Automatic"
+          type: boolean
+          readOnly: true
+        ctactStartDate:
+          description: "Contact Date/Time from"
+          type: string
+          format: date-time
+        ctactStartDateA:
+          description: "Contact Date/Time from Automatic"
+          type: boolean
+        ctactSubType:
+          description: "Contact Subtype<br>Referencing: `/code-ctact2-sub-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        ctactSubTypeA:
+          description: "Contact Sub Type Automatic"
+          type: boolean
+        ctactType:
+          description: "Contact Type<br>Referencing: `/code-ctact2-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        ctactTypeA:
+          description: "Contact Type Automatic"
+          type: boolean
+        dir:
+          description: "Direction<br>Referencing: `/code-ctact2-dirs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        dirA:
+          description: "Direction Automatic"
+          type: boolean
+        docPrcInfo:
+          description: "process info id<br>Referencing: `/code-doc-prc-infos/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        docPrcInfoRemark:
+          description: "process info remark"
+          type: string
+        enteredVmDate:
+          description: "date order entered visum monitoring"
+          type: string
+          format: date
+        hasWorkItem:
+          type: boolean
+          readOnly: true
+        id:
+          description: "ID<br>Referencing: `/docs/{id}`"
+          type: integer
+          format: int64
+        involObjListA:
+          description: "Involved Object List Automatic"
+          type: boolean
+        isDel:
+          description: "is order deleted"
+          type: boolean
+        linkDocListA:
+          description: "Related Orders Automatic"
+          type: boolean
+        loc:
+          description: "Location"
+          type: string
+        locA:
+          description: "Location Automatic"
+          type: boolean
+        parentDoc:
+          description: "Parent Order Number<br>Referencing: `/docs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/doc_ref'
+        parentMetaTyp:
+          description: "Parent Meta Type<br>Referencing: `/meta-typs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        parentOt:
+          description: "Parent Order Type<br>Referencing: `/code-order-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        react:
+          description: "Client reaction to campaign<br>Referencing: `/code-ctact2-clt-reacts/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        reactCampgnDoc:
+          description: "Campaign Doc_ID used in client reaction<br>Referencing: `/docs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/doc_ref'
+        reactCampgnDocA:
+          description: "Campaign Doc auto flag used in client reaction"
+          type: boolean
+        reactCampgnSeqNr:
+          description: "Reaction Campaign Sequence Nr"
+          type: number
+        reactComment:
+          description: "Reaction comment"
+          type: string
+        reactDate:
+          description: "Reaction date"
+          type: string
+          format: date
+        reactLoc:
+          description: "Reaction location"
+          type: string
+        reactNrPartic:
+          description: "Reaction number of participants"
+          type: number
+        respDept:
+          description: "Responsible Department<br>Referencing: `/code-resp-depts/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        respDeptA:
+          description: "Responsible Department Automatic"
+          type: boolean
+        subj:
+          description: "Subject"
+          type: string
+        subjA:
+          description: "Subject Automatic"
+          type: boolean
+        syncSeqNr:
+          description: "Client Satisfaction"
+          type: integer
+          format: int32
+        totExpndTimeM:
+          description: "Total Expenditure of Time (Min)"
+          type: number
+    doc_ctact2_action:
+      title: doc_ctact2_action
+      type: object
+      properties:
+        actionContent:
+          description: "Action Content"
+          type: string
+        ctactActionType:
+          description: "Action Type<br>Referencing: `/code-ctact2-action-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        ctactTopic:
+          description: "Contact action topic<br>Referencing: `/code-ctact2-topics/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        insByObj:
+          description: "Action entry inserted by<br>Referencing: `/objs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        timestampIns:
+          description: "Action entry inserted at"
+          type: string
+          format: date-time
+    doc_key:
+      title: doc_key
+      type: object
+      properties:
+        docKey:
+          description: "Referencing: `/code-doc-keys/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+          x-additionalFieldType: extn_generic
+        val:
+          type: string
+          readOnly: true
+          x-additionalFieldType: extn_generic
+    doc_override:
+      title: doc_override
+      type: object
+      properties:
+        override:
+          description: "Override code<br>Referencing: `/code-overrides/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        overrideComment:
+          description: "Comment<br>Referencing: `/code-override-comments/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        overrideText:
+          description: "Override text"
+          type: string
+        secUser:
+          description: "User<br>Referencing: `/users/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/user_ref'
+        signt:
+          description: "Signature"
+          type: string
+        timestamp:
+          description: "Timestamp"
+          type: string
+          format: date-time
+    doc_postit:
+      title: doc_postit
+      type: object
+      properties:
+        ctx:
+          description: "Text<br>Referencing: `/code-postit-ctxs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        doProp:
+          description: "Is postit propagated"
+          type: boolean
+        isMan:
+          description: "Is manualally entered"
+          type: boolean
+        role:
+          description: "Role<br>Referencing: `/users/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/user_ref'
+        subType:
+          description: "Subtype<br>Referencing: `/code-postit-sub-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        text:
+          description: "Text"
+          type: string
+        timestamp:
+          description: "Timestamp"
+          type: string
+          format: date-time-no-tz
+        topic:
+          description: "Topic"
+          type: string
+        type:
+          description: "Type<br>Referencing: `/code-postit-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        user:
+          description: "Inserted by<br>Referencing: `/users/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/user_ref'
+    doc_ref:
+      title: doc_ref
+      type: object
+      properties:
+        _href:
+          description: "Reference/link"
+          type: string
+          readOnly: true
+        _ident:
+          description: "Only used for workItem use cases, cross-reference in workItem context."
+          type: string
+          writeOnly: true
+        id:
+          description: "Numeric reference"
+          type: integer
+          format: int64
+    doc_tab_recon2:
+      title: doc_tab_recon2
+      type: object
+      properties:
+        amount:
+          description: "Amount"
+          type: number
+          readOnly: true
+        assetInfo:
+          description: "Asset Information"
+          type: string
+          readOnly: true
+        debCred:
+          description: "Balance of Credits / Debits"
+          type: string
+          readOnly: true
+        delIssueDoc:
+          description: "Deleted Issue Doc ID<br>Referencing: `/docs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/doc_ref'
+          readOnly: true
+        docTabRef:
+          description: "Reference"
+          type: string
+          readOnly: true
+        editMode:
+          description: "Edit Mode"
+          type: string
+          readOnly: true
+        entryDate:
+          description: "Entry Date"
+          type: string
+          format: date
+          readOnly: true
+        flowLinkKey:
+          description: "Flow Link Key"
+          type: integer
+          format: int32
+          readOnly: true
+        fundsCode:
+          description: "Funds Code"
+          type: string
+          readOnly: true
+        isExtl:
+          description: "Is External"
+          type: string
+          readOnly: true
+        issueDoc:
+          description: "Issue Doc ID<br>Referencing: `/docs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/doc_ref'
+          readOnly: true
+        matchQtyDiff:
+          description: "Diff. quantity"
+          type: number
+          readOnly: true
+        matchValDateDiff:
+          description: "Value date diff."
+          type: integer
+          format: int32
+          readOnly: true
+        narr:
+          description: "Narrative"
+          type: string
+          readOnly: true
+        pos:
+          description: "Position<br>Referencing: `/obj-poss/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          readOnly: true
+        qty:
+          description: "Quantity"
+          type: number
+          readOnly: true
+        qtyType:
+          description: "Quantity Type"
+          type: string
+          readOnly: true
+        recon2ItemStatus:
+          description: "Status<br>Referencing: `/code-recon2-item-statuss/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        recon2MatchCmtd:
+          description: "Matching Method<br>Referencing: `/code-recon2-match-cmtds/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        reconLotType:
+          description: "Reconciliation Lot Type<br>Referencing: `/code-recon-lot-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        ref1:
+          description: "Reference"
+          type: string
+          readOnly: true
+        ref2:
+          description: "Reference"
+          type: string
+          readOnly: true
+        ref3:
+          description: "Reference"
+          type: string
+          readOnly: true
+        ref4:
+          description: "Reference"
+          type: string
+          readOnly: true
+        ref5:
+          description: "Reference"
+          type: string
+          readOnly: true
+        ref6:
+          description: "Reference"
+          type: string
+          readOnly: true
+        seqNr:
+          description: "Sequence no."
+          type: integer
+          format: int32
+          readOnly: true
+        trxType:
+          description: "Transaction Type"
+          type: string
+          readOnly: true
+        valDate:
+          description: "Value Date"
+          type: string
+          format: date
+          readOnly: true
+    doc_tab_work_item:
+      title: doc_tab_work_item
+      type: object
+      properties:
+        closeDate:
+          description: "Close Date"
+          type: string
+          format: date
+        descn:
+          description: "Description"
+          type: string
+        isSlaveDirty:
+          description: "Is dirty ?"
+          type: boolean
+        isTightLink:
+          description: "Is Linked"
+          type: boolean
+        masterDoc:
+          description: "Master Order<br>Referencing: `/docs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/doc_ref'
+        seqNr:
+          description: "Sequence no."
+          type: integer
+          format: int32
+        slaveDoc:
+          description: "Order<br>Referencing: `/docs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/doc_ref'
+        subject:
+          description: "Subject"
+          type: string
+        tag:
+          description: "Tag"
+          type: string
+        workItemCtx:
+          description: "Work Item Context<br>Referencing: `/code-work-item-ctxs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        workItemStatus:
+          description: "Work Item Status<br>Referencing: `/code-work-item-statuss/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        workItemType:
+          description: "Work Item Type<br>Referencing: `/code-work-item-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+    doc_trans:
+      title: doc_trans
+      type: object
+      properties:
+        calcCnt:
+          type: integer
+          format: int32
+        calcTime:
+          type: integer
+          format: int32
+        intfWfcAction:
+          description: "Workflow Interface Action<br>Referencing: `/wfc-action-books/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        newWfcStatus:
+          description: "Workflow Status<br>Referencing: `/wfc-status-books/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        oldWfcStatus:
+          description: "Workflow Status<br>Referencing: `/wfc-status-books/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        opnTime:
+          type: integer
+          format: int32
+        remark:
+          description: "Remark"
+          type: string
+        ruleTime:
+          type: integer
+          format: int32
+        secUser:
+          description: "User<br>Referencing: `/users/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/user_ref'
+        seqNr:
+          description: "Sequence no."
+          type: integer
+          format: int32
+        timestamp:
+          description: "Timestamp"
+          type: string
+          format: date-time
+        transAction:
+          description: "Transition<br>Referencing: `/code-trans-actions/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        userTime:
+          type: integer
+          format: int32
+        wfcAction:
+          description: "Workflow Action<br>Referencing: `/wfc-action-books/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        wfcTime:
+          type: integer
+          format: int32
+    number:
+      title: number
+      type: object
+    obj_key_ref_:
+      title: obj_key_ref_
+      type: object
+      properties:
+        objKey:
+          description: "Referencing: `/code-obj-keys/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        val:
+          description: "Key value"
+          type: string
+    obj_ref:
+      title: obj_ref
+      type: object
+      properties:
+        _href:
+          description: "Reference/link"
+          type: string
+          readOnly: true
+        _ident:
+          description: "Only used for workItem use cases, cross-reference in workItem context."
+          type: string
+          writeOnly: true
+        id:
+          description: "Numeric reference"
+          type: integer
+          format: int32
+        keyList:
+          description: "Key value object reference "
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key_ref_'
+          writeOnly: true
+    user_ref:
+      title: user_ref
+      type: object
+      properties:
+        _href:
+          description: "Reference/link"
+          type: string
+          readOnly: true
+        id:
+          description: "Numeric reference"
+          type: integer
+          format: int32
+    validationResult:
+      title: validationResult
+      type: object
+      properties:
+        displText:
+          type: string
+          readOnly: true
+        ovrHasRight:
+          type: boolean
+          readOnly: true
+        ref:
+          description: "Referencing: `/code_ui_errs/{id}` or `/code_overrides/{id}`"
+          readOnly: true
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        resType:
+          description: "Referencing: `/code_err_types/{id}`"
+          readOnly: true
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        ovrSignt:
+          type: integer
+          format: int32
+
+  headers:
+    Content-Language:
+      schema:
+        type: string
+    X-Has-Next-Page:
+      schema:
+        type: string
+    Location:
+      schema:
+        type: string
+      description: Location of the created resource
+    ETag:
+      schema:
+        type: string
+      description: Current entity-tag
+
+  parameters:
+    Filter:
+      name: filter
+      in: query
+      description: Expression to reduce the result set
+      schema:
+        type: string
+    DocPool:
+      name: docPool
+      style: deepObject
+      explode: true
+      in: query
+      description: "Expression to assign a docPool to reduce the result set <br> Example: <br> docPool[intlId]=stex_client_opn&docPool[objIdList]=22334,55667&docPool[refDateFrom] = 2023-05-01"
+      schema:
+        type: object
+        required: [intlId]
+        properties:
+          intlId:
+            type: string
+            example: stex_client_opn
+          objIdList:
+            type: string
+            example: 2222,3333,5555
+          refDateFrom:
+            type: string
+            format: date
+          refDateTo:
+            type: string
+            format: date
+    PageLimit:
+      name: limit
+      in: query
+      description: Limits the number of items on a page
+      schema:
+        type: integer
+        default: 5
+        minimum: 1
+        maximum: 200
+    PageOffset:
+      name: offset
+      in: query
+      description: Number of records to be skipped before selecting the result set
+      schema:
+        type: integer
+        minimum: 0
+    HrefActive:
+      name: href
+      in: query
+      description: Activates the href
+      schema:
+        type: boolean
+    IncludeInactive:
+      name: include_inactive
+      in: query
+      description: Includes inactive data
+      schema:
+        type: boolean
+    If-None-Match:
+      name: If-None-Match
+      in: header
+      description: Specifies version known by client
+      schema:
+        type: string
+      required: false
+    If-Match:
+      name: If-Match
+      in: header
+      description: Specifies entity-tag known by client
+      schema:
+        type: string
+      required: false
+    Accept-Encoding:
+      name: Accept-Encoding
+      in: header
+      description: >-
+        Compression scheme<br/>
+        Warning: HTTP compression might not lead to better performance
+      schema:
+        type: string
+      example: gzip, deflate
+      required: false
+    Accept-Language:
+      name: Accept-Language
+      in: header
+      description: Specifies the language and locale that the client prefers
+      schema:
+        type: string
+      example: de-CH, en-US
+      required: false
+    X-Request-ID:
+      name: X-Request-ID
+      in: header
+      description: Specifies the request id in UUID format. If not provided, it will be generated automatically.
+      schema:
+        type: string
+        format: uuid
+      required: false
+  responses:
+    Problem:
+      description: RFC7807 Problem
+      content:
+        application/problem+json:
+          schema:
+            type: object
+            properties:
+              type:
+                type: string
+              title:
+                type: string
+              status:
+                type: number
+                format: integer
+              detail:
+                type: string
+              messages:
+                type: array
+                readOnly: true
+                items:
+                  type: string
+              validationResults:
+                type: array
+                readOnly: true
+                items:
+                  $ref: '#/components/schemas/validationResult'
+            additionalProperties: true
+            required:
+              - type
+              - title
+              - status
+

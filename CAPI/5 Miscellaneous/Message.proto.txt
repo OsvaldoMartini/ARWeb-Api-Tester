@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package com.avaloq.acp.bde.protobuf.msg;
+
+import "meta_model.proto";
+import "wrappers.proto";
+import "options.proto";
+
+option (version) = "2.0.2";
+
+message Msg {
+  option (is_bde_entity) = true;
+  uint64 id = 1 [(bde_entity) = "Msg", (bde_ref_type) = "msg"];
+  SInt64Value bu_id = 2 [(bde_entity) = "Obj_bp", (bde_ref_type) = "obj"];
+  SInt64Value netw_id = 3 [(bde_entity) = "Code_netw", (bde_ref_type) = "code"];
+  SInt64Value meta_msg_id = 4 [(bde_entity) = "Meta_msg", (bde_ref_type) = "code"];
+  UInt64Value doc_id = 5 [(bde_entity) = "Doc", (bde_ref_type) = "doc"];
+  SInt64Value msg_status_id = 6 [(bde_entity) = "Code_msg_status", (bde_ref_type) = "code"];
+  StringValue dir = 7;
+  StringValue timestamp = 8 [(format) = "date_time_no_tz"];
+  StringValue send_date_plan = 9 [(format) = "date_time_no_tz"];
+  SInt64Value send_bp_id = 10 [(bde_entity) = "Obj_bp", (bde_ref_type) = "obj"];
+  StringValue send_bp_clear_nr = 11;
+  SInt64Value rcv_bp_id = 12 [(bde_entity) = "Obj_bp", (bde_ref_type) = "obj"];
+  StringValue rcv_bp_clear_nr = 13;
+  StringValue extl_ref_nr = 14;
+  StringValue extl_status = 15;
+  StringValue extl_err_code = 16;
+  StringValue f1 = 17;
+  StringValue f2 = 18;
+  StringValue f3 = 19;
+  StringValue f4 = 20;
+  StringValue f5 = 21;
+  StringValue f6 = 22;
+  StringValue f7 = 23;
+  StringValue f8 = 24;
+  StringValue f9 = 25;
+  StringValue f10 = 26;
+  StringValue t1 = 27;
+  StringValue t2 = 28;
+  StringValue t3 = 29;
+  StringValue t4 = 30;
+  StringValue t5 = 31;
+  StringValue x1 = 32;
+  StringValue x2 = 33;
+  StringValue x3 = 34;
+  StringValue x4 = 35;
+  StringValue x5 = 36;
+}
+

@@ -1,0 +1,2925 @@
+{
+  "$id": "https://avaloq.com/doc_invst_bdl.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/doc_invst_bdl",
+  "definitions": {
+    "code_tab_ref": {
+      "type": "object",
+      "properties": {
+        "_href": {
+          "description" : "Reference/link",
+          "type": "string"
+        },
+        "id": {
+          "description" : "Numeric reference",
+          "type": "integer"
+        },
+        "ident": {
+          "description" : "Unique symbolic reference",
+          "type": "string"
+        },
+        "intlId": {
+          "description" : "Symbolic reference",
+          "type": "string"
+        }
+      }
+    },
+    "code_tab_ref_action": {
+      "type": "object",
+      "properties": {
+        "_href": {
+          "description" : "Reference/link",
+          "type": "string"
+        },
+        "action": {
+          "description" : "enum reference to action",
+          "type": "string"
+        },
+        "id": {
+          "description" : "Numeric reference",
+          "type": "integer"
+        },
+        "ident": {
+          "description" : "Unique symbolic reference",
+          "type": "string"
+        },
+        "intlId": {
+          "description" : "Symbolic reference",
+          "type": "string"
+        }
+      }
+    },
+    "doc_add": {
+      "type": "object",
+      "properties": {
+        "docAdd": {
+          "description" : "Referencing: `/code-doc-adds/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "valList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/doc_add_val"
+          }
+        }
+      }
+    },
+    "doc_add_val": {
+      "type": "object",
+      "properties": {
+        "dateVal": {
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "idVal": {
+          "type": "integer"
+        },
+        "nrVal": {
+          "type": "number"
+        },
+        "textVal": {
+          "type": "string"
+        },
+        "tswtzVal": {
+          "type": "string"
+          ,
+            "format": "date-time"
+        }
+      }
+    },
+    "doc_caldr_day": {
+      "type": "object",
+      "properties": {
+        "day": {
+          "type": "number"
+        },
+        "month": {
+          "type": "number"
+        }
+      }
+    },
+    "doc_caldr_period": {
+      "type": "object",
+      "properties": {
+        "annQty": {
+          "type": "number"
+        },
+        "annQtyA": {
+          "type": "boolean"
+        },
+        "eop": {
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "eopA": {
+          "type": "boolean"
+        },
+        "eopPlan": {
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "exPeriodDate": {
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "exPeriodDateA": {
+          "type": "boolean"
+        },
+        "fixDate": {
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "fixDateA": {
+          "type": "boolean"
+        },
+        "histStatus": {
+          "description" : "Referencing: `/code-hist-statuss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "isManual": {
+          "type": "boolean"
+        },
+        "isSusp": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": "string"
+        },
+        "noticeDateFrom": {
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "noticeDateTo": {
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "noticeDays": {
+          "type": "integer"
+        },
+        "price": {
+          "type": "number"
+        },
+        "priceA": {
+          "type": "boolean"
+        },
+        "prob": {
+          "type": "number"
+        },
+        "qty": {
+          "type": "number"
+        },
+        "qtyA": {
+          "type": "boolean"
+        },
+        "refDate": {
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "refNr": {
+          "type": "string"
+        },
+        "sop": {
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "sopA": {
+          "type": "boolean"
+        },
+        "sopPlan": {
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "trxDate": {
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "trxDateA": {
+          "type": "boolean"
+        },
+        "valDate": {
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "valDateA": {
+          "type": "boolean"
+        }
+      }
+    },
+    "doc_compo_cf": {
+      "type": "object",
+      "properties": {
+        "annQty": {
+          "description" : "Annuity Amount",
+          "type": "number"
+        },
+        "cfAsset": {
+          "description" : "Cashflow assetReferencing: `/obj-assets/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "cfCalcMethod": {
+          "description" : "Calculation MethodReferencing: `/code-cf-calc-methods/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "cfQty": {
+          "description" : "Quantity",
+          "type": "number"
+        },
+        "compoAfList": {
+          "description" : "Asset FlowReferencing: `/code-compo-af-lists/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "compoStruct": {
+          "description" : "Component structureReferencing: `/code-cf-structs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "compoType": {
+          "description" : "Component typeReferencing: `/code-compo-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "dynFixed": {
+          "description" : "Dynamisation Fixed Amount",
+          "type": "number"
+        },
+        "dynPerc": {
+          "description" : "Dynamisation %",
+          "type": "number"
+        },
+        "dynStart": {
+          "description" : "Annual Dynamisation Start",
+          "type": "string"
+          ,
+            "format": "date-time-no-tz"
+        },
+        "endDate": {
+          "description" : "End date of cashflow component",
+          "type": "string"
+          ,
+            "format": "date-time-no-tz"
+        },
+        "factorPeriodRef": {
+          "description" : "Reference when to apply the index correction factorReferencing: `/code-period-refs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "fxFactor": {
+          "description" : "Fixed exchange rate applied to bond's nominal in case of dual currency bonds",
+          "type": "number"
+        },
+        "limit": {
+          "description" : "Execute Above/on Limit",
+          "type": "number"
+        },
+        "perc": {
+          "description" : "%",
+          "type": "number"
+        },
+        "prcCaldr": {
+          "$ref": "#/definitions/doc_tab_caldr"
+        },
+        "rdmptPhaseList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/doc_compo_cf_rdmpt_phase"
+          }
+        },
+        "seqNr": {
+          "description" : "Sequence number",
+          "type": "number"
+        },
+        "startDate": {
+          "description" : "Start date of cashflow component",
+          "type": "string"
+          ,
+            "format": "date-time-no-tz"
+        },
+        "undrlyObj": {
+          "description" : "Underlying objectReferencing: `/objs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        }
+      }
+    },
+    "doc_compo_cf_rdmpt_phase": {
+      "type": "object",
+      "properties": {
+        "compoTag": {
+          "description" : "Compo Sequence Number",
+          "type": "number"
+        },
+        "effDate": {
+          "description" : "Valid from",
+          "type": "string"
+          ,
+            "format": "date-time-no-tz"
+        },
+        "val": {
+          "description" : "Redemption amount / Redemption in %",
+          "type": "number"
+        }
+      }
+    },
+    "doc_cred_chk": {
+      "type": "object",
+      "properties": {
+        "credChkEvt": {
+          "description" : "The type of credit check eventReferencing: `/code-cred-chk-evts/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "newViolAmount": {
+          "description" : "The new violation amount related to the credit check event",
+          "type": "number"
+        },
+        "oldViolAmount": {
+          "description" : "The prior violation amount related to the credit check event",
+          "type": "number"
+        },
+        "refPos": {
+          "description" : "The position which was booked by the transaction causing the increaseReferencing: `/obj-poss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "secUser": {
+          "description" : "The user involved in the credit check eventReferencing: `/users/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/user_ref" }
+          ]
+        },
+        "timestamp": {
+          "description" : "The timestamp of the credit check event",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "violPos": {
+          "description" : "The position with a violation increaseReferencing: `/obj-poss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        }
+      }
+    },
+    "doc_invst_bdl": {
+      "type": "object",
+      "properties": {
+        "addList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/doc_add"
+          }
+        },
+        "advNr": {
+          "description" : "Advice Number of DOC",
+          "type": "integer"
+        },
+        "agingId": {
+          "type": "integer"
+        },
+        "bdeRecVersion": {
+          "type": "integer"
+        },
+        "bdlStatus": {
+          "description" : "The execution status of the Investment Bundle.Referencing: `/code-invst-bdl-statuss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "bookDoc": {
+          "description" : "Link to the order where the bookings are doneReferencing: `/doc-books/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/doc_ref" }
+          ]
+        },
+        "bp": {
+          "description" : "BP owner of both the Container and MACC the Investment Bundler will take place onReferencing: `/obj-bps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "bu": {
+          "description" : "Business unit of order itselfReferencing: `/obj-bps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "cont": {
+          "description" : "Container the Investment Bundler will take place onReferencing: `/obj-conts/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "contA": {
+          "description" : "Auto/Manual flag of Container the Investment Bundler will take place on",
+          "type": "boolean"
+        },
+        "credChkList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/doc_cred_chk"
+          }
+        },
+        "discdReason": {
+          "description" : "The reason for discarding this orderReferencing: `/code-doc-discd-reasons/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "docBlock": {
+          "description" : "Block CodeReferencing: `/code-blocks/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "docBlockA": {
+          "description" : "Block Code",
+          "type": "boolean"
+        },
+        "docPrcInfo": {
+          "description" : "process info idReferencing: `/code-doc-prc-infos/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "docPrcInfoRemark": {
+          "description" : "process info remark",
+          "type": "string"
+        },
+        "docRevsCause": {
+          "description" : "Reversal CauseReferencing: `/code-doc-revs-causes/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "docRole": {
+          "description" : "Order roleReferencing: `/code-doc-roles/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "dueDate": {
+          "description" : "Due Date",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "duplDoc": {
+          "description" : "The original order of which this one is a duplicate ofReferencing: `/docs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/doc_ref" }
+          ]
+        },
+        "enteredVmDate": {
+          "description" : "date order entered visum monitoring",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "expirDate": {
+          "description" : "Expiry date",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "extlRefNr": {
+          "description" : "External reference number",
+          "type": "string"
+        },
+        "extn": {
+          "$ref": "#/definitions/doc_invst_bdl_extn"
+        },
+        "feBp": {
+          "description" : "Broker business partnerReferencing: `/obj-bps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "hasPostit": {
+          "description" : "Has order a post-it",
+          "type": "boolean"
+        },
+        "hasWorkItem": {
+          "type": "boolean"
+        },
+        "id": {
+          "description" : "IDReferencing: `/docs/{id}`",
+          "type": "integer"
+        },
+        "initLotBal": {
+          "description" : "The main initial lot balance, necessarily calculated from the rules.",
+          "type": "number"
+        },
+        "initLotBuf": {
+          "description" : "Buffer lot balance that will act as an additional amount to the main lot.",
+          "type": "number"
+        },
+        "initLotCmtd": {
+          "description" : "Method used to calculate the Bundle's initial lot.Referencing: `/code-invst-bdl-init-lot-cmtds/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "inpr": {
+          "$ref": "#/definitions/docp_inpr"
+        },
+        "insBySecUser": {
+          "description" : "Order created by userReferencing: `/users/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/user_ref" }
+          ]
+        },
+        "intlRefNr": {
+          "description" : "Internal reference number",
+          "type": "string"
+        },
+        "isBackdt": {
+          "description" : "Is backdated transaction",
+          "type": "boolean"
+        },
+        "isDel": {
+          "description" : "is order deleted",
+          "type": "boolean"
+        },
+        "isFinal": {
+          "description" : "Is order in a final status?",
+          "type": "boolean"
+        },
+        "isMigr": {
+          "description" : "Is migration transaction",
+          "type": "boolean"
+        },
+        "isRevs": {
+          "description" : "Is reversal transaction (reversal w/o original)",
+          "type": "boolean"
+        },
+        "isSim": {
+          "description" : "Is the order a simulation?",
+          "type": "boolean"
+        },
+        "isaRelv": {
+          "description" : "ISA relevant",
+          "type": "boolean"
+        },
+        "keyList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/doc_key"
+          }
+        },
+        "lastMsg": {
+          "description" : "Last message IDReferencing: `/msgs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "lastTrans": {
+          "description" : "Last transition",
+          "type": "string"
+          ,
+            "format": "date-time"
+        },
+        "lastTransSecUser": {
+          "description" : "Last transition userReferencing: `/users/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/user_ref" }
+          ]
+        },
+        "lastUpdTimestamp": {
+          "description" : "The start time of last point a bundle was executed by the update task.",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "macc": {
+          "description" : "Money Account the Investment Bundler instance will take place onReferencing: `/obj-poss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "masterDoc": {
+          "description" : "Return the master doc of the current docReferencing: `/docs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/doc_ref" }
+          ]
+        },
+        "medium": {
+          "description" : "Communication medium, e.g. phone, fax, etc.Referencing: `/code-mediums/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "metaTyp": {
+          "description" : "Meta typeReferencing: `/meta-typs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "nextRuleId": {
+          "description" : "Next unique ID to a rule. Always incremented with each rule.",
+          "type": "integer"
+        },
+        "notBonusRelv": {
+          "description" : "not bonus relevant",
+          "type": "boolean"
+        },
+        "notBonusWidrwRelv": {
+          "description" : "not bonus withdrawal relevant",
+          "type": "boolean"
+        },
+        "notReconStornoRelv": {
+          "description" : "Not Reconciliation Storno Relevant",
+          "type": "boolean"
+        },
+        "notWidrwRelv": {
+          "description" : "not withdrawal relevant",
+          "type": "boolean"
+        },
+        "orderDate": {
+          "description" : "Order date",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "orderDateTz": {
+          "description" : "Order date",
+          "type": "string"
+          ,
+            "format": "date-time"
+        },
+        "orderNr": {
+          "description" : "Reference no.",
+          "type": "integer"
+        },
+        "orderType": {
+          "description" : "Order typeReferencing: `/code-order-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "orderTypeA": {
+          "description" : "Auto/Manual flag of Order type",
+          "type": "boolean"
+        },
+        "orderTypeGrp": {
+          "description" : "Order type groupReferencing: `/code-order-type-grps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "orderedBy": {
+          "description" : "Ordered by",
+          "type": "string"
+        },
+        "origDoc": {
+          "description" : "The original order of which this one is a rectificate of Referencing: `/doc-invst-bdls/{id}` ",
+          "allOf": [
+            { "$ref": "#/definitions/doc_ref"
+             }
+            ]
+        },
+        "overrideList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/doc_override"
+          }
+        },
+        "perfDate": {
+          "description" : "Performance date",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "perfDateA": {
+          "description" : "Is performance date set automatically",
+          "type": "boolean"
+        },
+        "postitList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/doc_postit"
+          }
+        },
+        "rectiDoc": {
+          "description" : "Only visible within compound APIs The rectificate of this order. Referencing: `/doc-invst-bdls/{id}` Back-property: origDoc ",
+          "allOf": [
+            { "$ref": "#/definitions/doc_ref"
+             }
+            ]
+        },
+        "recur": {
+          "$ref": "#/definitions/docp_recur"
+        },
+        "refDoc": {
+          "description" : "Referencing: `/docs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/doc_ref" }
+          ]
+        },
+        "remnBaccBalMax": {
+          "description" : "User-specified maximum threshold above BACC target.",
+          "type": "number"
+        },
+        "remnBaccBalMin": {
+          "description" : "User-specified minimum threshold below BACC target.",
+          "type": "number"
+        },
+        "respBp": {
+          "description" : "Responsible Business PartnerReferencing: `/obj-bps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "respBpA": {
+          "description" : "Responsible Business Partner a/m",
+          "type": "boolean"
+        },
+        "respObj": {
+          "description" : "Responsible ObjectReferencing: `/objs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "respObjA": {
+          "description" : "Responsible Object a/m",
+          "type": "boolean"
+        },
+        "revsOfDoc": {
+          "description" : "The original order for which the actual order is the reversalReferencing: `/docs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/doc_ref" }
+          ]
+        },
+        "revsOriginUser": {
+          "description" : "OriginatorReferencing: `/users/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/user_ref" }
+          ]
+        },
+        "ruleList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/docp_invst_bdl_rule"
+          }
+        },
+        "sdsInstn": {
+          "description" : "SDS instance IDReferencing: `/code-extl-syss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "settlePlan": {
+          "description" : "Settlement planReferencing: `/code-settle-plans/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "settlePlanA": {
+          "description" : "Settlement plan",
+          "type": "boolean"
+        },
+        "terminal": {
+          "description" : "Terminal where advice of order was printedReferencing: `/obj-terminals/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "todoTempl": {
+          "description" : "ToDo TemplateReferencing: `/code-todo-templs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "transList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/doc_trans"
+          }
+        },
+        "trgBal": {
+          "description" : "Target balance for an Investment Bundle",
+          "type": "number"
+        },
+        "trgBalType": {
+          "description" : "Target balance type for an Investment BundleReferencing: `/code-invst-bdl-trg-bal-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "trxDate": {
+          "description" : "Transaction date",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "valDate": {
+          "description" : "Value date",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "wfcAction": {
+          "description" : "Workflow ActionReferencing: `/wfc-action-invst_bdls/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref_action" }
+          ]
+        },
+        "wfcStatus": {
+          "description" : "Workflow  statusReferencing: `/wfc-status-invst_bdls/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "workItemList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/doc_tab_work_item"
+          }
+        }
+      }
+    },
+    "doc_invst_bdl_extn": {
+      "type": "object",
+      "properties": {
+        "afsDocId": {
+          "description" : "AFS Order ID",
+          "type": "string"
+        },
+        "afsExtlRefNr": {
+          "description" : "AFS external reference number",
+          "type": "string"
+        },
+        "api1RefNr": {
+          "description" : "Primary API external reference number",
+          "type": "string"
+        },
+        "api2RefNr": {
+          "description" : "Secondary API external reference number",
+          "type": "string"
+        },
+        "dxsCtxId": {
+          "description" : "DXS context ID",
+          "type": "string"
+        },
+        "dxsEntityExtlRef": {
+          "description" : "DXS entity external reference",
+          "type": "string"
+        },
+        "mba$authEdtRvwCompLvList": {
+          "type": "array",
+          "items": {
+            "description": "Authorization: comp lv that need to authorize for specific edt rvw in jtg",
+            "type": "string"
+          }
+        },
+        "mba$authorEdtRvwJtgList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/number"
+          }
+        },
+        "mba$blockAprvUserList": {
+          "type": "array",
+          "items": {
+            "description": "List of Users having approved the Compliance Blocking CodesReferencing: `/users/{id}`",
+            "allOf": [
+              { "$ref": "#/definitions/user_ref" }
+            ]
+          }
+        },
+        "mba$blockJtgList": {
+          "description" : "Current List of matching compliance block IDs with the corresponding JTG IDs",
+          "type": "string"
+        },
+        "mba$blockRemnJtgList": {
+          "type": "array",
+          "items": {
+            "description": "List of JTG still required to approve the Compliance Blocking CodesReferencing: `/mba$code-job-type-grps/{id}`",
+            "allOf": [
+              { "$ref": "#/definitions/code_tab_ref" }
+            ]
+          }
+        },
+        "mba$ccPastAuthorUserList": {
+          "type": "array",
+          "items": {
+            "description": "Authorization: User List for current jtg (Credit Check)Referencing: `/users/{id}`",
+            "allOf": [
+              { "$ref": "#/definitions/user_ref" }
+            ]
+          }
+        },
+        "mba$credChkAuthCompLvList": {
+          "type": "array",
+          "items": {
+            "description": "Authorization: comp lv that need to authorize in jtg (Credit Check)",
+            "type": "string"
+          }
+        },
+        "mba$credChkAuthorJtgList": {
+          "type": "array",
+          "items": {
+            "description": "JTG to authorize the order. Indication, which jtg has to author (Credit Check).Referencing: `/mba$code-job-type-grps/{id}`",
+            "allOf": [
+              { "$ref": "#/definitions/code_tab_ref" }
+            ]
+          }
+        },
+        "mba$credChkCmt": {
+          "type": "array",
+          "items": {
+            "description": "Comment of the Decision (Credit Check)",
+            "type": "string"
+          }
+        },
+        "mba$credChkRestr": {
+          "type": "array",
+          "items": {
+            "description": "Additional Restriction List (Credit Check)",
+            "type": "string"
+          }
+        },
+        "mba$docErrType": {
+          "description" : "Order Processing Error TypeReferencing: `/mba$code-doc-err-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$edtRvwJtgList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/number"
+          }
+        },
+        "mba$edtRvwUserList": {
+          "type": "array",
+          "items": {
+            "description": "Last user to edited the order for jtg (as listed in mba$edt_rvw_jtg_list)Referencing: `/users/{id}`",
+            "allOf": [
+              { "$ref": "#/definitions/user_ref" }
+            ]
+          }
+        },
+        "mba$iAuthEdtRvwCompLvLst": {
+          "type": "array",
+          "items": {
+            "description": "Authorization:initial comp lv that need to authorize for specific edt rvw in jtg",
+            "type": "string"
+          }
+        },
+        "mba$iCredChkAuthCompLvLt": {
+          "type": "array",
+          "items": {
+            "description": "Authorization:initial comp lv that need to authorize in jtg (Credit Check)",
+            "type": "string"
+          }
+        },
+        "mba$instrDet": {
+          "description" : "Instruction Details",
+          "type": "string"
+        },
+        "mba$isDfltValSet": {
+          "description" : "Have default values been applied",
+          "type": "boolean"
+        },
+        "mba$lswfInsJtg": {
+          "description" : "Job Type Group that inserted the orderReferencing: `/mba$code-job-type-grps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$lswfJtg": {
+          "description" : "Current job type group owning the statusReferencing: `/mba$code-job-type-grps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$lswfLastSwfIntfWfaId": {
+          "description" : "Last interface action used",
+          "type": "number"
+        },
+        "mba$lswfLastSwfWfaId": {
+          "description" : "Last workflow action used",
+          "type": "number"
+        },
+        "mba$lswfLastSwfWfsId": {
+          "description" : "Communication to next department",
+          "type": "number"
+        },
+        "mba$lswfNextJtg": {
+          "description" : "Next job type group owning the statusReferencing: `/mba$code-job-type-grps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$lswfNextJtgInfo": {
+          "description" : "Communication to next job type group",
+          "type": "string"
+        },
+        "mba$lswfNextRa": {
+          "description" : "Next Routing Action for Linkable Sub-WorkflowReferencing: `/mba$code-lswf-raps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$lswfNextSwf": {
+          "description" : "Next Linkable Sub-Workflow in WorkflowReferencing: `/mba$code-lswfs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$lswfPrevSwf": {
+          "description" : "Previous Linkable Sub-Workflow in WorkflowReferencing: `/mba$code-lswfs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$lswfRa": {
+          "description" : "Current Routing Action for Linkable Sub-WorkflowReferencing: `/mba$code-lswf-raps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$lswfSwf": {
+          "description" : "Current Linkable Sub-Workflow in WorkflowReferencing: `/mba$code-lswfs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$lswfUc": {
+          "description" : "Use Case assigned to the orderReferencing: `/mba$code-lswf-ucs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$mediumA": {
+          "description" : "Medium A/M flag",
+          "type": "boolean"
+        },
+        "mba$mediumPhoneNr": {
+          "description" : "Reference phone number to be registered in case of a phone call",
+          "type": "string"
+        },
+        "mba$pastAuthorUserList": {
+          "type": "array",
+          "items": {
+            "description": "Authorization: User List for current jtgReferencing: `/users/{id}`",
+            "allOf": [
+              { "$ref": "#/definitions/user_ref" }
+            ]
+          }
+        },
+        "mba$srcFund": {
+          "description" : "Source of FundsReferencing: `/mba$code-src-funds/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$templAsset": {
+          "description" : "Template AssetReferencing: `/obj-assets/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "pkpSvcRsvIdent": {
+          "description" : "Position Keeping Service: Reservation/advice identifier",
+          "type": "string"
+        }
+      }
+    },
+    "doc_invst_bdls": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/doc_invst_bdl"
+      },
+      "uniqueItems": true
+    },
+    "doc_key": {
+      "type": "object",
+      "properties": {
+        "docKey": {
+          "description" : "Referencing: `/code-doc-keys/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "val": {
+          "type": "string"
+        }
+      }
+    },
+    "doc_override": {
+      "type": "object",
+      "properties": {
+        "override": {
+          "description" : "Override codeReferencing: `/code-overrides/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "overrideComment": {
+          "description" : "CommentReferencing: `/code-override-comments/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "overrideText": {
+          "description" : "Override text",
+          "type": "string"
+        },
+        "secUser": {
+          "description" : "UserReferencing: `/users/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/user_ref" }
+          ]
+        },
+        "signt": {
+          "description" : "Signature",
+          "type": "string"
+        },
+        "timestamp": {
+          "description" : "Timestamp",
+          "type": "string"
+          ,
+            "format": "date-time"
+        }
+      }
+    },
+    "doc_postit": {
+      "type": "object",
+      "properties": {
+        "ctx": {
+          "description" : "TextReferencing: `/code-postit-ctxs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "doProp": {
+          "description" : "Is postit propagated",
+          "type": "boolean"
+        },
+        "isMan": {
+          "description" : "Is manualally entered",
+          "type": "boolean"
+        },
+        "role": {
+          "description" : "RoleReferencing: `/users/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/user_ref" }
+          ]
+        },
+        "subType": {
+          "description" : "SubtypeReferencing: `/code-postit-sub-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "text": {
+          "description" : "Text",
+          "type": "string"
+        },
+        "timestamp": {
+          "description" : "Timestamp",
+          "type": "string"
+          ,
+            "format": "date-time-no-tz"
+        },
+        "topic": {
+          "description" : "Topic",
+          "type": "string"
+        },
+        "type": {
+          "description" : "TypeReferencing: `/code-postit-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "user": {
+          "description" : "Inserted byReferencing: `/users/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/user_ref" }
+          ]
+        }
+      }
+    },
+    "doc_ref": {
+      "type": "object",
+      "properties": {
+        "_href": {
+          "description" : "Reference/link",
+          "type": "string"
+        },
+        "_ident": {
+          "description" : "Only used for workItem use cases, cross-reference in workItem context.",
+          "type": "string"
+        },
+        "id": {
+          "description" : "Numeric reference",
+          "type": "integer"
+        }
+      }
+    },
+    "doc_tab_caldr": {
+      "type": "object",
+      "properties": {
+        "bindDateList": {
+          "type": "string"
+        },
+        "dayList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/doc_caldr_day"
+          }
+        },
+        "endDate": {
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "exPeriodOffsetExpr": {
+          "description" : "Ex-Date Offset",
+          "type": "string"
+        },
+        "exclLastBrkPeriod": {
+          "type": "boolean"
+        },
+        "fixDateCaldrList": {
+          "type": "string"
+        },
+        "fixDateOffset": {
+          "description" : "Referencing: `/code-date-offsets/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "fixDateOffsetExpr": {
+          "type": "string"
+        },
+        "fixPeriodRef": {
+          "description" : "Referencing: `/code-period-refs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "freq": {
+          "type": "number"
+        },
+        "isPeriodBind": {
+          "type": "boolean"
+        },
+        "isUpfront": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": "string"
+        },
+        "period": {
+          "description" : "Referencing: `/code-pay-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "periodCnt": {
+          "type": "number"
+        },
+        "periodEnd": {
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "periodEndA": {
+          "type": "boolean"
+        },
+        "periodList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/doc_caldr_period"
+          }
+        },
+        "periodStart": {
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "periodStartA": {
+          "type": "boolean"
+        },
+        "periodicity": {
+          "type": "string"
+        },
+        "refDateCaldrList": {
+          "type": "string"
+        },
+        "refDateOffset": {
+          "description" : "Referencing: `/code-date-offsets/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "refDateOffsetExpr": {
+          "type": "string"
+        },
+        "startDate": {
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "trxDateCaldrList": {
+          "type": "string"
+        },
+        "trxDateOffset": {
+          "description" : "Referencing: `/code-date-offsets/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "trxDateOffsetExpr": {
+          "type": "string"
+        },
+        "valDateCaldrList": {
+          "type": "string"
+        },
+        "valDateOffset": {
+          "description" : "Referencing: `/code-date-offsets/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "valDateOffsetExpr": {
+          "type": "string"
+        }
+      }
+    },
+    "doc_tab_work_item": {
+      "type": "object",
+      "properties": {
+        "closeDate": {
+          "description" : "Close Date",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "descn": {
+          "description" : "Description",
+          "type": "string"
+        },
+        "isSlaveDirty": {
+          "description" : "Is dirty ?",
+          "type": "boolean"
+        },
+        "isTightLink": {
+          "description" : "Is Linked",
+          "type": "boolean"
+        },
+        "masterDoc": {
+          "description" : "Master OrderReferencing: `/docs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/doc_ref" }
+          ]
+        },
+        "seqNr": {
+          "description" : "Sequence no.",
+          "type": "integer"
+        },
+        "slaveDoc": {
+          "description" : "OrderReferencing: `/docs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/doc_ref" }
+          ]
+        },
+        "subject": {
+          "description" : "Subject",
+          "type": "string"
+        },
+        "tag": {
+          "description" : "Tag",
+          "type": "string"
+        },
+        "workItemCtx": {
+          "description" : "Work Item ContextReferencing: `/code-work-item-ctxs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "workItemStatus": {
+          "description" : "Work Item StatusReferencing: `/code-work-item-statuss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "workItemType": {
+          "description" : "Work Item TypeReferencing: `/code-work-item-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        }
+      }
+    },
+    "doc_trans": {
+      "type": "object",
+      "properties": {
+        "calcCnt": {
+          "type": "integer"
+        },
+        "calcTime": {
+          "type": "integer"
+        },
+        "intfWfcAction": {
+          "description" : "Workflow Interface ActionReferencing: `/wfc-action-invst_bdls/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "newWfcStatus": {
+          "description" : "Workflow StatusReferencing: `/wfc-status-invst_bdls/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "oldWfcStatus": {
+          "description" : "Workflow StatusReferencing: `/wfc-status-invst_bdls/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "opnTime": {
+          "type": "integer"
+        },
+        "remark": {
+          "description" : "Remark",
+          "type": "string"
+        },
+        "ruleTime": {
+          "type": "integer"
+        },
+        "secUser": {
+          "description" : "UserReferencing: `/users/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/user_ref" }
+          ]
+        },
+        "seqNr": {
+          "description" : "Sequence no.",
+          "type": "integer"
+        },
+        "timestamp": {
+          "description" : "Timestamp",
+          "type": "string"
+          ,
+            "format": "date-time"
+        },
+        "transAction": {
+          "description" : "TransitionReferencing: `/code-trans-actions/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "userTime": {
+          "type": "integer"
+        },
+        "wfcAction": {
+          "description" : "Workflow ActionReferencing: `/wfc-action-invst_bdls/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "wfcTime": {
+          "type": "integer"
+        }
+      }
+    },
+    "docp_inpr": {
+      "type": "object",
+      "properties": {
+        "advsClientList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/docp_inpr_client"
+          }
+        },
+        "advsLoc": {
+          "description" : "Advisor location at the time of advice.Referencing: `/obj-countrys/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "advsLocA": {
+          "description" : "Auto/Manual flag of Advisor location at the time of advice.",
+          "type": "boolean"
+        },
+        "busiCtx": {
+          "description" : "The business context in which the rules are to           be evaluated.Referencing: `/code-invstr-prot-busi-ctxs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "cont": {
+          "description" : "The container under discussion. The owner of           that container is also used for filtering the person lookup for           'advs_client_list.person_id'.Referencing: `/obj-conts/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "doc": {
+          "description" : "Doc_idReferencing: `/docs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/doc_ref" }
+          ]
+        },
+        "dur": {
+          "description" : "Duration of the meeting.Referencing: `/code-invstr-prot-durs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "durA": {
+          "description" : "Auto/Manual flag of Duration of the meeting.",
+          "type": "boolean"
+        },
+        "finalVersionSeqNr": {
+          "description" : "The sequence number of the final version.",
+          "type": "integer"
+        },
+        "frze": {
+          "description" : "Set to TRUE (+) in order to freeze the rules and           the fields; FALSE in order to have the rules be re-evaluted upon changes           in the order.",
+          "type": "boolean"
+        },
+        "intive": {
+          "description" : "Initiative: client or investment advisor.Referencing: `/code-invstr-prot-intives/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "intiveA": {
+          "description" : "Auto/Manual flag of Initiative: client or investment advisor.",
+          "type": "boolean"
+        },
+        "invstAdvs": {
+          "description" : "Investment advisor - either a business partner           (BP) or person, depending on the organisational structure activation.Referencing: `/objs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "invstAdvsA": {
+          "description" : "Auto/Manual flag of Investment advisor - either a business partner           (BP) or person, depending on the organisational structure activation.",
+          "type": "boolean"
+        },
+        "ips": {
+          "description" : "The selected investment policy statement (IPS).Referencing: `/obj-ipss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "meetingDate": {
+          "description" : "Date and time of the meeting, converted to local           time zone.",
+          "type": "string"
+          ,
+            "format": "date-time-no-tz"
+        },
+        "meetingDateA": {
+          "description" : "Auto/Manual flag of Date and time of the meeting, converted to local           time zone.",
+          "type": "boolean"
+        },
+        "overallStatus": {
+          "description" : "The overall investor protection status of the final version.Referencing: `/code-invstr-prot-statuss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "refDoc": {
+          "description" : "Reference order for which the investor           protection rules have already been evaluated and which created this           order (to which this investor protection part is attached).Referencing: `/docs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/doc_ref" }
+          ]
+        },
+        "scusList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/docp_inpr_cus"
+          }
+        },
+        "scusOverStatus": {
+          "description" : "Overall service custom teststatus.Referencing: `/code-invstr-prot-statuss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "sdocmOverStatus": {
+          "description" : "Overall service information document status           (okay, restricted, not okay).Referencing: `/code-invstr-prot-statuss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "sindList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/docp_inpr_indu"
+          }
+        },
+        "sindOverStatus": {
+          "description" : "Overall service information duty status.Referencing: `/code-invstr-prot-statuss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "sindmOverState": {
+          "description" : "Overall service information document state           (required, received, handed over, ...).Referencing: `/code-invstr-prot-docm-states/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "svcDocmList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/docp_inpr_docm"
+          }
+        },
+        "svcList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/docp_inpr_svc"
+          }
+        },
+        "svcOverStatus": {
+          "description" : "Overall advisory service status.Referencing: `/code-invstr-prot-statuss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "svcType": {
+          "description" : "The provided bank service respective degree of           advice given: Advice Given, Opinion Given, Direct Execution, ...Referencing: `/code-invstr-prot-svc-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "svcTypeA": {
+          "description" : "Auto/Manual flag of The provided bank service respective degree of           advice given: Advice Given, Opinion Given, Direct Execution, ...",
+          "type": "boolean"
+        },
+        "versList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/docp_inpr_vers"
+          }
+        }
+      }
+    },
+    "docp_inpr_apof": {
+      "type": "object",
+      "properties": {
+        "legalNorm": {
+          "description" : "Legal norm for which this applicable offering is evaluated.Referencing: `/code-invstr-prot-legal-norms/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "ovr": {
+          "description" : "Applicable offering override code.Referencing: `/code-overrides/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "ovrJustifTempl": {
+          "description" : "Justification template for the override of the applicable offering status.Referencing: `/code-invstr-prot-justifs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "ovrJustifTemplA": {
+          "description" : "Auto/Manual flag of Justification template for the override of the applicable offering status.",
+          "type": "boolean"
+        },
+        "ovrJustifText": {
+          "description" : "Justification text for the override of the applicable offering status.",
+          "type": "string"
+        },
+        "partId": {
+          "description" : "Part ID",
+          "type": "number"
+        },
+        "person": {
+          "description" : "Advised client for whom this applicable offering is evaluated.Referencing: `/obj-persons/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "replyOvr": {
+          "description" : "Set to TRUE in order to override the 'apof_rule_reply_id'; valid 'apof_ovr_id' required.",
+          "type": "boolean"
+        },
+        "rule": {
+          "description" : "The rule identifier.Referencing: `/code-invstr-prot-rules/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "ruleDiag": {
+          "description" : "The rule diagnosis (error or result type).Referencing: `/code-invstr-prot-rule-diags/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "ruleMsgKeyOrVal": {
+          "description" : "The encoded, translatable text (or the           non-translatable text itself) for the message explaining the (negative)           applicable offering reply. Use 'rule_msg' or alternatively           bre_text.text#text in order to display the (translated) text.",
+          "type": "string"
+        },
+        "ruleReply": {
+          "description" : "The reply of the applicable offering rule service.Referencing: `/code-invstr-prot-rule-replys/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "status": {
+          "description" : "Applicable offering status.Referencing: `/code-invstr-prot-statuss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        }
+      }
+    },
+    "docp_inpr_asset": {
+      "type": "object",
+      "properties": {
+        "acusList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/docp_inpr_cus"
+          }
+        },
+        "acusOverStatus": {
+          "description" : "Overall asset custom test status.Referencing: `/code-invstr-prot-statuss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "advReasonTempl": {
+          "description" : "Template for the advice reason.Referencing: `/code-invstr-prot-adv-reasons/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "advReasonTemplA": {
+          "description" : "Auto/Manual flag of Template for the advice reason.",
+          "type": "boolean"
+        },
+        "advReasonText": {
+          "description" : "The reason for the advice.",
+          "type": "string"
+        },
+        "aindList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/docp_inpr_indu"
+          }
+        },
+        "aindOverStatus": {
+          "description" : "Overall asset information duty status.Referencing: `/code-invstr-prot-statuss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "apofList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/docp_inpr_apof"
+          }
+        },
+        "apofOverStatus": {
+          "description" : "Overall asset applicable offering status.Referencing: `/code-invstr-prot-statuss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "asset": {
+          "description" : "The asset being discussed.Referencing: `/obj-assets/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "assetComment": {
+          "description" : "Asset comment.",
+          "type": "string"
+        },
+        "atstList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/docp_inpr_atst"
+          }
+        },
+        "atstOverStatus": {
+          "description" : "Overall appropriateness status.Referencing: `/code-invstr-prot-statuss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "docmList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/docp_inpr_docm"
+          }
+        },
+        "docmOverStatus": {
+          "description" : "Overall asset information document status           (okay, restricted, not okay).Referencing: `/code-invstr-prot-statuss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "indmOverState": {
+          "description" : "Overall asset information document state           (required, received, handed over, ...).Referencing: `/code-invstr-prot-docm-states/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mkt": {
+          "description" : "The market on which the asset is going to be traded.Referencing: `/obj-mkts/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "optimInstr": {
+          "description" : "The optimiser instruction which has been set for the position on the actual order (e.g. REBALP).Referencing: `/code-optim-instrs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "partId": {
+          "description" : "Part ID",
+          "type": "number"
+        },
+        "pos": {
+          "description" : "The position which is on either buy, hold or sell.Referencing: `/obj-poss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "qty": {
+          "description" : "The quantity by which the position is changed: positive for buy, negative for sell.",
+          "type": "number"
+        },
+        "remark": {
+          "description" : "The remark which has been added to the position on the actual order (e.g. REBALP).",
+          "type": "string"
+        },
+        "solic": {
+          "description" : "Solicitation: whether the discussed asset is recommended or on client request.Referencing: `/code-invstr-prot-solics/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        }
+      }
+    },
+    "docp_inpr_atst": {
+      "type": "object",
+      "properties": {
+        "existKnowlExper": {
+          "description" : "The existing knowledge and experience (K&E) of the client as a comma separated list.",
+          "type": "string"
+        },
+        "legalNorm": {
+          "description" : "Legal norm for which this appropriateness test is evaluated.Referencing: `/code-invstr-prot-legal-norms/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "ovr": {
+          "description" : "A-test override code.Referencing: `/code-overrides/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "ovrJustifTempl": {
+          "description" : "Justification template for the override of the a-test status.Referencing: `/code-invstr-prot-justifs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "ovrJustifTemplA": {
+          "description" : "Auto/Manual flag of Justification template for the override of the a-test status.",
+          "type": "boolean"
+        },
+        "ovrJustifText": {
+          "description" : "Justification text for the override of the a-test status.",
+          "type": "string"
+        },
+        "partId": {
+          "description" : "Part ID",
+          "type": "number"
+        },
+        "person": {
+          "description" : "Advised client for which this appropriateness test is evaluated.Referencing: `/obj-persons/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "replyOvr": {
+          "description" : "Set to TRUE in order to override the 'rule_reply_id'; valid 'ovr_id' required.",
+          "type": "boolean"
+        },
+        "requKnowlExper": {
+          "description" : "The required knowledge and experience (K&E) for the asset (in the parent ASSET part).",
+          "type": "string"
+        },
+        "rule": {
+          "description" : "The rule identifier.Referencing: `/code-invstr-prot-rules/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "ruleDiag": {
+          "description" : "The rule diagnosis (error or result type).Referencing: `/code-invstr-prot-rule-diags/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "ruleReply": {
+          "description" : "The reply of the a-test rule service.Referencing: `/code-invstr-prot-rule-replys/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "status": {
+          "description" : "A-test status.Referencing: `/code-invstr-prot-statuss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "succ": {
+          "description" : "Indicates whether the client has successfully passed the a-test (true) or not (false).",
+          "type": "boolean"
+        }
+      }
+    },
+    "docp_inpr_client": {
+      "type": "object",
+      "properties": {
+        "involv": {
+          "description" : "Client involvement: mandatory or optional.Referencing: `/code-invstr-prot-involvs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "legalNormList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/docp_inpr_legal"
+          }
+        },
+        "loc": {
+          "description" : "Client location at the time of advice.Referencing: `/obj-countrys/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "manual": {
+          "description" : "Indicates whether the client was manually added (TRUE) or due to the stakeholder nomination rule (FALSE).",
+          "type": "boolean"
+        },
+        "medium": {
+          "description" : "The medium (Face to Face, Phone, E-Mail, ...) by which the service is provided to this client.Referencing: `/code-invstr-prot-mediums/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "partId": {
+          "description" : "Part ID",
+          "type": "number"
+        },
+        "person": {
+          "description" : "Advised client.Referencing: `/obj-persons/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "role": {
+          "description" : "Client role.Referencing: `/code-invstr-prot-roles/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "rule": {
+          "description" : "The rule identifier.Referencing: `/code-invstr-prot-rules/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "ruleDiag": {
+          "description" : "The rule diagnosis (error or result type).Referencing: `/code-invstr-prot-rule-diags/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        }
+      }
+    },
+    "docp_inpr_cobe": {
+      "type": "object",
+      "properties": {
+        "legalNorm": {
+          "description" : "Legal norm for which this cost-benefit test is evaluated.Referencing: `/code-invstr-prot-legal-norms/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "ovr": {
+          "description" : "Cost-benefit test override code.Referencing: `/code-overrides/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "ovrJustifTempl": {
+          "description" : "Justification template for the override of the           cost-benefit test status.Referencing: `/code-invstr-prot-justifs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "ovrJustifText": {
+          "description" : "Justification text for the override of the           cost-benefit test status.",
+          "type": "string"
+        },
+        "partId": {
+          "description" : "Part ID",
+          "type": "number"
+        },
+        "person": {
+          "description" : "Advised client for which this cost-benefit test is evaluated.Referencing: `/obj-persons/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "replyOvr": {
+          "description" : "Set to TRUE in order to override the           'cobe_rule_reply_id'; valid 'cobe_ovr_id' required.",
+          "type": "boolean"
+        },
+        "rule": {
+          "description" : "The rule identifier.Referencing: `/code-invstr-prot-rules/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "ruleDiag": {
+          "description" : "The rule diagnosis (error or result type).Referencing: `/code-invstr-prot-rule-diags/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "ruleMsgCtx": {
+          "description" : "The context which provides the parameters,           separated by semicolon (INVSTR_PROT_CONST.C_CTX_SEP), for the message           placeholders (&1, &2 etc.) in 'rule_msg_key_or_val'.",
+          "type": "string"
+        },
+        "ruleMsgKeyOrVal": {
+          "description" : "The OUT_TEXT_NORM key (or the non-translatable           text itself) for the message explaining the (negative) cost-benefit test           reply.  Use 'rule_msg' in order to display the (translated) text.",
+          "type": "string"
+        },
+        "ruleReply": {
+          "description" : "The reply of the cost-benefit test rule service (CSS function).Referencing: `/code-invstr-prot-rule-replys/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "status": {
+          "description" : "Cost-benefit test status.Referencing: `/code-invstr-prot-statuss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        }
+      }
+    },
+    "docp_inpr_cus": {
+      "type": "object",
+      "properties": {
+        "legalNorm": {
+          "description" : "Legal norm for which this custom test is evaluated.Referencing: `/code-invstr-prot-legal-norms/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "ovr": {
+          "description" : "Custom test override code.Referencing: `/code-overrides/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "ovrJustifTempl": {
+          "description" : "Justification template for the override of the           custom test status.Referencing: `/code-invstr-prot-justifs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "ovrJustifTemplA": {
+          "description" : "Auto/Manual flag of Justification template for the override of the           custom test status.",
+          "type": "boolean"
+        },
+        "ovrJustifText": {
+          "description" : "Justification text for the override of the           custom test status.",
+          "type": "string"
+        },
+        "partId": {
+          "description" : "Part ID",
+          "type": "number"
+        },
+        "person": {
+          "description" : "Advised client for which this custom test is evaluated.Referencing: `/obj-persons/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "replyOvr": {
+          "description" : "Set to TRUE in order to override the           'cobe_rule_reply_id'; valid 'cobe_ovr_id' required.",
+          "type": "boolean"
+        },
+        "rule": {
+          "description" : "The rule identifier.Referencing: `/code-invstr-prot-rules/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "ruleDiag": {
+          "description" : "The rule diagnosis (error or result type).Referencing: `/code-invstr-prot-rule-diags/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "ruleMsgCtx": {
+          "description" : "The context which provides the parameters,           separated by semicolon (INVSTR_PROT_CONST.C_CTX_SEP), for the message           placeholders (&1, &2 etc.) in 'rule_msg_key_or_val'.",
+          "type": "string"
+        },
+        "ruleMsgKeyOrVal": {
+          "description" : "The OUT_TEXT_NORM key (or the non-translatable           text itself) for the message explaining the (negative) custom test           reply.  Use 'rule_msg' in order to display the (translated) text.",
+          "type": "string"
+        },
+        "ruleReply": {
+          "description" : "The reply of the custom test rule service (CSS function).Referencing: `/code-invstr-prot-rule-replys/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "status": {
+          "description" : "Custom test status.Referencing: `/code-invstr-prot-statuss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        }
+      }
+    },
+    "docp_inpr_docm": {
+      "type": "object",
+      "properties": {
+        "altLangList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/docp_inpr_lang"
+          }
+        },
+        "avlLangList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/docp_inpr_lang"
+          }
+        },
+        "cltConf": {
+          "description" : "Indicates whether the client has confirmed           or rejected the information document.Referencing: `/code-invstr-prot-clt-confs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "docmDistr": {
+          "description" : "Indicates the way the document is to be           distributed, specifically whether it is mandatory or optional, or whether           it is to be retrieved manually and personally handed over.Referencing: `/code-invstr-prot-docm-distrs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "docmState": {
+          "description" : "Information document state (Required, Received,           Handed Over, ...).Referencing: `/code-invstr-prot-docm-states/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "docmType": {
+          "description" : "The type of the information document,           for instance PIB or PRIIP-KID. The actually received document type is           stored in 'rcvd_docm_type_id'.Referencing: `/code-info-docm-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "jusCountry": {
+          "description" : "The jurisdiction for which the information           document is to be generated.Referencing: `/obj-countrys/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "lang": {
+          "description" : "The language in which the information document           is to be generated.Referencing: `/code-langs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "legalNorm": {
+          "description" : "The Legal norm for which the information document           is required.Referencing: `/code-invstr-prot-legal-norms/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "manual": {
+          "description" : "Indicates whether the information document was           manually added (TRUE) or due to the information duty rule (FALSE).",
+          "type": "boolean"
+        },
+        "ovDocmState": {
+          "description" : "Overall information document state (Required,           Received, Handed Over, ...) which takes the 'docm_state_id' and the           'clt_conf_id' into account.Referencing: `/code-invstr-prot-docm-states/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "ovr": {
+          "description" : "Information document override code.Referencing: `/code-overrides/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "ovrJustifTempl": {
+          "description" : "Justification template for the override of the           information document status.Referencing: `/code-invstr-prot-justifs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "ovrJustifTemplA": {
+          "description" : "Auto/Manual flag of Justification template for the override of the           information document status.",
+          "type": "boolean"
+        },
+        "ovrJustifText": {
+          "description" : "Justification text for the override of the           information document status.",
+          "type": "string"
+        },
+        "partId": {
+          "description" : "Part ID",
+          "type": "number"
+        },
+        "person": {
+          "description" : "Advised client for which the information document           is required.Referencing: `/obj-persons/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "postTrade": {
+          "description" : "Indicates whether the document can be delivered           post-trade or not.Referencing: `/code-invstr-prot-post-trades/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "prefLang": {
+          "description" : "The preferred language which has been determined           by the information document detail rule service.Referencing: `/code-langs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "rcvdDocmType": {
+          "description" : "The received type of the information document,           for instance PIB or PRIIP-KID. In most cases this is expected to be           equal to 'docm_type_id', except if the requested document type could           not be retrieved and alternative documents have been specified.Referencing: `/code-info-docm-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "rcvdLang": {
+          "description" : "The received language of the information           document. In most cases this is expected to be equal to 'lang_id', except           if the requested document language could not be retrieved and           alternative languages have been specified.Referencing: `/code-langs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "requ": {
+          "description" : "Indicates whether the information document needs           to be retrieved or not.",
+          "type": "boolean"
+        },
+        "rtrvOvr": {
+          "description" : "Information document retrieval override checkbox.",
+          "type": "boolean"
+        },
+        "rtrvTime": {
+          "description" : "Information document retrieval date and time,           converted to local time zone.",
+          "type": "string"
+          ,
+            "format": "date-time-no-tz"
+        },
+        "rule": {
+          "description" : "The rule identifier.Referencing: `/code-invstr-prot-rules/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "ruleCltConf": {
+          "description" : "Indicates whether a client confirmation for           the information document is required or not.Referencing: `/code-invstr-prot-clt-confs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "ruleDiag": {
+          "description" : "The rule diagnosis (error or result type).Referencing: `/code-invstr-prot-rule-diags/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "ruleDocmDistr": {
+          "description" : "The distribution which has been determined by           the information duty rule service. Also refer to 'docm_distr_id'.Referencing: `/code-invstr-prot-docm-distrs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "ruleJusCountry": {
+          "description" : "The jurisdiction which has been determined by           the information document detail rule service.Referencing: `/obj-countrys/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "statusMsgCtx": {
+          "description" : "The context which provides the parameters,           separated by semicolon (INVSTR_PROT_CONST.C_CTX_SEP), for the message           placeholders (&1, &2 etc.) in 'status_msg_key_val'.",
+          "type": "string"
+        },
+        "statusMsgKeyVal": {
+          "description" : "The OUT_TEXT_NORM key (or the non-translatable           text itself) for the information document retrieval status           message. Use 'status_msg' in order to display the (translated) text.",
+          "type": "string"
+        },
+        "uuid": {
+          "description" : "Information document universally unique           identifier (UUID).",
+          "type": "string"
+        }
+      }
+    },
+    "docp_inpr_indu": {
+      "type": "object",
+      "properties": {
+        "agingId": {
+          "description" : "ID",
+          "type": "number"
+        },
+        "doc": {
+          "description" : "Doc_idReferencing: `/docs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/doc_ref" }
+          ]
+        },
+        "docm": {
+          "description" : "Required client document.Referencing: `/obj-docms/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "docmDistr": {
+          "description" : "Defines the information document distribution,           for instance mandatory, optional or post-trade delivery.Referencing: `/code-invstr-prot-docm-distrs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "docmExists": {
+          "description" : "Indicates whether the required client document           exists (true) or not (false).",
+          "type": "boolean"
+        },
+        "docmOwns": {
+          "description" : "Ownership of the required client document:           person, BP, CONT, IPS.Referencing: `/code-invstr-prot-docm-ownss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "docmType": {
+          "description" : "The information document type (e.g. PIB or KIID).Referencing: `/code-info-docm-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "docmValid": {
+          "description" : "Indicates whether the required client document           has a valid signature (signed, not expired).",
+          "type": "boolean"
+        },
+        "infoDuty": {
+          "description" : "The kind of information duty: information           document, client document or disclaimer (text).Referencing: `/code-invstr-prot-info-dutys/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "legalNorm": {
+          "description" : "Legal norm for which this asset information duty           is required.Referencing: `/code-invstr-prot-legal-norms/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "ovr": {
+          "description" : "Information duty override codeReferencing: `/code-overrides/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "ovrJustifTempl": {
+          "description" : "Justification template for the override of the           information duty status.Referencing: `/code-invstr-prot-justifs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "ovrJustifTemplA": {
+          "description" : "Auto/Manual flag of Justification template for the override of the           information duty status.",
+          "type": "boolean"
+        },
+        "ovrJustifText": {
+          "description" : "Justification text for the override of the           information duty status.",
+          "type": "string"
+        },
+        "partId": {
+          "description" : "Part ID",
+          "type": "number"
+        },
+        "person": {
+          "description" : "Advised client for whom this asset information           duty is required.Referencing: `/obj-persons/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "postTrade": {
+          "description" : "Indicates whether the document can be delivered           post-trade or not.Referencing: `/code-invstr-prot-post-trades/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "replyOvr": {
+          "description" : "Set to TRUE in order to override the           'docm_exists', 'docm_valid' result; valid 'ovr_id' required.",
+          "type": "boolean"
+        },
+        "rule": {
+          "description" : "The rule identifier.Referencing: `/code-invstr-prot-rules/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "ruleDiag": {
+          "description" : "The rule diagnosis (error or result type).Referencing: `/code-invstr-prot-rule-diags/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "ruleMsgKeyOrVal": {
+          "description" : "The encoded, translatable text (or the           non-translatable text itself) according to 'info_duty_id', for instance           a disclaimer text or an explanation why a given information document is           required. Use 'rule_msg' or alternatively bre_text.text#text in order to           display the (translated) text.",
+          "type": "string"
+        },
+        "status": {
+          "description" : "Information duty status.Referencing: `/code-invstr-prot-statuss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        }
+      }
+    },
+    "docp_inpr_lang": {
+      "type": "object",
+      "properties": {
+        "lang": {
+          "description" : "The ID of the language.Referencing: `/code-langs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "partId": {
+          "description" : "Part ID",
+          "type": "number"
+        }
+      }
+    },
+    "docp_inpr_legal": {
+      "type": "object",
+      "properties": {
+        "aTest": {
+          "description" : "An appropiateness test is needed when set to TRUE.",
+          "type": "boolean"
+        },
+        "apofTest": {
+          "description" : "Applicable offering test is needed when set to TRUE.",
+          "type": "boolean"
+        },
+        "cbTest": {
+          "description" : "A cost-benefit test is needed when set to TRUE.",
+          "type": "boolean"
+        },
+        "customTest": {
+          "description" : "A custom test is needed when set to TRUE.",
+          "type": "boolean"
+        },
+        "induTest": {
+          "description" : "Information duty is needed when set to TRUE.",
+          "type": "boolean"
+        },
+        "legalNorm": {
+          "description" : "Legal Norm.Referencing: `/code-invstr-prot-legal-norms/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "sTest": {
+          "description" : "A suitability test is needed when set to TRUE.",
+          "type": "boolean"
+        }
+      }
+    },
+    "docp_inpr_restr": {
+      "type": "object",
+      "properties": {
+        "restr": {
+          "description" : "The restriction which implements the s-test.Referencing: `/obj-restrs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "status": {
+          "description" : "S-test status.Referencing: `/code-invstr-prot-statuss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        }
+      }
+    },
+    "docp_inpr_stst": {
+      "type": "object",
+      "properties": {
+        "ststLegalNorm": {
+          "description" : "Legal norm for which this suitability test is evaluated.Referencing: `/code-invstr-prot-legal-norms/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "ststPerson": {
+          "description" : "Advised client for which this suitability test is evaluated.Referencing: `/obj-persons/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "ststRestr": {
+          "description" : "The restriction which implements the s-test.Referencing: `/obj-restrs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        }
+      }
+    },
+    "docp_inpr_svc": {
+      "type": "object",
+      "properties": {
+        "legalNorm": {
+          "description" : "Legal norm for which this advisory service rule service is evaluated.Referencing: `/code-invstr-prot-legal-norms/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "ovr": {
+          "description" : "Advisory service override code.Referencing: `/code-overrides/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "ovrJustifTempl": {
+          "description" : "Justification template for the override of the           advisory service status.Referencing: `/code-invstr-prot-justifs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "ovrJustifTemplA": {
+          "description" : "Auto/Manual flag of Justification template for the override of the           advisory service status.",
+          "type": "boolean"
+        },
+        "ovrJustifText": {
+          "description" : "Justification text for the override of the           advisory service status.",
+          "type": "string"
+        },
+        "partId": {
+          "description" : "Part ID",
+          "type": "number"
+        },
+        "person": {
+          "description" : "Advised client for whom this service is offered.Referencing: `/obj-persons/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "replyOvr": {
+          "description" : "Set to TRUE in order to override the           'rule_reply_id'; valid 'ovr_id' required.",
+          "type": "boolean"
+        },
+        "rule": {
+          "description" : "The rule identifier.Referencing: `/code-invstr-prot-rules/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "ruleDiag": {
+          "description" : "The rule diagnosis (error or result type).Referencing: `/code-invstr-prot-rule-diags/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "ruleMsgKeyOrVal": {
+          "description" : "The encoded, translatable text (or the           non-translatable text itself) for the message explaining the (negative)           advisory service reply. Use 'rule_msg' or alternatively           bre_text.text#text in order to display the (translated) text.",
+          "type": "string"
+        },
+        "ruleReply": {
+          "description" : "The reply of the advisory service rule service.Referencing: `/code-invstr-prot-rule-replys/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "status": {
+          "description" : "Advisory service status.Referencing: `/code-invstr-prot-statuss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        }
+      }
+    },
+    "docp_inpr_vers": {
+      "type": "object",
+      "properties": {
+        "acusOverStatus": {
+          "description" : "Overall asset custom test status.Referencing: `/code-invstr-prot-statuss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "aindOverStatus": {
+          "description" : "Overall asset information duty status.Referencing: `/code-invstr-prot-statuss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "apofOverStatus": {
+          "description" : "Overall applicable offering status.Referencing: `/code-invstr-prot-statuss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "assetList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/docp_inpr_asset"
+          }
+        },
+        "atstOverStatus": {
+          "description" : "Overall appropriateness status.Referencing: `/code-invstr-prot-statuss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "cobeList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/docp_inpr_cobe"
+          }
+        },
+        "cobeOverStatus": {
+          "description" : "Overall cost-benefit test status.Referencing: `/code-invstr-prot-statuss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "cusOverStatus": {
+          "description" : "Overall custom test status: the combination of           asset ('vers.acus_over_status_id') and service information duty           ('inpr.scus_over_status_id') status.Referencing: `/code-invstr-prot-statuss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "docmOverStatus": {
+          "description" : "Overall asset information document status.Referencing: `/code-invstr-prot-statuss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "induOverStatus": {
+          "description" : "Overall information duty status: the combination           of asset ('vers.aind_over_status_id') and service information duty           ('inpr.sind_over_status_id') status.Referencing: `/code-invstr-prot-statuss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "motivTempl": {
+          "description" : "Motivation template.Referencing: `/code-invstr-prot-motivs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "motivText": {
+          "description" : "Motivation text for the advisory protocol.",
+          "type": "string"
+        },
+        "overallStatus": {
+          "description" : "Overall investor protection status.Referencing: `/code-invstr-prot-statuss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "partId": {
+          "description" : "Part ID",
+          "type": "number"
+        },
+        "restrList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/docp_inpr_restr"
+          }
+        },
+        "restrOverStatus": {
+          "description" : "Overall suitability status.Referencing: `/code-invstr-prot-statuss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "ststList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/docp_inpr_stst"
+          }
+        },
+        "supplmntTempl": {
+          "description" : "Supplementary note template.Referencing: `/code-invstr-prot-suppl-notes/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "supplmntText": {
+          "description" : "Supplementary note text for the advisory protocol.",
+          "type": "string"
+        },
+        "versionId": {
+          "description" : "The ID of the corresponding version of the order.",
+          "type": "number"
+        }
+      }
+    },
+    "docp_invst_bdl_rule": {
+      "type": "object",
+      "properties": {
+        "agingId": {
+          "description" : "ID",
+          "type": "integer"
+        },
+        "amount": {
+          "description" : "Amount to trade",
+          "type": "number"
+        },
+        "asset": {
+          "description" : "Asset that is the subject of the rule.Referencing: `/obj-assets/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "curry": {
+          "description" : "Currency the amount is specified in, if it refers to a currency.Referencing: `/obj-assets/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "estNet": {
+          "description" : "Estimated price of the transaction at generation.",
+          "type": "number"
+        },
+        "initEstNet": {
+          "description" : "Initial estimated price of the transaction",
+          "type": "number"
+        },
+        "partId": {
+          "description" : "Part ID",
+          "type": "integer"
+        },
+        "pct": {
+          "description" : "Percentage of balance to trade",
+          "type": "number"
+        },
+        "qty": {
+          "description" : "Quantity to trade",
+          "type": "number"
+        },
+        "ruleGrp": {
+          "description" : "UI grouping of the rule type.Referencing: `/code-invst-bdl-rule-grps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "ruleId": {
+          "description" : "Unique ID to a rule.  Never reused in a bundle.",
+          "type": "integer"
+        },
+        "ruleType": {
+          "description" : "Type of Investment Bundler supported ruleReferencing: `/code-invst-bdl-rule-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "seqNr": {
+          "description" : "Sequence Number",
+          "type": "integer"
+        },
+        "status": {
+          "description" : "Status of the slave orderReferencing: `/code-invst-bdl-rule-statuss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        }
+      }
+    },
+    "docp_recur": {
+      "type": "object",
+      "properties": {
+        "asset": {
+          "description" : "Recurring order assetReferencing: `/obj-assets/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "cfCompo": {
+          "$ref": "#/definitions/doc_compo_cf"
+        },
+        "deactiv": {
+          "description" : "Recurrence deactivated",
+          "type": "boolean"
+        },
+        "pos": {
+          "description" : "Recurring order positionReferencing: `/obj-poss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        }
+      }
+    },
+    "number": {
+      "type": "object",
+      "properties": {
+      }
+    },
+    "obj_key_ref_": {
+      "type": "object",
+      "properties": {
+        "objKey": {
+          "description" : "Referencing: `/code-obj-keys/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "val": {
+          "description" : "Key value",
+          "type": "string"
+        }
+      }
+    },
+    "obj_ref": {
+      "type": "object",
+      "properties": {
+        "_href": {
+          "description" : "Reference/link",
+          "type": "string"
+        },
+        "_ident": {
+          "description" : "Only used for workItem use cases, cross-reference in workItem context.",
+          "type": "string"
+        },
+        "id": {
+          "description" : "Numeric reference",
+          "type": "integer"
+        },
+        "keyList": {
+          "type": "array",
+          "items": {
+            "description": "Key value object reference ",
+            "allOf": [
+              { "$ref": "#/definitions/obj_key_ref_" }
+            ]
+          }
+        }
+      }
+    },
+    "user_ref": {
+      "type": "object",
+      "properties": {
+        "_href": {
+          "description" : "Reference/link",
+          "type": "string"
+        },
+        "id": {
+          "description" : "Numeric reference",
+          "type": "integer"
+        }
+      }
+    }
+  }
+}

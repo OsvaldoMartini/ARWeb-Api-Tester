@@ -1,0 +1,48 @@
+{
+  "$id" : "https://avaloq.com/bank_date.schema.json",
+  "$schema" : "http://json-schema.org/draft-07/schema#",
+  "$ref" : "#/definitions/bank_date",
+  "definitions" : {
+    "bank_date" : {
+      "title" : "bankDate",
+      "type" : "object",
+      "properties" : {
+        "bu" : {
+          "description" : "Business unit",
+          "allOf" : [ {
+            "$ref" : "#/definitions/bu"
+          } ]
+        },
+        "prevToday" : {
+          "description" : "Previous Bank Date (-1v)",
+          "type" : "string",
+          "format" : "date",
+          "readOnly" : true
+        },
+        "today" : {
+          "description" : "Current Bank Date",
+          "type" : "string",
+          "format" : "date",
+          "readOnly" : true
+        },
+        "nextToday" : {
+          "description" : "Next Bank Date",
+          "type" : "string",
+          "format" : "date",
+          "readOnly" : true
+        }
+      }
+    },
+    "bu" : {
+      "title" : "Business Unit",
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "readOnly" : true,
+          "example" : 1
+        }
+      }
+    }
+  }
+}

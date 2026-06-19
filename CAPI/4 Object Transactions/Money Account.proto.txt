@@ -1,0 +1,119 @@
+syntax = "proto3";
+
+package com.avaloq.acp.bde.protobuf.doc_macc;
+
+import "meta_model.proto";
+import "wrappers.proto";
+import "options.proto";
+
+option (version) = "3.7.4";
+
+message DocAdd {
+  SInt64Value doc_add_id = 1 [(bde_entity) = "Code_doc_add", (bde_ref_type) = "code"];
+  repeated DocAddVal val_list = 2;
+}
+
+message DocAddVal {
+  StringValue text_val = 1;
+  StringValue nr_val = 2 [(format) = "decimal"];
+  StringValue date_val = 3 [(format) = "date"];
+  StringValue tswtz_val = 4 [(format) = "date_time"];
+  SInt64Value id_val = 5;
+}
+
+message DocKey {
+  StringValue val = 2;
+  SInt64Value doc_key_id = 3 [(bde_entity) = "Code_doc_key", (bde_ref_type) = "code"];
+}
+
+message DocMacc {
+  option (is_bde_entity) = true;
+  SInt64Value obj_id = 2 [(bde_entity) = "Obj", (bde_ref_type) = "obj"];
+  repeated DocObjName obj_name_list = 3;
+  SInt64Value bu_id = 6 [(bde_entity) = "Obj_bp", (bde_ref_type) = "obj"];
+  SInt64Value cont_id = 8 [(bde_entity) = "Obj_cont", (bde_ref_type) = "obj"];
+  SInt64Value asset_id = 9 [(bde_entity) = "Obj_asset", (bde_ref_type) = "obj"];
+  repeated DocObjKey key_list = 11;
+  StringValue open_date = 12 [(format) = "date"];
+  StringValue close_date = 13 [(format) = "date"];
+  repeated DocObjAdd add_list = 16;
+  uint64 id = 36 [(bde_entity) = "Doc_macc", (bde_ref_type) = "doc"];
+  UInt64Value ref_doc_id = 43 [(bde_entity) = "Doc", (bde_ref_type) = "doc"];
+  repeated DocObjRel rel_list = 45;
+  SInt64Value bde_rec_version = 54;
+  SInt64Value aging_id = 55;
+  DocWithObjPrcInfo obj_prc_info = 201;
+}
+
+message DocObjAdd {
+  SInt64Value obj_add_id = 1 [(bde_entity) = "Code_obj_add", (bde_ref_type) = "code"];
+  repeated DocObjAddVal val_list = 2;
+  SInt64Value bu_id = 4 [(bde_entity) = "Obj_bp", (bde_ref_type) = "obj"];
+}
+
+message DocObjAddVal {
+  StringValue text_val = 1;
+  StringValue nr_val = 2 [(format) = "decimal"];
+  StringValue date_val = 3 [(format) = "date"];
+  StringValue tswtz_val = 4 [(format) = "date_time"];
+  SInt64Value id_val = 5;
+}
+
+message DocObjKey {
+  StringValue val = 2;
+  SInt64Value obj_key_id = 3 [(bde_entity) = "Code_obj_key", (bde_ref_type) = "code"];
+  SInt64Value obj_1_id = 5 [(bde_entity) = "Obj", (bde_ref_type) = "obj"];
+  SInt64Value obj_2_id = 7 [(bde_entity) = "Obj", (bde_ref_type) = "obj"];
+  SInt64Value obj_3_id = 9 [(bde_entity) = "Obj", (bde_ref_type) = "obj"];
+  SInt64Value obj_4_id = 11 [(bde_entity) = "Obj", (bde_ref_type) = "obj"];
+  StringValue prio = 13;
+  SInt64Value rule_templ_id = 15 [(bde_entity) = "Code_rule_templ", (bde_ref_type) = "code"];
+  SInt64Value seq_nr = 16;
+  SInt64Value trig_meta_typ_id = 17 [(bde_entity) = "Meta_typ", (bde_ref_type) = "code"];
+  SInt64Value trig_order_type_id = 18 [(bde_entity) = "Code_order_type", (bde_ref_type) = "code"];
+  BoolValue val_a = 19;
+  SInt64Value ref_obj_id = 116 [(bde_entity) = "Obj", (bde_ref_type) = "obj"];
+}
+
+message DocObjName {
+  StringValue name = 2;
+  StringValue name_long = 3;
+  StringValue name_intl = 5;
+  SInt64Value lang_id = 6 [(bde_entity) = "Code_lang", (bde_ref_type) = "code"];
+  BoolValue name_a = 10;
+  BoolValue name_intl_a = 12;
+  BoolValue name_long_a = 13;
+}
+
+message DocObjRel {
+  SInt64Value obj_2_id = 1 [(bde_entity) = "Obj", (bde_ref_type) = "obj"];
+  SInt64Value obj_rel_type_id = 2 [(bde_entity) = "Code_obj_rel_type", (bde_ref_type) = "code"];
+  SInt64Value obj_rel_sub_type_id = 3 [(bde_entity) = "Code_obj_rel_sub_type", (bde_ref_type) = "code"];
+  StringValue f1 = 4 [(format) = "decimal"];
+  SInt64Value obj_1_id = 5 [(bde_entity) = "Obj", (bde_ref_type) = "obj"];
+  StringValue prio = 6 [(format) = "decimal"];
+  StringValue share_rate = 7 [(format) = "decimal"];
+  StringValue sub_trl = 8;
+  StringValue trl = 9;
+}
+
+message DocOverride {
+  SInt64Value override_comment_id = 1 [(bde_entity) = "Code_override_comment", (bde_ref_type) = "code"];
+  SInt64Value override_id = 2 [(bde_entity) = "Code_override", (bde_ref_type) = "code"];
+  StringValue override_text = 3;
+  SInt64Value sec_user_id = 4 [(bde_entity) = "User", (bde_ref_type) = "use"];
+  StringValue signt = 5;
+  StringValue timestamp = 6 [(format) = "date_time"];
+}
+
+message DocWithObjPrcInfo {
+  repeated DocAdd add_list = 1;
+  repeated DocKey key_list = 2;
+  repeated DocOverride override_list = 3;
+  SInt64Value meta_typ_id = 4 [(bde_entity) = "Meta_typ", (bde_ref_type) = "code"];
+  BoolValue is_final = 5;
+  SInt64Value wfc_status_id = 6 [(bde_entity) = "Wfc_status", (bde_ref_type) = "code"];
+  StringValue last_trans = 7 [(format) = "date_time"];
+  SInt64Value wfc_action_id = 8 [(bde_entity) = "Wfc_action", (bde_ref_type) = "code"];
+}
+

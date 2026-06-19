@@ -1,0 +1,224 @@
+{
+  "$id" : "https://avaloq.com/operation.schema.json",
+  "$schema" : "http://json-schema.org/draft-07/schema#",
+  "$ref" : "#/definitions/operation",
+  "definitions" : {
+    "code_tab_ref" : {
+      "title" : "code_tab_ref",
+      "type" : "object",
+      "properties" : {
+        "_href" : {
+          "description" : "Reference/link",
+          "type" : "string",
+          "readOnly" : true
+        },
+        "id" : {
+          "description" : "Numeric reference",
+          "type" : "integer"
+        },
+        "ident" : {
+          "description" : "Unique symbolic reference",
+          "type" : "string"
+        },
+        "intlId" : {
+          "description" : "Symbolic reference",
+          "type" : "string",
+          "readOnly" : true
+        }
+      }
+    },
+    "validationResult" : {
+      "title" : "validationResult",
+      "type" : "object",
+      "properties" : {
+        "displText" : {
+          "type" : "string",
+          "readOnly" : true
+        },
+        "ovrHasRight" : {
+          "type" : "boolean",
+          "readOnly" : true
+        },
+        "ref" : {
+          "description" : "Referencing: `/code_ui_errs/{id}` or `/code_overrides/{id}`",
+          "readOnly" : true,
+          "allOf" : [ {
+            "$ref" : "#/definitions/code_tab_ref"
+          } ]
+        },
+        "resType" : {
+          "description" : "Referencing: `/code_err_types/{id}`",
+          "readOnly" : true,
+          "allOf" : [ {
+            "$ref" : "#/definitions/code_tab_ref"
+          } ]
+        },
+        "ovrSignt" : {
+          "type" : "integer"
+        }
+      }
+    },
+    "operation" : {
+      "title" : "operation",
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "format" : "uuid",
+          "readOnly" : true
+        },
+        "entityType" : {
+          "type" : "string",
+          "readOnly" : true,
+          "example" : "doc-stex"
+        },
+        "httpMethod" : {
+          "type" : "string",
+          "readOnly" : true,
+          "example" : "POST"
+        },
+        "status" : {
+          "type" : "string",
+          "readOnly" : true,
+          "example" : "PROCESSED"
+        },
+        "createdOn" : {
+          "type" : "string",
+          "format" : "date-time",
+          "example" : "2021-01-30T08:30:00Z",
+          "readOnly" : true
+        },
+        "lastUpdate" : {
+          "type" : "string",
+          "format" : "date-time",
+          "example" : "2021-01-30T08:30:00Z",
+          "readOnly" : true
+        },
+        "bu" : {
+          "description" : "Business unit of operation itself<br>Referencing: `/obj-bps/{id}`",
+          "readOnly" : true,
+          "allOf" : [ {
+            "$ref" : "#/definitions/obj_ref"
+          } ]
+        },
+        "writeExecutionType" : {
+          "type" : "string",
+          "readOnly" : true,
+          "example" : "ASYNC"
+        },
+        "requestUrl" : {
+          "type" : "string",
+          "readOnly" : true
+        },
+        "entity" : {
+          "description" : "Created entity id reference`",
+          "readOnly" : true,
+          "allOf" : [ {
+            "$ref" : "#/definitions/obj_ref"
+          } ]
+        },
+        "inputPayload" : {
+          "type" : "string",
+          "readOnly" : true
+        },
+        "errorMessages" : {
+          "type" : "array",
+          "readOnly" : true,
+          "items" : {
+            "type" : "string"
+          },
+          "example" : [ "Mandatory: Quantity", "Mandatory: Container" ]
+        },
+        "validationResults" : {
+          "type" : "array",
+          "readOnly" : true,
+          "items" : {
+            "$ref" : "#/definitions/validationResult"
+          }
+        },
+        "bulkItemIdent" : {
+          "allOf" : [ {
+            "$ref" : "#/definitions/bulkItemIdent"
+          } ]
+        },
+        "bulkMainOperation" : {
+          "description" : "Bulk main operation itself<br>Referencing: `/operations/{id}`",
+          "readOnly" : true,
+          "allOf" : [ {
+            "$ref" : "#/definitions/operation_ref"
+          } ]
+        }
+      }
+    },
+    "operation_ref" : {
+      "title" : "operation_ref",
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "allOf" : [ {
+            "$ref" : "#/definitions/uuidRef"
+          } ]
+        }
+      }
+    },
+    "failed_operation_ref" : {
+      "title" : "operation_ref",
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "allOf" : [ {
+            "$ref" : "#/definitions/uuidRef"
+          } ]
+        },
+        "bulkItemIdent" : {
+          "allOf" : [ {
+            "$ref" : "#/definitions/bulkItemIdent"
+          } ]
+        }
+      }
+    },
+    "obj_ref" : {
+      "title" : "obj_ref",
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "description" : "Numeric reference",
+          "type" : "integer",
+          "example" : 22
+        }
+      }
+    },
+    "operationBulk" : {
+      "title" : "operationBulk",
+      "type" : "object",
+      "properties" : {
+        "failedBulkItemOperations" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/failed_operation_ref"
+          },
+          "readOnly" : true
+        },
+        "bulkItemOperations" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/operation"
+          },
+          "readOnly" : true
+        }
+      }
+    },
+    "bulkItemIdent" : {
+      "title" : "bulk item identifier",
+      "type" : "string",
+      "maxLength" : 36,
+      "example" : "stexOrder1"
+    },
+    "uuidRef" : {
+      "description" : "uuid reference",
+      "type" : "string",
+      "format" : "uuid",
+      "readOnly" : true
+    }
+  }
+}

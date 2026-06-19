@@ -1,0 +1,146 @@
+{
+  "$id": "https://avaloq.com/code_pay_type.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/code_pay_type",
+  "definitions": {
+    "code_pay_type": {
+      "type": "object",
+      "properties": {
+        "activ": {
+          "type": "boolean"
+        },
+        "compoTypeList": {
+          "type": "string"
+        },
+        "descn": {
+          "type": "string"
+        },
+        "fireC572IntrFreq": {
+          "type": "number"
+        },
+        "freq": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "ident": {
+          "type": "string"
+        },
+        "intlId": {
+          "type": "string"
+        },
+        "mba$envCompo": {
+          "description" : "Referencing: `/code-env-compos/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$freqCodeIso": {
+          "type": "string"
+        },
+        "mba$guiSortNr": {
+          "type": "number"
+        },
+        "mba$isPayFreqDaily": {
+          "type": "boolean"
+        },
+        "mba$isPayFreqQuarterly": {
+          "type": "boolean"
+        },
+        "mba$isPayFreqSemiAnnual": {
+          "type": "boolean"
+        },
+        "mba$isPayFreqTimeDaily": {
+          "type": "boolean"
+        },
+        "mba$isPayFreqTimeQuarterly": {
+          "type": "boolean"
+        },
+        "mba$isPayFreqTimeYearly": {
+          "type": "boolean"
+        },
+        "mba$isRmwpSupp": {
+          "type": "boolean"
+        },
+        "mba$isStordCf": {
+          "type": "boolean"
+        },
+        "mba$metaTypList": {
+          "type": "string"
+        },
+        "mba$otcTrPeriod": {
+          "description" : "Referencing: `/code-otc-tr-periods/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "name": {
+          "type": "string"
+        },
+        "nameI18nList": {
+          "type": "array",
+          "items": {
+            "description" : "Full translation list for name field. Only visible within compound APIs ",
+            "allOf": [
+              { "$ref": "#/definitions/name_i18n"
+               }
+              ]
+          }
+        },
+        "rejectCond": {
+          "type": "string"
+        },
+        "trl": {
+          "type": "string"
+        },
+        "userId": {
+          "type": "string"
+        }
+      }
+    },
+    "code_pay_types": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/code_pay_type"
+      },
+      "uniqueItems": true
+    },
+    "code_tab_ref": {
+      "type": "object",
+      "properties": {
+        "_href": {
+          "description" : "Reference/link",
+          "type": "string"
+        },
+        "id": {
+          "description" : "Numeric reference",
+          "type": "integer"
+        },
+        "ident": {
+          "description" : "Unique symbolic reference",
+          "type": "string"
+        },
+        "intlId": {
+          "description" : "Symbolic reference",
+          "type": "string"
+        }
+      }
+    },
+    "name_i18n": {
+      "type": "object",
+      "properties": {
+        "lang": {
+          "description" : "LanguageReferencing: `/code-langs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref"
+             }
+            ]
+        },
+        "text": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

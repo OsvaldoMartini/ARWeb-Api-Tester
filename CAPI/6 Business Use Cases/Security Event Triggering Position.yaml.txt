@@ -1,0 +1,1074 @@
+openapi: 3.0.2
+security:
+- bearerAuth: []
+info:
+  title: Security Event Triggering Position API
+  version: 1.0.0
+  x-avq$categories:
+  - capi
+servers:
+- url: /api1/
+  description: Development server
+paths:
+  /doc-secevt2-poss:
+    get:
+      tags:
+      - API endpoints
+      summary: Get Security Event triggering positions
+      description: "Get a collection of `Security Event Triggering Positions` \nThe\
+        \ result set can be restricted through filter parameter.\nOnly `Security Event\
+        \ Positions` will be returned that can be accessed by the user (security applied).\n\
+        Paging is supported with parameters *limit* and *offset*.\n"
+      parameters:
+      - $ref: "#/components/parameters/Aft"
+      - $ref: "#/components/parameters/Bp"
+      - $ref: "#/components/parameters/Pos"
+      - $ref: "#/components/parameters/DeadlineDateFrom"
+      - $ref: "#/components/parameters/Open"
+      - $ref: "#/components/parameters/PageLimit"
+      - $ref: "#/components/parameters/PageOffset"
+      - $ref: "#/components/parameters/Accept-Encoding"
+      responses:
+        "200":
+          description: Successful response
+          headers:
+            Content-Language:
+              $ref: "#/components/headers/Content-Language"
+            X-Has-Next-Page:
+              $ref: "#/components/headers/X-Has-Next-Page"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/doc_secevt2_pos"
+        default:
+          $ref: "#/components/responses/Problem"
+  /doc-secevt2-poss/{id}:
+    get:
+      tags:
+      - API endpoints
+      summary: Get a Security Event triggering position
+      description: |
+        *Get a `Security Event Triggering Position` order by Triggering position ID*.
+        Only `Security Event Positions` will be returned that can be accessed by the user (security applied).
+        If user does not have access to resource, not found error will be returned instead of unauthorized - to disallow attacks.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: ID of the `Security Event Triggering Position` to get
+      - $ref: "#/components/parameters/Accept-Encoding"
+      responses:
+        "200":
+          description: Successful response
+          headers:
+            Content-Language:
+              $ref: "#/components/headers/Content-Language"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/doc_secevt2_pos"
+        "304":
+          description: Not modified
+        default:
+          $ref: "#/components/responses/Problem"
+    patch:
+      tags:
+      - API endpoints
+      summary: Modify/update an existing Security Event triggering position
+      description: |
+        *Partially modify/update an existing `Security Event Triggering Position` by ID*.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: ID of the `Security Event Triggering Position` to modify/update
+      - $ref: "#/components/parameters/Accept-Encoding"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/doc_secevt2_pos_patch"
+      responses:
+        "200":
+          description: Request successfully processed
+        default:
+          $ref: "#/components/responses/Problem"
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    obj_key_ref_:
+      title: obj_key_ref_
+      type: object
+      properties:
+        objKey:
+          description: "Referencing: `/code-obj-keys/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/code_tab_ref"
+        val:
+          description: Key value
+          type: string
+    obj_ref:
+      title: obj_ref
+      type: object
+      properties:
+        _ident:
+          description: "Only used for workItem use cases, cross-reference in workItem\
+            \ context."
+          type: string
+          writeOnly: true
+        id:
+          description: Numeric reference
+          type: integer
+          format: int32
+        keyList:
+          description: 'Key value object reference '
+          type: array
+          items:
+            $ref: "#/components/schemas/obj_key_ref_"
+          writeOnly: true
+    user_ref:
+      title: user_ref
+      type: object
+      properties:
+        id:
+          description: Numeric reference
+          type: integer
+          format: int32
+    doc_ref:
+      title: doc_ref
+      type: object
+      properties:
+        _ident:
+          description: "Only used for workItem use cases, cross-reference in workItem\
+            \ context."
+          type: string
+          writeOnly: true
+        id:
+          description: Numeric reference
+          type: integer
+          format: int64
+    code_tab_ref:
+      title: code_tab_ref
+      type: object
+      properties:
+        id:
+          description: Numeric reference
+          type: integer
+          format: int32
+        ident:
+          description: Unique symbolic reference
+          type: string
+        intlId:
+          description: Symbolic reference
+          type: string
+          readOnly: true
+    docp_proxy_decsn_empl_prty:
+      title: docp_proxy_decsn_empl_prty
+      type: object
+      properties:
+        addrType:
+          description: "Address Type<br>Referencing: `/code-srd2-addr-types/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/code_tab_ref"
+        bldgNr:
+          description: Building Number
+          type: string
+        country:
+          description: "Country<br>Referencing: `/obj-countrys/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/obj_ref"
+        ctySubDivn:
+          description: City
+          type: string
+        fname:
+          description: Name
+          type: string
+        ident:
+          description: Identification
+          type: string
+        identType:
+          description: "Identification Type<br>Referencing: `/code-srd2-person-ident-types/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/code_tab_ref"
+        postCode:
+          description: Post Code
+          type: string
+        streetName:
+          description: Street Name
+          type: string
+        town:
+          description: Town
+          type: string
+    docp_proxy_decsn_glo_vote:
+      title: docp_proxy_decsn_glo_vote
+      type: object
+      properties:
+        issuerLbl:
+          description: Issuer Label
+          type: string
+        voteInstr:
+          description: "Vote Instruction Type<br>Referencing: `/code-srd2-vote-instr-types/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/code_tab_ref"
+    docp_proxy_decsn_mt_text:
+      title: docp_proxy_decsn_mt_text
+      type: object
+      properties:
+        qual:
+          description: "Qualifier<br>Referencing: `/code-secevt2-freetext-quals/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/code_tab_ref"
+        val:
+          description: Value
+          type: string
+    docp_proxy_decsn_vt_instr:
+      title: docp_proxy_decsn_vt_instr
+      type: object
+      properties:
+        abstainQty:
+          description: Abstain Quantity
+          type: number
+        againstQty:
+          description: Against Quantity
+          type: number
+        agnstMngtQty:
+          description: Against Management Quantity
+          type: number
+        blankQty:
+          description: Blank Quantity
+          type: number
+        discrnyQty:
+          description: Discretionary Quantity
+          type: number
+        forQty:
+          description: For Quantity
+          type: number
+        issuerLbl:
+          description: Issuer Label
+          type: string
+        noActionQty:
+          description: No Action Quantity
+          type: number
+        oneYearQty:
+          description: One Year Quantity
+          type: number
+        threeYearQty:
+          description: Three Years Quantity
+          type: number
+        twoYearQty:
+          description: Two Years Quantity
+          type: number
+        withMngtQty:
+          description: With Management Quantity
+          type: number
+        withhQty:
+          description: Withhold Quantity
+          type: number
+    doc_tab_secevt2_parlist:
+      title: doc_tab_secevt2_parlist
+      type: object
+      properties:
+        key:
+          type: string
+        val:
+          type: string
+    doc_secevt2:
+      title: doc_secevt2
+      type: object
+      properties:
+        aft:
+          description: "Asset Flow Template<br>Referencing: `/meta-af-lists/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/code_tab_ref"
+          readOnly: true
+        asset:
+          description: "Asset<br>Referencing: `/obj-assets/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/obj_ref"
+          readOnly: true
+        bu:
+          description: "Business unit of order itself<br>Referencing: `/obj-bps/{id}`"
+          readOnly: true
+          allOf:
+          - $ref: "#/components/schemas/obj_ref"
+        ddlnDate:
+          description: Internal Deadline
+          type: string
+          format: date
+          readOnly: true
+        extlDdlnDate:
+          description: External Deadline
+          type: string
+          format: date
+          readOnly: true
+        id:
+          description: "Referencing: `/doc-secevt2s/{id}`"
+          type: integer
+          format: int64
+          readOnly: true
+        isFinal:
+          description: Is order in a final status?
+          type: boolean
+          readOnly: true
+        parList:
+          type: array
+          items:
+            $ref: "#/components/schemas/doc_tab_secevt2_parlist"
+          readOnly: true
+        valDate:
+          description: Value date
+          type: string
+          format: date
+        wfcStatus:
+          description: "Workflow  status<br>Referencing: `/wfc-status-secevt2s/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/code_tab_ref"
+    docp_proxy_decsn_attendee:
+      title: docp_proxy_decsn_attendee
+      type: object
+      properties:
+        addrLn1:
+          description: Address Line 1
+          type: string
+        addrLn2:
+          description: Address Line 2
+          type: string
+        addrLn3:
+          description: Address Line 3
+          type: string
+        addrLn4:
+          description: Address Line 4
+          type: string
+        addrLn5:
+          description: Address Line 5
+          type: string
+        addrLns:
+          description: Address Lines
+          type: string
+        addrType:
+          description: "Address Type<br>Referencing: `/code-srd2-addr-types/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/code_tab_ref"
+        attndncCardLbl:
+          description: Attendance Card Label
+          type: string
+        birthCountry:
+          description: "Country of birth<br>Referencing: `/obj-countrys/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/obj_ref"
+        birthDate:
+          description: Date of birth
+          type: string
+          format: date-time-no-tz
+        bldgNr:
+          description: Building Number
+          type: string
+        cityBirth:
+          description: City of birth
+          type: string
+        country:
+          description: "Country<br>Referencing: `/obj-countrys/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/obj_ref"
+        countrySubDivn:
+          description: City
+          type: string
+        email:
+          description: Email
+          type: string
+        emplPrtyList:
+          type: array
+          items:
+            $ref: "#/components/schemas/docp_proxy_decsn_empl_prty"
+        fname:
+          description: Name
+          type: string
+        ident:
+          description: Identification
+          type: string
+        identType:
+          description: "Identification Type<br>Referencing: `/code-srd2-person-ident-types/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/code_tab_ref"
+        isNp:
+          description: Natural Person
+          type: boolean
+        lastName:
+          description: Last Name
+          type: string
+        mtd:
+          description: "Delivery Method<br>Referencing: `/code-srd2-dlv-mtds/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/code_tab_ref"
+        namePfx:
+          description: "Name Prefix<br>Referencing: `/code-srd2-name-pfxs/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/code_tab_ref"
+        natiCountry:
+          description: "Nationality<br>Referencing: `/obj-countrys/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/obj_ref"
+        othAddrLn1:
+          description: Address Line 1
+          type: string
+        othAddrLn2:
+          description: Address Line 2
+          type: string
+        othAddrLn3:
+          description: Address Line 3
+          type: string
+        othAddrLn4:
+          description: Address Line 4
+          type: string
+        othAddrLn5:
+          description: Address Line 5
+          type: string
+        othAddrLns:
+          description: Address Lines
+          type: string
+        othAddrType:
+          description: "Address Type<br>Referencing: `/code-srd2-addr-types/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/code_tab_ref"
+        othBldgNr:
+          description: Building Number
+          type: string
+        othCountry:
+          description: "Country<br>Referencing: `/obj-countrys/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/obj_ref"
+        othCtySubDivn:
+          description: City
+          type: string
+        othName:
+          description: Name
+          type: string
+        othPostCode:
+          description: Post Code
+          type: string
+        othStreetName:
+          description: Street Name
+          type: string
+        othTown:
+          description: Town
+          type: string
+        othUstrdAddr:
+          description: Unstructured Address
+          type: string
+        particMtd:
+          description: "Participation Method<br>Referencing: `/code-srd2-partic-mtds/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/code_tab_ref"
+        poBox:
+          description: PO Box
+          type: string
+        postCode:
+          description: Post Code
+          type: string
+        provBirth:
+          description: Province of birth
+          type: string
+        streetName:
+          description: Street Name
+          type: string
+        town:
+          description: Town
+          type: string
+    docp_proxy_decsn_instr:
+      title: docp_proxy_decsn_instr
+      type: object
+      properties:
+        addrLn1:
+          description: Address Line 1
+          type: string
+        addrLn2:
+          description: Address Line 2
+          type: string
+        addrLn3:
+          description: Address Line 3
+          type: string
+        addrLn4:
+          description: Address Line 4
+          type: string
+        addrLn5:
+          description: Address Line 5
+          type: string
+        addrLns:
+          description: Address Lines
+          type: string
+        addrType:
+          description: "Address Type<br>Referencing: `/code-srd2-addr-types/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/code_tab_ref"
+        allVote:
+          description: "Vote for All Agenda Resolutions<br>Referencing: `/code-srd2-vote-instr-types/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/code_tab_ref"
+        attendeeList:
+          type: array
+          items:
+            $ref: "#/components/schemas/docp_proxy_decsn_attendee"
+        attndncCardLbl:
+          description: Attendance Card Label
+          type: string
+        birthCountry:
+          description: "Country of birth<br>Referencing: `/obj-countrys/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/obj_ref"
+        birthDate:
+          description: Date of birth
+          type: string
+          format: date-time-no-tz
+        bldgNr:
+          description: Building Number
+          type: string
+        cityBirth:
+          description: City of birth
+          type: string
+        country:
+          description: "Country<br>Referencing: `/obj-countrys/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/obj_ref"
+        ctySubDivn:
+          description: Country Sub Division
+          type: string
+        doSecReg:
+          description: Securities Registration
+          type: boolean
+        doVoteConf:
+          description: Vote Execution Confirmation
+          type: boolean
+        email:
+          description: Email
+          type: string
+        emplPrtyList:
+          type: array
+          items:
+            $ref: "#/components/schemas/docp_proxy_decsn_empl_prty"
+        fname:
+          description: Name
+          type: string
+        gloVoteList:
+          type: array
+          items:
+            $ref: "#/components/schemas/docp_proxy_decsn_glo_vote"
+        identType:
+          description: "Person Identification Type<br>Referencing: `/code-srd2-person-ident-types/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/code_tab_ref"
+        isNp:
+          description: Natural Person
+          type: boolean
+        lastName:
+          description: Last Name
+          type: string
+        mtCaopNr:
+          description: MT Option Number
+          type: string
+        mtIndi:
+          description: "MT Option Indicator<br>Referencing: `/code-consts/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/code_tab_ref"
+        mtTextList:
+          type: array
+          items:
+            $ref: "#/components/schemas/docp_proxy_decsn_mt_text"
+        mtd:
+          description: "Delivery Method<br>Referencing: `/code-srd2-dlv-mtds/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/code_tab_ref"
+        namePfx:
+          description: "Name Prefix<br>Referencing: `/code-srd2-name-pfxs/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/code_tab_ref"
+        natiCountry:
+          description: "Nationality<br>Referencing: `/obj-countrys/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/obj_ref"
+        othAddrLn1:
+          description: Address Line 1
+          type: string
+        othAddrLn2:
+          description: Address Line 2
+          type: string
+        othAddrLn3:
+          description: Address Line 3
+          type: string
+        othAddrLn4:
+          description: Address Line 4
+          type: string
+        othAddrLn5:
+          description: Address Line 5
+          type: string
+        othAddrLns:
+          description: Address Lines
+          type: string
+        othAddrType:
+          description: "Address Type<br>Referencing: `/code-srd2-addr-types/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/code_tab_ref"
+        othBldgNr:
+          description: Building Number
+          type: string
+        othCountry:
+          description: "Country<br>Referencing: `/obj-countrys/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/obj_ref"
+        othCtySubDivn:
+          description: City
+          type: string
+        othName:
+          description: Name
+          type: string
+        othPostCode:
+          description: Post Code
+          type: string
+        othStreetName:
+          description: Street Name
+          type: string
+        othTown:
+          description: Town
+          type: string
+        othUstrdAddr:
+          description: Unstructured Address
+          type: string
+        outVote:
+          description: "Vote Instruction for Meeting Resolution<br>Referencing: `/code-srd2-vote-instr-types/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/code_tab_ref"
+        particMtd:
+          description: "Participation Method<br>Referencing: `/code-srd2-partic-mtds/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/code_tab_ref"
+        personId:
+          description: Person Identification
+          type: string
+        poBox:
+          description: PO Box
+          type: string
+        postCode:
+          description: Post Code
+          type: string
+        provBirth:
+          description: Province of birth
+          type: string
+        prxyAttTp:
+          description: "Proxy Type<br>Referencing: `/code-srd2-prxy-attendee-types/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/code_tab_ref"
+        qty:
+          description: Quantity
+          type: number
+        qtyPct:
+          description: Quantity Percentage
+          type: number
+        sglInstrId:
+          description: Single Instruction Identification
+          type: string
+        status:
+          description: "Status of the Instruction<br>Referencing: `/code-srd2-proxy-instr-statuss/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/code_tab_ref"
+        statusErr:
+          description: Description of the error's status
+          type: string
+        streetName:
+          description: Street Name
+          type: string
+        town:
+          description: Town
+          type: string
+        voteType:
+          description: "Vote Type<br>Referencing: `/code-srd2-vote-types/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/code_tab_ref"
+        vtInstrList:
+          type: array
+          items:
+            $ref: "#/components/schemas/docp_proxy_decsn_vt_instr"
+    proxyDecsnList:
+      title: proxy_decsn_list
+      type: object
+      properties:
+        instrList:
+          type: array
+          items:
+            $ref: "#/components/schemas/docp_proxy_decsn_instr"
+    trigPosDecsnList:
+      title: trig_pos_decsn_list
+      type: object
+      properties:
+        decsnList:
+          type: array
+          items:
+            $ref: "#/components/schemas/doc_tab_secevt2_parlist"
+    doc_secevt2_pos:
+      title: doc_secevt2_pos
+      type: object
+      properties:
+        afAsset:
+          description: "Asset from given Asset Flow (replaces asset fields numbered\
+            \ from 1 to 8, and enables using other asset flow sequence numbers)<br>Referencing:\
+            \ `/obj-assets/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/obj_ref"
+          readOnly: true
+        afAsset1:
+          description: "Asset Flow 1 Asset<br>Referencing: `/obj-assets/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/obj_ref"
+          readOnly: true
+        afAsset2:
+          description: "Asset Flow 2 Asset<br>Referencing: `/obj-assets/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/obj_ref"
+          readOnly: true
+        afAsset3:
+          description: "Asset Flow 3 Asset<br>Referencing: `/obj-assets/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/obj_ref"
+          readOnly: true
+        afAsset4:
+          description: "Asset Flow 4 Asset<br>Referencing: `/obj-assets/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/obj_ref"
+          readOnly: true
+        afAsset5:
+          description: "Asset Flow 5 Asset<br>Referencing: `/obj-assets/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/obj_ref"
+          readOnly: true
+        afAsset6:
+          description: "Asset Flow 6 Asset<br>Referencing: `/obj-assets/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/obj_ref"
+          readOnly: true
+        afAsset7:
+          description: "Asset Flow 7 Asset<br>Referencing: `/obj-assets/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/obj_ref"
+          readOnly: true
+        afAsset8:
+          description: "Asset Flow 8 Asset<br>Referencing: `/obj-assets/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/obj_ref"
+          readOnly: true
+        afQty:
+          description: "Quantity from given Asset Flow (replaces quantity fields numbered\
+            \ from 1 to 8, and enables using other asset flow sequence numbers)"
+          type: number
+          readOnly: true
+        afQty1:
+          description: Asset Flow 1 Quantity
+          type: number
+          readOnly: true
+        afQty2:
+          description: Asset Flow 2 Quantity
+          type: number
+          readOnly: true
+        afQty3:
+          description: Asset Flow 3 Quantity
+          type: number
+          readOnly: true
+        afQty4:
+          description: Asset Flow 4 Quantity
+          type: number
+          readOnly: true
+        afQty5:
+          description: Asset Flow 5 Quantity
+          type: number
+          readOnly: true
+        afQty6:
+          description: Asset Flow 6 Quantity
+          type: number
+          readOnly: true
+        afQty7:
+          description: Asset Flow 7 Quantity
+          type: number
+          readOnly: true
+        afQty8:
+          description: Asset Flow 8 Quantity
+          type: number
+          readOnly: true
+        agingId:
+          type: integer
+          format: int32
+          readOnly: true
+        asset:
+          description: "Asset<br>Referencing: `/obj-assets/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/obj_ref"
+          readOnly: true
+        bdeRecVersion:
+          type: integer
+          format: int32
+          readOnly: true
+        bp:
+          description: "Business Partner<br>Referencing: `/obj-bps/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/obj_ref"
+          readOnly: true
+        cltOptRsp:
+          description: Client Option Response
+          type: string
+          readOnly: true
+        cont:
+          description: "Container<br>Referencing: `/obj-conts/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/obj_ref"
+          readOnly: true
+        contrSide:
+          description: "Position sign: -1 Short, 0 Long"
+          type: number
+          readOnly: true
+        custCont:
+          description: "Custodian<br>Referencing: `/obj-conts/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/obj_ref"
+          readOnly: true
+        decsnConf:
+          description: "Decision Confirmation State<br>Referencing: `/code-secevt2-decsn-confs/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/code_tab_ref"
+          readOnly: true
+        decsnConfDate:
+          description: Decision Confirmation Date
+          type: string
+          format: date-time-no-tz
+          readOnly: true
+        decsnConfUser:
+          description: "Decision Confirmation User<br>Referencing: `/users/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/user_ref"
+          readOnly: true
+        decsnList:
+          type: array
+          items:
+            $ref: "#/components/schemas/doc_tab_secevt2_parlist"
+        decsnListAsset:
+          description: "Referencing: `/obj-assets/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/obj_ref"
+          readOnly: true
+        decsnListNum:
+          type: number
+          readOnly: true
+        decsnListVal:
+          type: string
+          readOnly: true
+        decsnMetaParlist:
+          description: "Referencing: `/meta-parlists/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/code_tab_ref"
+          readOnly: true
+        doNotify:
+          description: (New) Notification?
+          type: boolean
+          readOnly: true
+        id:
+          description: ID
+          type: string
+          readOnly: true
+        instrList:
+          type: array
+          items:
+            $ref: "#/components/schemas/docp_proxy_decsn_instr"
+        isDirRdAdj:
+          description: is direct rounding adjustment?
+          type: boolean
+          readOnly: true
+        isSclBack:
+          description: is scale back?
+          type: boolean
+          readOnly: true
+        lastNotifyDate:
+          description: Last Notification Date
+          type: string
+          format: date-time-no-tz
+          readOnly: true
+        lastNotifyQty:
+          description: Last Notification Quantity
+          type: number
+          readOnly: true
+        origQty:
+          description: Original Quantity
+          type: number
+          readOnly: true
+        pos:
+          description: "Position<br>Referencing: `/obj-poss/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/obj_ref"
+          readOnly: true
+        qty:
+          description: Quantity
+          type: number
+          readOnly: true
+        qty2:
+          description: Quantity 2
+          type: number
+          readOnly: true
+        rcvblOpnBookDoc:
+          description: "LABEL.RCVBL_OPN<br>Referencing: `/docs/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/doc_ref"
+          readOnly: true
+        secPosType:
+          description: "Security position type, e.g. reg, dispo, etc.<br>Referencing:\
+            \ `/code-sec-pos-types/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/code_tab_ref"
+          readOnly: true
+        secevt:
+          description: "Security Event<br>Referencing: `/doc-secevt2s/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/doc_secevt2"
+          readOnly: true
+        sectrx:
+          description: "Generated Security Event Transaction<br>Referencing: `/doc-sectrx2s/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/doc_ref"
+          readOnly: true
+        sectrxDocRole:
+          description: "Order Role<br>Referencing: `/code-doc-roles/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/code_tab_ref"
+          readOnly: true
+        seqNr:
+          description: Position sequence number
+          type: integer
+          format: int32
+          readOnly: true
+        stex:
+          description: "Generated Stock Exchange Order<br>Referencing: `/doc-stexs/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/doc_ref"
+          readOnly: true
+        textExtl:
+          description: External Text
+          type: string
+          readOnly: true
+        trigSettleDoc:
+          description: "Triggering Settlement<br>Referencing: `/docs/{id}`"
+          allOf:
+          - $ref: "#/components/schemas/doc_ref"
+          readOnly: true
+    doc_secevt2_pos_patch:
+      title: doc_secevt2_pos_patch
+      type: object
+      oneOf:
+      - $ref: "#/components/schemas/proxyDecsnList"
+      - $ref: "#/components/schemas/trigPosDecsnList"
+  headers:
+    Content-Language:
+      schema:
+        type: string
+    X-Has-Next-Page:
+      schema:
+        type: string
+    Location:
+      schema:
+        type: string
+      description: Location of the created resource
+  parameters:
+    Aft:
+      name: aftId
+      in: query
+      description: Asset flow template(s)
+      schema:
+        type: array
+        items:
+          type: integer
+      required: false
+    Bp:
+      name: bpId
+      in: query
+      description: Business Partner ID
+      schema:
+        type: integer
+      required: false
+    Pos:
+      name: posId
+      in: query
+      description: Position ID
+      schema:
+        type: integer
+      required: false
+    DeadlineDateFrom:
+      name: ddlnDateFrom
+      in: query
+      description: Deadline date from
+      schema:
+        type: string
+        format: date
+      required: false
+    Open:
+      name: decsnStatus
+      in: query
+      description: 'Applies a filter to return only triggering positions for which
+        a decision can (open) or can''t (closed) be taken according to the Internal
+        deadline. Data will be sorted by ascending or descending internal deadline
+        based on the use case (open or closed) '
+      schema:
+        type: string
+        enum:
+        - open
+        - closed
+      required: false
+    PageLimit:
+      name: limit
+      in: query
+      description: Limits the number of items on a page
+      schema:
+        type: integer
+        default: 5
+        minimum: 1
+        maximum: 200
+    PageOffset:
+      name: offset
+      in: query
+      description: Number of records to be skipped before selecting the result set
+      schema:
+        type: integer
+        minimum: 0
+    Accept-Encoding:
+      name: Accept-Encoding
+      in: header
+      description: "Compression scheme<br/> Warning: HTTP compression might not lead\
+        \ to better performance"
+      schema:
+        type: string
+      example: "gzip, deflate"
+      required: false
+  responses:
+    Problem:
+      description: RFC7807 Problem
+      content:
+        application/problem+json:
+          schema:
+            type: object
+            properties:
+              type:
+                type: string
+              title:
+                type: string
+              status:
+                type: number
+                format: integer
+              detail:
+                type: string
+            additionalProperties: true
+            required:
+            - type
+            - title
+            - status

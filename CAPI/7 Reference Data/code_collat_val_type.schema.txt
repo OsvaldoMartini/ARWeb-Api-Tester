@@ -1,0 +1,143 @@
+{
+  "$id": "https://avaloq.com/code_collat_val_type.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/code_collat_val_type",
+  "definitions": {
+    "code_tab_ref": {
+      "type": "object",
+      "properties": {
+        "_href": {
+          "description" : "Reference/link",
+          "type": "string"
+        },
+        "id": {
+          "description" : "Numeric reference",
+          "type": "integer"
+        },
+        "ident": {
+          "description" : "Unique symbolic reference",
+          "type": "string"
+        },
+        "intlId": {
+          "description" : "Symbolic reference",
+          "type": "string"
+        }
+      }
+    },
+    "code_collat_val_type": {
+      "type": "object",
+      "properties": {
+        "activ": {
+          "type": "boolean"
+        },
+        "calcLimitEad": {
+          "type": "boolean"
+        },
+        "calcLimitUnused": {
+          "type": "boolean"
+        },
+        "calcRcvDispo": {
+          "type": "boolean"
+        },
+        "collatLotDistrType": {
+          "description" : "Referencing: `/code-collat-lot-distr-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "descn": {
+          "type": "string"
+        },
+        "enblAssignLimitExcess": {
+          "type": "boolean"
+        },
+        "enblDynWeight": {
+          "type": "boolean"
+        },
+        "enblFactOnExtlRealsec": {
+          "type": "boolean"
+        },
+        "finaeAllocOptimMode": {
+          "description" : "Referencing: `/code-finae-alloc-optim-modes/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "getFactFromMd": {
+          "type": "boolean"
+        },
+        "hcHoldPeriod": {
+          "type": "number"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "ident": {
+          "type": "string"
+        },
+        "intlId": {
+          "type": "string"
+        },
+        "isManRecalc": {
+          "type": "boolean"
+        },
+        "isOnlineSerpil": {
+          "type": "boolean"
+        },
+        "masterCollatValType": {
+          "description" : "Referencing: `/code-collat-val-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$envCompo": {
+          "description" : "Referencing: `/code-env-compos/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "name": {
+          "type": "string"
+        },
+        "nameI18nList": {
+          "type": "array",
+          "items": {
+            "description" : "Full translation list for name field. Only visible within compound APIs ",
+            "allOf": [
+              { "$ref": "#/definitions/name_i18n"
+               }
+              ]
+          }
+        },
+        "realsecExtlMargPerc": {
+          "type": "number"
+        },
+        "userId": {
+          "type": "string"
+        }
+      }
+    },
+    "code_collat_val_types": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/code_collat_val_type"
+      },
+      "uniqueItems": true
+    },
+    "name_i18n": {
+      "type": "object",
+      "properties": {
+        "lang": {
+          "description" : "LanguageReferencing: `/code-langs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref"
+             }
+            ]
+        },
+        "text": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

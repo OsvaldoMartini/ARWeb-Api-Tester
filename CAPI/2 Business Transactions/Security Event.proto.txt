@@ -1,0 +1,503 @@
+syntax = "proto3";
+
+package com.avaloq.acp.bde.protobuf.doc_secevt2;
+
+import "meta_model.proto";
+import "wrappers.proto";
+import "options.proto";
+
+option (version) = "3.31.0";
+
+message DocAdd {
+  SInt64Value doc_add_id = 1 [(bde_entity) = "Code_doc_add", (bde_ref_type) = "code"];
+  repeated DocAddVal val_list = 2;
+}
+
+message DocAddVal {
+  StringValue text_val = 1;
+  StringValue nr_val = 2 [(format) = "decimal"];
+  StringValue date_val = 3 [(format) = "date"];
+  StringValue tswtz_val = 4 [(format) = "date_time"];
+  SInt64Value id_val = 5;
+}
+
+message DocKey {
+  StringValue val = 2;
+  SInt64Value doc_key_id = 3 [(bde_entity) = "Code_doc_key", (bde_ref_type) = "code"];
+}
+
+message DocPostit {
+  StringValue timestamp = 1 [(format) = "date_time_no_tz"];
+  SInt64Value type_id = 2 [(bde_entity) = "Code_postit_type", (bde_ref_type) = "code"];
+  SInt64Value sub_type_id = 3 [(bde_entity) = "Code_postit_sub_type", (bde_ref_type) = "code"];
+  StringValue topic = 4;
+  StringValue text = 5;
+  SInt64Value user_id = 6 [(bde_entity) = "User", (bde_ref_type) = "use"];
+}
+
+message DocSecevt2 {
+  option (is_bde_entity) = true;
+  uint64 id = 2 [(bde_entity) = "Doc_secevt2", (bde_ref_type) = "doc"];
+  SInt64Value aft_id = 3 [(bde_entity) = "Meta_af_list", (bde_ref_type) = "code"];
+  SInt64Value asset_id = 4 [(bde_entity) = "Obj_asset", (bde_ref_type) = "obj"];
+  StringValue trx_date = 5 [(format) = "date"];
+  StringValue ex_date = 6 [(format) = "date"];
+  StringValue val_date = 7 [(format) = "date"];
+  StringValue rec_date = 8 [(format) = "date"];
+  StringValue pay_date = 9 [(format) = "date"];
+  StringValue ddln_date = 10 [(format) = "date"];
+  StringValue extl_ddln_date = 11 [(format) = "date"];
+  BoolValue is_final = 12;
+  repeated DocTabSecevt2Parlist par_list = 13;
+  repeated DocTabSecevt2Parlist decsn_list = 14;
+  SInt64Value bu_id = 15 [(bde_entity) = "Obj_bp", (bde_ref_type) = "obj"];
+  SInt64Value wfc_status_id = 16 [(bde_entity) = "Wfc_status", (bde_ref_type) = "code"];
+  SInt64Value swift_status_id = 17 [(bde_entity) = "Code_secevt2_swift_status", (bde_ref_type) = "code"];
+  StringValue perf_date = 18 [(format) = "date"];
+  StringValue lang_list_text = 19;
+  SInt64Value ins_by_sec_user_id = 20 [(bde_entity) = "User", (bde_ref_type) = "use"];
+  StringValue order_date = 21 [(format) = "date"];
+  SInt64Value supra_dsp_order_nr = 22;
+  SInt64Value doc_role_id = 23 [(bde_entity) = "Code_doc_role", (bde_ref_type) = "code"];
+  SInt64Value order_type_id = 24 [(bde_entity) = "Code_order_type", (bde_ref_type) = "code"];
+  repeated DocPostit postit_list = 25;
+  repeated DocTabSecevt2Parlist swift_list = 26;
+  repeated DocTrans trans_list = 27;
+  SInt64Value meta_typ_id = 28 [(bde_entity) = "Meta_typ", (bde_ref_type) = "code"];
+  StringValue order_date_tz = 29 [(format) = "date_time"];
+  repeated DocAdd add_list = 30;
+  repeated DocKey key_list = 31;
+  SInt64Value bde_rec_version = 32;
+  DocpProxyVote proxy_vote = 34;
+  repeated DocpProxyDecsn proxy_decsn_list = 35;
+  StringValue mkt_ddln_date = 36 [(format) = "date_time_no_tz"];
+  SInt64Value aging_id = 37;
+  StringValue last_trans = 38 [(format) = "date_time"];
+  SInt64Value wfc_action_id = 39 [(bde_entity) = "Wfc_action", (bde_ref_type) = "code"];
+  repeated DocTabSecevt2Parlist ntfcn_list = 40;
+  DocpBpaasNtfcn bpaas_ntfcn = 41;
+}
+
+message DocTabSecevt2Parlist {
+  StringValue key = 1;
+  StringValue val = 2;
+}
+
+message DocTrans {
+  SInt64Value seq_nr = 1;
+  StringValue timestamp = 2 [(format) = "date_time"];
+  sint64 sec_user_id = 3 [(bde_entity) = "User", (bde_ref_type) = "use"];
+  SInt64Value calc_cnt = 4;
+  SInt64Value calc_time = 5;
+  SInt64Value intf_wfc_action_id = 6 [(bde_entity) = "Wfc_action", (bde_ref_type) = "code"];
+  SInt64Value new_wfc_status_id = 7 [(bde_entity) = "Wfc_status", (bde_ref_type) = "code"];
+  SInt64Value old_wfc_status_id = 8 [(bde_entity) = "Wfc_status", (bde_ref_type) = "code"];
+  SInt64Value opn_time = 9;
+  StringValue remark = 10;
+  SInt64Value rule_time = 11;
+  SInt64Value trans_action_id = 12 [(bde_entity) = "Code_trans_action", (bde_ref_type) = "code"];
+  SInt64Value user_time = 13;
+  SInt64Value wfc_action_id = 14 [(bde_entity) = "Wfc_action", (bde_ref_type) = "code"];
+  SInt64Value wfc_time = 15;
+}
+
+message DocpBpaasNtfcn {
+  StringValue add_info_de = 1;
+  StringValue add_info_en = 2;
+  StringValue add_info_fr = 3;
+  StringValue add_info_it = 4;
+  StringValue add_info_pt = 5;
+  StringValue add_info_sp = 6;
+  StringValue add_info_2_de = 7;
+  StringValue add_info_2_en = 8;
+  StringValue add_info_2_fr = 9;
+  StringValue add_info_2_it = 10;
+  StringValue add_info_2_pt = 11;
+  StringValue add_info_2_sp = 12;
+  SInt64Value adv_ovr_id = 13 [(bde_entity) = "Code_bpaas_adv_ovr_code", (bde_ref_type) = "code"];
+  StringValue attach_file = 14;
+  SInt64Value blank_lines = 15;
+  SInt64Value compln_id = 16 [(bde_entity) = "Code_bpaas_supra_ntfcn_compln", (bde_ref_type) = "code"];
+  BoolValue is_bill = 17;
+  repeated DocpBpaasNtfcnLang lang_list = 18;
+  StringValue offer_res_de = 19;
+  StringValue offer_res_en = 20;
+  StringValue offer_res_fr = 21;
+  StringValue offer_res_it = 22;
+  StringValue offer_res_pt = 23;
+  StringValue offer_res_sp = 24;
+  StringValue price_de = 25;
+  StringValue price_en = 26;
+  StringValue price_fr = 27;
+  StringValue price_it = 28;
+  StringValue price_pt = 29;
+  StringValue price_sp = 30;
+  StringValue ratio_de = 31;
+  StringValue ratio_en = 32;
+  StringValue ratio_fr = 33;
+  StringValue ratio_it = 34;
+  StringValue ratio_pt = 35;
+  StringValue ratio_sp = 36;
+  StringValue ratio_2_de = 37;
+  StringValue ratio_2_en = 38;
+  StringValue ratio_2_fr = 39;
+  StringValue ratio_2_it = 40;
+  StringValue ratio_2_pt = 41;
+  StringValue ratio_2_sp = 42;
+  StringValue remark_de = 43;
+  StringValue remark_en = 44;
+  StringValue remark_fr = 45;
+  StringValue remark_it = 46;
+  StringValue remark_pt = 47;
+  StringValue remark_sp = 48;
+  SInt64Value restr_det_id = 49 [(bde_entity) = "Code_bpaas_restr_det", (bde_ref_type) = "code"];
+  repeated DocpBpaasNtfcnRestr restr_list = 50;
+  StringValue restr_text = 51;
+  StringValue right_price = 52 [(format) = "decimal"];
+  StringValue old_nav = 53 [(format) = "decimal"];
+  StringValue new_nav = 54 [(format) = "decimal"];
+}
+
+message DocpBpaasNtfcnLang {
+  SInt64Value lang_id = 1 [(bde_entity) = "Code_bpaas_ntfcn_lang", (bde_ref_type) = "code"];
+}
+
+message DocpBpaasNtfcnRestr {
+  SInt64Value country_id = 1 [(bde_entity) = "Obj_country", (bde_ref_type) = "obj"];
+}
+
+message DocpProxyDecsn {
+  repeated DocpProxyDecsnInstr instr_list = 1;
+  StringValue seq_nr = 2 [(format) = "decimal"];
+}
+
+message DocpProxyDecsnAttendee {
+  StringValue addr_ln_1 = 1;
+  StringValue addr_ln_2 = 2;
+  StringValue addr_ln_3 = 3;
+  StringValue addr_ln_4 = 4;
+  StringValue addr_ln_5 = 5;
+  StringValue addr_lns = 6;
+  SInt64Value addr_type_id = 7 [(bde_entity) = "Code_srd2_addr_type", (bde_ref_type) = "code"];
+  StringValue bldg_nr = 8;
+  SInt64Value country_id = 9 [(bde_entity) = "Obj_country", (bde_ref_type) = "obj"];
+  StringValue country_sub_divn = 10;
+  StringValue email = 11;
+  repeated DocpProxyDecsnEmplPrty empl_prty_list = 12;
+  StringValue fname = 13;
+  StringValue ident = 14;
+  SInt64Value ident_type_id = 15 [(bde_entity) = "Code_srd2_person_ident_type", (bde_ref_type) = "code"];
+  BoolValue is_np = 16;
+  StringValue last_name = 17;
+  SInt64Value mtd_id = 18 [(bde_entity) = "Code_srd2_dlv_mtd", (bde_ref_type) = "code"];
+  StringValue oth_addr_ln_1 = 19;
+  StringValue oth_addr_ln_2 = 20;
+  StringValue oth_addr_ln_3 = 21;
+  StringValue oth_addr_ln_4 = 22;
+  StringValue oth_addr_ln_5 = 23;
+  StringValue oth_addr_lns = 24;
+  SInt64Value oth_addr_type_id = 25 [(bde_entity) = "Code_srd2_addr_type", (bde_ref_type) = "code"];
+  StringValue oth_bldg_nr = 26;
+  SInt64Value oth_country_id = 27 [(bde_entity) = "Obj_country", (bde_ref_type) = "obj"];
+  StringValue oth_cty_sub_divn = 28;
+  StringValue oth_name = 29;
+  StringValue oth_post_code = 30;
+  StringValue oth_street_name = 31;
+  StringValue oth_town = 32;
+  StringValue oth_ustrd_addr = 33;
+  StringValue po_box = 34;
+  StringValue post_code = 35;
+  StringValue street_name = 36;
+  StringValue town = 37;
+  SInt64Value birth_country_id = 38 [(bde_entity) = "Obj_country", (bde_ref_type) = "obj"];
+  StringValue birth_date = 39 [(format) = "date_time_no_tz"];
+  StringValue city_birth = 40;
+  SInt64Value name_pfx_id = 41 [(bde_entity) = "Code_srd2_name_pfx", (bde_ref_type) = "code"];
+  SInt64Value nati_country_id = 42 [(bde_entity) = "Obj_country", (bde_ref_type) = "obj"];
+  SInt64Value partic_mtd_id = 43 [(bde_entity) = "Code_srd2_partic_mtd", (bde_ref_type) = "code"];
+  StringValue prov_birth = 44;
+  StringValue attndnc_card_lbl = 45;
+}
+
+message DocpProxyDecsnEmplPrty {
+  SInt64Value addr_type_id = 1 [(bde_entity) = "Code_srd2_addr_type", (bde_ref_type) = "code"];
+  StringValue bldg_nr = 2;
+  SInt64Value country_id = 3 [(bde_entity) = "Obj_country", (bde_ref_type) = "obj"];
+  StringValue cty_sub_divn = 4;
+  StringValue fname = 5;
+  StringValue ident = 6;
+  SInt64Value ident_type_id = 7 [(bde_entity) = "Code_srd2_person_ident_type", (bde_ref_type) = "code"];
+  StringValue post_code = 8;
+  StringValue street_name = 9;
+  StringValue town = 10;
+}
+
+message DocpProxyDecsnGloVote {
+  StringValue issuer_lbl = 1;
+  SInt64Value vote_instr_id = 2 [(bde_entity) = "Code_srd2_vote_instr_type", (bde_ref_type) = "code"];
+}
+
+message DocpProxyDecsnInstr {
+  StringValue addr_ln_1 = 1;
+  StringValue addr_ln_2 = 2;
+  StringValue addr_ln_3 = 3;
+  StringValue addr_ln_4 = 4;
+  StringValue addr_ln_5 = 5;
+  StringValue addr_lns = 6;
+  SInt64Value addr_type_id = 7 [(bde_entity) = "Code_srd2_addr_type", (bde_ref_type) = "code"];
+  SInt64Value all_vote_id = 8 [(bde_entity) = "Code_srd2_vote_instr_type", (bde_ref_type) = "code"];
+  repeated DocpProxyDecsnAttendee attendee_list = 9;
+  StringValue bldg_nr = 10;
+  SInt64Value country_id = 11 [(bde_entity) = "Obj_country", (bde_ref_type) = "obj"];
+  StringValue cty_sub_divn = 12;
+  BoolValue do_sec_reg = 13;
+  BoolValue do_vote_conf = 14;
+  StringValue email = 15;
+  repeated DocpProxyDecsnEmplPrty empl_prty_list = 16;
+  StringValue fname = 17;
+  repeated DocpProxyDecsnGloVote glo_vote_list = 18;
+  SInt64Value ident_type_id = 19 [(bde_entity) = "Code_srd2_person_ident_type", (bde_ref_type) = "code"];
+  BoolValue is_np = 20;
+  StringValue last_name = 21;
+  StringValue mt_caop_nr = 22;
+  SInt64Value mt_indi_id = 23 [(bde_entity) = "Code_const", (bde_ref_type) = "code"];
+  repeated DocpProxyDecsnMtText mt_text_list = 24;
+  SInt64Value mtd_id = 25 [(bde_entity) = "Code_srd2_dlv_mtd", (bde_ref_type) = "code"];
+  StringValue oth_name = 26;
+  StringValue oth_addr_ln_1 = 27;
+  StringValue oth_addr_ln_2 = 28;
+  StringValue oth_addr_ln_3 = 29;
+  StringValue oth_addr_ln_4 = 30;
+  StringValue oth_addr_ln_5 = 31;
+  StringValue oth_addr_lns = 32;
+  SInt64Value oth_addr_type_id = 33 [(bde_entity) = "Code_srd2_addr_type", (bde_ref_type) = "code"];
+  StringValue oth_bldg_nr = 34;
+  SInt64Value oth_country_id = 35 [(bde_entity) = "Obj_country", (bde_ref_type) = "obj"];
+  StringValue oth_cty_sub_divn = 36;
+  StringValue oth_post_code = 37;
+  StringValue oth_street_name = 38;
+  StringValue oth_town = 39;
+  StringValue oth_ustrd_addr = 40;
+  SInt64Value out_vote_id = 41 [(bde_entity) = "Code_srd2_vote_instr_type", (bde_ref_type) = "code"];
+  SInt64Value partic_mtd_id = 42 [(bde_entity) = "Code_srd2_partic_mtd", (bde_ref_type) = "code"];
+  StringValue person_id = 43;
+  StringValue po_box = 44;
+  StringValue post_code = 45;
+  SInt64Value prxy_att_tp_id = 46 [(bde_entity) = "Code_srd2_prxy_attendee_type", (bde_ref_type) = "code"];
+  StringValue qty = 47 [(format) = "decimal"];
+  StringValue qty_pct = 48 [(format) = "decimal"];
+  StringValue sgl_instr_id = 49;
+  StringValue status_err = 50;
+  SInt64Value status_id = 51 [(bde_entity) = "Code_srd2_proxy_instr_status", (bde_ref_type) = "code"];
+  StringValue street_name = 52;
+  StringValue town = 53;
+  SInt64Value vote_type_id = 54 [(bde_entity) = "Code_srd2_vote_type", (bde_ref_type) = "code"];
+  repeated DocpProxyDecsnVtInstr vt_instr_list = 55;
+  SInt64Value birth_country_id = 56 [(bde_entity) = "Obj_country", (bde_ref_type) = "obj"];
+  StringValue birth_date = 57 [(format) = "date_time_no_tz"];
+  StringValue city_birth = 58;
+  SInt64Value name_pfx_id = 59 [(bde_entity) = "Code_srd2_name_pfx", (bde_ref_type) = "code"];
+  SInt64Value nati_country_id = 60 [(bde_entity) = "Obj_country", (bde_ref_type) = "obj"];
+  StringValue prov_birth = 61;
+  StringValue attndnc_card_lbl = 62;
+}
+
+message DocpProxyDecsnMtText {
+  SInt64Value qual_id = 1 [(bde_entity) = "Code_secevt2_freetext_qual", (bde_ref_type) = "code"];
+  StringValue val = 2;
+}
+
+message DocpProxyDecsnVtInstr {
+  StringValue abstain_qty = 1 [(format) = "decimal"];
+  StringValue against_qty = 2 [(format) = "decimal"];
+  StringValue agnst_mngt_qty = 3 [(format) = "decimal"];
+  StringValue blank_qty = 4 [(format) = "decimal"];
+  StringValue discrny_qty = 5 [(format) = "decimal"];
+  StringValue for_qty = 6 [(format) = "decimal"];
+  StringValue issuer_lbl = 7;
+  StringValue no_action_qty = 8 [(format) = "decimal"];
+  StringValue one_year_qty = 9 [(format) = "decimal"];
+  StringValue three_year_qty = 10 [(format) = "decimal"];
+  StringValue two_year_qty = 11 [(format) = "decimal"];
+  StringValue withh_qty = 12 [(format) = "decimal"];
+  StringValue with_mngt_qty = 13 [(format) = "decimal"];
+}
+
+message DocpProxyVote {
+  StringValue adtl_rght_ddln = 1 [(format) = "date_time"];
+  StringValue announce_date = 2 [(format) = "date_time_no_tz"];
+  StringValue conf_ddln = 3 [(format) = "date_time"];
+  StringValue conf_mkt_ddln = 4 [(format) = "date_time"];
+  BoolValue do_bo_discl = 5;
+  StringValue docu_url = 6;
+  StringValue early_prem = 7 [(format) = "decimal"];
+  StringValue early_prem_pct = 8 [(format) = "decimal"];
+  StringValue early_prem_sec = 9 [(format) = "decimal"];
+  BoolValue early_prm_attd = 10;
+  StringValue early_prm_ddln = 11 [(format) = "date_time"];
+  StringValue early_prm_vote = 12 [(format) = "decimal"];
+  BoolValue has_mt_msg = 13;
+  BoolValue is_part_vote = 14;
+  BoolValue is_proxy_nalw = 15;
+  BoolValue is_split_vote = 16;
+  StringValue iss_meet_ident = 17;
+  StringValue issuer = 18;
+  repeated DocpProxyVoteMeetDet meet_det_list = 19;
+  SInt64Value meet_type_id = 20 [(bde_entity) = "Code_srd2_meeting_type", (bde_ref_type) = "code"];
+  StringValue meeting_ident = 21;
+  StringValue mkt_prem_ddln = 22 [(format) = "date_time"];
+  repeated DocpProxyVoteParticMtd partic_list = 23;
+  StringValue prem = 24 [(format) = "decimal"];
+  BoolValue prem_attendee = 25;
+  StringValue prem_pct = 26 [(format) = "decimal"];
+  StringValue prem_sec = 27 [(format) = "decimal"];
+  StringValue prem_vote = 28 [(format) = "decimal"];
+  StringValue proxy_ddln = 29 [(format) = "date_time"];
+  StringValue proxy_mkt_ddln = 30 [(format) = "date_time"];
+  repeated DocpProxyVoteResv resv_list = 31;
+  repeated DocpProxyVoteResvRes resv_res_list = 32;
+  StringValue vote_ddln = 33 [(format) = "date_time"];
+  StringValue vote_mkt_ddln = 34 [(format) = "date_time"];
+  StringValue vote_prem_ddln = 35 [(format) = "date_time"];
+  SInt64Value prem_ccy_id = 36 [(bde_entity) = "Obj_asset", (bde_ref_type) = "obj"];
+  SInt64Value eprem_ccy_id = 37 [(bde_entity) = "Obj_asset", (bde_ref_type) = "obj"];
+  StringValue valid_from = 38 [(format) = "date_time_no_tz"];
+  StringValue valid_to = 39 [(format) = "date_time_no_tz"];
+  SInt64Value block_code_id = 40 [(bde_entity) = "Code_block", (bde_ref_type) = "code"];
+  repeated DocpProxyVoteDocuUrl docu_url_list = 41;
+  StringValue issuer_url = 42;
+  StringValue announce_time = 43 [(format) = "date_time"];
+  BoolValue one_man_vote = 44;
+  repeated DocpProxyVotePremVote prem_list = 45;
+  repeated DocpProxyVotePremVote eprem_list = 46;
+  StringValue scts_ddln = 47 [(format) = "date_time"];
+  StringValue scts_mkt_ddln = 48 [(format) = "date_time"];
+  BoolValue is_conf_hreq = 49;
+  repeated DocpProxyVoteAuth auth_list = 50;
+  StringValue lang_list = 62;
+  StringValue enrl_mkt_ddln = 63 [(format) = "date_time"];
+  StringValue enrl_ddln = 64 [(format) = "date_time"];
+}
+
+message DocpProxyVoteAuth {
+  StringValue addr_ln_1 = 1;
+  StringValue addr_ln_2 = 2;
+  StringValue addr_ln_3 = 3;
+  StringValue addr_ln_4 = 4;
+  StringValue addr_ln_5 = 5;
+  SInt64Value addr_type_id = 6 [(bde_entity) = "Code_srd2_addr_type", (bde_ref_type) = "code"];
+  SInt64Value birth_country_id = 7 [(bde_entity) = "Obj_country", (bde_ref_type) = "obj"];
+  StringValue birth_date = 8 [(format) = "date"];
+  StringValue bldg_nr = 9;
+  StringValue city_birth = 10;
+  SInt64Value country_id = 11 [(bde_entity) = "Obj_country", (bde_ref_type) = "obj"];
+  StringValue cty_sub_divn = 12;
+  StringValue email = 13;
+  repeated DocpProxyVoteEmplPrty empl_prty_list = 14;
+  StringValue fname = 15;
+  StringValue ident = 16;
+  SInt64Value ident_type_id = 17 [(bde_entity) = "Code_srd2_person_ident_type", (bde_ref_type) = "code"];
+  BoolValue is_np = 18;
+  StringValue last_name = 19;
+  SInt64Value name_pfx_id = 20 [(bde_entity) = "Code_srd2_name_pfx", (bde_ref_type) = "code"];
+  SInt64Value nati_country_id = 21 [(bde_entity) = "Obj_country", (bde_ref_type) = "obj"];
+  StringValue po_box = 22;
+  StringValue post_code = 23;
+  StringValue prov_birth = 24;
+  StringValue street_name = 25;
+  StringValue town = 26;
+}
+
+message DocpProxyVoteDocuUrl {
+  StringValue add_url_addr = 1;
+}
+
+message DocpProxyVoteEmplPrty {
+  SInt64Value addr_type_id = 1 [(bde_entity) = "Code_srd2_addr_type", (bde_ref_type) = "code"];
+  StringValue bldg_nr = 2;
+  SInt64Value country_id = 3 [(bde_entity) = "Obj_country", (bde_ref_type) = "obj"];
+  StringValue cty_sub_divn = 4;
+  StringValue fname = 5;
+  StringValue ident = 6;
+  SInt64Value ident_type_id = 7 [(bde_entity) = "Code_srd2_person_ident_type", (bde_ref_type) = "code"];
+  StringValue post_code = 8;
+  StringValue street_name = 9;
+  StringValue town = 10;
+}
+
+message DocpProxyVoteMeetDet {
+  StringValue addr_lns = 1;
+  SInt64Value addr_type_id = 2 [(bde_entity) = "Code_srd2_addr_type", (bde_ref_type) = "code"];
+  StringValue bldg_nr = 3;
+  SInt64Value country_id = 4 [(bde_entity) = "Obj_country", (bde_ref_type) = "obj"];
+  StringValue country_sub_divn = 5;
+  StringValue date_time = 6 [(format) = "date_time"];
+  BoolValue is_quor_req = 7;
+  StringValue quorum_qty = 8 [(format) = "decimal"];
+  StringValue quorum_pct = 9 [(format) = "decimal"];
+  StringValue post_code = 10;
+  StringValue street_name = 11;
+  StringValue town = 12;
+  StringValue url_addr = 13;
+  StringValue quorum_text = 14;
+}
+
+message DocpProxyVoteParticMtd {
+  StringValue iss_ddln_vote = 1 [(format) = "date_time"];
+  SInt64Value partic_mtd_id = 2 [(bde_entity) = "Code_srd2_partic_mtd", (bde_ref_type) = "code"];
+  BoolValue is_supp_acserv = 3;
+  StringValue resp_vote_ddln = 4 [(format) = "date_time"];
+}
+
+message DocpProxyVotePremVote {
+  SInt64Value vote_tp_id = 1 [(bde_entity) = "Code_srd2_vote_instr_type", (bde_ref_type) = "code"];
+  StringValue qty = 2 [(format) = "decimal"];
+}
+
+message DocpProxyVoteResv {
+  SInt64Value cust_bp_id = 1 [(bde_entity) = "Obj_bp", (bde_ref_type) = "obj"];
+  BoolValue is_info_only = 2;
+  StringValue issuer_lbl = 3;
+  SInt64Value ntfcn_status_id = 4 [(bde_entity) = "Code_srd2_ntfcn_status", (bde_ref_type) = "code"];
+  StringValue resv_descn = 5;
+  StringValue ttl = 6;
+  repeated DocpProxyVoteVoteInstr vote_instr_list = 7;
+  StringValue grp_resv_lbl = 8;
+  BoolValue rght_widrw = 9;
+  repeated DocpProxyVoteResvName resv_descn_list = 10;
+}
+
+message DocpProxyVoteResvName {
+  SInt64Value lang_id = 1 [(bde_entity) = "Code_lang", (bde_ref_type) = "code"];
+  StringValue resv_descn = 2;
+  StringValue ttl = 3;
+  repeated DocpProxyVoteRsvDesc rsv_desc_list = 4;
+}
+
+message DocpProxyVoteResvRes {
+  StringValue abstain_qty = 1 [(format) = "decimal"];
+  StringValue against_qty = 2 [(format) = "decimal"];
+  StringValue against_mngt_qty = 3 [(format) = "decimal"];
+  StringValue blank_qty = 4 [(format) = "decimal"];
+  SInt64Value cust_bp_id = 5 [(bde_entity) = "Obj_bp", (bde_ref_type) = "obj"];
+  StringValue discrny_qty = 6 [(format) = "decimal"];
+  StringValue for_qty = 7 [(format) = "decimal"];
+  StringValue issuer_lbl = 8;
+  StringValue no_action_qty = 9 [(format) = "decimal"];
+  StringValue one_year_qty = 10 [(format) = "decimal"];
+  SInt64Value resv_status_id = 11 [(bde_entity) = "Code_srd2_resv_status", (bde_ref_type) = "code"];
+  StringValue three_year_qty = 12 [(format) = "decimal"];
+  StringValue two_year_qty = 13 [(format) = "decimal"];
+  StringValue with_mngt_qty = 14 [(format) = "decimal"];
+  StringValue withh_qty = 15 [(format) = "decimal"];
+}
+
+message DocpProxyVoteRsvDesc {
+  StringValue descn_txt_1 = 1;
+  StringValue descn_txt_2 = 2;
+}
+
+message DocpProxyVoteVoteInstr {
+  SInt64Value vote_instr_id = 1 [(bde_entity) = "Code_srd2_vote_instr_type", (bde_ref_type) = "code"];
+}
+

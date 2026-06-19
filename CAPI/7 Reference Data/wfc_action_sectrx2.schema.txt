@@ -1,0 +1,170 @@
+{
+  "$id": "https://avaloq.com/wfc_action_sectrx2.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/wfc_action_sectrx2",
+  "definitions": {
+    "code_tab_ref": {
+      "type": "object",
+      "properties": {
+        "_href": {
+          "description" : "Reference/link",
+          "type": "string"
+        },
+        "id": {
+          "description" : "Numeric reference",
+          "type": "integer"
+        },
+        "ident": {
+          "description" : "Unique symbolic reference",
+          "type": "string"
+        },
+        "intlId": {
+          "description" : "Symbolic reference",
+          "type": "string"
+        }
+      }
+    },
+    "wfc_action_sectrx2": {
+      "type": "object",
+      "properties": {
+        "chkMandFormFld": {
+          "type": "string"
+        },
+        "ctxActionId": {
+          "type": "integer"
+        },
+        "descn": {
+          "type": "string"
+        },
+        "extlSysId": {
+          "type": "integer"
+        },
+        "formId": {
+          "type": "integer"
+        },
+        "formIdList": {
+          "type": "string"
+        },
+        "hyperAfter": {
+          "type": "string"
+        },
+        "hyperBefore": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "ident": {
+          "type": "string"
+        },
+        "inSingleLogin": {
+          "type": "string"
+        },
+        "initNewObj": {
+          "type": "string"
+        },
+        "intlId": {
+          "type": "string"
+        },
+        "isInactiv": {
+          "type": "string"
+        },
+        "keepErr": {
+          "type": "string"
+        },
+        "metaProcId": {
+          "type": "integer"
+        },
+        "metaProcParam": {
+          "type": "string"
+        },
+        "metaTyp": {
+          "description" : "Referencing: `/meta-typs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "name": {
+          "type": "string"
+        },
+        "nameI18nList": {
+          "type": "array",
+          "items": {
+            "description" : "Full translation list for name field. Only visible within compound APIs ",
+            "allOf": [
+              { "$ref": "#/definitions/name_i18n"
+               }
+              ]
+          }
+        },
+        "newWfcStatus": {
+          "description" : "Referencing: `/wfc-statuss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "oldWfcStatus": {
+          "description" : "Referencing: `/wfc-statuss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "orderBy": {
+          "type": "number"
+        },
+        "orderType": {
+          "description" : "Referencing: `/code-order-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "stmt": {
+          "type": "string"
+        },
+        "stmtCmpl": {
+          "type": "string"
+        },
+        "stmtCmplErr": {
+          "type": "string"
+        },
+        "userId": {
+          "type": "string"
+        },
+        "wfaErrBatch": {
+          "type": "string"
+        },
+        "wfaErrId": {
+          "type": "integer"
+        },
+        "wfaProc": {
+          "type": "string"
+        },
+        "wfcId": {
+          "type": "integer"
+        }
+      }
+    },
+    "wfc_action_sectrx2s": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/wfc_action_sectrx2"
+      },
+      "uniqueItems": true
+    },
+    "name_i18n": {
+      "type": "object",
+      "properties": {
+        "lang": {
+          "description" : "LanguageReferencing: `/code-langs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref"
+             }
+            ]
+        },
+        "text": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,155 @@
+{
+  "$id": "https://avaloq.com/code_person_ident_type.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/code_person_ident_type",
+  "definitions": {
+    "code_tab_ref": {
+      "type": "object",
+      "properties": {
+        "_href": {
+          "description" : "Reference/link",
+          "type": "string"
+        },
+        "id": {
+          "description" : "Numeric reference",
+          "type": "integer"
+        },
+        "ident": {
+          "description" : "Unique symbolic reference",
+          "type": "string"
+        },
+        "intlId": {
+          "description" : "Symbolic reference",
+          "type": "string"
+        }
+      }
+    },
+    "code_person_ident_types": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/code_person_ident_type"
+      },
+      "uniqueItems": true
+    },
+    "code_person_ident_type": {
+      "type": "object",
+      "properties": {
+        "activ": {
+          "type": "boolean"
+        },
+        "countryIdList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/code_tab_ref"
+          }
+        },
+        "descn": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "ident": {
+          "type": "string"
+        },
+        "illegalChars": {
+          "type": "string"
+        },
+        "inclKeyGen": {
+          "type": "boolean"
+        },
+        "intlId": {
+          "type": "string"
+        },
+        "isUnique": {
+          "type": "boolean"
+        },
+        "issuerObjType": {
+          "description" : "Referencing: `/code-obj-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "maxLength": {
+          "type": "number"
+        },
+        "mba$docmKey": {
+          "type": "string"
+        },
+        "mba$envCompo": {
+          "description" : "Referencing: `/code-env-compos/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$isFscsOtherIdent": {
+          "type": "boolean"
+        },
+        "mba$isFscsPersonIdent": {
+          "type": "boolean"
+        },
+        "mba$isNotDeletable": {
+          "type": "boolean"
+        },
+        "mba$isRefObjMand": {
+          "type": "boolean"
+        },
+        "mba$validChksumExpr": {
+          "type": "string"
+        },
+        "mba$validRegExpr": {
+          "type": "string"
+        },
+        "minLength": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        },
+        "nameI18nList": {
+          "type": "array",
+          "items": {
+            "description" : "Full translation list for name field. Only visible within compound APIs ",
+            "allOf": [
+              { "$ref": "#/definitions/name_i18n"
+               }
+              ]
+          }
+        },
+        "objKey": {
+          "description" : "Referencing: `/code-obj-keys/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "userId": {
+          "type": "string"
+        },
+        "validPersonType": {
+          "type": "array",
+          "items": {
+            "description": "Referencing: `/code-obj-sub-types/{id}`",
+            "allOf": [
+              { "$ref": "#/definitions/code_tab_ref" }
+            ]
+          }
+        }
+      }
+    },
+    "name_i18n": {
+      "type": "object",
+      "properties": {
+        "lang": {
+          "description" : "LanguageReferencing: `/code-langs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref"
+             }
+            ]
+        },
+        "text": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

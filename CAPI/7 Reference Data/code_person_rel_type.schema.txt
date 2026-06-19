@@ -1,0 +1,143 @@
+{
+  "$id": "https://avaloq.com/code_person_rel_type.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/code_person_rel_type",
+  "definitions": {
+    "code_tab_ref": {
+      "type": "object",
+      "properties": {
+        "_href": {
+          "description" : "Reference/link",
+          "type": "string"
+        },
+        "id": {
+          "description" : "Numeric reference",
+          "type": "integer"
+        },
+        "ident": {
+          "description" : "Unique symbolic reference",
+          "type": "string"
+        },
+        "intlId": {
+          "description" : "Symbolic reference",
+          "type": "string"
+        }
+      }
+    },
+    "code_person_rel_types": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/code_person_rel_type"
+      },
+      "uniqueItems": true
+    },
+    "code_person_rel_type": {
+      "type": "object",
+      "properties": {
+        "activ": {
+          "type": "boolean"
+        },
+        "alwUndirectRole": {
+          "type": "boolean"
+        },
+        "autoDisbandMbr": {
+          "type": "boolean"
+        },
+        "descn": {
+          "type": "string"
+        },
+        "dsblUniqChk": {
+          "type": "boolean"
+        },
+        "hasAdvnProfit": {
+          "type": "boolean"
+        },
+        "hasDet": {
+          "type": "boolean"
+        },
+        "hasInflnc": {
+          "type": "boolean"
+        },
+        "hasLegRepr": {
+          "type": "boolean"
+        },
+        "hasLiab": {
+          "type": "boolean"
+        },
+        "hasPartic": {
+          "type": "boolean"
+        },
+        "hasProfitPartic": {
+          "type": "boolean"
+        },
+        "hasSubKind": {
+          "type": "boolean"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "ident": {
+          "type": "string"
+        },
+        "intlId": {
+          "type": "string"
+        },
+        "isHira": {
+          "type": "boolean"
+        },
+        "mba$hasPrsnlRel": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": "string"
+        },
+        "nameI18nList": {
+          "type": "array",
+          "items": {
+            "description" : "Full translation list for name field. Only visible within compound APIs ",
+            "allOf": [
+              { "$ref": "#/definitions/name_i18n"
+               }
+              ]
+          }
+        },
+        "userId": {
+          "type": "string"
+        },
+        "validSrcPersonType": {
+          "type": "array",
+          "items": {
+            "description": "Referencing: `/code-obj-sub-types/{id}`",
+            "allOf": [
+              { "$ref": "#/definitions/code_tab_ref" }
+            ]
+          }
+        },
+        "validTrgPersonType": {
+          "type": "array",
+          "items": {
+            "description": "Referencing: `/code-obj-sub-types/{id}`",
+            "allOf": [
+              { "$ref": "#/definitions/code_tab_ref" }
+            ]
+          }
+        }
+      }
+    },
+    "name_i18n": {
+      "type": "object",
+      "properties": {
+        "lang": {
+          "description" : "LanguageReferencing: `/code-langs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref"
+             }
+            ]
+        },
+        "text": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,2497 @@
+{
+  "$id": "https://avaloq.com/doc_secevt2.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/doc_secevt2",
+  "definitions": {
+    "code_tab_ref": {
+      "type": "object",
+      "properties": {
+        "_href": {
+          "description" : "Reference/link",
+          "type": "string"
+        },
+        "id": {
+          "description" : "Numeric reference",
+          "type": "integer"
+        },
+        "ident": {
+          "description" : "Unique symbolic reference",
+          "type": "string"
+        },
+        "intlId": {
+          "description" : "Symbolic reference",
+          "type": "string"
+        }
+      }
+    },
+    "code_tab_ref_action": {
+      "type": "object",
+      "properties": {
+        "_href": {
+          "description" : "Reference/link",
+          "type": "string"
+        },
+        "action": {
+          "description" : "enum reference to action",
+          "type": "string"
+        },
+        "id": {
+          "description" : "Numeric reference",
+          "type": "integer"
+        },
+        "ident": {
+          "description" : "Unique symbolic reference",
+          "type": "string"
+        },
+        "intlId": {
+          "description" : "Symbolic reference",
+          "type": "string"
+        }
+      }
+    },
+    "doc_add": {
+      "type": "object",
+      "properties": {
+        "docAdd": {
+          "description" : "Referencing: `/code-doc-adds/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "valList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/doc_add_val"
+          }
+        }
+      }
+    },
+    "doc_add_val": {
+      "type": "object",
+      "properties": {
+        "dateVal": {
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "idVal": {
+          "type": "integer"
+        },
+        "nrVal": {
+          "type": "number"
+        },
+        "textVal": {
+          "type": "string"
+        },
+        "tswtzVal": {
+          "type": "string"
+          ,
+            "format": "date-time"
+        }
+      }
+    },
+    "doc_key": {
+      "type": "object",
+      "properties": {
+        "docKey": {
+          "description" : "Referencing: `/code-doc-keys/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "val": {
+          "type": "string"
+        }
+      }
+    },
+    "doc_postit": {
+      "type": "object",
+      "properties": {
+        "subType": {
+          "description" : "SubtypeReferencing: `/code-postit-sub-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "text": {
+          "description" : "Text",
+          "type": "string"
+        },
+        "timestamp": {
+          "description" : "Timestamp",
+          "type": "string"
+          ,
+            "format": "date-time-no-tz"
+        },
+        "topic": {
+          "description" : "Topic",
+          "type": "string"
+        },
+        "type": {
+          "description" : "TypeReferencing: `/code-postit-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "user": {
+          "description" : "Inserted byReferencing: `/users/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/user_ref" }
+          ]
+        }
+      }
+    },
+    "doc_secevt2": {
+      "type": "object",
+      "properties": {
+        "addList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/doc_add"
+          }
+        },
+        "aft": {
+          "description" : "Asset Flow TemplateReferencing: `/meta-af-lists/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "agingId": {
+          "type": "integer"
+        },
+        "asset": {
+          "description" : "AssetReferencing: `/obj-assets/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "bdeRecVersion": {
+          "type": "integer"
+        },
+        "bpaasNtfcn": {
+          "$ref": "#/definitions/docp_bpaas_ntfcn"
+        },
+        "bu": {
+          "description" : "Business unit of order itselfReferencing: `/obj-bps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "ddlnDate": {
+          "description" : "Internal Deadline",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "decsnList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/doc_tab_secevt2_parlist"
+          }
+        },
+        "docRole": {
+          "description" : "Order roleReferencing: `/code-doc-roles/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "exDate": {
+          "description" : "Ex Date",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "extlDdlnDate": {
+          "description" : "External Deadline",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "extn": {
+          "$ref": "#/definitions/doc_secevt2_extn"
+        },
+        "id": {
+          "description" : "Referencing: `/doc-secevt2s/{id}`",
+          "type": "integer"
+        },
+        "insBySecUser": {
+          "description" : "Order created by userReferencing: `/users/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/user_ref" }
+          ]
+        },
+        "isFinal": {
+          "description" : "Is order in a final status?",
+          "type": "boolean"
+        },
+        "keyList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/doc_key"
+          }
+        },
+        "langListText": {
+          "description" : "Comma separated list of languages (iso codes) in use on the triggering position list. ",
+          "type": "string"
+        },
+        "lastTrans": {
+          "description" : "Last transition",
+          "type": "string"
+          ,
+            "format": "date-time"
+        },
+        "metaTyp": {
+          "description" : "Meta typeReferencing: `/meta-typs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mktDdlnDate": {
+          "description" : "Market Deadline",
+          "type": "string"
+          ,
+            "format": "date-time-no-tz"
+        },
+        "ntfcnList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/doc_tab_secevt2_parlist"
+          }
+        },
+        "orderDate": {
+          "description" : "Order date",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "orderDateTz": {
+          "description" : "Order date",
+          "type": "string"
+          ,
+            "format": "date-time"
+        },
+        "orderType": {
+          "description" : "Order typeReferencing: `/code-order-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "parList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/doc_tab_secevt2_parlist"
+          }
+        },
+        "payDate": {
+          "description" : "Payment Date",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "perfDate": {
+          "description" : "Performance date",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "postitList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/doc_postit"
+          }
+        },
+        "proxyDecsnList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/docp_proxy_decsn"
+          }
+        },
+        "proxyVote": {
+          "$ref": "#/definitions/docp_proxy_vote"
+        },
+        "recDate": {
+          "description" : "Record Date",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "supraDspOrderNr": {
+          "description" : "Supra Dispatcher Order ID",
+          "type": "integer"
+        },
+        "swiftList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/doc_tab_secevt2_parlist"
+          }
+        },
+        "swiftStatus": {
+          "description" : "Swift StatusReferencing: `/code-secevt2-swift-statuss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "transList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/doc_trans"
+          }
+        },
+        "trxDate": {
+          "description" : "Transaction date",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "valDate": {
+          "description" : "Value date",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "wfcAction": {
+          "description" : "Workflow ActionReferencing: `/wfc-action-secevt2s/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref_action" }
+          ]
+        },
+        "wfcStatus": {
+          "description" : "Workflow  statusReferencing: `/wfc-status-secevt2s/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        }
+      }
+    },
+    "doc_secevt2_extn": {
+      "type": "object",
+      "properties": {
+        "afsDocId": {
+          "description" : "AFS Order ID",
+          "type": "string"
+        },
+        "afsExtlRefNr": {
+          "description" : "AFS external reference number",
+          "type": "string"
+        },
+        "api1RefNr": {
+          "description" : "Primary API external reference number",
+          "type": "string"
+        },
+        "api2RefNr": {
+          "description" : "Secondary API external reference number",
+          "type": "string"
+        },
+        "bbSecevt2": {
+          "description" : "bb key for secevt2",
+          "type": "string"
+        },
+        "crossBu": {
+          "description" : "cross bu key",
+          "type": "string"
+        },
+        "dxsCtxId": {
+          "description" : "DXS context ID",
+          "type": "string"
+        },
+        "dxsEntityExtlRef": {
+          "description" : "DXS entity external reference",
+          "type": "string"
+        },
+        "issDisclReqId": {
+          "description" : "Issuer Disclosure Request ID",
+          "type": "string"
+        },
+        "mba$attachList": {
+          "type": "array",
+          "items": {
+            "description": "Attachment documents List for printing",
+            "type": "string"
+          }
+        },
+        "mba$authEdtRvwCompLvList": {
+          "type": "array",
+          "items": {
+            "description": "Authorization: comp lv that need to authorize for specific edt rvw in jtg",
+            "type": "string"
+          }
+        },
+        "mba$authorEdtRvwJtgList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/number"
+          }
+        },
+        "mba$blockAprvUserList": {
+          "type": "array",
+          "items": {
+            "description": "List of Users having approved the Compliance Blocking CodesReferencing: `/users/{id}`",
+            "allOf": [
+              { "$ref": "#/definitions/user_ref" }
+            ]
+          }
+        },
+        "mba$blockJtgList": {
+          "description" : "Current List of matching compliance block IDs with the corresponding JTG IDs",
+          "type": "string"
+        },
+        "mba$blockRemnJtgList": {
+          "type": "array",
+          "items": {
+            "description": "List of JTG still required to approve the Compliance Blocking CodesReferencing: `/mba$code-job-type-grps/{id}`",
+            "allOf": [
+              { "$ref": "#/definitions/code_tab_ref" }
+            ]
+          }
+        },
+        "mba$ccPastAuthorUserList": {
+          "type": "array",
+          "items": {
+            "description": "Authorization: User List for current jtg (Credit Check)Referencing: `/users/{id}`",
+            "allOf": [
+              { "$ref": "#/definitions/user_ref" }
+            ]
+          }
+        },
+        "mba$coacEvt": {
+          "description" : "Corporate Action Event TypeReferencing: `/mba$code-coac-evts/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$credChkAuthCompLvList": {
+          "type": "array",
+          "items": {
+            "description": "Authorization: comp lv that need to authorize in jtg (Credit Check)",
+            "type": "string"
+          }
+        },
+        "mba$credChkAuthorJtgList": {
+          "type": "array",
+          "items": {
+            "description": "JTG to authorize the order. Indication, which jtg has to author (Credit Check).Referencing: `/mba$code-job-type-grps/{id}`",
+            "allOf": [
+              { "$ref": "#/definitions/code_tab_ref" }
+            ]
+          }
+        },
+        "mba$credChkCmt": {
+          "type": "array",
+          "items": {
+            "description": "Comment of the Decision (Credit Check)",
+            "type": "string"
+          }
+        },
+        "mba$credChkRestr": {
+          "type": "array",
+          "items": {
+            "description": "Additional Restriction List (Credit Check)",
+            "type": "string"
+          }
+        },
+        "mba$doPropEvt": {
+          "description" : "Propagate Event",
+          "type": "boolean"
+        },
+        "mba$docErrType": {
+          "description" : "Order Processing Error TypeReferencing: `/mba$code-doc-err-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$edtRvwJtgList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/number"
+          }
+        },
+        "mba$edtRvwUserList": {
+          "type": "array",
+          "items": {
+            "description": "Last user to edited the order for jtg (as listed in mba$edt_rvw_jtg_list)Referencing: `/users/{id}`",
+            "allOf": [
+              { "$ref": "#/definitions/user_ref" }
+            ]
+          }
+        },
+        "mba$hasSwiftWtaxOvr": {
+          "description" : "Apply SWIFT WTAX rate",
+          "type": "boolean"
+        },
+        "mba$iAuthEdtRvwCompLvLst": {
+          "type": "array",
+          "items": {
+            "description": "Authorization:initial comp lv that need to authorize for specific edt rvw in jtg",
+            "type": "string"
+          }
+        },
+        "mba$iCredChkAuthCompLvLt": {
+          "type": "array",
+          "items": {
+            "description": "Authorization:initial comp lv that need to authorize in jtg (Credit Check)",
+            "type": "string"
+          }
+        },
+        "mba$instrDet": {
+          "description" : "Instruction Details",
+          "type": "string"
+        },
+        "mba$isDfltValSet": {
+          "description" : "Have default values been applied",
+          "type": "boolean"
+        },
+        "mba$isStpEvt": {
+          "description" : "STP Event",
+          "type": "boolean"
+        },
+        "mba$level": {
+          "description" : "Level reached on",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "mba$lswfInsJtg": {
+          "description" : "Job Type Group that inserted the orderReferencing: `/mba$code-job-type-grps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$lswfJtg": {
+          "description" : "Current job type group owning the statusReferencing: `/mba$code-job-type-grps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$lswfLastSwfIntfWfaId": {
+          "description" : "Last interface action used",
+          "type": "number"
+        },
+        "mba$lswfLastSwfWfaId": {
+          "description" : "Last workflow action used",
+          "type": "number"
+        },
+        "mba$lswfLastSwfWfsId": {
+          "description" : "Communication to next department",
+          "type": "number"
+        },
+        "mba$lswfNextJtg": {
+          "description" : "Next job type group owning the statusReferencing: `/mba$code-job-type-grps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$lswfNextJtgInfo": {
+          "description" : "Communication to next job type group",
+          "type": "string"
+        },
+        "mba$lswfNextRa": {
+          "description" : "Next Routing Action for Linkable Sub-WorkflowReferencing: `/mba$code-lswf-raps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$lswfNextSwf": {
+          "description" : "Next Linkable Sub-Workflow in WorkflowReferencing: `/mba$code-lswfs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$lswfPrevSwf": {
+          "description" : "Previous Linkable Sub-Workflow in WorkflowReferencing: `/mba$code-lswfs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$lswfRa": {
+          "description" : "Current Routing Action for Linkable Sub-WorkflowReferencing: `/mba$code-lswf-raps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$lswfSwf": {
+          "description" : "Current Linkable Sub-Workflow in WorkflowReferencing: `/mba$code-lswfs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$lswfUc": {
+          "description" : "Use Case assigned to the orderReferencing: `/mba$code-lswf-ucs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$mediumA": {
+          "description" : "Medium A/M flag",
+          "type": "boolean"
+        },
+        "mba$mediumPhoneNr": {
+          "description" : "Reference phone number to be registered in case of a phone call",
+          "type": "string"
+        },
+        "mba$offeror": {
+          "description" : "BP who offers the terms of the SecEvtReferencing: `/obj-bps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "mba$pastAuthorUserList": {
+          "type": "array",
+          "items": {
+            "description": "Authorization: User List for current jtgReferencing: `/users/{id}`",
+            "allOf": [
+              { "$ref": "#/definitions/user_ref" }
+            ]
+          }
+        },
+        "mba$propAction": {
+          "description" : "Action to propagateReferencing: `/wfc-actions/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$reconStatus": {
+          "description" : "Reconciliation StatusReferencing: `/mba$code-recon-statuss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$respUser": {
+          "description" : "Responsible UserReferencing: `/users/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/user_ref" }
+          ]
+        },
+        "mba$srcFund": {
+          "description" : "Source of FundsReferencing: `/mba$code-src-funds/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "pkpSvcRsvIdent": {
+          "description" : "Position Keeping Service: Reservation/advice identifier",
+          "type": "string"
+        },
+        "secevt2$mba$cnmvNr": {
+          "description" : "Sec. Event CNMV Registry number",
+          "type": "string"
+        },
+        "swiftCaev": {
+          "description" : "swift caev",
+          "type": "string"
+        },
+        "swiftCoaf": {
+          "description" : "swift coaf",
+          "type": "string"
+        },
+        "vdfEvtId": {
+          "description" : "VDF Event ID",
+          "type": "string"
+        }
+      }
+    },
+    "doc_secevt2s": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/doc_secevt2"
+      },
+      "uniqueItems": true
+    },
+    "doc_tab_secevt2_parlist": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "val": {
+          "type": "string"
+        }
+      }
+    },
+    "doc_trans": {
+      "type": "object",
+      "properties": {
+        "calcCnt": {
+          "type": "integer"
+        },
+        "calcTime": {
+          "type": "integer"
+        },
+        "intfWfcAction": {
+          "description" : "Workflow Interface ActionReferencing: `/wfc-action-secevt2s/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "newWfcStatus": {
+          "description" : "Workflow StatusReferencing: `/wfc-status-secevt2s/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "oldWfcStatus": {
+          "description" : "Workflow StatusReferencing: `/wfc-status-secevt2s/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "opnTime": {
+          "type": "integer"
+        },
+        "remark": {
+          "description" : "Remark",
+          "type": "string"
+        },
+        "ruleTime": {
+          "type": "integer"
+        },
+        "secUser": {
+          "description" : "UserReferencing: `/users/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/user_ref" }
+          ]
+        },
+        "seqNr": {
+          "description" : "Sequence no.",
+          "type": "integer"
+        },
+        "timestamp": {
+          "description" : "Timestamp",
+          "type": "string"
+          ,
+            "format": "date-time"
+        },
+        "transAction": {
+          "description" : "TransitionReferencing: `/code-trans-actions/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "userTime": {
+          "type": "integer"
+        },
+        "wfcAction": {
+          "description" : "Workflow ActionReferencing: `/wfc-action-secevt2s/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "wfcTime": {
+          "type": "integer"
+        }
+      }
+    },
+    "docp_bpaas_ntfcn": {
+      "type": "object",
+      "properties": {
+        "addInfo2De": {
+          "description" : "...",
+          "type": "string"
+        },
+        "addInfo2En": {
+          "description" : "...",
+          "type": "string"
+        },
+        "addInfo2Fr": {
+          "description" : "...",
+          "type": "string"
+        },
+        "addInfo2It": {
+          "description" : "...",
+          "type": "string"
+        },
+        "addInfo2Pt": {
+          "description" : "...",
+          "type": "string"
+        },
+        "addInfo2Sp": {
+          "description" : "...",
+          "type": "string"
+        },
+        "addInfoDe": {
+          "description" : "Add info DE",
+          "type": "string"
+        },
+        "addInfoEn": {
+          "description" : "Add info EN",
+          "type": "string"
+        },
+        "addInfoFr": {
+          "description" : "Add info FR",
+          "type": "string"
+        },
+        "addInfoIt": {
+          "description" : "Add info IT",
+          "type": "string"
+        },
+        "addInfoPt": {
+          "description" : "Add info PT",
+          "type": "string"
+        },
+        "addInfoSp": {
+          "description" : "Add info SP",
+          "type": "string"
+        },
+        "advOvr": {
+          "description" : "Advice override codeReferencing: `/code-bpaas-adv-ovr-codes/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "attachFile": {
+          "description" : "Attachment filename",
+          "type": "string"
+        },
+        "blankLines": {
+          "description" : "Blank lines in case of blank pages",
+          "type": "integer"
+        },
+        "compln": {
+          "description" : "Supra notification completeness levelReferencing: `/code-bpaas-supra-ntfcn-complns/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "isBill": {
+          "description" : "Apply billing decision",
+          "type": "boolean"
+        },
+        "langList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/docp_bpaas_ntfcn_lang"
+          }
+        },
+        "newNav": {
+          "description" : "new NAV",
+          "type": "number"
+        },
+        "offerResDe": {
+          "description" : "Offer results DE",
+          "type": "string"
+        },
+        "offerResEn": {
+          "description" : "Offer results EN",
+          "type": "string"
+        },
+        "offerResFr": {
+          "description" : "Offer results FR",
+          "type": "string"
+        },
+        "offerResIt": {
+          "description" : "Offer results IT",
+          "type": "string"
+        },
+        "offerResPt": {
+          "description" : "Offer results PT",
+          "type": "string"
+        },
+        "offerResSp": {
+          "description" : "Offer results SP",
+          "type": "string"
+        },
+        "oldNav": {
+          "description" : "old NAV",
+          "type": "number"
+        },
+        "priceDe": {
+          "description" : "Price: ad-hoc DE",
+          "type": "string"
+        },
+        "priceEn": {
+          "description" : "Price: ad-hoc EN",
+          "type": "string"
+        },
+        "priceFr": {
+          "description" : "Price: ad-hoc FR",
+          "type": "string"
+        },
+        "priceIt": {
+          "description" : "Price: ad-hoc IT",
+          "type": "string"
+        },
+        "pricePt": {
+          "description" : "Price: ad-hoc PT",
+          "type": "string"
+        },
+        "priceSp": {
+          "description" : "Price: ad-hoc SP",
+          "type": "string"
+        },
+        "ratio2De": {
+          "description" : "2nd Ratio: ad-hoc DE",
+          "type": "string"
+        },
+        "ratio2En": {
+          "description" : "2nd Ratio: ad-hoc EN",
+          "type": "string"
+        },
+        "ratio2Fr": {
+          "description" : "2nd Ratio: ad-hoc FR",
+          "type": "string"
+        },
+        "ratio2It": {
+          "description" : "2nd Ratio: ad-hoc IT",
+          "type": "string"
+        },
+        "ratio2Pt": {
+          "description" : "2nd Ratio: ad-hoc PT",
+          "type": "string"
+        },
+        "ratio2Sp": {
+          "description" : "2nd Ratio: ad-hoc SP",
+          "type": "string"
+        },
+        "ratioDe": {
+          "description" : "Ratio: ad-hoc DE",
+          "type": "string"
+        },
+        "ratioEn": {
+          "description" : "Ratio: ad-hoc EN",
+          "type": "string"
+        },
+        "ratioFr": {
+          "description" : "Ratio: ad-hoc FR",
+          "type": "string"
+        },
+        "ratioIt": {
+          "description" : "Ratio: ad-hoc IT",
+          "type": "string"
+        },
+        "ratioPt": {
+          "description" : "Ratio: ad-hoc PT",
+          "type": "string"
+        },
+        "ratioSp": {
+          "description" : "Ratio: ad-hoc SP",
+          "type": "string"
+        },
+        "remarkDe": {
+          "description" : "Remarks DE",
+          "type": "string"
+        },
+        "remarkEn": {
+          "description" : "Remarks EN",
+          "type": "string"
+        },
+        "remarkFr": {
+          "description" : "Remarks FR",
+          "type": "string"
+        },
+        "remarkIt": {
+          "description" : "Remarks IT",
+          "type": "string"
+        },
+        "remarkPt": {
+          "description" : "Remarks PT",
+          "type": "string"
+        },
+        "remarkSp": {
+          "description" : "Remarks SP",
+          "type": "string"
+        },
+        "restrDet": {
+          "description" : "Restriction detailsReferencing: `/code-bpaas-restr-dets/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "restrList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/docp_bpaas_ntfcn_restr"
+          }
+        },
+        "restrText": {
+          "description" : "Restriction text",
+          "type": "string"
+        },
+        "rightPrice": {
+          "description" : "Price of the Right",
+          "type": "number"
+        }
+      }
+    },
+    "docp_bpaas_ntfcn_lang": {
+      "type": "object",
+      "properties": {
+        "lang": {
+          "description" : "LanguageReferencing: `/code-bpaas-ntfcn-langs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        }
+      }
+    },
+    "docp_bpaas_ntfcn_restr": {
+      "type": "object",
+      "properties": {
+        "country": {
+          "description" : "CountryReferencing: `/obj-countrys/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        }
+      }
+    },
+    "docp_proxy_decsn": {
+      "type": "object",
+      "properties": {
+        "instrList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/docp_proxy_decsn_instr"
+          }
+        },
+        "seqNr": {
+          "description" : "Trigpos Sequence Number",
+          "type": "number"
+        }
+      }
+    },
+    "docp_proxy_decsn_attendee": {
+      "type": "object",
+      "properties": {
+        "addrLn1": {
+          "description" : "Address Line 1",
+          "type": "string"
+        },
+        "addrLn2": {
+          "description" : "Address Line 2",
+          "type": "string"
+        },
+        "addrLn3": {
+          "description" : "Address Line 3",
+          "type": "string"
+        },
+        "addrLn4": {
+          "description" : "Address Line 4",
+          "type": "string"
+        },
+        "addrLn5": {
+          "description" : "Address Line 5",
+          "type": "string"
+        },
+        "addrLns": {
+          "description" : "Address Lines",
+          "type": "string"
+        },
+        "addrType": {
+          "description" : "Address TypeReferencing: `/code-srd2-addr-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "attndncCardLbl": {
+          "description" : "Attendance Card Label",
+          "type": "string"
+        },
+        "birthCountry": {
+          "description" : "Country of birthReferencing: `/obj-countrys/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "birthDate": {
+          "description" : "Date of birth",
+          "type": "string"
+          ,
+            "format": "date-time-no-tz"
+        },
+        "bldgNr": {
+          "description" : "Building Number",
+          "type": "string"
+        },
+        "cityBirth": {
+          "description" : "City of birth",
+          "type": "string"
+        },
+        "country": {
+          "description" : "CountryReferencing: `/obj-countrys/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "countrySubDivn": {
+          "description" : "City",
+          "type": "string"
+        },
+        "email": {
+          "description" : "Email",
+          "type": "string"
+        },
+        "emplPrtyList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/docp_proxy_decsn_empl_prty"
+          }
+        },
+        "fname": {
+          "description" : "Name",
+          "type": "string"
+        },
+        "ident": {
+          "description" : "Identification",
+          "type": "string"
+        },
+        "identType": {
+          "description" : "Identification TypeReferencing: `/code-srd2-person-ident-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "isNp": {
+          "description" : "Natural Person",
+          "type": "boolean"
+        },
+        "lastName": {
+          "description" : "Last Name",
+          "type": "string"
+        },
+        "mtd": {
+          "description" : "Delivery MethodReferencing: `/code-srd2-dlv-mtds/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "namePfx": {
+          "description" : "Name PrefixReferencing: `/code-srd2-name-pfxs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "natiCountry": {
+          "description" : "NationalityReferencing: `/obj-countrys/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "othAddrLn1": {
+          "description" : "Address Line 1",
+          "type": "string"
+        },
+        "othAddrLn2": {
+          "description" : "Address Line 2",
+          "type": "string"
+        },
+        "othAddrLn3": {
+          "description" : "Address Line 3",
+          "type": "string"
+        },
+        "othAddrLn4": {
+          "description" : "Address Line 4",
+          "type": "string"
+        },
+        "othAddrLn5": {
+          "description" : "Address Line 5",
+          "type": "string"
+        },
+        "othAddrLns": {
+          "description" : "Address Lines",
+          "type": "string"
+        },
+        "othAddrType": {
+          "description" : "Address TypeReferencing: `/code-srd2-addr-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "othBldgNr": {
+          "description" : "Building Number",
+          "type": "string"
+        },
+        "othCountry": {
+          "description" : "CountryReferencing: `/obj-countrys/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "othCtySubDivn": {
+          "description" : "City",
+          "type": "string"
+        },
+        "othName": {
+          "description" : "Name",
+          "type": "string"
+        },
+        "othPostCode": {
+          "description" : "Post Code",
+          "type": "string"
+        },
+        "othStreetName": {
+          "description" : "Street Name",
+          "type": "string"
+        },
+        "othTown": {
+          "description" : "Town",
+          "type": "string"
+        },
+        "othUstrdAddr": {
+          "description" : "Unstructured Address",
+          "type": "string"
+        },
+        "particMtd": {
+          "description" : "Participation MethodReferencing: `/code-srd2-partic-mtds/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "poBox": {
+          "description" : "PO Box",
+          "type": "string"
+        },
+        "postCode": {
+          "description" : "Post Code",
+          "type": "string"
+        },
+        "provBirth": {
+          "description" : "Province of birth",
+          "type": "string"
+        },
+        "streetName": {
+          "description" : "Street Name",
+          "type": "string"
+        },
+        "town": {
+          "description" : "Town",
+          "type": "string"
+        }
+      }
+    },
+    "docp_proxy_decsn_empl_prty": {
+      "type": "object",
+      "properties": {
+        "addrType": {
+          "description" : "Address TypeReferencing: `/code-srd2-addr-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "bldgNr": {
+          "description" : "Building Number",
+          "type": "string"
+        },
+        "country": {
+          "description" : "CountryReferencing: `/obj-countrys/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "ctySubDivn": {
+          "description" : "City",
+          "type": "string"
+        },
+        "fname": {
+          "description" : "Name",
+          "type": "string"
+        },
+        "ident": {
+          "description" : "Identification",
+          "type": "string"
+        },
+        "identType": {
+          "description" : "Identification TypeReferencing: `/code-srd2-person-ident-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "postCode": {
+          "description" : "Post Code",
+          "type": "string"
+        },
+        "streetName": {
+          "description" : "Street Name",
+          "type": "string"
+        },
+        "town": {
+          "description" : "Town",
+          "type": "string"
+        }
+      }
+    },
+    "docp_proxy_decsn_glo_vote": {
+      "type": "object",
+      "properties": {
+        "issuerLbl": {
+          "description" : "Issuer Label",
+          "type": "string"
+        },
+        "voteInstr": {
+          "description" : "Vote Instruction TypeReferencing: `/code-srd2-vote-instr-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        }
+      }
+    },
+    "docp_proxy_decsn_instr": {
+      "type": "object",
+      "properties": {
+        "addrLn1": {
+          "description" : "Address Line 1",
+          "type": "string"
+        },
+        "addrLn2": {
+          "description" : "Address Line 2",
+          "type": "string"
+        },
+        "addrLn3": {
+          "description" : "Address Line 3",
+          "type": "string"
+        },
+        "addrLn4": {
+          "description" : "Address Line 4",
+          "type": "string"
+        },
+        "addrLn5": {
+          "description" : "Address Line 5",
+          "type": "string"
+        },
+        "addrLns": {
+          "description" : "Address Lines",
+          "type": "string"
+        },
+        "addrType": {
+          "description" : "Address TypeReferencing: `/code-srd2-addr-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "allVote": {
+          "description" : "Vote for All Agenda ResolutionsReferencing: `/code-srd2-vote-instr-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "attendeeList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/docp_proxy_decsn_attendee"
+          }
+        },
+        "attndncCardLbl": {
+          "description" : "Attendance Card Label",
+          "type": "string"
+        },
+        "birthCountry": {
+          "description" : "Country of birthReferencing: `/obj-countrys/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "birthDate": {
+          "description" : "Date of birth",
+          "type": "string"
+          ,
+            "format": "date-time-no-tz"
+        },
+        "bldgNr": {
+          "description" : "Building Number",
+          "type": "string"
+        },
+        "cityBirth": {
+          "description" : "City of birth",
+          "type": "string"
+        },
+        "country": {
+          "description" : "CountryReferencing: `/obj-countrys/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "ctySubDivn": {
+          "description" : "Country Sub Division",
+          "type": "string"
+        },
+        "doSecReg": {
+          "description" : "Securities Registration",
+          "type": "boolean"
+        },
+        "doVoteConf": {
+          "description" : "Vote Execution Confirmation",
+          "type": "boolean"
+        },
+        "email": {
+          "description" : "Email",
+          "type": "string"
+        },
+        "emplPrtyList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/docp_proxy_decsn_empl_prty"
+          }
+        },
+        "fname": {
+          "description" : "Name",
+          "type": "string"
+        },
+        "gloVoteList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/docp_proxy_decsn_glo_vote"
+          }
+        },
+        "identType": {
+          "description" : "Person Identification TypeReferencing: `/code-srd2-person-ident-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "isNp": {
+          "description" : "Natural Person",
+          "type": "boolean"
+        },
+        "lastName": {
+          "description" : "Last Name",
+          "type": "string"
+        },
+        "mtCaopNr": {
+          "description" : "MT Option Number",
+          "type": "string"
+        },
+        "mtIndi": {
+          "description" : "MT Option IndicatorReferencing: `/code-consts/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mtTextList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/docp_proxy_decsn_mt_text"
+          }
+        },
+        "mtd": {
+          "description" : "Delivery MethodReferencing: `/code-srd2-dlv-mtds/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "namePfx": {
+          "description" : "Name PrefixReferencing: `/code-srd2-name-pfxs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "natiCountry": {
+          "description" : "NationalityReferencing: `/obj-countrys/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "othAddrLn1": {
+          "description" : "Address Line 1",
+          "type": "string"
+        },
+        "othAddrLn2": {
+          "description" : "Address Line 2",
+          "type": "string"
+        },
+        "othAddrLn3": {
+          "description" : "Address Line 3",
+          "type": "string"
+        },
+        "othAddrLn4": {
+          "description" : "Address Line 4",
+          "type": "string"
+        },
+        "othAddrLn5": {
+          "description" : "Address Line 5",
+          "type": "string"
+        },
+        "othAddrLns": {
+          "description" : "Address Lines",
+          "type": "string"
+        },
+        "othAddrType": {
+          "description" : "Address TypeReferencing: `/code-srd2-addr-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "othBldgNr": {
+          "description" : "Building Number",
+          "type": "string"
+        },
+        "othCountry": {
+          "description" : "CountryReferencing: `/obj-countrys/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "othCtySubDivn": {
+          "description" : "City",
+          "type": "string"
+        },
+        "othName": {
+          "description" : "Name",
+          "type": "string"
+        },
+        "othPostCode": {
+          "description" : "Post Code",
+          "type": "string"
+        },
+        "othStreetName": {
+          "description" : "Street Name",
+          "type": "string"
+        },
+        "othTown": {
+          "description" : "Town",
+          "type": "string"
+        },
+        "othUstrdAddr": {
+          "description" : "Unstructured Address",
+          "type": "string"
+        },
+        "outVote": {
+          "description" : "Vote Instruction for Meeting ResolutionReferencing: `/code-srd2-vote-instr-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "particMtd": {
+          "description" : "Participation MethodReferencing: `/code-srd2-partic-mtds/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "personId": {
+          "description" : "Person Identification",
+          "type": "string"
+        },
+        "poBox": {
+          "description" : "PO Box",
+          "type": "string"
+        },
+        "postCode": {
+          "description" : "Post Code",
+          "type": "string"
+        },
+        "provBirth": {
+          "description" : "Province of birth",
+          "type": "string"
+        },
+        "prxyAttTp": {
+          "description" : "Proxy TypeReferencing: `/code-srd2-prxy-attendee-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "qty": {
+          "description" : "Quantity",
+          "type": "number"
+        },
+        "qtyPct": {
+          "description" : "Quantity Percentage",
+          "type": "number"
+        },
+        "sglInstrId": {
+          "description" : "Single Instruction Identification",
+          "type": "string"
+        },
+        "status": {
+          "description" : "Status of the InstructionReferencing: `/code-srd2-proxy-instr-statuss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "statusErr": {
+          "description" : "Description of the error's status",
+          "type": "string"
+        },
+        "streetName": {
+          "description" : "Street Name",
+          "type": "string"
+        },
+        "town": {
+          "description" : "Town",
+          "type": "string"
+        },
+        "voteType": {
+          "description" : "Vote TypeReferencing: `/code-srd2-vote-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "vtInstrList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/docp_proxy_decsn_vt_instr"
+          }
+        }
+      }
+    },
+    "docp_proxy_decsn_mt_text": {
+      "type": "object",
+      "properties": {
+        "qual": {
+          "description" : "QualifierReferencing: `/code-secevt2-freetext-quals/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "val": {
+          "description" : "Value",
+          "type": "string"
+        }
+      }
+    },
+    "docp_proxy_decsn_vt_instr": {
+      "type": "object",
+      "properties": {
+        "abstainQty": {
+          "description" : "Abstain Quantity",
+          "type": "number"
+        },
+        "againstQty": {
+          "description" : "Against Quantity",
+          "type": "number"
+        },
+        "agnstMngtQty": {
+          "description" : "Against Management Quantity",
+          "type": "number"
+        },
+        "blankQty": {
+          "description" : "Blank Quantity",
+          "type": "number"
+        },
+        "discrnyQty": {
+          "description" : "Discretionary Quantity",
+          "type": "number"
+        },
+        "forQty": {
+          "description" : "For Quantity",
+          "type": "number"
+        },
+        "issuerLbl": {
+          "description" : "Issuer Label",
+          "type": "string"
+        },
+        "noActionQty": {
+          "description" : "No Action Quantity",
+          "type": "number"
+        },
+        "oneYearQty": {
+          "description" : "One Year Quantity",
+          "type": "number"
+        },
+        "threeYearQty": {
+          "description" : "Three Years Quantity",
+          "type": "number"
+        },
+        "twoYearQty": {
+          "description" : "Two Years Quantity",
+          "type": "number"
+        },
+        "withMngtQty": {
+          "description" : "Withhold Management Quantity",
+          "type": "number"
+        },
+        "withhQty": {
+          "description" : "Withhold Quantity",
+          "type": "number"
+        }
+      }
+    },
+    "docp_proxy_vote": {
+      "type": "object",
+      "properties": {
+        "adtlRghtDdln": {
+          "description" : "Additional Right Deadline",
+          "type": "string"
+          ,
+            "format": "date-time"
+        },
+        "announceDate": {
+          "description" : "Announcement Date",
+          "type": "string"
+          ,
+            "format": "date-time-no-tz"
+        },
+        "announceTime": {
+          "description" : "Announcement Date/Time",
+          "type": "string"
+          ,
+            "format": "date-time"
+        },
+        "authList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/docp_proxy_vote_auth"
+          }
+        },
+        "blockCode": {
+          "description" : "Block codeReferencing: `/code-blocks/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "confDdln": {
+          "description" : "Attendance/Confirmation Deadline",
+          "type": "string"
+          ,
+            "format": "date-time"
+        },
+        "confMktDdln": {
+          "description" : "Attendance/Confirmation Market Deadline",
+          "type": "string"
+          ,
+            "format": "date-time"
+        },
+        "doBoDiscl": {
+          "description" : "Beneficial Owner Disclosure",
+          "type": "boolean"
+        },
+        "docuUrl": {
+          "description" : "Documentation URL",
+          "type": "string"
+        },
+        "docuUrlList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/docp_proxy_vote_docu_url"
+          }
+        },
+        "earlyPrem": {
+          "description" : "Early Incentive premium",
+          "type": "number"
+        },
+        "earlyPremPct": {
+          "description" : "Early Incentive premium %",
+          "type": "number"
+        },
+        "earlyPremSec": {
+          "description" : "Early premium per security",
+          "type": "number"
+        },
+        "earlyPrmAttd": {
+          "description" : "Early premium per attendee",
+          "type": "boolean"
+        },
+        "earlyPrmDdln": {
+          "description" : "Early Vote Premium deadline",
+          "type": "string"
+          ,
+            "format": "date-time"
+        },
+        "earlyPrmVote": {
+          "description" : "Early premium per vote",
+          "type": "number"
+        },
+        "enrlDdln": {
+          "description" : "Enrolment Custodian Deadline",
+          "type": "string"
+          ,
+            "format": "date-time"
+        },
+        "enrlMktDdln": {
+          "description" : "Enrolment Market Deadline",
+          "type": "string"
+          ,
+            "format": "date-time"
+        },
+        "epremCcy": {
+          "description" : "Early Incentive premium currencyReferencing: `/obj-assets/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "epremList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/docp_proxy_vote_prem_vote"
+          }
+        },
+        "hasMtMsg": {
+          "description" : "The event created by a MT message",
+          "type": "boolean"
+        },
+        "isConfHreq": {
+          "description" : "Confirmation of Holding Required",
+          "type": "boolean"
+        },
+        "isPartVote": {
+          "description" : "Partial Vote Allowed",
+          "type": "boolean"
+        },
+        "isProxyNalw": {
+          "description" : "Proxy Vote Not Allowed",
+          "type": "boolean"
+        },
+        "isSplitVote": {
+          "description" : "Split Vote Allowed",
+          "type": "boolean"
+        },
+        "issMeetIdent": {
+          "description" : "Issuer Meeting Identifier",
+          "type": "string"
+        },
+        "issuer": {
+          "description" : "Issuer",
+          "type": "string"
+        },
+        "issuerUrl": {
+          "description" : "Issuer",
+          "type": "string"
+        },
+        "langList": {
+          "description" : "Resolution Language List (comma separated)",
+          "type": "string"
+        },
+        "meetDetList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/docp_proxy_vote_meet_det"
+          }
+        },
+        "meetType": {
+          "description" : "Meeting TypeReferencing: `/code-srd2-meeting-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "meetingIdent": {
+          "description" : "Meeting Identifier",
+          "type": "string"
+        },
+        "mktPremDdln": {
+          "description" : "Market Premium deadline",
+          "type": "string"
+          ,
+            "format": "date-time"
+        },
+        "oneManVote": {
+          "description" : "One Man One Vote",
+          "type": "boolean"
+        },
+        "particList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/docp_proxy_vote_partic_mtd"
+          }
+        },
+        "prem": {
+          "description" : "Incentive premium",
+          "type": "number"
+        },
+        "premAttendee": {
+          "description" : "Premium per attendee",
+          "type": "boolean"
+        },
+        "premCcy": {
+          "description" : "Incentive premium currencyReferencing: `/obj-assets/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "premList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/docp_proxy_vote_prem_vote"
+          }
+        },
+        "premPct": {
+          "description" : "Incentive premium %",
+          "type": "number"
+        },
+        "premSec": {
+          "description" : "Premium per security",
+          "type": "number"
+        },
+        "premVote": {
+          "description" : "Premium per vote",
+          "type": "number"
+        },
+        "proxyDdln": {
+          "description" : "Proxy Choice Deadline",
+          "type": "string"
+          ,
+            "format": "date-time"
+        },
+        "proxyMktDdln": {
+          "description" : "Proxy Choice Market Deadline",
+          "type": "string"
+          ,
+            "format": "date-time"
+        },
+        "resvList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/docp_proxy_vote_resv"
+          }
+        },
+        "resvResList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/docp_proxy_vote_resv_res"
+          }
+        },
+        "sctsDdln": {
+          "description" : "Registration Securities Deadline",
+          "type": "string"
+          ,
+            "format": "date-time"
+        },
+        "sctsMktDdln": {
+          "description" : "Registration Securities Market Deadline",
+          "type": "string"
+          ,
+            "format": "date-time"
+        },
+        "validFrom": {
+          "description" : "Valid From",
+          "type": "string"
+          ,
+            "format": "date-time-no-tz"
+        },
+        "validTo": {
+          "description" : "Valid To",
+          "type": "string"
+          ,
+            "format": "date-time-no-tz"
+        },
+        "voteDdln": {
+          "description" : "Vote Deadline",
+          "type": "string"
+          ,
+            "format": "date-time"
+        },
+        "voteMktDdln": {
+          "description" : "Vote Market Deadline",
+          "type": "string"
+          ,
+            "format": "date-time"
+        },
+        "votePremDdln": {
+          "description" : "Custodian Premium deadline",
+          "type": "string"
+          ,
+            "format": "date-time"
+        }
+      }
+    },
+    "docp_proxy_vote_auth": {
+      "type": "object",
+      "properties": {
+        "addrLn1": {
+          "description" : "Address Line 1",
+          "type": "string"
+        },
+        "addrLn2": {
+          "description" : "Address Line 2",
+          "type": "string"
+        },
+        "addrLn3": {
+          "description" : "Address Line 3",
+          "type": "string"
+        },
+        "addrLn4": {
+          "description" : "Address Line 4",
+          "type": "string"
+        },
+        "addrLn5": {
+          "description" : "Address Line 5",
+          "type": "string"
+        },
+        "addrType": {
+          "description" : "Address TypeReferencing: `/code-srd2-addr-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "birthCountry": {
+          "description" : "Country of birthReferencing: `/obj-countrys/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "birthDate": {
+          "description" : "Date of birth",
+          "type": "string"
+          ,
+            "format": "date"
+        },
+        "bldgNr": {
+          "description" : "Building Number",
+          "type": "string"
+        },
+        "cityBirth": {
+          "description" : "City of birth",
+          "type": "string"
+        },
+        "country": {
+          "description" : "CountryReferencing: `/obj-countrys/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "ctySubDivn": {
+          "description" : "Country Sub Division",
+          "type": "string"
+        },
+        "email": {
+          "description" : "Email",
+          "type": "string"
+        },
+        "emplPrtyList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/docp_proxy_vote_empl_prty"
+          }
+        },
+        "fname": {
+          "description" : "Name",
+          "type": "string"
+        },
+        "ident": {
+          "description" : "Identification",
+          "type": "string"
+        },
+        "identType": {
+          "description" : "Identification TypeReferencing: `/code-srd2-person-ident-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "isNp": {
+          "description" : "Natural Person",
+          "type": "boolean"
+        },
+        "lastName": {
+          "description" : "Last Name",
+          "type": "string"
+        },
+        "namePfx": {
+          "description" : "Name PrefixReferencing: `/code-srd2-name-pfxs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "natiCountry": {
+          "description" : "NationalityReferencing: `/obj-countrys/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "poBox": {
+          "description" : "PO Box",
+          "type": "string"
+        },
+        "postCode": {
+          "description" : "Post Code",
+          "type": "string"
+        },
+        "provBirth": {
+          "description" : "Province of birth",
+          "type": "string"
+        },
+        "streetName": {
+          "description" : "Street Name",
+          "type": "string"
+        },
+        "town": {
+          "description" : "Town",
+          "type": "string"
+        }
+      }
+    },
+    "docp_proxy_vote_docu_url": {
+      "type": "object",
+      "properties": {
+        "addUrlAddr": {
+          "description" : "Documentation URL",
+          "type": "string"
+        }
+      }
+    },
+    "docp_proxy_vote_empl_prty": {
+      "type": "object",
+      "properties": {
+        "addrType": {
+          "description" : "Address TypeReferencing: `/code-srd2-addr-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "bldgNr": {
+          "description" : "Building Number",
+          "type": "string"
+        },
+        "country": {
+          "description" : "CountryReferencing: `/obj-countrys/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "ctySubDivn": {
+          "description" : "City",
+          "type": "string"
+        },
+        "fname": {
+          "description" : "Name",
+          "type": "string"
+        },
+        "ident": {
+          "description" : "Identification",
+          "type": "string"
+        },
+        "identType": {
+          "description" : "Identification TypeReferencing: `/code-srd2-person-ident-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "postCode": {
+          "description" : "Post Code",
+          "type": "string"
+        },
+        "streetName": {
+          "description" : "Street Name",
+          "type": "string"
+        },
+        "town": {
+          "description" : "Town",
+          "type": "string"
+        }
+      }
+    },
+    "docp_proxy_vote_meet_det": {
+      "type": "object",
+      "properties": {
+        "addrLns": {
+          "description" : "Address Lines",
+          "type": "string"
+        },
+        "addrType": {
+          "description" : "Address TypeReferencing: `/code-srd2-addr-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "bldgNr": {
+          "description" : "Building Number",
+          "type": "string"
+        },
+        "country": {
+          "description" : "CountryReferencing: `/obj-countrys/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "countrySubDivn": {
+          "description" : "Country Sub Division",
+          "type": "string"
+        },
+        "dateTime": {
+          "description" : "Date and Time",
+          "type": "string"
+          ,
+            "format": "date-time"
+        },
+        "isQuorReq": {
+          "description" : "Quorum Required",
+          "type": "boolean"
+        },
+        "postCode": {
+          "description" : "Post Code",
+          "type": "string"
+        },
+        "quorumPct": {
+          "description" : "Quorum Percentage",
+          "type": "number"
+        },
+        "quorumQty": {
+          "description" : "Quorum Quantity",
+          "type": "number"
+        },
+        "quorumText": {
+          "description" : "Quorum Text",
+          "type": "string"
+        },
+        "streetName": {
+          "description" : "Street Name",
+          "type": "string"
+        },
+        "town": {
+          "description" : "Town",
+          "type": "string"
+        },
+        "urlAddr": {
+          "description" : "URL Address",
+          "type": "string"
+        }
+      }
+    },
+    "docp_proxy_vote_partic_mtd": {
+      "type": "object",
+      "properties": {
+        "isSuppAcserv": {
+          "description" : "Supported By Account Servicer",
+          "type": "boolean"
+        },
+        "issDdlnVote": {
+          "description" : "Issuer Deadline for Voting",
+          "type": "string"
+          ,
+            "format": "date-time"
+        },
+        "particMtd": {
+          "description" : "Participation MethodReferencing: `/code-srd2-partic-mtds/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "respVoteDdln": {
+          "description" : "Response Deadline for Voting",
+          "type": "string"
+          ,
+            "format": "date-time"
+        }
+      }
+    },
+    "docp_proxy_vote_prem_vote": {
+      "type": "object",
+      "properties": {
+        "qty": {
+          "description" : "Quantity",
+          "type": "number"
+        },
+        "voteTp": {
+          "description" : "Vote TypeReferencing: `/code-srd2-vote-instr-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        }
+      }
+    },
+    "docp_proxy_vote_resv": {
+      "type": "object",
+      "properties": {
+        "custBp": {
+          "description" : "Custodian Business PartnerReferencing: `/obj-bps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "grpResvLbl": {
+          "description" : "Listing Group Resolution Label",
+          "type": "string"
+        },
+        "isInfoOnly": {
+          "description" : "For Information Only",
+          "type": "boolean"
+        },
+        "issuerLbl": {
+          "description" : "Issuer Label",
+          "type": "string"
+        },
+        "ntfcnStatus": {
+          "description" : "StatusReferencing: `/code-srd2-ntfcn-statuss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "resvDescn": {
+          "description" : "Description",
+          "type": "string"
+        },
+        "resvDescnList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/docp_proxy_vote_resv_name"
+          }
+        },
+        "rghtWidrw": {
+          "description" : "Right to Withdraw",
+          "type": "boolean"
+        },
+        "ttl": {
+          "description" : "Title",
+          "type": "string"
+        },
+        "voteInstrList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/docp_proxy_vote_vote_instr"
+          }
+        }
+      }
+    },
+    "docp_proxy_vote_resv_name": {
+      "type": "object",
+      "properties": {
+        "lang": {
+          "description" : "LanguageReferencing: `/code-langs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "resvDescn": {
+          "description" : "Resolution Description",
+          "type": "string"
+        },
+        "rsvDescList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/docp_proxy_vote_rsv_desc"
+          }
+        },
+        "ttl": {
+          "description" : "Resolution Title",
+          "type": "string"
+        }
+      }
+    },
+    "docp_proxy_vote_resv_res": {
+      "type": "object",
+      "properties": {
+        "abstainQty": {
+          "description" : "Abstain Quantity",
+          "type": "number"
+        },
+        "againstMngtQty": {
+          "description" : "Against Management Quantity",
+          "type": "number"
+        },
+        "againstQty": {
+          "description" : "Against Quantity",
+          "type": "number"
+        },
+        "blankQty": {
+          "description" : "Blank Quantity",
+          "type": "number"
+        },
+        "custBp": {
+          "description" : "Custodian Business PartnerReferencing: `/obj-bps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/obj_ref" }
+          ]
+        },
+        "discrnyQty": {
+          "description" : "Discretionary Quantity",
+          "type": "number"
+        },
+        "forQty": {
+          "description" : "For Quantity",
+          "type": "number"
+        },
+        "issuerLbl": {
+          "description" : "Issuer Label",
+          "type": "string"
+        },
+        "noActionQty": {
+          "description" : "No Action Quantity",
+          "type": "number"
+        },
+        "oneYearQty": {
+          "description" : "One Year Quantity",
+          "type": "number"
+        },
+        "resvStatus": {
+          "description" : "Resolution StatusReferencing: `/code-srd2-resv-statuss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "threeYearQty": {
+          "description" : "Three Years Quantity",
+          "type": "number"
+        },
+        "twoYearQty": {
+          "description" : "Two Years Quantity",
+          "type": "number"
+        },
+        "withMngtQty": {
+          "description" : "With Management Quantity",
+          "type": "number"
+        },
+        "withhQty": {
+          "description" : "Withhold Quantity",
+          "type": "number"
+        }
+      }
+    },
+    "docp_proxy_vote_rsv_desc": {
+      "type": "object",
+      "properties": {
+        "descnTxt1": {
+          "description" : "Resolution Description Text 1",
+          "type": "string"
+        },
+        "descnTxt2": {
+          "description" : "Resolution Description Text 2",
+          "type": "string"
+        }
+      }
+    },
+    "docp_proxy_vote_vote_instr": {
+      "type": "object",
+      "properties": {
+        "voteInstr": {
+          "description" : "Vote Instruction TypeReferencing: `/code-srd2-vote-instr-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        }
+      }
+    },
+    "number": {
+      "type": "object",
+      "properties": {
+      }
+    },
+    "obj_key_ref_": {
+      "type": "object",
+      "properties": {
+        "objKey": {
+          "description" : "Referencing: `/code-obj-keys/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "val": {
+          "description" : "Key value",
+          "type": "string"
+        }
+      }
+    },
+    "obj_ref": {
+      "type": "object",
+      "properties": {
+        "_href": {
+          "description" : "Reference/link",
+          "type": "string"
+        },
+        "_ident": {
+          "description" : "Only used for workItem use cases, cross-reference in workItem context.",
+          "type": "string"
+        },
+        "id": {
+          "description" : "Numeric reference",
+          "type": "integer"
+        },
+        "keyList": {
+          "type": "array",
+          "items": {
+            "description": "Key value object reference ",
+            "allOf": [
+              { "$ref": "#/definitions/obj_key_ref_" }
+            ]
+          }
+        }
+      }
+    },
+    "user_ref": {
+      "type": "object",
+      "properties": {
+        "_href": {
+          "description" : "Reference/link",
+          "type": "string"
+        },
+        "id": {
+          "description" : "Numeric reference",
+          "type": "integer"
+        }
+      }
+    }
+  }
+}

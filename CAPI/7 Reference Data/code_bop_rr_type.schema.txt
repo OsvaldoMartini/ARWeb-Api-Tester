@@ -1,0 +1,212 @@
+{
+  "$id": "https://avaloq.com/code_bop_rr_type.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/code_bop_rr_type",
+  "definitions": {
+    "code_tab_ref": {
+      "type": "object",
+      "properties": {
+        "_href": {
+          "description" : "Reference/link",
+          "type": "string"
+        },
+        "id": {
+          "description" : "Numeric reference",
+          "type": "integer"
+        },
+        "ident": {
+          "description" : "Unique symbolic reference",
+          "type": "string"
+        },
+        "intlId": {
+          "description" : "Symbolic reference",
+          "type": "string"
+        }
+      }
+    },
+    "code_bop_rr_types": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/code_bop_rr_type"
+      },
+      "uniqueItems": true
+    },
+    "code_bop_rr_type": {
+      "type": "object",
+      "properties": {
+        "activ": {
+          "type": "boolean"
+        },
+        "countryIso": {
+          "type": "string"
+        },
+        "cssName": {
+          "type": "string"
+        },
+        "descNumber1": {
+          "type": "string"
+        },
+        "descNumber2": {
+          "type": "string"
+        },
+        "descNumber3": {
+          "type": "string"
+        },
+        "descText1": {
+          "type": "string"
+        },
+        "descText10": {
+          "type": "string"
+        },
+        "descText11": {
+          "type": "string"
+        },
+        "descText12": {
+          "type": "string"
+        },
+        "descText13": {
+          "type": "string"
+        },
+        "descText14": {
+          "type": "string"
+        },
+        "descText15": {
+          "type": "string"
+        },
+        "descText2": {
+          "type": "string"
+        },
+        "descText3": {
+          "type": "string"
+        },
+        "descText4": {
+          "type": "string"
+        },
+        "descText5": {
+          "type": "string"
+        },
+        "descText6": {
+          "type": "string"
+        },
+        "descText7": {
+          "type": "string"
+        },
+        "descText8": {
+          "type": "string"
+        },
+        "descText9": {
+          "type": "string"
+        },
+        "descn": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "ident": {
+          "type": "string"
+        },
+        "intlId": {
+          "type": "string"
+        },
+        "labelNumber1": {
+          "type": "string"
+        },
+        "labelNumber2": {
+          "type": "string"
+        },
+        "labelNumber3": {
+          "type": "string"
+        },
+        "labelText1": {
+          "type": "string"
+        },
+        "labelText10": {
+          "type": "string"
+        },
+        "labelText11": {
+          "type": "string"
+        },
+        "labelText12": {
+          "type": "string"
+        },
+        "labelText13": {
+          "type": "string"
+        },
+        "labelText14": {
+          "type": "string"
+        },
+        "labelText15": {
+          "type": "string"
+        },
+        "labelText2": {
+          "type": "string"
+        },
+        "labelText3": {
+          "type": "string"
+        },
+        "labelText4": {
+          "type": "string"
+        },
+        "labelText5": {
+          "type": "string"
+        },
+        "labelText6": {
+          "type": "string"
+        },
+        "labelText7": {
+          "type": "string"
+        },
+        "labelText8": {
+          "type": "string"
+        },
+        "labelText9": {
+          "type": "string"
+        },
+        "metaTypList": {
+          "type": "array",
+          "items": {
+            "description": "Referencing: `/meta-typs/{id}`",
+            "allOf": [
+              { "$ref": "#/definitions/code_tab_ref" }
+            ]
+          }
+        },
+        "name": {
+          "type": "string"
+        },
+        "nameI18nList": {
+          "type": "array",
+          "items": {
+            "description" : "Full translation list for name field. Only visible within compound APIs ",
+            "allOf": [
+              { "$ref": "#/definitions/name_i18n"
+               }
+              ]
+          }
+        },
+        "rrRep": {
+          "type": "string"
+        },
+        "userId": {
+          "type": "string"
+        }
+      }
+    },
+    "name_i18n": {
+      "type": "object",
+      "properties": {
+        "lang": {
+          "description" : "LanguageReferencing: `/code-langs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref"
+             }
+            ]
+        },
+        "text": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

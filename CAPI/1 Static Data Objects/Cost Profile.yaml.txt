@@ -1,0 +1,1233 @@
+openapi: "3.0.2"
+security:
+  - bearerAuth: []
+
+info:
+  title: "Cost Profile API"
+  version: "3.13.2"
+  x-avq$categories:
+    - capi
+
+servers:
+- url: "/api1/"
+  description: "Development server"
+
+paths:
+  /obj-costps:
+    get:
+      tags:
+      - API endpoints
+      summary: Get Cost Profile objects.
+      description: |
+        Get a collection of `Cost Profile` objects.
+        The result set can be restricted through filter parameter.
+        Only `Cost Profile` objects will be returned that can be accessed by the user (security applied).
+        Paging is supported with parameters *limit* and *offset*.
+    
+      parameters:
+      - $ref: '#/components/parameters/Filter'
+      - $ref: '#/components/parameters/PageLimit'
+      - $ref: '#/components/parameters/PageOffset'
+      - $ref: '#/components/parameters/HrefActive'
+      - $ref: '#/components/parameters/IncludeInactive'
+      - $ref: '#/components/parameters/Accept-Encoding'
+      - $ref: '#/components/parameters/Accept-Language'
+    
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            Content-Language:
+              $ref: '#/components/headers/Content-Language'
+            X-Has-Next-Page:
+              $ref: '#/components/headers/X-Has-Next-Page'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/obj_costp'
+        'default':
+          $ref: '#/components/responses/Problem'
+
+  /obj-costps/{obj_costp_id}:
+    get:
+      tags:
+      - API endpoints
+      summary: "Get a Cost Profile object"
+      description: |
+        *Get a `Cost Profile` object by ID*.
+        Only `Cost Profile` object will be returned that can be accessed by the user (security applied).
+        If user does not have access to resource, not found error will be returned instead of unauthorized - to disallow attacks.
+      parameters:
+      - in: path
+        name: obj_costp_id
+        schema:
+          type: string
+        required: true
+        description: ID of the `Cost Profile` object to get
+      - $ref: '#/components/parameters/HrefActive'
+      - $ref: '#/components/parameters/IncludeInactive'
+      - $ref: '#/components/parameters/Accept-Encoding'
+      - $ref: '#/components/parameters/If-None-Match'
+      - $ref: '#/components/parameters/Accept-Language'
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            Content-Language:
+              $ref: '#/components/headers/Content-Language'
+            ETag:
+              $ref: '#/components/headers/ETag'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/obj_costp'
+        '304':
+          description: Not modified
+        'default':
+          $ref: '#/components/responses/Problem'
+
+
+components:
+  securitySchemes:
+    bearerAuth:            # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT    # optional, arbitrary value for documentation purposes
+
+  schemas:
+    code_tab_ref:
+      title: code_tab_ref
+      type: object
+      properties:
+        _href:
+          description: "Reference/link"
+          type: string
+          readOnly: true
+        id:
+          description: "Numeric reference"
+          type: integer
+          format: int32
+        ident:
+          description: "Unique symbolic reference"
+          type: string
+        intlId:
+          description: "Symbolic reference"
+          type: string
+          readOnly: true
+    code_tab_ref_action:
+      title: code_tab_ref_action
+      type: object
+      properties:
+        action:
+          enum: [hold, proceed, discard]
+          example: hold
+          description: "enum reference to action"
+          type: string
+          writeOnly: true
+        id:
+          description: "Numeric reference"
+          type: integer
+          format: int32
+        ident:
+          description: "Unique symbolic reference"
+          type: string
+    doc_ref:
+      title: doc_ref
+      type: object
+      properties:
+        _href:
+          description: "Reference/link"
+          type: string
+          readOnly: true
+        _ident:
+          description: "Only used for workItem use cases, cross-reference in workItem context."
+          type: string
+          writeOnly: true
+        id:
+          description: "Numeric reference"
+          type: integer
+          format: int64
+    obj_add:
+      title: obj_add
+      type: object
+      properties:
+        boolVal:
+          description: "Value"
+          type: boolean
+          x-additionalFieldType: extn_generic
+        bu:
+          description: "Business Unit<br>Referencing: `/obj-bps/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          x-additionalFieldType: extn_generic
+        ctx:
+          description: "Context"
+          type: string
+          x-additionalFieldType: extn_generic
+        ctype:
+          description: "Data Type"
+          type: string
+          x-additionalFieldType: extn_generic
+        dataType:
+          description: "Data Type"
+          type: string
+          readOnly: true
+          x-additionalFieldType: extn_generic
+        dateVal:
+          description: "Value"
+          type: string
+          format: date
+          x-additionalFieldType: extn_generic
+        idVal:
+          description: "Value"
+          type: integer
+          format: int32
+          x-additionalFieldType: extn_generic
+        isMultiVal:
+          description: "Is Multi Value"
+          type: boolean
+          x-additionalFieldType: extn_generic
+        nrVal:
+          description: "Value"
+          type: number
+          x-additionalFieldType: extn_generic
+        obj:
+          description: "Referencing: `/objs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          readOnly: true
+          x-additionalFieldType: extn_generic
+        objAdd:
+          description: "Referencing: `/code-obj-adds/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          x-additionalFieldType: extn_generic
+        textVal:
+          description: "Value"
+          type: string
+          x-additionalFieldType: extn_generic
+        tswtzVal:
+          description: "Value"
+          type: string
+          format: date-time
+          x-additionalFieldType: extn_generic
+        type:
+          description: "Data Type"
+          type: string
+          x-additionalFieldType: extn_generic
+        val:
+          description: "Value"
+          type: string
+          x-additionalFieldType: extn_generic
+        valList:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_add_val'
+          readOnly: true
+          x-additionalFieldType: extn_generic
+    obj_add_val:
+      title: obj_add_val
+      type: object
+      properties:
+        dateVal:
+          type: string
+          format: date
+          readOnly: true
+          x-additionalFieldType: extn_generic
+        idVal:
+          type: integer
+          format: int32
+          readOnly: true
+          x-additionalFieldType: extn_generic
+        nrVal:
+          type: number
+          readOnly: true
+          x-additionalFieldType: extn_generic
+        seqNr:
+          type: integer
+          format: int32
+          readOnly: true
+          x-additionalFieldType: extn_generic
+        textVal:
+          type: string
+          readOnly: true
+          x-additionalFieldType: extn_generic
+        tswtzVal:
+          type: string
+          format: date-time
+          readOnly: true
+          x-additionalFieldType: extn_generic
+        val:
+          type: string
+          readOnly: true
+          x-additionalFieldType: extn_generic
+    obj_classif:
+      title: obj_classif
+      type: object
+      properties:
+        bu:
+          description: "Business Unit<br>Referencing: `/obj-bps/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          x-additionalFieldType: extn_generic
+        class:
+          description: "Class<br>Referencing: `/code-obj-classs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          x-additionalFieldType: extn_generic
+        classA:
+          description: "Automatic"
+          type: boolean
+          x-additionalFieldType: extn_generic
+        classFactor:
+          description: "Factor"
+          type: number
+          x-additionalFieldType: extn_generic
+        cltSgmtCalc:
+          description: "Calculated Client Segment<br>Referencing: `/code-person-mktng-sgmts/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          x-additionalFieldType: extn_generic
+        endDate:
+          description: "Valid until"
+          type: string
+          format: date
+          x-additionalFieldType: extn_generic
+        histStatus:
+          description: "Hist Status<br>Referencing: `/code-hist-statuss/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+          x-additionalFieldType: extn_generic
+        indivFeep:
+          description: "Indiv. Fee Profile<br>Referencing: `/obj-feeps/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          x-additionalFieldType: extn_generic
+        isInht:
+          description: "Is Inherited"
+          type: boolean
+          x-additionalFieldType: extn_generic
+        objClassif:
+          description: "Referencing: `/code-obj-classifs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          x-additionalFieldType: extn_generic
+        remark:
+          description: "Remark"
+          type: string
+          x-additionalFieldType: extn_generic
+        secUser:
+          description: "User<br>Referencing: `/users/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/user_ref'
+          readOnly: true
+          x-additionalFieldType: extn_generic
+        spcdCostp:
+          description: "SPCD Cost Profile<br>Referencing: `/obj-costps/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          x-additionalFieldType: extn_generic
+        spcdCurry:
+          description: "SPCD Currency<br>Referencing: `/obj-assets/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          x-additionalFieldType: extn_generic
+        spcdMaxVal:
+          description: "SPCD Maximum"
+          type: number
+          x-additionalFieldType: extn_generic
+        spcdMinVal:
+          description: "SPCD Minimum"
+          type: number
+          x-additionalFieldType: extn_generic
+        spcdMinmaxValType:
+          description: "SPCD Min/Max Type<br>Referencing: `/code-cost-ovr-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          x-additionalFieldType: extn_generic
+        spcdOffsetVal:
+          description: "SPCD Offset"
+          type: number
+          x-additionalFieldType: extn_generic
+        spcdOffsetValType:
+          description: "SPCD Offset Type<br>Referencing: `/code-cost-ovr-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          x-additionalFieldType: extn_generic
+        spcdReason:
+          description: "SPCD Reason<br>Referencing: `/code-cost-ovr-reasons/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          x-additionalFieldType: extn_generic
+        spcdVal:
+          description: "SPCD Value"
+          type: number
+          x-additionalFieldType: extn_generic
+        spcdValType:
+          description: "SPCD Value Type<br>Referencing: `/code-cost-ovr-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          x-additionalFieldType: extn_generic
+        startDate:
+          description: "Valid from"
+          type: string
+          format: date
+          x-additionalFieldType: extn_generic
+        timestamp:
+          description: "Timestamp"
+          type: string
+          format: date-time
+          readOnly: true
+          x-additionalFieldType: extn_generic
+        userRef:
+          description: "Responsible User<br>Referencing: `/users/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/user_ref'
+          x-additionalFieldType: extn_generic
+    obj_costp:
+      title: obj_costp
+      type: object
+      properties:
+        addList:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_add'
+          x-additionalFieldType: extn_generic
+        alwOvr:
+          description: "Is It Permitted For This Cost Profile To Be Overridden"
+          type: boolean
+          readOnly: true
+        bdeRecVersion:
+          type: integer
+          format: int64
+          readOnly: true
+        bookKind:
+          description: "Book kind<br>Referencing: `/code-book-kinds/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        bu:
+          description: "Business unit<br>Referencing: `/obj-bps/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        classifList:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif'
+          x-additionalFieldType: extn_generic
+        closeDate:
+          description: "Closing date"
+          type: string
+          format: date
+          readOnly: true
+        costKeepPeriod:
+          description: "Cost keeping period<br>Referencing: `/code-cost-keep-periods/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        costpTariffList:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_costp_tariff'
+          readOnly: true
+        doc:
+          description: "Document id if the object is being modified<br>Referencing: `/docs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/doc_ref'
+        dsblAutoPrio:
+          description: "Disable Auto Priority Offset"
+          type: boolean
+          readOnly: true
+        endDate:
+          description: "End date"
+          type: string
+          format: date
+          readOnly: true
+        extn:
+          allOf:
+            - $ref: '#/components/schemas/obj_costp_extn'
+          readOnly: true
+        id:
+          description: "ID<br>Referencing: `/objs/{id}`"
+          type: integer
+          format: int32
+        keyList:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key'
+          x-additionalFieldType: extn_generic
+        lastTrans:
+          $ref: '#/components/schemas/obj_trans'
+        masterCostp:
+          description: "The Cost Profile <br>Referencing: `/obj-costps/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          readOnly: true
+        mcritTempl:
+          description: "Matching criteria template<br>Referencing: `/code-costp-mcrit-templs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        mdfTimestp:
+          description: "Entry/Modification timestamp"
+          type: string
+          format: date
+          readOnly: true
+        metaTyp1:
+          description: "Business type 1<br>Referencing: `/meta-typs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        metaTyp2:
+          description: "Business type 2<br>Referencing: `/meta-typs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        metaTyp3:
+          description: "Business type 3<br>Referencing: `/meta-typs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        objName:
+          allOf:
+            - $ref: '#/components/schemas/obj_name'
+          readOnly: true
+        objNameList:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_name'
+        objSubType:
+          description: "Object sub-type<br>Referencing: `/code-obj-sub-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        objType:
+          description: "Object type<br>Referencing: `/code-obj-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        openDate:
+          description: "Opening date"
+          type: string
+          format: date
+          readOnly: true
+        remarkList:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_remark'
+        sdsInstn:
+          description: "SDS instance ID<br>Referencing: `/code-extl-syss/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        sortAlpha:
+          description: "Alpha-numeric sort value"
+          type: string
+          readOnly: true
+        sortNr:
+          description: "Numeric sort value"
+          type: integer
+          format: int64
+          readOnly: true
+        spcdClassifGrp:
+          description: "Cost Profile Special Condition Classification Group<br>Referencing: `/code-costp-spcd-classif-grps/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        startDate:
+          description: "Start date"
+          type: string
+          format: date
+          readOnly: true
+        transList:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_trans'
+    obj_costp_extn:
+      title: obj_costp_extn
+      type: object
+      properties:
+        costpNr:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key_single_'
+          readOnly: true
+        costpSym:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key_single_'
+          readOnly: true
+        mba$costpLgcy:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key_single_'
+          readOnly: true
+    obj_costp_tariff:
+      title: obj_costp_tariff
+      type: object
+      properties:
+        costQtySign:
+          description: "Cost quantity sign<br>Referencing: `/code-cost-qty-signs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        costQtyType:
+          description: "Cost quantity type<br>Referencing: `/code-cost-qty-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        descn:
+          description: "Description"
+          type: string
+          readOnly: true
+        descnLang1:
+          description: "Description in language 1"
+          type: string
+          readOnly: true
+        descnLang2:
+          description: "Description in language 2"
+          type: string
+          readOnly: true
+        descnLang3:
+          description: "Description in language 3"
+          type: string
+          readOnly: true
+        descnLang4:
+          description: "Description in language 4"
+          type: string
+          readOnly: true
+        dscntCurry:
+          description: "SPCD Discount currency<br>Referencing: `/obj-assets/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          readOnly: true
+        dscntMinmaxCurry:
+          description: "SPCD Discount minimum/maximum currency<br>Referencing: `/obj-assets/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          readOnly: true
+        dscntMinmaxOvrType:
+          description: "SPCD Discount minimum/maximum override type<br>Referencing: `/code-cost-ovr-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        dscntMinmaxVal:
+          description: "SPCD Discount minimum/maximum"
+          type: number
+          readOnly: true
+        dscntOvrType:
+          description: "SPCD Discount override type<br>Referencing: `/code-cost-ovr-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        dscntVal:
+          description: "SPCD Discount"
+          type: number
+          readOnly: true
+        factor:
+          description: "Factor"
+          type: number
+          readOnly: true
+        factorCurry:
+          description: "Factor currency<br>Referencing: `/obj-assets/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          readOnly: true
+        factorUseStd:
+          description: "Use factor from the standard cost rule"
+          type: boolean
+          readOnly: true
+        lang1:
+          description: "Language<br>Referencing: `/code-langs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        lang2:
+          description: "Language<br>Referencing: `/code-langs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        lang3:
+          description: "Language<br>Referencing: `/code-langs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        lang4:
+          description: "Language<br>Referencing: `/code-langs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        maxim:
+          description: "Maximum amount"
+          type: number
+          readOnly: true
+        maximUseStd:
+          description: "Use maximum amount from the standard cost rule"
+          type: boolean
+          readOnly: true
+        minim:
+          description: "Minimum amount"
+          type: number
+          readOnly: true
+        minimMaximCurry:
+          description: "Minimum and maximum amount currency<br>Referencing: `/obj-assets/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          readOnly: true
+        minimUseStd:
+          description: "Use minimum amount from the standard cost rule"
+          type: boolean
+          readOnly: true
+        offset:
+          description: "Offset"
+          type: number
+          readOnly: true
+        offsetCurry:
+          description: "Offset currency<br>Referencing: `/obj-assets/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          readOnly: true
+        offsetUseStd:
+          description: "Use offset from the standard cost rule"
+          type: boolean
+          readOnly: true
+        prioOffset:
+          description: "Prio offset"
+          type: number
+          readOnly: true
+        prioOffsetA:
+          description: "Was the prio offset set manually?"
+          type: boolean
+          readOnly: true
+        rd1:
+          description: "Rounding<br>Referencing: `/code-cost-qty-rds/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        rd1Curry:
+          description: "Rounding currency<br>Referencing: `/obj-assets/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          readOnly: true
+        refNr:
+          description: "Reference Nr"
+          type: string
+          readOnly: true
+        relProd:
+          description: "Related product id<br>Referencing: `/obj-prods/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          readOnly: true
+        tariffBoundList:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_costp_tariff_bound'
+          readOnly: true
+        tariffMcritList:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_costp_tariff_mcrit'
+          readOnly: true
+        validFrom:
+          description: "Valid from date"
+          type: string
+          format: date
+          readOnly: true
+        validTo:
+          description: "Valid to date"
+          type: string
+          format: date
+          readOnly: true
+    obj_costp_tariff_bound:
+      title: obj_costp_tariff_bound
+      type: object
+      properties:
+        boundAbs:
+          description: "Are boundary absolute?"
+          type: boolean
+          readOnly: true
+        boundCostQtyType:
+          description: "Boundary quantity type<br>Referencing: `/code-cost-qty-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        boundCurry:
+          description: "Boundary currency<br>Referencing: `/obj-assets/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          readOnly: true
+        boundFromExcl:
+          description: "Exclude boundary from amount itself"
+          type: boolean
+          readOnly: true
+        boundToExcl:
+          description: "Exclude boundary to amount itself"
+          type: boolean
+          readOnly: true
+        costQtyType:
+          description: "Cost quantity type<br>Referencing: `/code-cost-qty-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        factor:
+          description: "Factor"
+          type: number
+          readOnly: true
+        factorCurry:
+          description: "Factor currency<br>Referencing: `/obj-assets/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          readOnly: true
+        grad:
+          description: "Is graduated?"
+          type: boolean
+          readOnly: true
+        maxim:
+          description: "Boundary Maximum"
+          type: number
+          readOnly: true
+        minim:
+          description: "Boundary Minimum"
+          type: number
+          readOnly: true
+        minimMaximCurry:
+          description: "Boundary minimum and maximum currency<br>Referencing: `/obj-assets/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          readOnly: true
+        qty1BoundFrom:
+          description: "Boundary from"
+          type: number
+          readOnly: true
+        qty1BoundTo:
+          description: "Boundary to"
+          type: number
+          readOnly: true
+    obj_costp_tariff_mcrit:
+      title: obj_costp_tariff_mcrit
+      type: object
+      properties:
+        id1:
+          description: "Id 1"
+          type: number
+          readOnly: true
+        id2:
+          description: "Id 2"
+          type: number
+          readOnly: true
+        id3:
+          description: "Id 3"
+          type: number
+          readOnly: true
+        mcritType:
+          description: "Matching criteria type<br>Referencing: `/code-costp-mcrit-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        text:
+          description: "Text"
+          type: string
+          readOnly: true
+    obj_costps:
+      title: List of obj_costp
+      type: array
+      items:
+        $ref: '#/components/schemas/obj_costp'
+      uniqueItems: true
+    obj_key:
+      title: obj_key
+      type: object
+      properties:
+        obj:
+          description: "Referencing: `/objs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          readOnly: true
+          x-additionalFieldType: extn_generic
+        obj1:
+          description: "Objects<br>Referencing: `/objs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          x-additionalFieldType: extn_generic
+        obj1Class:
+          description: "Object Class"
+          type: string
+          readOnly: true
+          x-additionalFieldType: extn_generic
+        obj1IsNull:
+          description: "Empty"
+          type: boolean
+          readOnly: true
+          x-additionalFieldType: extn_generic
+        obj2:
+          description: "Objects<br>Referencing: `/objs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          x-additionalFieldType: extn_generic
+        obj2Class:
+          description: "Object Class"
+          type: string
+          readOnly: true
+          x-additionalFieldType: extn_generic
+        obj2IsNull:
+          description: "Empty"
+          type: boolean
+          readOnly: true
+          x-additionalFieldType: extn_generic
+        obj3:
+          description: "Objects<br>Referencing: `/objs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          x-additionalFieldType: extn_generic
+        obj3Class:
+          description: "Object Class"
+          type: string
+          readOnly: true
+          x-additionalFieldType: extn_generic
+        obj3IsNull:
+          description: "Empty"
+          type: boolean
+          readOnly: true
+          x-additionalFieldType: extn_generic
+        obj4:
+          description: "Objects<br>Referencing: `/objs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          x-additionalFieldType: extn_generic
+        obj4Class:
+          description: "Object Class"
+          type: string
+          readOnly: true
+          x-additionalFieldType: extn_generic
+        obj4IsNull:
+          description: "Empty"
+          type: boolean
+          readOnly: true
+          x-additionalFieldType: extn_generic
+        objKey:
+          description: "Referencing: `/code-obj-keys/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          x-additionalFieldType: extn_generic
+        prio:
+          description: "Priority"
+          type: string
+          x-additionalFieldType: extn_generic
+        refObj:
+          description: "Reference<br>Referencing: `/objs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          x-additionalFieldType: extn_generic
+        ruleId:
+          description: "Rule"
+          type: integer
+          format: int32
+          readOnly: true
+          x-additionalFieldType: extn_generic
+        ruleTempl:
+          description: "Template<br>Referencing: `/code-rule-templs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          x-additionalFieldType: extn_generic
+        seqNr:
+          type: integer
+          format: int32
+          x-additionalFieldType: extn_generic
+        trigMetaTyp:
+          description: "Triggering Meta Typ<br>Referencing: `/meta-typs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          x-additionalFieldType: extn_generic
+        trigOrderType:
+          description: "Triggering Order Type<br>Referencing: `/code-order-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          x-additionalFieldType: extn_generic
+        val:
+          description: "Value"
+          type: string
+          x-additionalFieldType: extn_generic
+        valA:
+          description: "Automatic"
+          type: boolean
+          x-additionalFieldType: extn_generic
+    obj_key_ref_:
+      title: obj_key_ref_
+      type: object
+      properties:
+        objKey:
+          description: "Referencing: `/code-obj-keys/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        val:
+          description: "Key value"
+          type: string
+    obj_key_single_:
+      title: obj_key_single_
+      type: object
+      properties:
+        refObj:
+          description: "Reference object<br>Referencing: `/objs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          readOnly: true
+        val:
+          description: "Value"
+          type: string
+          readOnly: true
+    obj_name:
+      title: obj_name
+      type: object
+      properties:
+        dateValid:
+          description: "Date Valid"
+          type: string
+          format: date
+          readOnly: true
+        dateValidTo:
+          description: "Date Valid to"
+          type: string
+          format: date
+          readOnly: true
+        insTime:
+          description: "Insertion Time"
+          type: string
+          format: date-time
+          readOnly: true
+        lang:
+          description: "Language<br>Referencing: `/code-langs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        name:
+          description: "Name"
+          type: string
+        nameA:
+          description: "Name Auto Flag"
+          type: string
+        nameAbbr:
+          description: "Abbreviation"
+          type: string
+        nameAbbrA:
+          description: "Abbreviation Auto Flag"
+          type: string
+        nameIntl:
+          description: "Internal Name"
+          type: string
+        nameIntlA:
+          description: "Internal Name Auto Flag"
+          type: string
+        nameLong:
+          description: "Long Name"
+          type: string
+        nameLongA:
+          description: "Long Name Auto Flag"
+          type: string
+    obj_ref:
+      title: obj_ref
+      type: object
+      properties:
+        _href:
+          description: "Reference/link"
+          type: string
+          readOnly: true
+        _ident:
+          description: "Only used for workItem use cases, cross-reference in workItem context."
+          type: string
+          writeOnly: true
+        id:
+          description: "Numeric reference"
+          type: integer
+          format: int32
+        keyList:
+          description: "Key value object reference "
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key_ref_'
+          writeOnly: true
+    obj_remark:
+      title: obj_remark
+      type: object
+      properties:
+        attch:
+          type: string
+        dateValidTo:
+          type: string
+          format: date
+        langList:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_remark_det'
+        subType:
+          description: "Referencing: `/code-remark-sub-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        text:
+          type: string
+        timestamp:
+          type: string
+          format: date-time-no-tz
+        topic:
+          type: string
+        type:
+          description: "Referencing: `/code-remark-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        user:
+          description: "Referencing: `/users/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/user_ref'
+    obj_remark_det:
+      title: obj_remark_det
+      type: object
+      properties:
+        lang:
+          description: "Referencing: `/code-langs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        text:
+          type: string
+    obj_trans:
+      title: obj_trans
+      type: object
+      properties:
+        doc:
+          description: "Referencing: `/docs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/doc_ref'
+          readOnly: true
+        timestamp:
+          type: string
+          format: date-time-no-tz
+          readOnly: true
+        userstamp:
+          type: string
+          readOnly: true
+    user_ref:
+      title: user_ref
+      type: object
+      properties:
+        _href:
+          description: "Reference/link"
+          type: string
+          readOnly: true
+        id:
+          description: "Numeric reference"
+          type: integer
+          format: int32
+
+  headers:
+    Content-Language:
+      schema:
+        type: string
+    X-Has-Next-Page:
+      schema:
+        type: string
+    Location:
+      schema:
+        type: string
+      description: Location of the created resource
+    ETag:
+      schema:
+        type: string
+      description: Current entity-tag
+
+  parameters:
+    Filter:
+      name: filter
+      in: query
+      description: Expression to reduce the result set
+      schema:
+        type: string
+    PageLimit:
+      name: limit
+      in: query
+      description: Limits the number of items on a page
+      schema:
+        type: integer
+        default: 5
+        minimum: 1
+        maximum: 200
+    PageOffset:
+      name: offset
+      in: query
+      description: Number of records to be skipped before selecting the result set
+      schema:
+        type: integer
+        minimum: 0
+    HrefActive:
+      name: href
+      in: query
+      description: Activates the href
+      schema:
+        type: boolean
+    IncludeInactive:
+      name: include_inactive
+      in: query
+      description: Includes inactive data
+      schema:
+        type: boolean
+    If-None-Match:
+      name: If-None-Match
+      in: header
+      description: Specifies version known by client
+      schema:
+        type: string
+      required: false
+    If-Match:
+      name: If-Match
+      in: header
+      description: Specifies entity-tag known by client
+      schema:
+        type: string
+      required: false
+    Accept-Encoding:
+      name: Accept-Encoding
+      in: header
+      description: >-
+        Compression scheme<br/>
+        Warning: HTTP compression might not lead to better performance
+      schema:
+        type: string
+      example: gzip, deflate
+      required: false
+    Accept-Language:
+      name: Accept-Language
+      in: header
+      description: Specifies the language and locale that the client prefers
+      schema:
+        type: string
+      example: de-CH, en-US
+      required: false
+    X-Request-ID:
+      name: X-Request-ID
+      in: header
+      description: Specifies the request id in UUID format. If not provided, it will be generated automatically.
+      schema:
+        type: string
+        format: uuid
+      required: false
+  responses:
+    Problem:
+      description: RFC7807 Problem
+      content:
+        application/problem+json:
+          schema:
+            type: object
+            properties:
+              type:
+                type: string
+              title:
+                type: string
+              status:
+                type: number
+                format: integer
+              detail:
+                type: string
+            additionalProperties: true
+            required:
+              - type
+              - title
+              - status
+

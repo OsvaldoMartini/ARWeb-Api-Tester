@@ -1,0 +1,176 @@
+{
+  "$id": "https://avaloq.com/wfc_status_person.mba$imed.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/wfc_status_person.mba$imed",
+  "definitions": {
+    "code_tab_ref": {
+      "type": "object",
+      "properties": {
+        "_href": {
+          "description" : "Reference/link",
+          "type": "string"
+        },
+        "id": {
+          "description" : "Numeric reference",
+          "type": "integer"
+        },
+        "ident": {
+          "description" : "Unique symbolic reference",
+          "type": "string"
+        },
+        "intlId": {
+          "description" : "Symbolic reference",
+          "type": "string"
+        }
+      }
+    },
+    "wfc_status_person.mba$imeds": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/wfc_status_person.mba$imed"
+      },
+      "uniqueItems": true
+    },
+    "wfc_status_person.mba$imed": {
+      "type": "object",
+      "properties": {
+        "autoExecWfaId": {
+          "type": "integer"
+        },
+        "bgpLink": {
+          "type": "string"
+        },
+        "descn": {
+          "type": "string"
+        },
+        "docEditStyle": {
+          "description" : "Referencing: `/code-doc-edit-styles/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "evtStatus": {
+          "description" : "Referencing: `/code-evt-statuss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "extlSys": {
+          "description" : "Referencing: `/code-extl-syss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "formGrpList": {
+          "type": "string"
+        },
+        "formId": {
+          "type": "integer"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "ident": {
+          "type": "string"
+        },
+        "intlId": {
+          "type": "string"
+        },
+        "isFrozen": {
+          "type": "string"
+        },
+        "isInWork": {
+          "type": "string"
+        },
+        "isInactiv": {
+          "type": "string"
+        },
+        "isSusp": {
+          "type": "string"
+        },
+        "isTrans": {
+          "type": "string"
+        },
+        "item": {
+          "type": "string"
+        },
+        "keepTrx": {
+          "type": "string"
+        },
+        "metaTyp": {
+          "description" : "Referencing: `/meta-typs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mpXrateStatus": {
+          "description" : "Referencing: `/code-mp-xrate-statuss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "name": {
+          "type": "string"
+        },
+        "nameI18nList": {
+          "type": "array",
+          "items": {
+            "description" : "Full translation list for name field. Only visible within compound APIs ",
+            "allOf": [
+              { "$ref": "#/definitions/name_i18n"
+               }
+              ]
+          }
+        },
+        "newEvtStatus": {
+          "description" : "Referencing: `/code-evt-statuss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "printStatus": {
+          "description" : "Referencing: `/code-print-statuss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "userId": {
+          "type": "string"
+        },
+        "wfcId": {
+          "type": "integer"
+        },
+        "wfcStatusReject": {
+          "description" : "Referencing: `/wfc-statuss/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "wfcStatusWfcGrpIdListId": {
+          "type": "integer"
+        },
+        "wfsType": {
+          "description" : "Referencing: `/code-wfs-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        }
+      }
+    },
+    "name_i18n": {
+      "type": "object",
+      "properties": {
+        "lang": {
+          "description" : "LanguageReferencing: `/code-langs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref"
+             }
+            ]
+        },
+        "text": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

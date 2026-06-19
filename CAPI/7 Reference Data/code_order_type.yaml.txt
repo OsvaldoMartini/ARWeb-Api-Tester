@@ -1,0 +1,631 @@
+openapi: "3.0.2"
+security:
+  - bearerAuth: []
+
+info:
+  title: "code_order_type API"
+  version: "1.0.0"
+  x-avq$categories:
+    - capi
+
+servers:
+- url: "/api1/"
+  description: "Development server"
+
+paths:
+  /code-order-types:
+    get:
+      tags:
+      - API endpoints
+      summary: Get code_order_type references.
+      description: |
+        Get a collection of `code_order_type` references.
+        The result set can be restricted through filter parameter.
+        Only `code_order_type` references will be returned that can be accessed by the user (security applied).
+        Paging is supported with parameters *limit* and *offset*.
+    
+      parameters:
+      - $ref: '#/components/parameters/Filter'
+      - $ref: '#/components/parameters/PageLimit'
+      - $ref: '#/components/parameters/PageOffset'
+      - $ref: '#/components/parameters/HrefActive'
+      - $ref: '#/components/parameters/IncludeInactive'
+      - $ref: '#/components/parameters/Accept-Encoding'
+      - $ref: '#/components/parameters/Accept-Language'
+    
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            Content-Language:
+              $ref: '#/components/headers/Content-Language'
+            X-Has-Next-Page:
+              $ref: '#/components/headers/X-Has-Next-Page'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/code_order_type'
+        'default':
+          $ref: '#/components/responses/Problem'
+
+  /code-order-types/{code_order_type_id}:
+    get:
+      tags:
+      - API endpoints
+      summary: "Get a code_order_type reference"
+      description: |
+        *Get a `code_order_type` reference by ID*.
+        Only `code_order_type` reference will be returned that can be accessed by the user (security applied).
+        If user does not have access to resource, not found error will be returned instead of unauthorized - to disallow attacks.
+      parameters:
+      - in: path
+        name: code_order_type_id
+        schema:
+          type: string
+        required: true
+        description: ID of the `code_order_type` reference to get
+      - $ref: '#/components/parameters/HrefActive'
+      - $ref: '#/components/parameters/IncludeInactive'
+      - $ref: '#/components/parameters/Accept-Encoding'
+      - $ref: '#/components/parameters/If-None-Match'
+      - $ref: '#/components/parameters/Accept-Language'
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            Content-Language:
+              $ref: '#/components/headers/Content-Language'
+            ETag:
+              $ref: '#/components/headers/ETag'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/code_order_type'
+        '304':
+          description: Not modified
+        'default':
+          $ref: '#/components/responses/Problem'
+
+
+components:
+  securitySchemes:
+    bearerAuth:            # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT    # optional, arbitrary value for documentation purposes
+
+  schemas:
+    code_order_type:
+      title: code_order_type
+      type: object
+      properties:
+        activ:
+          type: boolean
+          readOnly: true
+        class:
+          type: string
+          readOnly: true
+        descn:
+          type: string
+          readOnly: true
+        extlId:
+          type: string
+          readOnly: true
+        id:
+          type: integer
+          readOnly: true
+        ident:
+          type: string
+          readOnly: true
+        intl2Id:
+          type: string
+          readOnly: true
+        intlId:
+          type: string
+          readOnly: true
+        mba$ccmLabel:
+          type: string
+          readOnly: true
+        mba$dfltReasonCode:
+          description: "Referencing: `/code-recon-reason-codes/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        mba$doAccpayChkBalacc:
+          type: boolean
+          readOnly: true
+        mba$doCalcMkt:
+          type: boolean
+          readOnly: true
+        mba$doChkPayDate:
+          type: boolean
+          readOnly: true
+        mba$doChkTaxDiff:
+          type: boolean
+          readOnly: true
+        mba$doEvalTaxDiff:
+          type: boolean
+          readOnly: true
+        mba$doGenSwiftMsg:
+          type: boolean
+          readOnly: true
+        mba$doOofxGenCrmIssue:
+          type: boolean
+          readOnly: true
+        mba$doOtcTrDtccBuysellChk:
+          type: boolean
+          readOnly: true
+        mba$doSendSwiftMt320:
+          type: boolean
+          readOnly: true
+        mba$doSendSwiftMt330:
+          type: boolean
+          readOnly: true
+        mba$doSkipApprv:
+          type: boolean
+          readOnly: true
+        mba$doSkipChk:
+          type: boolean
+          readOnly: true
+        mba$doSkipDigtCallbk:
+          type: boolean
+          readOnly: true
+        mba$doSkipManualActy:
+          type: boolean
+          readOnly: true
+        mba$doSuppTrxJustif:
+          type: boolean
+          readOnly: true
+        mba$doVfyDiscard:
+          type: boolean
+          readOnly: true
+        mba$envCompo:
+          description: "Referencing: `/code-env-compos/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        mba$form:
+          description: "Referencing: `/code-form-lights/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        mba$hasCcmSndPage:
+          type: boolean
+          readOnly: true
+        mba$hasIntlMacc:
+          type: boolean
+          readOnly: true
+        mba$hasStpEvt:
+          type: boolean
+          readOnly: true
+        mba$hasUndrly:
+          type: boolean
+          readOnly: true
+        mba$inpayPayMethod:
+          description: "Referencing: `/code-pay-methods/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        mba$isActvtAccpayTempl:
+          type: boolean
+          readOnly: true
+        mba$isActvtAccpayTemplCua:
+          type: boolean
+          readOnly: true
+        mba$isAutoGnrt:
+          type: boolean
+          readOnly: true
+        mba$isCcmAdv:
+          type: boolean
+          readOnly: true
+        mba$isCgtBlocked:
+          type: boolean
+          readOnly: true
+        mba$isCloseObj:
+          type: boolean
+          readOnly: true
+        mba$isCollatAdd:
+          type: boolean
+          readOnly: true
+        mba$isDdMandt:
+          type: boolean
+          readOnly: true
+        mba$isDdMandtContr:
+          type: boolean
+          readOnly: true
+        mba$isDirectRevs:
+          type: boolean
+          readOnly: true
+        mba$isDiscdAccpayTempl:
+          type: boolean
+          readOnly: true
+        mba$isDiscdAccpayTemplCua:
+          type: boolean
+          readOnly: true
+        mba$isDlvRcvRel:
+          type: boolean
+          readOnly: true
+        mba$isIncome:
+          type: boolean
+          readOnly: true
+        mba$isIncomeEvt:
+          type: boolean
+          readOnly: true
+        mba$isIntrMdf:
+          type: boolean
+          readOnly: true
+        mba$isIsdaTaxonFx005:
+          type: boolean
+          readOnly: true
+        mba$isIsdaTaxonFx006:
+          type: boolean
+          readOnly: true
+        mba$isMandAccpayEndDlv:
+          type: boolean
+          readOnly: true
+        mba$isMandAccpayOutpayType:
+          type: boolean
+          readOnly: true
+        mba$isMandAccpayStartDlv:
+          type: boolean
+          readOnly: true
+        mba$isMandOrdCont:
+          type: boolean
+          readOnly: true
+        mba$isMandOrdCua:
+          type: boolean
+          readOnly: true
+        mba$isMandOrdCuaAsset:
+          type: boolean
+          readOnly: true
+        mba$isMandPayOtType:
+          type: boolean
+          readOnly: true
+        mba$isMasterDataUpdRequ:
+          type: boolean
+          readOnly: true
+        mba$isNewObj:
+          type: boolean
+          readOnly: true
+        mba$isOofxAwvCode820:
+          type: boolean
+          readOnly: true
+        mba$isOofxAwvCode830:
+          type: boolean
+          readOnly: true
+        mba$isOofxBuy:
+          type: boolean
+          readOnly: true
+        mba$isOofxExe:
+          type: boolean
+          readOnly: true
+        mba$isOofxIsDigt:
+          type: boolean
+          readOnly: true
+        mba$isOofxKi:
+          type: boolean
+          readOnly: true
+        mba$isOofxKiko:
+          type: boolean
+          readOnly: true
+        mba$isOofxKo:
+          type: boolean
+          readOnly: true
+        mba$isOofxNoTouch:
+          type: boolean
+          readOnly: true
+        mba$isOofxOneTouch:
+          type: boolean
+          readOnly: true
+        mba$isOofxOpn:
+          type: boolean
+          readOnly: true
+        mba$isOofxOpnCash:
+          type: boolean
+          readOnly: true
+        mba$isOofxOpnCashNoTouch:
+          type: boolean
+          readOnly: true
+        mba$isOofxSell:
+          type: boolean
+          readOnly: true
+        mba$isOtcTrDtccBuy:
+          type: boolean
+          readOnly: true
+        mba$isOtcTrDtccSell:
+          type: boolean
+          readOnly: true
+        mba$isPrintDirect:
+          type: boolean
+          readOnly: true
+        mba$isProvsnRelv:
+          type: boolean
+          readOnly: true
+        mba$isQi302RelvOt:
+          type: boolean
+          readOnly: true
+        mba$isReconIssue:
+          type: boolean
+          readOnly: true
+        mba$isSectrx2CostBase:
+          type: boolean
+          readOnly: true
+        mba$isStord:
+          type: boolean
+          readOnly: true
+        mba$isSwiftMt564DttCust:
+          type: boolean
+          readOnly: true
+        mba$isUsQiPurchaseCrm:
+          type: boolean
+          readOnly: true
+        mba$isValDateBalChkRelv:
+          type: boolean
+          readOnly: true
+        mba$isVanilla:
+          type: boolean
+          readOnly: true
+        mba$issueArea:
+          description: "Referencing: `/code-crm-issue-areas/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        mba$issueDueDate:
+          type: string
+          readOnly: true
+        mba$issuePrio:
+          description: "Referencing: `/code-crm-issue-prios/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        mba$issueType:
+          description: "Referencing: `/code-crm-issue-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        mba$massAlwJtgLid:
+          description: "Referencing: `/mba$code-job-type-grps/{id}`"
+          type: array
+          items:
+            $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        mba$otcTrDtccTaxon:
+          description: "Referencing: `/code-otc-tr-dtcc-taxons/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        mba$reconIssueSubType:
+          description: "Referencing: `/code-crm-issue-sub-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        mba$useCcmStdProdGrp:
+          type: boolean
+          readOnly: true
+        metaTyp:
+          description: "Referencing: `/meta-typs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+        nameI18nList:
+          type: array
+          items:
+            description: |
+              Full translation list for name field.<br>
+              **_Only visible within compound APIs_**<br>
+            allOf:
+              - $ref: '#/components/schemas/name_i18n'
+          readOnly: true
+        oppositeOt:
+          description: "Referencing: `/code-order-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        orderTypeClose:
+          description: "Referencing: `/code-order-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        orderTypeCnt:
+          description: "Referencing: `/code-order-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        orderTypeGrp:
+          description: "Referencing: `/code-order-type-grp-vs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        orderTypeSecevtLong:
+          description: "Referencing: `/code-order-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        orderTypeSecevtShort:
+          description: "Referencing: `/code-order-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        pos1Sgn:
+          type: number
+          readOnly: true
+        pos2Sgn:
+          type: number
+          readOnly: true
+        sgn1:
+          type: number
+          readOnly: true
+        sgn2:
+          type: number
+          readOnly: true
+        swiftIdentCode:
+          type: string
+          readOnly: true
+        trl:
+          type: string
+          readOnly: true
+        userId:
+          type: string
+          readOnly: true
+        workItemDomn:
+          description: "Referencing: `/code-work-item-domns/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+    code_tab_ref:
+      title: code_tab_ref
+      type: object
+      properties:
+        _href:
+          description: "Reference/link"
+          type: string
+          readOnly: true
+        id:
+          description: "Numeric reference"
+          type: integer
+          format: int32
+        ident:
+          description: "Unique symbolic reference"
+          type: string
+        intlId:
+          description: "Symbolic reference"
+          type: string
+          readOnly: true
+    code_order_types:
+      title: List of code_order_type
+      type: array
+      items:
+        $ref: '#/components/schemas/code_order_type'
+      uniqueItems: true
+    name_i18n:
+      title: name_i18n
+      type: object
+      properties:
+        lang:
+          description: "Language<br>Referencing: `/code-langs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        text:
+          type: string
+          readOnly: true
+
+  headers:
+    Content-Language:
+      schema:
+        type: string
+    X-Has-Next-Page:
+      schema:
+        type: string
+    Location:
+      schema:
+        type: string
+      description: Location of the created resource
+    ETag:
+      schema:
+        type: string
+      description: Current entity-tag
+
+  parameters:
+    Filter:
+      name: filter
+      in: query
+      description: Expression to reduce the result set
+      schema:
+        type: string
+    PageLimit:
+      name: limit
+      in: query
+      description: Limits the number of items on a page
+      schema:
+        type: integer
+        default: 5
+        minimum: 1
+        maximum: 200
+    PageOffset:
+      name: offset
+      in: query
+      description: Number of records to be skipped before selecting the result set
+      schema:
+        type: integer
+        minimum: 0
+    HrefActive:
+      name: href
+      in: query
+      description: Activates the href
+      schema:
+        type: boolean
+    IncludeInactive:
+      name: include_inactive
+      in: query
+      description: Includes inactive data
+      schema:
+        type: boolean
+    If-None-Match:
+      name: If-None-Match
+      in: header
+      description: Specifies version known by client
+      schema:
+        type: string
+      required: false
+    If-Match:
+      name: If-Match
+      in: header
+      description: Specifies entity-tag known by client
+      schema:
+        type: string
+      required: false
+    Accept-Encoding:
+      name: Accept-Encoding
+      in: header
+      description: >-
+        Compression scheme<br/>
+        Warning: HTTP compression might not lead to better performance
+      schema:
+        type: string
+      example: gzip, deflate
+      required: false
+    Accept-Language:
+      name: Accept-Language
+      in: header
+      description: Specifies the language and locale that the client prefers
+      schema:
+        type: string
+      example: de-CH, en-US
+      required: false
+    X-Request-ID:
+      name: X-Request-ID
+      in: header
+      description: Specifies the request id in UUID format. If not provided, it will be generated automatically.
+      schema:
+        type: string
+        format: uuid
+      required: false
+  responses:
+    Problem:
+      description: RFC7807 Problem
+      content:
+        application/problem+json:
+          schema:
+            type: object
+            properties:
+              type:
+                type: string
+              title:
+                type: string
+              status:
+                type: number
+                format: integer
+              detail:
+                type: string
+            additionalProperties: true
+            required:
+              - type
+              - title
+              - status
+

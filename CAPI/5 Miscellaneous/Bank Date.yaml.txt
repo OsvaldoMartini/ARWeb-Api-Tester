@@ -1,0 +1,110 @@
+openapi: 3.0.2
+security:
+- bearerAuth: []
+info:
+  title: Bank Date API
+  version: 1.0.0
+  x-avq$categories:
+  - capi
+  - null
+servers:
+- url: /api1/
+paths:
+  /bank-dates:
+    get:
+      tags:
+      - API endpoints
+      summary: Get Business Unit Bank Date information
+      description: |
+        Prerequisite is feature bank date synchronization -> BDE `base` module.
+      parameters:
+      - $ref: "#/components/parameters/Bu"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/bank_date"
+        default:
+          $ref: "#/components/responses/Problem"
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    bank_date:
+      title: bankDate
+      type: object
+      properties:
+        bu:
+          description: Business unit
+          allOf:
+          - $ref: "#/components/schemas/bu"
+        prevToday:
+          description: Previous Bank Date (-1v)
+          type: string
+          format: date
+          readOnly: true
+        today:
+          description: Current Bank Date
+          type: string
+          format: date
+          readOnly: true
+        nextToday:
+          description: Next Bank Date
+          type: string
+          format: date
+          readOnly: true
+    bu:
+      title: Business Unit
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+          readOnly: true
+          example: 1
+  parameters:
+    Bu:
+      name: bu
+      style: deepObject
+      explode: true
+      in: query
+      description: "Expression to filter by bank dates by Business Unit <br> Example:\
+        \ <br> `bu[id]=1`"
+      schema:
+        type: object
+        required:
+        - id
+        properties:
+          id:
+            type: integer
+            format: int32
+            example: 1
+  responses:
+    Problem:
+      description: RFC7807 Problem
+      content:
+        application/problem+json:
+          schema:
+            type: object
+            properties:
+              type:
+                type: string
+              title:
+                type: string
+              status:
+                type: number
+                format: integer
+              detail:
+                type: string
+            additionalProperties: true
+            required:
+            - type
+            - title
+            - status

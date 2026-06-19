@@ -1,0 +1,4191 @@
+openapi: "3.0.2"
+security:
+  - bearerAuth: []
+
+info:
+  title: "Business partner API"
+  version: "3.29.0"
+  x-avq$categories:
+    - capi
+
+servers:
+- url: "/api1/"
+  description: "Development server"
+
+paths:
+  /obj-bps:
+    get:
+      tags:
+      - API endpoints
+      summary: Get Business partner objects.
+      description: |
+        Get a collection of `Business partner` objects.
+        The result set can be restricted through filter parameter.
+        Only `Business partner` objects will be returned that can be accessed by the user (security applied).
+        Paging is supported with parameters *limit* and *offset*.
+    
+      parameters:
+      - $ref: '#/components/parameters/Filter'
+      - $ref: '#/components/parameters/PageLimit'
+      - $ref: '#/components/parameters/PageOffset'
+      - $ref: '#/components/parameters/HrefActive'
+      - $ref: '#/components/parameters/IncludeInactive'
+      - $ref: '#/components/parameters/Accept-Encoding'
+      - $ref: '#/components/parameters/Accept-Language'
+    
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            Content-Language:
+              $ref: '#/components/headers/Content-Language'
+            X-Has-Next-Page:
+              $ref: '#/components/headers/X-Has-Next-Page'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/obj_bp'
+        'default':
+          $ref: '#/components/responses/Problem'
+    post:
+      tags:
+      - API endpoints
+      summary: Create a new Business partner object
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/obj_bp'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/obj_bp'
+      parameters:
+      - $ref: '#/components/parameters/X-Request-ID'
+      - $ref: '#/components/parameters/Accept-Encoding'
+      responses:
+        '201':
+          description: Successfully created a new `Business partner` object
+          headers:
+            Location:
+              $ref: '#/components/headers/Location'
+            ETag:
+              $ref: '#/components/headers/ETag'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    format: int64
+                    example: 123456
+                  bdeRecVersion:
+                    type: integer
+                    format: int64
+                    example: 1618390720445656
+        '202':
+          description: Successfully accepted a new `Business partner` object
+          headers:
+            Location:
+              $ref: '#/components/headers/Location'
+            ETag:
+              $ref: '#/components/headers/ETag'
+        'default':
+          $ref: '#/components/responses/Problem'
+
+  /obj-bps/{obj_bp_id}:
+    get:
+      tags:
+      - API endpoints
+      summary: "Get a Business partner object"
+      description: |
+        *Get a `Business partner` object by ID*.
+        Only `Business partner` object will be returned that can be accessed by the user (security applied).
+        If user does not have access to resource, not found error will be returned instead of unauthorized - to disallow attacks.
+      parameters:
+      - in: path
+        name: obj_bp_id
+        schema:
+          type: string
+        required: true
+        description: ID of the `Business partner` object to get
+      - $ref: '#/components/parameters/HrefActive'
+      - $ref: '#/components/parameters/IncludeInactive'
+      - $ref: '#/components/parameters/Accept-Encoding'
+      - $ref: '#/components/parameters/If-None-Match'
+      - $ref: '#/components/parameters/Accept-Language'
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            Content-Language:
+              $ref: '#/components/headers/Content-Language'
+            ETag:
+              $ref: '#/components/headers/ETag'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/obj_bp'
+        '304':
+          description: Not modified
+        'default':
+          $ref: '#/components/responses/Problem'
+    patch:
+      tags:
+      - API endpoints
+      summary: "Modify/update an existing Business partner object"
+      description: |
+        *Partially modify/update an existing `Business partner` object identified by ID*.
+        Only `Business partner` object will be replaced that can be accessed by the user (security applied).
+        If user does not have access to resource, not found error will be returned instead of unauthorized - to disallow attacks.
+      parameters:
+      - in: path
+        name: obj_bp_id
+        schema:
+          type: string
+        required: true
+        description: ID of the `Business partner` object to modify/update
+      - $ref: '#/components/parameters/If-Match'
+      - $ref: '#/components/parameters/X-Request-ID'
+      - $ref: '#/components/parameters/Accept-Encoding'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/obj_bp'
+      responses:
+        '200':
+          description: Request successfully processed
+          headers:
+            ETag:
+              $ref: '#/components/headers/ETag'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    format: int64
+                    example: 123456
+                  bdeRecVersion:
+                    type: integer
+                    format: int64
+                    example: 1618390720445656
+        '202':
+          description: Successfully accepted the modification of `Business partner` object
+          headers:
+            Location:
+              $ref: '#/components/headers/Location'
+            ETag:
+              $ref: '#/components/headers/ETag'
+        'default':
+          $ref: '#/components/responses/Problem'
+    delete:
+      tags:
+      - API endpoints
+      summary: "Delete a Business partner object"
+      description: |
+        *Delete a `Business partner` object by ID*.
+        Only `Business partner` object will be deleted that can be accessed by the user (security applied).
+        If user does not have access to resource, not found error will be returned instead of unauthorized - to disallow attacks.
+      parameters:
+      - in: path
+        name: obj_bp_id
+        schema:
+          type: string
+        required: true
+        description: ID of the `Business partner` object to modify/update
+      - $ref: '#/components/parameters/X-Request-ID'
+      responses:
+        '200':
+          description: Request successfully processed
+        'default':
+          $ref: '#/components/responses/Problem'
+
+
+components:
+  securitySchemes:
+    bearerAuth:            # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT    # optional, arbitrary value for documentation purposes
+
+  schemas:
+    code_tab_ref:
+      title: code_tab_ref
+      type: object
+      properties:
+        _href:
+          description: "Reference/link"
+          type: string
+          readOnly: true
+        id:
+          description: "Numeric reference"
+          type: integer
+          format: int32
+        ident:
+          description: "Unique symbolic reference"
+          type: string
+        intlId:
+          description: "Symbolic reference"
+          type: string
+          readOnly: true
+    code_tab_ref_action:
+      title: code_tab_ref_action
+      type: object
+      properties:
+        action:
+          enum: [hold, proceed, discard]
+          example: hold
+          description: "enum reference to action"
+          type: string
+          writeOnly: true
+        id:
+          description: "Numeric reference"
+          type: integer
+          format: int32
+        ident:
+          description: "Unique symbolic reference"
+          type: string
+    de_tax_ea:
+      title: de_tax_ea
+      type: object
+      properties:
+        amount:
+          description: "German Taxes EA Amount"
+          type: number
+        expirDate:
+          description: "Expiration Date"
+          type: string
+          format: date
+        issueDate:
+          description: "Issue Date"
+          type: string
+          format: date
+    de_tax_nac:
+      title: de_tax_nac
+      type: object
+      properties:
+        expirDate:
+          description: "Expiration Date"
+          type: string
+          format: date
+          readOnly: true
+        issueDate:
+          description: "Issue Date"
+          type: string
+          format: date
+          readOnly: true
+        regNr:
+          description: "Registration Number"
+          type: string
+          readOnly: true
+    doc_ref:
+      title: doc_ref
+      type: object
+      properties:
+        _href:
+          description: "Reference/link"
+          type: string
+          readOnly: true
+        _ident:
+          description: "Only used for workItem use cases, cross-reference in workItem context."
+          type: string
+          writeOnly: true
+        id:
+          description: "Numeric reference"
+          type: integer
+          format: int64
+    mba_alw_curry:
+      title: mba$alw_curry
+      type: object
+      properties:
+        curryList:
+          type: array
+          items:
+            $ref: '#/components/schemas/mba_alw_curry_mba_curry'
+    mba_alw_curry_mba_curry:
+      title: mba$alw_curry_mba$curry
+      type: object
+      properties:
+        curry:
+          description: "Referencing: `/obj-assets/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+    mba_aml:
+      title: mba$aml
+      type: object
+      properties:
+        amlReviewDueDate:
+          type: string
+          format: date
+        riskOverride:
+          type: string
+    mba_aml_case:
+      title: mba$aml_case
+      type: object
+      properties:
+        amlCaseList:
+          type: array
+          items:
+            $ref: '#/components/schemas/mba_aml_case_mba_aml_case_det'
+        amlScoreList:
+          type: array
+          items:
+            $ref: '#/components/schemas/mba_aml_case_mba_aml_score_det'
+        test:
+          type: string
+    mba_aml_case_aml_case_list_mba_aml_thres_det:
+      title: mba$aml_case_aml_case_list_mba$aml_thres_det
+      type: object
+      properties:
+        amlThresType:
+          description: "Referencing: `/mba$code-aml-thres-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        value:
+          type: number
+    mba_aml_case_aml_score_list_mba_aml_score_val_det:
+      title: mba$aml_case_aml_score_list_mba$aml_score_val_det
+      type: object
+      properties:
+        high:
+          type: number
+        low:
+          type: number
+        scoreVal:
+          type: number
+    mba_aml_case_mba_aml_case_det:
+      title: mba$aml_case_mba$aml_case_det
+      type: object
+      properties:
+        amlThresList:
+          type: array
+          items:
+            $ref: '#/components/schemas/mba_aml_case_aml_case_list_mba_aml_thres_det'
+        amlTrxType:
+          description: "Referencing: `/mba$code-aml-trx-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+    mba_aml_case_mba_aml_score_det:
+      title: mba$aml_case_mba$aml_score_det
+      type: object
+      properties:
+        amlScoreType:
+          description: "Referencing: `/mba$code-aml-score-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        amlScoreValList:
+          type: array
+          items:
+            $ref: '#/components/schemas/mba_aml_case_aml_score_list_mba_aml_score_val_det'
+    mba_bu_chq:
+      title: mba$bu_chq
+      type: object
+      properties:
+        buChqList:
+          type: array
+          items:
+            $ref: '#/components/schemas/mba_bu_chq_mba_bu_chq_entry'
+    mba_bu_chq_mba_bu_chq_entry:
+      title: mba$bu_chq_mba$bu_chq_entry
+      type: object
+      properties:
+        blockPeriod:
+          type: string
+        curry:
+          description: "Referencing: `/obj-assets/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        remark:
+          type: string
+        validity:
+          type: string
+    mba_bu_det:
+      title: mba$bu_det
+      type: object
+      properties:
+        cltClosingPeriod:
+          type: number
+        credViolInterval:
+          type: number
+        isQdiiEnbl:
+          type: boolean
+        mvStressFact:
+          type: number
+        taxTransmitterCtrlCode:
+          type: string
+        taxWithhAgtChap3Code:
+          type: string
+        taxWithhAgtCtactName:
+          type: string
+        taxWithhAgtDeptTitle:
+          type: string
+        taxWithhAgtEinInd:
+          type: string
+        taxWithhAgtTelNr:
+          type: string
+    mba_bu_ex_cust:
+      title: mba$bu_ex_cust
+      type: object
+      properties:
+        acca:
+          description: "Referencing: `/code-accas/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        custodyCont:
+          description: "Referencing: `/obj-conts/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        custodyCustCont:
+          description: "Referencing: `/obj-conts/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+    mba_chq_attr:
+      title: mba$chq_attr
+      type: object
+      properties:
+        benefNameLen:
+          type: number
+        remark:
+          type: string
+    mba_clt_onb_det:
+      title: mba$clt_onb_det
+      type: object
+      properties:
+        bpAcceptDate:
+          type: string
+          format: date
+        cltOnbDoc:
+          description: "Referencing: `/docs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/doc_ref'
+    mba_collat_cmtd_par:
+      title: mba$collat_cmtd_par
+      type: object
+      properties:
+        cmtd:
+          description: "Referencing: `/code-collat-val-cmtds/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        cmtdParList:
+          type: array
+          items:
+            $ref: '#/components/schemas/mba_collat_cmtd_par_mba_collat_cmtd_par_item'
+        factRuleList:
+          type: array
+          items:
+            $ref: '#/components/schemas/mba_collat_cmtd_par_mba_collat_fact_rule'
+    mba_collat_cmtd_par_fact_rule_list_mba_cont_class:
+      title: mba$collat_cmtd_par_fact_rule_list_mba$cont_class
+      type: object
+      properties:
+        class:
+          description: "Referencing: `/code-obj-classs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+    mba_collat_cmtd_par_fact_rule_list_mba_ips_class:
+      title: mba$collat_cmtd_par_fact_rule_list_mba$ips_class
+      type: object
+      properties:
+        class:
+          description: "Referencing: `/code-obj-classs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+    mba_collat_cmtd_par_mba_collat_cmtd_par_item:
+      title: mba$collat_cmtd_par_mba$collat_cmtd_par_item
+      type: object
+      properties:
+        cmtdPar:
+          description: "Referencing: `/mba$code-collat-val-cmtd-pars/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        cmtdParVal:
+          type: number
+    mba_collat_cmtd_par_mba_collat_fact_rule:
+      title: mba$collat_cmtd_par_mba$collat_fact_rule
+      type: object
+      properties:
+        contClassLid:
+          type: array
+          items:
+            $ref: '#/components/schemas/mba_collat_cmtd_par_fact_rule_list_mba_cont_class'
+        fact:
+          type: number
+        ipsClassLid:
+          type: array
+          items:
+            $ref: '#/components/schemas/mba_collat_cmtd_par_fact_rule_list_mba_ips_class'
+        prio:
+          type: number
+        validFrom:
+          type: string
+          format: date
+        validTo:
+          type: string
+          format: date
+    mba_compli_block_list:
+      title: mba$compli_block_list
+      type: object
+      properties:
+        compliBlockList:
+          type: array
+          items:
+            $ref: '#/components/schemas/mba_compli_block_list_mba_compli_block'
+    mba_compli_block_list_mba_compli_block:
+      title: mba$compli_block_list_mba$compli_block
+      type: object
+      properties:
+        manualComplianceBlock:
+          type: string
+        remark:
+          type: string
+        responsibleUser:
+          description: "Referencing: `/users/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/user_ref'
+        validFrom:
+          type: string
+          format: date
+        validTo:
+          type: string
+          format: date
+    mba_docm:
+      title: mba$docm
+      type: object
+      properties:
+        docmList:
+          type: array
+          items:
+            $ref: '#/components/schemas/mba_docm_mba_docm_det'
+    mba_docm_mba_docm_det:
+      title: mba$docm_mba$docm_det
+      type: object
+      properties:
+        accrEnTrl:
+          description: "Referencing: `/mba$code-accr-en-trls/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        action:
+          description: "Referencing: `/mba$code-actions/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        actionA:
+          type: boolean
+        addDate:
+          type: string
+          format: date
+        addUser:
+          description: "Referencing: `/obj-persons/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        arcvDate:
+          type: string
+          format: date
+        arcvId:
+          type: string
+        comment:
+          type: string
+        country:
+          description: "Referencing: `/obj-countrys/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        countryA:
+          type: boolean
+        deferralReason:
+          description: "Referencing: `/code-deferral-reasons/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        deferredDate:
+          type: string
+          format: date
+        deferredDateA:
+          type: boolean
+        docm:
+          description: "Referencing: `/obj-docms/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        docmDetCtrl:
+          description: "Referencing: `/obj-docms/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        docmNr:
+          type: string
+        docmRes:
+          description: "Referencing: `/mba$code-docm-ress/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        docmType:
+          description: "Referencing: `/mba$code-docm-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        expirDate:
+          type: string
+          format: date
+        expirDateA:
+          type: boolean
+        fullName:
+          type: string
+        idNr:
+          type: string
+        isFatcaRelv:
+          type: boolean
+        issueDate:
+          type: string
+          format: date
+        issuer:
+          type: string
+        needsPrint:
+          type: boolean
+        printDate:
+          type: string
+          format: date
+        refersToObjId:
+          type: number
+        reqType:
+          description: "Referencing: `/mba$code-req-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        signDate:
+          type: string
+          format: date
+        signDateA:
+          type: boolean
+        signDuePeriod:
+          type: number
+        signUser:
+          description: "Referencing: `/obj-persons/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        state:
+          description: "Referencing: `/code-country-states/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        stateA:
+          type: boolean
+        urlAddr:
+          type: string
+        user:
+          type: string
+    mba_dorm:
+      title: mba$dorm
+      type: object
+      properties:
+        isLastTrxDateA:
+          type: boolean
+        lastDoc:
+          description: "Referencing: `/docs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/doc_ref'
+        lastTrxDate:
+          type: string
+          format: date
+        lastTrxDescn:
+          type: string
+        longPrdInacty:
+          type: number
+        shortPrdInacty:
+          type: number
+    mba_excust_det:
+      title: mba$excust_det
+      type: object
+      properties:
+        custCashTrxFreq:
+          description: "Referencing: `/code-pay-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        custPortalName:
+          type: string
+        custStexFreq:
+          description: "Referencing: `/code-pay-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        excustSvcList:
+          type: array
+          items:
+            $ref: '#/components/schemas/mba_excust_det_mba_excust_svc_det'
+        hasCustPortalAccess:
+          type: boolean
+        howValuRcvd:
+          type: string
+        isCostAccrBrkdwn:
+          type: boolean
+        isCustCashTrxAvl:
+          type: boolean
+        isCustStexAvl:
+          type: boolean
+        isSwiftEnbl:
+          type: boolean
+        ukRegDet:
+          type: string
+    mba_excust_det_mba_excust_svc_det:
+      title: mba$excust_det_mba$excust_svc_det
+      type: object
+      properties:
+        isProv:
+          type: boolean
+        svc:
+          description: "Referencing: `/mba$code-excust-svcs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+    mba_fix_itvt:
+      title: mba$fix_itvt
+      type: object
+      properties:
+        cltAccRefKey:
+          description: "Referencing: `/code-obj-keys/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+    mba_indi:
+      title: mba$indi
+      type: object
+      properties:
+        indiList:
+          type: array
+          items:
+            $ref: '#/components/schemas/mba_indi_mba_indi_det'
+    mba_indi_mba_indi_det:
+      title: mba$indi_mba$indi_det
+      type: object
+      properties:
+        indiLevelType:
+          description: "Referencing: `/mba$code-indi-level-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        indiType:
+          description: "Referencing: `/mba$code-indi-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        value:
+          type: number
+    mba_intl:
+      title: mba$intl
+      type: object
+      properties:
+        refCurryA:
+          type: boolean
+    mba_invst_profile:
+      title: mba$invst_profile
+      type: object
+      properties:
+        nextReviewDate:
+          type: string
+          format: date
+        personList:
+          type: array
+          items:
+            $ref: '#/components/schemas/mba_invst_profile_mba_invst_profile_person'
+    mba_invst_profile_mba_invst_profile_person:
+      title: mba$invst_profile_mba$invst_profile_person
+      type: object
+      properties:
+        invstRole:
+          description: "Referencing: `/mba$code-invst-roles/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        isTrustee:
+          type: string
+        person:
+          description: "Referencing: `/obj-persons/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+    mba_msme_fig:
+      title: mba$msme_fig
+      type: object
+      properties:
+        annuBal:
+          type: number
+        annuTov:
+          type: number
+        curry:
+          description: "Referencing: `/obj-assets/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+    mba_name_extn:
+      title: mba$name_extn
+      type: object
+      properties:
+        nameExtn:
+          type: string
+    mba_perf_det:
+      title: mba$perf_det
+      type: object
+      properties:
+        annuReviewDate:
+          type: string
+          format: date
+        inceptionDate:
+          type: string
+          format: date
+    mba_prsp_info:
+      title: mba$prsp_info
+      type: object
+      properties:
+        introDet:
+          type: string
+        introducedBy:
+          type: string
+        person:
+          description: "Referencing: `/obj-persons/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        prspCtact:
+          type: string
+    mba_realsec_cost:
+      title: mba$realsec_cost
+      type: object
+      properties:
+        realsecCostList:
+          type: array
+          items:
+            $ref: '#/components/schemas/mba_realsec_cost_mba_realsec_cost_det'
+    mba_realsec_cost_mba_realsec_cost_det:
+      title: mba$realsec_cost_mba$realsec_cost_det
+      type: object
+      properties:
+        addAmnt:
+          type: number
+        seqNr:
+          type: number
+        thres:
+          type: number
+        thresMaxCost:
+          type: number
+        thresStep:
+          type: number
+    mba_realsec_det:
+      title: mba$realsec_det
+      type: object
+      properties:
+        realsecTypeList:
+          type: array
+          items:
+            $ref: '#/components/schemas/mba_realsec_det_mba_realsec_type_det'
+    mba_realsec_det_mba_realsec_type_det:
+      title: mba$realsec_det_mba$realsec_type_det
+      type: object
+      properties:
+        docm:
+          description: "Referencing: `/obj-docms/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+    mba_realsec_type_det:
+      title: mba$realsec_type_det
+      type: object
+      properties:
+        docm:
+          description: "Referencing: `/obj-docms/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+    mba_realty_det:
+      title: mba$realty_det
+      type: object
+      properties:
+        realtyType:
+          description: "Referencing: `/code-obj-classs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        realtyTypeList:
+          type: array
+          items:
+            $ref: '#/components/schemas/mba_realty_det_mba_realty_type_det'
+    mba_realty_det_mba_realty_type_det:
+      title: mba$realty_det_mba$realty_type_det
+      type: object
+      properties:
+        docm:
+          description: "Referencing: `/obj-docms/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        reqType:
+          description: "Referencing: `/mba$code-req-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+    mba_realty_list:
+      title: mba$realty_list
+      type: object
+      properties:
+        realtyList:
+          type: array
+          items:
+            $ref: '#/components/schemas/mba_realty_list_mba_realty_det'
+    mba_realty_list_mba_realty_det:
+      title: mba$realty_list_mba$realty_det
+      type: object
+      properties:
+        realtyType:
+          description: "Referencing: `/code-obj-classs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        realtyTypeList:
+          type: array
+          items:
+            $ref: '#/components/schemas/mba_realty_list_realty_list_mba_realty_type_det'
+    mba_realty_list_realty_list_mba_realty_type_det:
+      title: mba$realty_list_realty_list_mba$realty_type_det
+      type: object
+      properties:
+        docm:
+          description: "Referencing: `/obj-docms/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        reqType:
+          description: "Referencing: `/mba$code-req-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+    mba_realty_type_det:
+      title: mba$realty_type_det
+      type: object
+      properties:
+        docm:
+          description: "Referencing: `/obj-docms/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        reqType:
+          description: "Referencing: `/mba$code-req-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+    mba_reg_rep_acc_std:
+      title: mba$reg_rep_acc_std
+      type: object
+      properties:
+        accStd:
+          description: "Referencing: `/obj-balstrus/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        accStd2:
+          description: "Referencing: `/obj-balstrus/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        accStdGrp:
+          description: "Referencing: `/obj-balstrus/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        dateType:
+          description: "Referencing: `/code-date-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        dateType2:
+          description: "Referencing: `/code-date-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        dateTypeGrp:
+          description: "Referencing: `/code-date-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        signt:
+          description: "Referencing: `/code-rrt-rras/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        signt2:
+          description: "Referencing: `/code-rrt-rras/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        signtGrp:
+          description: "Referencing: `/code-rrt-rras/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+    mba_small_locl_auth:
+      title: mba$small_locl_auth
+      type: object
+      properties:
+        annuBudget:
+          type: number
+        curry:
+          description: "Referencing: `/obj-assets/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+    mba_srd:
+      title: mba$srd
+      type: object
+      properties:
+        srdAddr:
+          description: "Referencing: `/obj-addrs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+    mba_stex:
+      title: mba$stex
+      type: object
+      properties:
+        execDlyThres:
+          type: number
+        tdClosingTime:
+          type: string
+          format: date
+        tdOpnTime:
+          type: string
+          format: date
+    mba_stex_rtng:
+      title: mba$stex_rtng
+      type: object
+      properties:
+        doChkMktOpen:
+          type: boolean
+    obj_add:
+      title: obj_add
+      type: object
+      properties:
+        boolVal:
+          description: "Value"
+          type: boolean
+          x-additionalFieldType: extn_generic
+        bu:
+          description: "Business Unit<br>Referencing: `/obj-bps/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          x-additionalFieldType: extn_generic
+        dateVal:
+          description: "Value"
+          type: string
+          format: date
+          x-additionalFieldType: extn_generic
+        idVal:
+          description: "Value"
+          type: integer
+          format: int32
+          x-additionalFieldType: extn_generic
+        nrVal:
+          description: "Value"
+          type: number
+          x-additionalFieldType: extn_generic
+        objAdd:
+          description: "Referencing: `/code-obj-adds/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          x-additionalFieldType: extn_generic
+        textVal:
+          description: "Value"
+          type: string
+          x-additionalFieldType: extn_generic
+        tswtzVal:
+          description: "Value"
+          type: string
+          format: date-time
+          x-additionalFieldType: extn_generic
+        valList:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_add_val'
+          readOnly: true
+          x-additionalFieldType: extn_generic
+    obj_add_val:
+      title: obj_add_val
+      type: object
+      properties:
+        dateVal:
+          type: string
+          format: date
+          readOnly: true
+          x-additionalFieldType: extn_generic
+        idVal:
+          type: integer
+          format: int32
+          readOnly: true
+          x-additionalFieldType: extn_generic
+        nrVal:
+          type: number
+          readOnly: true
+          x-additionalFieldType: extn_generic
+        seqNr:
+          type: integer
+          format: int32
+          readOnly: true
+          x-additionalFieldType: extn_generic
+        textVal:
+          type: string
+          readOnly: true
+          x-additionalFieldType: extn_generic
+        tswtzVal:
+          type: string
+          format: date-time
+          readOnly: true
+          x-additionalFieldType: extn_generic
+    obj_bp:
+      title: obj_bp
+      type: object
+      properties:
+        _ident:
+          description: "Only used for workItem usecases, definition of a crossreference in workItem context"
+          type: string
+          writeOnly: true
+        accType:
+          description: "Account Type<br>Referencing: `/code-acc-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        accTypeA:
+          description: "Automatic flag of the account type"
+          type: boolean
+        addList:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_add'
+          x-additionalFieldType: extn_generic
+        bdeRecVersion:
+          type: integer
+          format: int64
+        birthdate:
+          description: "Birthdate of a natural person"
+          type: string
+          format: date
+        birthdateP:
+          description: "Is birthdate propagated?"
+          type: boolean
+        block:
+          description: "Blocking code<br>Referencing: `/code-blocks/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        blockText:
+          description: "Textual description of the blocking"
+          type: string
+        bpBu:
+          description: "Business Unit<br>Referencing: `/obj-bps/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        bpPersonRelList:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_bp_person_rel'
+        bpType:
+          description: "BP Type<br>Referencing: `/code-bp-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        bu:
+          description: "Business unit<br>Referencing: `/obj-bps/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        classifList:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif'
+          x-additionalFieldType: extn_generic
+        closeDate:
+          description: "Closing date"
+          type: string
+          format: date
+        cntprty:
+          description: "Counterparty<br>Referencing: `/obj-cntprtys/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        collatList:
+          description: |
+            **_Only visible within compound APIs_**<br>
+            We only retrieve the list of financings where the client is the owner!<br>
+            Referencing: `/obj-collats/{id}`<br>
+            Back-property: bp
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_ref'
+          readOnly: true
+        contList:
+          description: |
+            **_Only visible within compound APIs_**<br>
+            Referencing: `/obj-conts/{id}`<br>
+            Back-property: bp
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_ref'
+          readOnly: true
+        deTaxBp:
+          $ref: '#/components/schemas/obj_bp_de_tax'
+        dfaccRefList:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_dfacc_ref'
+        doc:
+          description: "Document id if the object is being modified<br>Referencing: `/docs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/doc_ref'
+        docmRelList:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_rel_docm'
+        domiCountry:
+          description: "Domicile<br>Referencing: `/obj-countrys/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        domiCountryIdP:
+          description: "Is domicile propagated?"
+          type: boolean
+        establishDate:
+          description: "Date of establishment of a legal entity"
+          type: string
+          format: date
+        establishDateP:
+          description: "Is date of establishment propagated?"
+          type: boolean
+        extn:
+          $ref: '#/components/schemas/obj_bp_extn'
+        id:
+          description: "ID<br>Referencing: `/objs/{id}`"
+          type: integer
+          format: int32
+        isBlocked:
+          description: "Is the business partner blocked"
+          type: boolean
+        isBu:
+          description: "Is the business partner a business unit"
+          type: boolean
+        isFirm:
+          description: "Is the business partner a firm (in the context of GIPS)"
+          type: boolean
+        isIssuer:
+          description: "Is Issuer"
+          type: boolean
+        isPersonMand:
+          description: "Is Person Mandatory"
+          type: boolean
+        isSbu:
+          description: "Is the business partner a sub business unit"
+          type: boolean
+        issueList:
+          description: |
+            **_Only visible within compound APIs_**<br>
+            Referencing: `/obj-assets/{id}`<br>
+            Back-property: issuer
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_ref'
+          readOnly: true
+        keyList:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key'
+          x-additionalFieldType: extn_generic
+        lang:
+          description: "Language<br>Referencing: `/code-langs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        langIdP:
+          description: "Is language propagated?"
+          type: boolean
+        lastCltSuityHist:
+          allOf:
+            - $ref: '#/components/schemas/obj_clt_suity_hist'
+          readOnly: true
+        lastTrans:
+          $ref: '#/components/schemas/obj_trans'
+        maritalStatus:
+          description: "Marital status of a natural person<br>Referencing: `/code-marital-statuss/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        maritalStatusIdP:
+          description: "Is marital status propagated?"
+          type: boolean
+        minstrList:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_minstr'
+        natiCountry:
+          description: "Nationality<br>Referencing: `/obj-countrys/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        natiCountryIdP:
+          description: "Is nationality propagated?"
+          type: boolean
+        obj:
+          description: |
+            Only used for workItem usecases, reference to an existing entity<br>
+            Referencing: `/obj-bps/{id}`<br>
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          writeOnly: true
+        objAddrList:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_rel_addr'
+        objDirectRespList:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_direct_resp_rel'
+        objName:
+          allOf:
+            - $ref: '#/components/schemas/obj_name'
+          readOnly: true
+        objNameList:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_name'
+        objSubType:
+          description: "Object sub-type<br>Referencing: `/code-obj-sub-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        objType:
+          description: "Object type<br>Referencing: `/code-obj-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        openDate:
+          description: "Opening date"
+          type: string
+          format: date
+        ordnMacc:
+          description: "Ordinario Money Account<br>Referencing: `/obj-poss/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          readOnly: true
+        personType:
+          description: "Person type of business partner object if business partner of type bu_local<br>Referencing: `/code-bp-person-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        priCtactPerson:
+          description: "Primary contact person<br>Referencing: `/obj-persons/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        priCtactRemark:
+          description: "Primary Contact Remark"
+          type: string
+        prod:
+          description: "Product<br>Referencing: `/obj-prods/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        prodA:
+          description: "Automatic flag of the Product"
+          type: boolean
+        prtyRegime:
+          description: "Property regime of a natural person<br>Referencing: `/code-prty-regimes/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        refCurry:
+          description: "Reference curreny<br>Referencing: `/obj-assets/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        regOwner:
+          description: "Registered owner of BP<br>Referencing: `/obj-persons/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        relList:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_rel'
+        remark:
+          description: "The \"standard\" obj remark"
+          type: string
+        remarkList:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_remark'
+        sdsInstn:
+          description: "SDS instance ID<br>Referencing: `/code-extl-syss/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        sex:
+          description: "Sex of the natural person<br>Referencing: `/code-bp-sexs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        sexIdP:
+          description: "Is sex propagated?"
+          type: boolean
+        sortAlpha:
+          description: "Alpha-numeric sort value"
+          type: string
+        sortNr:
+          description: "Numeric sort value"
+          type: integer
+          format: int64
+        standInstrRuleList:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_stand_instr'
+          readOnly: true
+        taxCountry:
+          description: "Country of Taxation<br>Referencing: `/obj-countrys/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        transList:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_trans'
+        ts:
+          type: array
+          items:
+            description: |
+              Time Series.<br>
+              **_Only visible within compound APIs_**<br>
+              Overlay: time_series
+            $ref: '#/components/schemas/timeseries'
+          readOnly: true
+    obj_bp_de_tax:
+      title: obj_bp_de_tax
+      type: object
+      properties:
+        eaList:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_bp_de_tax_ea'
+          readOnly: true
+        nacList:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_bp_de_tax_nac'
+          readOnly: true
+    obj_bp_de_tax_ea:
+      title: obj_bp_de_tax_ea
+      type: object
+      properties:
+        ea:
+          allOf:
+            - $ref: '#/components/schemas/de_tax_ea'
+          readOnly: true
+        validFrom:
+          description: "System validity (from)"
+          type: string
+          format: date
+          readOnly: true
+        validTo:
+          description: "System validity (to)"
+          type: string
+          format: date
+          readOnly: true
+    obj_bp_de_tax_nac:
+      title: obj_bp_de_tax_nac
+      type: object
+      properties:
+        nac:
+          allOf:
+            - $ref: '#/components/schemas/de_tax_nac'
+          readOnly: true
+        validFrom:
+          description: "System validity (from)"
+          type: string
+          format: date
+          readOnly: true
+        validTo:
+          description: "System validity (to)"
+          type: string
+          format: date
+          readOnly: true
+    obj_bp_extn:
+      title: obj_bp_extn
+      type: object
+      properties:
+        bpAccRegVerpflId:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key_single_'
+        bpAgentSym:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key_single_'
+        bpBicplus:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key_single_'
+        bpBlbGlo:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key_single_'
+        bpCeNr:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key_single_'
+        bpClr:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key'
+        bpClrCode:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key'
+        bpClrType:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        bpClrTypeHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        bpCollatAgt:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_set_'
+          x-additionalFieldType: extn_curr_classif
+        bpCollatAgtDet:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_set_'
+          readOnly: true
+        bpDeBlz:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key_single_'
+        bpDeKvn:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key_single_'
+        bpDsblSsiCalc:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        bpDsblSsiCalcHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        bpDss:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key_single_'
+        bpDtccCollatOcode:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key_single_'
+        bpDtccTrdOcode:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key_single_'
+        bpElAddr:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key'
+        bpEmailAddr:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key_single_'
+        bpEncryptedKey:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key_single_'
+        bpEusdLuTin:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key_single_'
+        bpFax:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key_single_'
+        bpFeepAioSpcd:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_set_'
+          x-additionalFieldType: extn_curr_classif
+        bpFeepAioSpcdDet:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_set_'
+          readOnly: true
+        bpFeepGenDoc:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_set_'
+          x-additionalFieldType: extn_curr_classif
+        bpFeepGenDocDet:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_set_'
+          readOnly: true
+        bpFeepHmSpcd:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_set_'
+          x-additionalFieldType: extn_curr_classif
+        bpFeepHmSpcdDet:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_set_'
+          readOnly: true
+        bpFitchLong:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        bpFitchLongHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        bpFitchShort:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        bpFitchShortHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        bpGk:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key_single_'
+        bpIban:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key_single_'
+        bpIdcIssuer:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key_single_'
+        bpIhin:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key_single_'
+        bpImplFx:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        bpImplFxHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        bpIsaLftmMgrId:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key_single_'
+        bpLei:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key_single_'
+        bpLqntBroker:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key_single_'
+        bpMkt:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key'
+        bpMoodyLong:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        bpMoodyLongHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        bpMoodyShort:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        bpMoodyShortHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        bpNr:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key_single_'
+        bpPsafeSym:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key_single_'
+        bpQiDtt:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        bpQiDttHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        bpQiStatus:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        bpQiStatusHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        bpRdpPermId:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key_single_'
+        bpRegisTrAccId:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key_single_'
+        bpRepRateLong:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        bpRepRateLongHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        bpRepRateShort:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        bpRepRateShortHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        bpRtngCompany:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key'
+        bpRtngLoc:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key'
+        bpRtngSubId:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key'
+        bpSehkFirmId:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key_single_'
+        bpSiAsset:
+          description: "MIFID:Systematic Internaliser for Asset<br>Referencing: `/obj-assets/{id}`"
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_ref'
+        bpSiAssetClass:
+          description: "MIFID:Systematic Internaliser for Asset Class<br>Referencing: `/code-obj-classs/{id}`"
+          type: array
+          items:
+            $ref: '#/components/schemas/code_tab_ref'
+        bpSix:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key_single_'
+        bpSnceNr:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key_single_'
+        bpSpLong:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        bpSpLongHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        bpSpShort:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        bpSpShortHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        bpSwift:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key'
+        bpSym:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key_single_'
+        bpTaxNumEu:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key_single_'
+        bpTexCntprty:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key'
+        bpTexCompanyId:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key_single_'
+        bpTin:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key_single_'
+        bpTlx:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key_single_'
+        bpUid:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key_single_'
+        bpUsGiin:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key_single_'
+        bpUsTaxFrnAcc:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        bpUsTaxFrnAccHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        bpUsTaxFrnRelvPersonStat:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        bpUsTaxFrnRelvPersonStatHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        bpUsTaxFrnRep:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        bpUsTaxFrnRepHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        bpVatNr:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key_single_'
+        bpVatNrOld:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key_single_'
+        bpWmIssuerNr:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key_single_'
+        concernId:
+          description: "Concern ID"
+          type: string
+        cpSym:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key_single_'
+        firmPerfNcfAdd1Type:
+          description: "First Additional Net Cash Flow Type<br>Referencing: `/code-perf-ncf-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        firmPerfNcfAdd2Type:
+          description: "Second Additional Net Cash Flow Type<br>Referencing: `/code-perf-ncf-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        firmPerfNcfAdd3Type:
+          description: "Third Additional Net Cash Flow Type<br>Referencing: `/code-perf-ncf-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        frsBpClassif:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        frsBpClassifHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        frsClaimEligible:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        frsClaimEligibleHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        frsCons:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        frsConsHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        frsDeRegCraftsm:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        frsDeRegCraftsmHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        frsDfltExpCpty:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        frsDfltExpCptyHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        frsEcbClass:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        frsEcbClassHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        frsEconSctr:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        frsEconSctrHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        frsRiskCountryId:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        frsRiskCountryIdHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        frsRiskIndBp:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        frsRiskIndBpHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        frsSme:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        frsSmeHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        fundInvstPerc:
+          description: "% allowed investment in sub-funds"
+          type: number
+        legBkrRemtCcp:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        legBkrRemtCcpHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        legCdeInternationalInst:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        legCdeInternationalInstHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        legCptyCvaElig:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        legCptyCvaEligHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        legEligCpty:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        legEligCptyHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        legEstablishedRel:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        legEstablishedRelHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        legFinCntprty:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        legFinCntprtyHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        legIrbExpoClass:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        legIrbExpoClassHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        legLinkUndertaking:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        legLinkUndertakingHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        legNace21:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        legNace211:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        legNace211Hist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        legNace212:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        legNace212Hist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        legNace213:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        legNace213Hist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        legNace214:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        legNace214Hist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        legNace21Hist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        legNace22:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        legNace22Hist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        legNace23:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        legNace23Hist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        legNace24:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        legNace24Hist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        legNonPerfBp:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        legNonPerfBpHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        legStructuredEnt:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        legStructuredEntHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        legTypIssCentralGovEquiv:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        legTypIssCentralGovEquivHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        legTypeCentralGovEquiv:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        legTypeCentralGovEquivHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        mba$aiIndivOptions:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        mba$aiIndivOptionsHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        mba$aiTrustOptions:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        mba$aiTrustOptionsHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        mba$alwCurry:
+          $ref: '#/components/schemas/mba_alw_curry'
+        mba$aml:
+          $ref: '#/components/schemas/mba_aml'
+        mba$amlCase:
+          $ref: '#/components/schemas/mba_aml_case'
+        mba$amlRisk:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        mba$amlRiskHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        mba$amlRiskManual:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        mba$amlRiskManualHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        mba$basicFee:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_set_'
+          x-additionalFieldType: extn_curr_classif
+        mba$basicFeeDet:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_set_'
+          readOnly: true
+        mba$basicFeeSpcd:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_set_'
+          x-additionalFieldType: extn_curr_classif
+        mba$basicFeeSpcdDet:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_set_'
+          readOnly: true
+        mba$block:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_set_'
+          x-additionalFieldType: extn_curr_classif
+        mba$blockDet:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_set_'
+          readOnly: true
+        mba$blockReason:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        mba$blockReasonHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        mba$bpBlbGuar:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key_single_'
+        mba$bpCdpNr:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key_single_'
+        mba$bpCif:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key_single_'
+        mba$bpExtlRef:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key'
+        mba$bpLgcy:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key_single_'
+        mba$bpSbuBcode:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key_single_'
+        mba$bpTech:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key'
+        mba$buChq:
+          $ref: '#/components/schemas/mba_bu_chq'
+        mba$buDet:
+          $ref: '#/components/schemas/mba_bu_det'
+        mba$buExCust:
+          $ref: '#/components/schemas/mba_bu_ex_cust'
+        mba$cccType:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        mba$cccTypeHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        mba$chqAttr:
+          $ref: '#/components/schemas/mba_chq_attr'
+        mba$cltOnbDet:
+          $ref: '#/components/schemas/mba_clt_onb_det'
+        mba$cntprtyType:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        mba$cntprtyTypeHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        mba$collatCmtdPar:
+          $ref: '#/components/schemas/mba_collat_cmtd_par'
+        mba$compliBlockList:
+          $ref: '#/components/schemas/mba_compli_block_list'
+        mba$custrAccStructSubType:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        mba$custrAccStructSubTypeHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        mba$custrAccStructType:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        mba$custrAccStructTypeHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        mba$custrSgmt:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_set_'
+          x-additionalFieldType: extn_curr_classif
+        mba$custrSgmtDet:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_set_'
+          readOnly: true
+        mba$custrSubType:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        mba$custrSubTypeHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        mba$custrType:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        mba$custrTypeHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        mba$docm:
+          $ref: '#/components/schemas/mba_docm'
+        mba$dorm:
+          $ref: '#/components/schemas/mba_dorm'
+        mba$dormAccFee:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_set_'
+          x-additionalFieldType: extn_curr_classif
+        mba$dormAccFeeDet:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_set_'
+          readOnly: true
+        mba$dormType:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        mba$dormTypeHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        mba$eBankFee:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_set_'
+          x-additionalFieldType: extn_curr_classif
+        mba$eBankFeeDet:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_set_'
+          readOnly: true
+        mba$excustDet:
+          $ref: '#/components/schemas/mba_excust_det'
+        mba$fixItvt:
+          $ref: '#/components/schemas/mba_fix_itvt'
+        mba$frnDomiFee:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_set_'
+          x-additionalFieldType: extn_curr_classif
+        mba$frnDomiFeeDet:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_set_'
+          readOnly: true
+        mba$frnDomiFeeSpcd:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_set_'
+          x-additionalFieldType: extn_curr_classif
+        mba$frnDomiFeeSpcdDet:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_set_'
+          readOnly: true
+        mba$glAccCode:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        mba$glAccCodeHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        mba$hasRmaKeyXchng:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        mba$hasRmaKeyXchngHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        mba$indi:
+          $ref: '#/components/schemas/mba_indi'
+        mba$intl:
+          $ref: '#/components/schemas/mba_intl'
+        mba$intlType:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        mba$intlTypeHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        mba$invstProfile:
+          $ref: '#/components/schemas/mba_invst_profile'
+        mba$isAggrSettle:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        mba$isAggrSettleHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        mba$isAi:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        mba$isAiHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        mba$isCredrWDd:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        mba$isCredrWDdHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        mba$isFiddCpty:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        mba$isFiddCptyHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        mba$isHoldmail:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        mba$isHoldmailHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        mba$isInDspu:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        mba$isInDspuHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        mba$isNonXferable:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        mba$isNonXferableHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        mba$isSwiftBlocked:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        mba$isSwiftBlockedHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        mba$jaccType:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        mba$jaccTypeHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        mba$lendRate:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        mba$lendRateHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        mba$msmeFig:
+          $ref: '#/components/schemas/mba_msme_fig'
+        mba$nameExtn:
+          $ref: '#/components/schemas/mba_name_extn'
+        mba$nrCltFee:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_set_'
+          x-additionalFieldType: extn_curr_classif
+        mba$nrCltFeeDet:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_set_'
+          readOnly: true
+        mba$nrCltFeeSpcd:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_set_'
+          x-additionalFieldType: extn_curr_classif
+        mba$nrCltFeeSpcdDet:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_set_'
+          readOnly: true
+        mba$omgeoBrokrType:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        mba$omgeoBrokrTypeHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        mba$perfDet:
+          $ref: '#/components/schemas/mba_perf_det'
+        mba$preTrdChk:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        mba$preTrdChkHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        mba$prspInfo:
+          $ref: '#/components/schemas/mba_prsp_info'
+        mba$qiChpt3Pool:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        mba$qiChpt3PoolHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        mba$realsecCost:
+          $ref: '#/components/schemas/mba_realsec_cost'
+        mba$realsecDet:
+          $ref: '#/components/schemas/mba_realsec_det'
+        mba$realsecTypeDet:
+          $ref: '#/components/schemas/mba_realsec_type_det'
+        mba$realtyDet:
+          $ref: '#/components/schemas/mba_realty_det'
+        mba$realtyList:
+          $ref: '#/components/schemas/mba_realty_list'
+        mba$realtyTypeDet:
+          $ref: '#/components/schemas/mba_realty_type_det'
+        mba$regRepAccStd:
+          $ref: '#/components/schemas/mba_reg_rep_acc_std'
+        mba$resStatusSg:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        mba$resStatusSgHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        mba$smallLoclAuth:
+          $ref: '#/components/schemas/mba_small_locl_auth'
+        mba$srd:
+          $ref: '#/components/schemas/mba_srd'
+        mba$status:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        mba$statusHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        mba$stex:
+          $ref: '#/components/schemas/mba_stex'
+        mba$stexRtng:
+          $ref: '#/components/schemas/mba_stex_rtng'
+        mifidClientType:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        mifidClientTypeHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        mmktMargin:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        mmktMarginHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        nbTradingType:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        nbTradingTypeHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        otcTrEmirDelegClass:
+          description: "Delegated Asset Classes<br>Referencing: `/code-obj-classs/{id}`"
+          type: array
+          items:
+            $ref: '#/components/schemas/code_tab_ref'
+        rrAnnuIncome:
+          description: "Household annual income"
+          type: number
+        typSubjectToSii:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        typSubjectToSiiHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        w8BenECode:
+          $ref: '#/components/schemas/obj_classif_'
+          x-additionalFieldType: extn_curr_classif
+        w8BenECodeHist:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_classif_'
+          readOnly: true
+        xbuSvctrBu:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key_single_'
+    obj_bp_person_auth:
+      title: obj_bp_person_auth
+      type: object
+      properties:
+        authCrd:
+          description: "Signature Authorisation Cardinality"
+          type: number
+        authInstr:
+          description: "Authority Instruction"
+          type: string
+        authNr:
+          description: "Authority"
+          type: integer
+          format: int32
+        authRole:
+          description: "Legitimation<br>Referencing: `/code-auth-roles/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        authStatus:
+          description: "External Status<br>Referencing: `/code-auth-statuss/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        authTrxTypeList:
+          description: "Transaction Type List<br>Referencing: `/code-auth-trx-grps/{id}`"
+          type: array
+          items:
+            $ref: '#/components/schemas/code_tab_ref'
+        bpPAuthObjList:
+          description: "Object List<br>Referencing: `/objs/{id}`"
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_ref'
+        curry:
+          description: "Currency of the Limit<br>Referencing: `/obj-assets/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        docm:
+          description: "Authorisation Document<br>Referencing: `/obj-docms/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        extlAuthRef:
+          description: "External Authority Reference"
+          type: string
+        grp:
+          description: "Group Identifier"
+          type: string
+        grpList:
+          description: "Legitimationlist"
+          type: array
+          items:
+            type: string
+        hasInstruction:
+          description: "has instruction"
+          type: boolean
+        limit:
+          description: "Limit of a Single Transaction"
+          type: number
+        pct:
+          description: "Percentage"
+          type: integer
+          format: int32
+        refDocm:
+          description: "E-Banking Contract Document<br>Referencing: `/obj-docms/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        remark:
+          description: "Remark"
+          type: string
+    obj_bp_person_rel:
+      title: obj_bp_person_rel
+      type: object
+      properties:
+        authDet:
+          $ref: '#/components/schemas/obj_bp_person_auth'
+        authKey:
+          description: "The unique key of an authority that specifies the authority over its complete history"
+          type: integer
+          format: int32
+        bpPersonRelType:
+          description: "Relation Type<br>Referencing: `/code-bp-person-rel-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        secUser:
+          description: "The user who entered/modified the entry<br>Referencing: `/users/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/user_ref'
+          readOnly: true
+        srcObj:
+          description: |
+            **_Only visible within compound APIs_**<br>
+            Returns the source object of the relation. The source object is always a bp.<br/>
+            Referencing: `/obj-bps/{id}`<br>
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_ref'
+          readOnly: true
+        timestp:
+          description: "Entry/Modification timestamp"
+          type: string
+          format: date-time
+          readOnly: true
+        trgObj:
+          description: "Returns the target object of the relation. The target object is always a person.<br>Referencing: `/obj-persons/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        validFrom:
+          description: "Valid From Date"
+          type: string
+          format: date
+        validTo:
+          description: "Valid To Date"
+          type: string
+          format: date
+    obj_bps:
+      title: List of obj_bp
+      type: array
+      items:
+        $ref: '#/components/schemas/obj_bp'
+      uniqueItems: true
+    obj_classif:
+      title: obj_classif
+      type: object
+      properties:
+        bu:
+          description: "Business Unit<br>Referencing: `/obj-bps/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          x-additionalFieldType: extn_generic
+        class:
+          description: "Class<br>Referencing: `/code-obj-classs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          x-additionalFieldType: extn_generic
+        classA:
+          description: "Automatic"
+          type: boolean
+          x-additionalFieldType: extn_generic
+        classFactor:
+          description: "Factor"
+          type: number
+          x-additionalFieldType: extn_generic
+        cltSgmtCalc:
+          description: "Calculated Client Segment<br>Referencing: `/code-person-mktng-sgmts/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          x-additionalFieldType: extn_generic
+        endDate:
+          description: "Valid until"
+          type: string
+          format: date
+          x-additionalFieldType: extn_generic
+        histStatus:
+          description: "Hist Status<br>Referencing: `/code-hist-statuss/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+          x-additionalFieldType: extn_generic
+        indivFeep:
+          description: "Indiv. Fee Profile<br>Referencing: `/obj-feeps/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          x-additionalFieldType: extn_generic
+        isInht:
+          description: "Is Inherited"
+          type: boolean
+          x-additionalFieldType: extn_generic
+        objClassif:
+          description: "Referencing: `/code-obj-classifs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          x-additionalFieldType: extn_generic
+        remark:
+          description: "Remark"
+          type: string
+          x-additionalFieldType: extn_generic
+        secUser:
+          description: "User<br>Referencing: `/users/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/user_ref'
+          readOnly: true
+          x-additionalFieldType: extn_generic
+        spcdCostp:
+          description: "SPCD Cost Profile<br>Referencing: `/obj-costps/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          x-additionalFieldType: extn_generic
+        spcdCurry:
+          description: "SPCD Currency<br>Referencing: `/obj-assets/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          x-additionalFieldType: extn_generic
+        spcdMaxVal:
+          description: "SPCD Maximum"
+          type: number
+          x-additionalFieldType: extn_generic
+        spcdMinVal:
+          description: "SPCD Minimum"
+          type: number
+          x-additionalFieldType: extn_generic
+        spcdMinmaxValType:
+          description: "SPCD Min/Max Type<br>Referencing: `/code-cost-ovr-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          x-additionalFieldType: extn_generic
+        spcdOffsetVal:
+          description: "SPCD Offset"
+          type: number
+          x-additionalFieldType: extn_generic
+        spcdOffsetValType:
+          description: "SPCD Offset Type<br>Referencing: `/code-cost-ovr-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          x-additionalFieldType: extn_generic
+        spcdReason:
+          description: "SPCD Reason<br>Referencing: `/code-cost-ovr-reasons/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          x-additionalFieldType: extn_generic
+        spcdVal:
+          description: "SPCD Value"
+          type: number
+          x-additionalFieldType: extn_generic
+        spcdValType:
+          description: "SPCD Value Type<br>Referencing: `/code-cost-ovr-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          x-additionalFieldType: extn_generic
+        startDate:
+          description: "Valid from"
+          type: string
+          format: date
+          x-additionalFieldType: extn_generic
+        timestamp:
+          description: "Timestamp"
+          type: string
+          format: date-time
+          readOnly: true
+          x-additionalFieldType: extn_generic
+        userRef:
+          description: "Responsible User<br>Referencing: `/users/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/user_ref'
+          x-additionalFieldType: extn_generic
+    obj_classif_:
+      title: obj_classif_
+      type: object
+      properties:
+        bu:
+          description: "Business Unit<br>Referencing: `/obj-bps/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          x-additionalFieldType: extn_curr_classif
+        class:
+          description: "Class<br>Referencing: `/code-obj-classs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          x-additionalFieldType: extn_curr_classif
+        classA:
+          description: "Class a/m"
+          type: boolean
+          x-additionalFieldType: extn_curr_classif
+        classFactor:
+          description: "Class factor"
+          type: number
+          x-additionalFieldType: extn_curr_classif
+        cltSgmtCalc:
+          description: "Client segment calculation<br>Referencing: `/code-person-mktng-sgmts/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          x-additionalFieldType: extn_curr_classif
+        endDate:
+          description: "Valid Until"
+          type: string
+          format: date
+          x-additionalFieldType: extn_curr_classif
+        histStatus:
+          description: "Hist status<br>Referencing: `/code-hist-statuss/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          x-additionalFieldType: extn_curr_classif
+        indivFeep:
+          description: "Individual feep<br>Referencing: `/obj-feeps/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          x-additionalFieldType: extn_curr_classif
+        isInht:
+          description: "Is inherited"
+          type: boolean
+          x-additionalFieldType: extn_curr_classif
+        objClassif:
+          description: "Referencing: `/code-obj-classifs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        remark:
+          description: "Remark"
+          type: string
+          x-additionalFieldType: extn_curr_classif
+        secUser:
+          description: "Sec user<br>Referencing: `/users/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/user_ref'
+          x-additionalFieldType: extn_curr_classif
+        spcdCostp:
+          description: "SPCD Cost Profile<br>Referencing: `/obj-costps/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          x-additionalFieldType: extn_curr_classif
+        spcdCurry:
+          description: "SPCD Currency<br>Referencing: `/obj-assets/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          x-additionalFieldType: extn_curr_classif
+        spcdMaxVal:
+          description: "SPCD Maximum"
+          type: number
+          x-additionalFieldType: extn_curr_classif
+        spcdMinVal:
+          description: "SPCD Minimum"
+          type: number
+          x-additionalFieldType: extn_curr_classif
+        spcdMinmaxValType:
+          description: "SPCD Min/Max Type<br>Referencing: `/code-cost-ovr-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          x-additionalFieldType: extn_curr_classif
+        spcdOffsetVal:
+          description: "SPCD Offset"
+          type: number
+          x-additionalFieldType: extn_curr_classif
+        spcdOffsetValType:
+          description: "SPCD Offset Type<br>Referencing: `/code-cost-ovr-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          x-additionalFieldType: extn_curr_classif
+        spcdReason:
+          description: "SPCD Reason<br>Referencing: `/code-cost-ovr-reasons/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          x-additionalFieldType: extn_curr_classif
+        spcdVal:
+          description: "SPCD Value"
+          type: number
+          x-additionalFieldType: extn_curr_classif
+        spcdValType:
+          description: "SPCD Value Type<br>Referencing: `/code-cost-ovr-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          x-additionalFieldType: extn_curr_classif
+        startDate:
+          description: "Valid from"
+          type: string
+          format: date
+          x-additionalFieldType: extn_curr_classif
+        timestamp:
+          description: "Timestamp"
+          type: string
+          format: date-time
+          x-additionalFieldType: extn_curr_classif
+    obj_classif_set_:
+      title: obj_classif_set_
+      type: object
+      properties:
+        bu:
+          description: "Business Unit<br>Referencing: `/obj-bps/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          x-additionalFieldType: extn_curr_classif
+        class:
+          description: "Class<br>Referencing: `/code-obj-classs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          x-additionalFieldType: extn_curr_classif
+        classA:
+          description: "Class a/m"
+          type: boolean
+          x-additionalFieldType: extn_curr_classif
+        classFactor:
+          description: "Class factor"
+          type: number
+          x-additionalFieldType: extn_curr_classif
+        cltSgmtCalc:
+          description: "Client segment calculation<br>Referencing: `/code-person-mktng-sgmts/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          x-additionalFieldType: extn_curr_classif
+        endDate:
+          description: "Valid Until"
+          type: string
+          format: date
+          x-additionalFieldType: extn_curr_classif
+        indivFeep:
+          description: "Individual feep<br>Referencing: `/obj-feeps/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          x-additionalFieldType: extn_curr_classif
+        isInht:
+          description: "Is inherited"
+          type: boolean
+          x-additionalFieldType: extn_curr_classif
+        objClassif:
+          description: "Referencing: `/code-obj-classifs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        remark:
+          description: "Remark"
+          type: string
+          x-additionalFieldType: extn_curr_classif
+        spcdCostp:
+          description: "SPCD Cost Profile<br>Referencing: `/obj-costps/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          x-additionalFieldType: extn_curr_classif
+        spcdCurry:
+          description: "SPCD Currency<br>Referencing: `/obj-assets/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          x-additionalFieldType: extn_curr_classif
+        spcdMaxVal:
+          description: "SPCD Maximum"
+          type: number
+          x-additionalFieldType: extn_curr_classif
+        spcdMinVal:
+          description: "SPCD Minimum"
+          type: number
+          x-additionalFieldType: extn_curr_classif
+        spcdMinmaxValType:
+          description: "SPCD Min/Max Type<br>Referencing: `/code-cost-ovr-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          x-additionalFieldType: extn_curr_classif
+        spcdOffsetVal:
+          description: "SPCD Offset"
+          type: number
+          x-additionalFieldType: extn_curr_classif
+        spcdOffsetValType:
+          description: "SPCD Offset Type<br>Referencing: `/code-cost-ovr-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          x-additionalFieldType: extn_curr_classif
+        spcdReason:
+          description: "SPCD Reason<br>Referencing: `/code-cost-ovr-reasons/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          x-additionalFieldType: extn_curr_classif
+        spcdVal:
+          description: "SPCD Value"
+          type: number
+          x-additionalFieldType: extn_curr_classif
+        spcdValType:
+          description: "SPCD Value Type<br>Referencing: `/code-cost-ovr-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          x-additionalFieldType: extn_curr_classif
+        startDate:
+          description: "Valid from"
+          type: string
+          format: date
+          x-additionalFieldType: extn_curr_classif
+        timestamp:
+          description: "Timestamp"
+          type: string
+          format: date-time
+          x-additionalFieldType: extn_curr_classif
+    obj_clt_suity_hist:
+      title: obj_clt_suity_hist
+      type: object
+      properties:
+        cltInitCtactChan:
+          description: "Contact Channel ID<br>Referencing: `/code-clt-init-ctact-chans/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        cltInitInitr:
+          description: "Contact Initiator<br>Referencing: `/code-clt-init-initrs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        cltSuity:
+          description: "Client Suitability ID<br>Referencing: `/code-clt-suitys/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        cltSuityBu:
+          description: "Business Unit<br>Referencing: `/obj-bps/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        cltSuityOvr:
+          description: "Override Client Suitability<br>Referencing: `/code-clt-suitys/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        cltSuityOvrDate:
+          description: "Client Sutability Override Date"
+          type: string
+          format: date
+        cltSuityOvrReason:
+          description: "Override Reason"
+          type: string
+        cltSuityOvrUser:
+          description: "Override User<br>Referencing: `/users/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/user_ref'
+        cltSuityReasonList:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_clt_suity_reason_hist'
+        cltSuityRefDate:
+          description: "Reference Date"
+          type: string
+          format: date
+        cltSuityRuleEvalTimestp:
+          description: "Client Rule Evaluation Timestamp"
+          type: string
+          format: date
+        obj:
+          description: "Object ID<br>Referencing: `/objs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          readOnly: true
+    obj_clt_suity_reason_hist:
+      title: obj_clt_suity_reason_hist
+      type: object
+      properties:
+        cltSuityReason:
+          description: "Client Suitability Reason"
+          type: string
+        person:
+          description: "Object ID<br>Referencing: `/obj-persons/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+    obj_dfacc_ref:
+      title: obj_dfacc_ref
+      type: object
+      properties:
+        bp:
+          description: "Business Partner<br>Referencing: `/obj-bps/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        cont:
+          description: "Container<br>Referencing: `/obj-conts/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        curry:
+          description: "Currency<br>Referencing: `/obj-assets/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        dfaccRuleType:
+          description: "Result Type<br>Referencing: `/code-dfacc-rule-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        macc:
+          description: "Account<br>Referencing: `/obj-poss/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        ruleTempl:
+          description: "Template<br>Referencing: `/code-rule-templs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+    obj_direct_resp_rel:
+      title: obj_direct_resp_rel
+      type: object
+      properties:
+        obj:
+          description: "Object which has a responsibility<br>Referencing: `/objs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          readOnly: true
+        resp:
+          description: "OE or JOB which is responsible for the Object<br>Referencing: `/obj-persons/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        respRole:
+          description: "Responsibility role<br>Referencing: `/code-auth-roles/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        validFrom:
+          description: "Responsibility is valid from"
+          type: string
+          format: date
+        validTo:
+          description: "Responsibility is valid to"
+          type: string
+          format: date
+    obj_key:
+      title: obj_key
+      type: object
+      properties:
+        obj:
+          description: "Referencing: `/objs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          readOnly: true
+          x-additionalFieldType: extn_generic
+        obj1:
+          description: "Objects<br>Referencing: `/objs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          x-additionalFieldType: extn_generic
+        obj1Class:
+          description: "Object Class"
+          type: string
+          readOnly: true
+          x-additionalFieldType: extn_generic
+        obj2:
+          description: "Objects<br>Referencing: `/objs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          x-additionalFieldType: extn_generic
+        obj2Class:
+          description: "Object Class"
+          type: string
+          readOnly: true
+          x-additionalFieldType: extn_generic
+        obj3:
+          description: "Objects<br>Referencing: `/objs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          x-additionalFieldType: extn_generic
+        obj3Class:
+          description: "Object Class"
+          type: string
+          readOnly: true
+          x-additionalFieldType: extn_generic
+        obj4:
+          description: "Objects<br>Referencing: `/objs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          x-additionalFieldType: extn_generic
+        obj4Class:
+          description: "Object Class"
+          type: string
+          readOnly: true
+          x-additionalFieldType: extn_generic
+        objKey:
+          description: "Referencing: `/code-obj-keys/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          x-additionalFieldType: extn_generic
+        prio:
+          description: "Priority"
+          type: string
+          x-additionalFieldType: extn_generic
+        refObj:
+          description: "Reference<br>Referencing: `/objs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          x-additionalFieldType: extn_generic
+        ruleId:
+          description: "Rule"
+          type: integer
+          format: int32
+          readOnly: true
+          x-additionalFieldType: extn_generic
+        ruleTempl:
+          description: "Template<br>Referencing: `/code-rule-templs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          x-additionalFieldType: extn_generic
+        seqNr:
+          type: integer
+          format: int32
+          x-additionalFieldType: extn_generic
+        trigMetaTyp:
+          description: "Triggering Meta Typ<br>Referencing: `/meta-typs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          x-additionalFieldType: extn_generic
+        trigOrderType:
+          description: "Triggering Order Type<br>Referencing: `/code-order-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          x-additionalFieldType: extn_generic
+        val:
+          description: "Value"
+          type: string
+          x-additionalFieldType: extn_generic
+        valA:
+          description: "Automatic"
+          type: boolean
+          x-additionalFieldType: extn_generic
+    obj_key_ref_:
+      title: obj_key_ref_
+      type: object
+      properties:
+        objKey:
+          description: "Referencing: `/code-obj-keys/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        val:
+          description: "Key value"
+          type: string
+    obj_key_single_:
+      title: obj_key_single_
+      type: object
+      properties:
+        refObj:
+          description: "Reference object<br>Referencing: `/objs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        val:
+          description: "Value"
+          type: string
+    obj_minstr:
+      title: obj_minstr
+      type: object
+      properties:
+        addr:
+          description: "Persisted Mailing address (Table MINSTR)<br>Referencing: `/obj-addrs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        id:
+          type: integer
+          format: int32
+          readOnly: true
+        isActive:
+          description: "Is active (when mailing instruction is not active, it will never be used and the products will not be generated)"
+          type: boolean
+        itemList:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_minstr_item'
+        lang:
+          description: "Language<br>Referencing: `/code-langs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        langSrc:
+          description: "Language source<br>Referencing: `/code-mail-lang-srcs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        mailAction:
+          description: "Mailing action (eg. A-Post, B-Post, keep, etc.)<br>Referencing: `/code-mail-actions/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        mailEvt:
+          description: "Mailing event (eg. OK cours, etc.)<br>Referencing: `/code-mail-evts/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        mailFreq:
+          description: "Streaming frequency (eg. daily, monthly, etc.)<br>Referencing: `/code-mail-freqs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        minstrTempl:
+          description: "Mailing instruction template<br>Referencing: `/minstr-templs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+    obj_minstr_item:
+      title: obj_minstr_item
+      type: object
+      properties:
+        copyCnt:
+          type: integer
+          format: int32
+          readOnly: true
+        genFreq:
+          description: "Referencing: `/code-gen-freqs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        mail:
+          description: "Referencing: `/code-mails/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        mquant:
+          description: "Referencing: `/code-mquants/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        mreplMtd:
+          description: "Referencing: `/code-mrepl-mtds/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        origCnt:
+          type: integer
+          format: int32
+          readOnly: true
+    obj_name:
+      title: obj_name
+      type: object
+      properties:
+        dateValid:
+          description: "Date Valid"
+          type: string
+          format: date
+          readOnly: true
+        dateValidTo:
+          description: "Date Valid to"
+          type: string
+          format: date
+          readOnly: true
+        insTime:
+          description: "Insertion Time"
+          type: string
+          format: date-time
+          readOnly: true
+        lang:
+          description: "Language<br>Referencing: `/code-langs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        name:
+          description: "Name"
+          type: string
+        nameA:
+          description: "Name Auto Flag"
+          type: string
+        nameAbbr:
+          description: "Abbreviation"
+          type: string
+        nameAbbrA:
+          description: "Abbreviation Auto Flag"
+          type: string
+        nameIntl:
+          description: "Internal Name"
+          type: string
+        nameIntlA:
+          description: "Internal Name Auto Flag"
+          type: string
+        nameLong:
+          description: "Long Name"
+          type: string
+        nameLongA:
+          description: "Long Name Auto Flag"
+          type: string
+    obj_ref:
+      title: obj_ref
+      type: object
+      properties:
+        _href:
+          description: "Reference/link"
+          type: string
+          readOnly: true
+        _ident:
+          description: "Only used for workItem usecases, crossreference in workItem context"
+          type: string
+          writeOnly: true
+        id:
+          description: "Numeric reference"
+          type: integer
+          format: int32
+        keyList:
+          description: "Key value object reference "
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_key_ref_'
+          writeOnly: true
+    obj_rel:
+      title: obj_rel
+      type: object
+      properties:
+        f1:
+          type: number
+        obj1:
+          description: "Referencing: `/objs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          readOnly: true
+        obj2:
+          description: "Referencing: `/objs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        objRelSubType:
+          description: "Referencing: `/code-obj-rel-sub-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        objRelType:
+          description: "Referencing: `/code-obj-rel-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        prio:
+          type: integer
+          format: int32
+        shareRate:
+          description: "Sharing Rate (Sharing)"
+          type: number
+        subTrl:
+          type: string
+        trl:
+          type: string
+    obj_rel_addr:
+      title: obj_rel_addr
+      type: object
+      properties:
+        addr:
+          description: "Address<br>Referencing: `/obj-addrs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        isMain:
+          description: "Is Main Address"
+          type: boolean
+        isResid:
+          description: "Residence"
+          type: boolean
+    obj_rel_docm:
+      title: obj_rel_docm
+      type: object
+      properties:
+        deferralDate:
+          description: "Deferral Date (Document)"
+          type: string
+          format: date-time-no-tz
+        deferralReason:
+          description: "Deferral Reason (Document)<br>Referencing: `/code-deferral-reasons/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        expirDate:
+          description: "Expiration Date (Document)"
+          type: string
+          format: date-time-no-tz
+        name:
+          type: string
+          readOnly: true
+        obj:
+          description: "Object<br>Referencing: `/objs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          readOnly: true
+        objDocm:
+          description: "Document<br>Referencing: `/obj-docms/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        objRelSubType:
+          description: "Object relation sub type<br>Referencing: `/code-obj-rel-sub-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        signDate:
+          description: "Signature Date (Document)"
+          type: string
+          format: date-time-no-tz
+        text:
+          description: "Additional Text (Document)"
+          type: string
+        version:
+          description: "Version (Document)"
+          type: string
+    obj_remark:
+      title: obj_remark
+      type: object
+      properties:
+        attch:
+          type: string
+        dateValidTo:
+          type: string
+          format: date
+        langList:
+          type: array
+          items:
+            $ref: '#/components/schemas/obj_remark_det'
+        subType:
+          description: "Referencing: `/code-remark-sub-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        text:
+          type: string
+        timestamp:
+          type: string
+          format: date-time-no-tz
+        topic:
+          type: string
+        type:
+          description: "Referencing: `/code-remark-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        user:
+          description: "Referencing: `/users/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/user_ref'
+    obj_remark_det:
+      title: obj_remark_det
+      type: object
+      properties:
+        lang:
+          description: "Referencing: `/code-langs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        text:
+          type: string
+    obj_stand_instr:
+      title: obj_stand_instr
+      type: object
+      properties:
+        asset:
+          description: "Asset<br>Referencing: `/obj-assets/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        assetClass:
+          description: "Asset Class"
+          type: string
+        assetDomiCountry:
+          description: "Country<br>Referencing: `/obj-countrys/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          readOnly: true
+        bu:
+          description: "Business Unit<br>Referencing: `/obj-bps/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        cont:
+          description: "Container<br>Referencing: `/obj-conts/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        curry:
+          description: "Currency<br>Referencing: `/obj-assets/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        curryClass:
+          description: "Curry Class"
+          type: string
+        custBp:
+          description: "Custodian<br>Referencing: `/obj-bps/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        custCntprty:
+          description: "Custodian Counterparty<br>Referencing: `/obj-cntprtys/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        custCont:
+          description: "Custodian Cont<br>Referencing: `/obj-conts/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        destAddr:
+          description: "Address<br>Referencing: `/obj-addrs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          readOnly: true
+        destAddrA:
+          description: "Address"
+          type: boolean
+          readOnly: true
+        destAddrLn:
+          description: "Address Line"
+          type: string
+          readOnly: true
+        destBank:
+          description: "Destination Party<br>Referencing: `/obj-bps/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        destBankAddr:
+          description: "Address<br>Referencing: `/obj-addrs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          readOnly: true
+        destBankAddrA:
+          description: "Address"
+          type: boolean
+          readOnly: true
+        destBankAddrLn:
+          description: "Address Line"
+          type: string
+          readOnly: true
+        destBankBldgName:
+          description: "Name of Building"
+          type: string
+          readOnly: true
+        destBankCity:
+          description: "City/Region"
+          type: string
+          readOnly: true
+        destBankCityLocName:
+          description: "City Location Name"
+          type: string
+          readOnly: true
+        destBankCntprty:
+          description: "Dest. Bank Counterparty<br>Referencing: `/obj-cntprtys/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        destBankCont:
+          description: "Dest. Party Cont.<br>Referencing: `/obj-conts/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        destBankCountry:
+          description: "Country<br>Referencing: `/obj-countrys/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          readOnly: true
+        destBankDept:
+          description: "Department"
+          type: string
+          readOnly: true
+        destBankDistrict:
+          description: "District"
+          type: string
+          readOnly: true
+        destBankFirm:
+          description: "Full Name / Firm"
+          type: string
+          readOnly: true
+        destBankFloorNr:
+          description: "Floor Number"
+          type: string
+          readOnly: true
+        destBankInfo:
+          description: "Bank Info"
+          type: string
+        destBankPoBox:
+          description: "P.O. Box"
+          type: string
+          readOnly: true
+        destBankState:
+          description: "State"
+          type: string
+          readOnly: true
+        destBankStreet:
+          description: "Street"
+          type: string
+          readOnly: true
+        destBankStreetNr:
+          description: "No."
+          type: string
+          readOnly: true
+        destBankSubDept:
+          description: "Sub-Department"
+          type: string
+          readOnly: true
+        destBankText:
+          description: "Destination Party"
+          type: string
+        destBankUnitNr:
+          description: "Unit Number"
+          type: string
+          readOnly: true
+        destBankZip:
+          description: "Post Code"
+          type: string
+          readOnly: true
+        destBenefInfo:
+          description: "Beneficiary Information"
+          type: string
+        destBldgName:
+          description: "Name of Building"
+          type: string
+          readOnly: true
+        destBp:
+          description: "Instructing Party<br>Referencing: `/obj-bps/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        destBpText:
+          description: "Instructing Party"
+          type: string
+        destCashAcc:
+          description: "Text"
+          type: string
+        destCity:
+          description: "City/Region"
+          type: string
+          readOnly: true
+        destCityLocName:
+          description: "City Location Name"
+          type: string
+          readOnly: true
+        destClrinstBp:
+          description: "Institute<br>Referencing: `/obj-bps/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        destCntprty:
+          description: "Instructing Party Counterparty<br>Referencing: `/obj-cntprtys/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        destCont:
+          description: "Instructing Party Cont.<br>Referencing: `/obj-conts/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        destCountry:
+          description: "Country<br>Referencing: `/obj-countrys/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          readOnly: true
+        destDept:
+          description: "Department"
+          type: string
+          readOnly: true
+        destDistrict:
+          description: "District"
+          type: string
+          readOnly: true
+        destFirm:
+          description: "Full Name / Firm"
+          type: string
+          readOnly: true
+        destFloorNr:
+          description: "Floor Number"
+          type: string
+          readOnly: true
+        destPoBox:
+          description: "P.O. Box"
+          type: string
+          readOnly: true
+        destPrtyListCountry:
+          description: "Destination Party List Country<br>Referencing: `/obj-countrys/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        destSafeAcc:
+          description: "Text"
+          type: string
+        destState:
+          description: "State"
+          type: string
+          readOnly: true
+        destStreet:
+          description: "Street"
+          type: string
+          readOnly: true
+        destStreetNr:
+          description: "No."
+          type: string
+          readOnly: true
+        destSubDept:
+          description: "Sub-Department"
+          type: string
+          readOnly: true
+        destUnitNr:
+          description: "Unit Number"
+          type: string
+          readOnly: true
+        destZip:
+          description: "Post Code"
+          type: string
+          readOnly: true
+        isDestAddrOvr:
+          description: "Override"
+          type: boolean
+          readOnly: true
+        isDestBankAddrOvr:
+          description: "Override"
+          type: boolean
+          readOnly: true
+        isMsgRcv:
+          description: "Is Message Receiver"
+          type: string
+        issuer:
+          description: "Issuer<br>Referencing: `/obj-bps/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        issuerClass:
+          description: "Issuer Class"
+          type: string
+        mkt:
+          description: "Market<br>Referencing: `/obj-mkts/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        mktClass:
+          description: "Market Class"
+          type: string
+        mktCountry:
+          description: "Country<br>Referencing: `/obj-countrys/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        orderType:
+          description: "Order Type<br>Referencing: `/code-order-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        payChan:
+          description: "Payment Channel<br>Referencing: `/code-pay-chans/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        payScheme:
+          description: "Payment Scheme<br>Referencing: `/code-pay-schemes/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+          readOnly: true
+        prio:
+          description: "Priority"
+          type: string
+        psafeBp:
+          description: "Place of Safekeeping<br>Referencing: `/obj-bps/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        ruleTempl:
+          description: "Template<br>Referencing: `/code-rule-templs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        standInstrSrc:
+          description: "Source<br>Referencing: `/code-stand-instr-srcs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        standInstrType:
+          description: "Standing Instruction Type<br>Referencing: `/code-stand-instr-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        tradeCurry:
+          description: "Trading Currency<br>Referencing: `/obj-assets/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        trigAsset:
+          description: "Triggering Asset<br>Referencing: `/obj-assets/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+        trigAssetClass:
+          description: "Triggering Asset"
+          type: string
+        trigAssetDomiCountry:
+          description: "Country<br>Referencing: `/obj-countrys/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_ref'
+          readOnly: true
+        trigMetaTyp:
+          description: "Meta type<br>Referencing: `/meta-typs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        trigOrderType:
+          description: "Triggering Order Type<br>Referencing: `/code-order-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        validFromEffDate:
+          description: "Effective Date from"
+          type: string
+          format: date
+        validFromTrxDate:
+          description: "Transaction Date from"
+          type: string
+          format: date
+        validFromValDate:
+          description: "Value Date From"
+          type: string
+          format: date
+        validToEffDate:
+          description: "Effective Date to"
+          type: string
+          format: date
+        validToTrxDate:
+          description: "Transaction date to"
+          type: string
+          format: date
+        validToValDate:
+          description: "Value Date To"
+          type: string
+          format: date
+    obj_trans:
+      title: obj_trans
+      type: object
+      properties:
+        doc:
+          description: "Referencing: `/docs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/doc_ref'
+          readOnly: true
+        timestamp:
+          type: string
+          format: date-time-no-tz
+          readOnly: true
+        userstamp:
+          type: string
+          readOnly: true
+    text:
+      title: text
+      type: object
+      properties:
+        id:
+          description: "ID"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+    user_ref:
+      title: user_ref
+      type: object
+      properties:
+        _href:
+          description: "Reference/link"
+          type: string
+          readOnly: true
+        id:
+          description: "Numeric reference"
+          type: integer
+          format: int32
+    xrate_pin_ref:
+      title: xrate_pin_ref
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+    obj_id_ref:
+      title: obj_id_ref
+      type: object
+      properties:
+        _href:
+          description: "Reference/link"
+          type: string
+          readOnly: true
+        id:
+          description: "Numeric reference"
+          type: integer
+          format: int32
+          readOnly: true
+    code_tab_id_ref:
+      title: code_tab_id_ref
+      type: object
+      properties:
+        _href:
+          description: "Reference/link"
+          type: string
+          readOnly: true
+        id:
+          description: "Numeric reference"
+          type: integer
+          format: int32
+          readOnly: true
+    timeseries:
+      title: timeseries
+      type: object
+      properties:
+        curry:
+          description: "Referencing: `/obj-assets/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_id_ref'
+          readOnly: true
+        effDate:
+          type: string
+          format: date
+          readOnly: true
+        mdDomn:
+          description: "Referencing: `/code-md-domns/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_id_ref'
+          readOnly: true
+        mdScen:
+          description: "Referencing: `/code-md-scens/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_id_ref'
+          readOnly: true
+        mdStatus:
+          description: "Referencing: `/code-md-statuss/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_id_ref'
+          readOnly: true
+        mkt:
+          description: "Referencing: `/obj-mkts/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/obj_id_ref'
+          readOnly: true
+        mktTimestamp:
+          type: string
+          format: date-time
+          readOnly: true
+        mostRecent:
+          type: boolean
+          readOnly: true
+        pin:
+          description: "Referencing: `/xrate-pins/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/xrate_pin_ref'
+          readOnly: true
+        priceQuoteType:
+          description: "Referencing: `/code-price-quote-types/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_id_ref'
+          readOnly: true
+        priceSrc:
+          description: "Referencing: `/code-price-srcs/{id}`"
+          allOf:
+            - $ref: '#/components/schemas/code_tab_id_ref'
+          readOnly: true
+        prio:
+          type: integer
+          readOnly: true
+        signt:
+          type: integer
+          readOnly: true
+        signt2:
+          type: integer
+          readOnly: true
+        val1:
+          type: number
+          readOnly: true
+        val2:
+          type: number
+          readOnly: true
+    validationResult:
+      title: validationResult
+      type: object
+      properties:
+        displText:
+          type: string
+          readOnly: true
+        ovrHasRight:
+          type: boolean
+          readOnly: true
+        ref:
+          description: "Referencing: `/code_ui_errs/{id}` or `/code_overrides/{id}`"
+          readOnly: true
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        resType:
+          description: "Referencing: `/code_err_types/{id}`"
+          readOnly: true
+          allOf:
+            - $ref: '#/components/schemas/code_tab_ref'
+        ovrSignt:
+          type: integer
+          format: int32
+
+  headers:
+    Content-Language:
+      schema:
+        type: string
+    X-Has-Next-Page:
+      schema:
+        type: string
+    Location:
+      schema:
+        type: string
+      description: Location of the created resource
+    ETag:
+      schema:
+        type: string
+      description: Current entity-tag
+
+  parameters:
+    Filter:
+      name: filter
+      in: query
+      description: Expression to reduce the result set
+      schema:
+        type: string
+    PageLimit:
+      name: limit
+      in: query
+      description: Limits the number of items on a page
+      schema:
+        type: integer
+        default: 5
+        minimum: 1
+        maximum: 200
+    PageOffset:
+      name: offset
+      in: query
+      description: Number of records to be skipped before selecting the result set
+      schema:
+        type: integer
+        minimum: 0
+    HrefActive:
+      name: href
+      in: query
+      description: Activates the href
+      schema:
+        type: boolean
+    IncludeInactive:
+      name: include_inactive
+      in: query
+      description: Includes inactive data
+      schema:
+        type: boolean
+    If-None-Match:
+      name: If-None-Match
+      in: header
+      description: Specifies version known by client
+      schema:
+        type: string
+      required: false
+    If-Match:
+      name: If-Match
+      in: header
+      description: Specifies entity-tag known by client
+      schema:
+        type: string
+      required: false
+    Accept-Encoding:
+      name: Accept-Encoding
+      in: header
+      description: >-
+        Compression scheme<br/>
+        Warning: HTTP compression might not lead to better performance
+      schema:
+        type: string
+      example: gzip, deflate
+      required: false
+    Accept-Language:
+      name: Accept-Language
+      in: header
+      description: Specifies the language and locale that the client prefers
+      schema:
+        type: string
+      example: de-CH, en-US
+      required: false
+    X-Request-ID:
+      name: X-Request-ID
+      in: header
+      description: Specifies the request id in UUID format. If not provided, it will be generated automatically.
+      schema:
+        type: string
+        format: uuid
+      required: false
+  responses:
+    Problem:
+      description: RFC7807 Problem
+      content:
+        application/problem+json:
+          schema:
+            type: object
+            properties:
+              type:
+                type: string
+              title:
+                type: string
+              status:
+                type: number
+                format: integer
+              detail:
+                type: string
+              messages:
+                type: array
+                readOnly: true
+                items:
+                  type: string
+              validationResults:
+                type: array
+                readOnly: true
+                items:
+                  $ref: '#/components/schemas/validationResult'
+            additionalProperties: true
+            required:
+              - type
+              - title
+              - status
+

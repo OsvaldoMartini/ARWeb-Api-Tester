@@ -1,0 +1,94 @@
+{
+  bookDate
+  bookKind {
+    _href
+    id
+    ident
+    intlId
+  }
+  bookValPos
+  bookValRef
+  cont {
+    _href
+    _ident
+    id
+    keyList {
+      objKey {
+        _href
+        id
+        ident
+        intlId
+      }
+      val
+    }
+  }
+  doc {
+    _href
+    _ident
+    id
+  }
+  evt {
+    id
+  }
+  evtStatus {
+    _href
+    id
+    ident
+    intlId
+  }
+  extlBookText
+  metaTyp {
+    _href
+    id
+    ident
+    intlId
+  }
+  orderType {
+    _href
+    id
+    ident
+    intlId
+  }
+  perfDate
+  pko {
+    _href
+    id
+    ident
+    intlId
+  }
+  pos {
+    _href
+    _ident
+    id
+    keyList {
+      objKey {
+        _href
+        id
+        ident
+        intlId
+      }
+      val
+    }
+  }
+  qty
+  refCurry {
+    _href
+    _ident
+    id
+    keyList {
+      objKey {
+        _href
+        id
+        ident
+        intlId
+      }
+      val
+    }
+  }
+  trxDate
+  trxValPos
+  trxValRef
+  valDate
+  veriAtrxSeqNr
+  veriDate
+}

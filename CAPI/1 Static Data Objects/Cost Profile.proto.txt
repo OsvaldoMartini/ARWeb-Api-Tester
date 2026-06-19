@@ -1,0 +1,251 @@
+syntax = "proto3";
+
+package com.avaloq.acp.bde.protobuf.obj_costp;
+
+import "meta_model.proto";
+import "wrappers.proto";
+import "options.proto";
+
+option (version) = "3.13.2";
+
+message ObjAdd {
+  SInt64Value obj_add_id = 1 [(bde_entity) = "Code_obj_add", (bde_ref_type) = "code"];
+  repeated ObjAddVal val_list = 2;
+  BoolValue bool_val = 3;
+  SInt64Value bu_id = 4 [(bde_entity) = "Obj_bp", (bde_ref_type) = "obj"];
+  StringValue date_val = 5 [(format) = "date"];
+  SInt64Value id_val = 6;
+  StringValue nr_val = 7 [(format) = "decimal"];
+  StringValue text_val = 8;
+  StringValue tswtz_val = 9 [(format) = "date_time"];
+  StringValue ctx = 10;
+  StringValue ctype = 11;
+  StringValue data_type = 12;
+  BoolValue is_multi_val = 13;
+  SInt64Value obj_id = 14 [(bde_entity) = "Obj", (bde_ref_type) = "obj"];
+  StringValue type = 15;
+  StringValue val = 16;
+}
+
+message ObjAddVal {
+  StringValue text_val = 1;
+  StringValue nr_val = 2 [(format) = "decimal"];
+  StringValue date_val = 3 [(format) = "date"];
+  StringValue tswtz_val = 4 [(format) = "date_time"];
+  SInt64Value id_val = 5;
+  SInt64Value seq_nr = 6;
+  StringValue val = 7;
+}
+
+message ObjClassif {
+  SInt64Value obj_classif_id = 1 [(bde_entity) = "Code_obj_classif", (bde_ref_type) = "code"];
+  SInt64Value bu_id = 2 [(bde_entity) = "Obj_bp", (bde_ref_type) = "obj"];
+  SInt64Value class_id = 3 [(bde_entity) = "Code_obj_class", (bde_ref_type) = "code"];
+  StringValue start_date = 4 [(format) = "date"];
+  StringValue end_date = 5 [(format) = "date"];
+  BoolValue class_a = 6;
+  StringValue class_factor = 7 [(format) = "decimal"];
+  SInt64Value clt_sgmt_calc_id = 8 [(bde_entity) = "Code_person_mktng_sgmt", (bde_ref_type) = "code"];
+  SInt64Value hist_status_id = 9 [(bde_entity) = "Code_hist_status", (bde_ref_type) = "code"];
+  SInt64Value indiv_feep_id = 10 [(bde_entity) = "Obj_feep", (bde_ref_type) = "obj"];
+  BoolValue is_inht = 11;
+  StringValue remark = 12;
+  SInt64Value sec_user_id = 13 [(bde_entity) = "User", (bde_ref_type) = "use"];
+  SInt64Value spcd_costp_id = 14 [(bde_entity) = "Obj_costp", (bde_ref_type) = "obj"];
+  SInt64Value spcd_curry_id = 15 [(bde_entity) = "Obj_asset", (bde_ref_type) = "obj"];
+  StringValue spcd_max_val = 16 [(format) = "decimal"];
+  StringValue spcd_min_val = 17 [(format) = "decimal"];
+  SInt64Value spcd_minmax_val_type_id = 18 [(bde_entity) = "Code_cost_ovr_type", (bde_ref_type) = "code"];
+  StringValue spcd_offset_val = 19 [(format) = "decimal"];
+  SInt64Value spcd_offset_val_type_id = 20 [(bde_entity) = "Code_cost_ovr_type", (bde_ref_type) = "code"];
+  SInt64Value spcd_reason_id = 21 [(bde_entity) = "Code_cost_ovr_reason", (bde_ref_type) = "code"];
+  StringValue spcd_val = 22 [(format) = "decimal"];
+  SInt64Value spcd_val_type_id = 23 [(bde_entity) = "Code_cost_ovr_type", (bde_ref_type) = "code"];
+  StringValue timestamp = 24 [(format) = "date_time"];
+  SInt64Value user_ref_id = 25 [(bde_entity) = "User", (bde_ref_type) = "use"];
+}
+
+message ObjCostp {
+  option (is_bde_entity) = true;
+  repeated ObjAdd add_list = 1;
+  BoolValue alw_ovr = 3;
+  SInt64Value book_kind_id = 4 [(bde_entity) = "Code_book_kind", (bde_ref_type) = "code"];
+  SInt64Value bu_id = 5 [(bde_entity) = "Obj_bp", (bde_ref_type) = "obj"];
+  repeated ObjClassif classif_list = 6;
+  StringValue close_date = 7 [(format) = "date"];
+  SInt64Value cost_keep_period_id = 8 [(bde_entity) = "Code_cost_keep_period", (bde_ref_type) = "code"];
+  UInt64Value doc_id = 9 [(bde_entity) = "Doc", (bde_ref_type) = "doc"];
+  BoolValue dsbl_auto_prio = 10;
+  StringValue end_date = 11 [(format) = "date"];
+  sint64 id = 12 [(bde_entity) = "Obj", (bde_ref_type) = "obj"];
+  repeated ObjKey key_list = 13;
+  SInt64Value master_costp_id = 14 [(bde_entity) = "Obj_costp", (bde_ref_type) = "obj"];
+  SInt64Value mcrit_templ_id = 15 [(bde_entity) = "Code_costp_mcrit_templ", (bde_ref_type) = "code"];
+  StringValue mdf_timestp = 16 [(format) = "date"];
+  SInt64Value meta_typ_1_id = 17 [(bde_entity) = "Meta_typ", (bde_ref_type) = "code"];
+  SInt64Value meta_typ_2_id = 18 [(bde_entity) = "Meta_typ", (bde_ref_type) = "code"];
+  SInt64Value meta_typ_3_id = 19 [(bde_entity) = "Meta_typ", (bde_ref_type) = "code"];
+  repeated ObjName obj_name_list = 20;
+  SInt64Value obj_sub_type_id = 21 [(bde_entity) = "Code_obj_sub_type", (bde_ref_type) = "code"];
+  SInt64Value obj_type_id = 22 [(bde_entity) = "Code_obj_type", (bde_ref_type) = "code"];
+  StringValue open_date = 23 [(format) = "date"];
+  repeated ObjRemark remark_list = 24;
+  SInt64Value sds_instn_id = 25 [(bde_entity) = "Code_extl_sys", (bde_ref_type) = "code"];
+  StringValue sort_alpha = 26;
+  SInt64Value sort_nr = 27;
+  SInt64Value spcd_classif_grp_id = 28 [(bde_entity) = "Code_costp_spcd_classif_grp", (bde_ref_type) = "code"];
+  StringValue start_date = 29 [(format) = "date"];
+  repeated ObjTrans trans_list = 30;
+  SInt64Value bde_rec_version = 31;
+  repeated ObjStructAdd struct_add_list = 32;
+  repeated ObjCostpTariff costp_tariff_list = 33;
+  ObjTrans last_trans = 34;
+}
+
+message ObjCostpTariff {
+  StringValue valid_from = 1 [(format) = "date"];
+  StringValue valid_to = 2 [(format) = "date"];
+  StringValue prio_offset = 3 [(format) = "decimal"];
+  BoolValue prio_offset_a = 4;
+  SInt64Value cost_qty_type_id = 5 [(bde_entity) = "Code_cost_qty_type", (bde_ref_type) = "code"];
+  SInt64Value cost_qty_sign_id = 6 [(bde_entity) = "Code_cost_qty_sign", (bde_ref_type) = "code"];
+  StringValue factor = 7 [(format) = "decimal"];
+  SInt64Value factor_curry_id = 8 [(bde_entity) = "Obj_asset", (bde_ref_type) = "obj"];
+  BoolValue factor_use_std = 9;
+  SInt64Value rd_1_id = 10 [(bde_entity) = "Code_cost_qty_rd", (bde_ref_type) = "code"];
+  SInt64Value rd_1_curry_id = 11 [(bde_entity) = "Obj_asset", (bde_ref_type) = "obj"];
+  StringValue minim = 12 [(format) = "decimal"];
+  BoolValue minim_use_std = 13;
+  StringValue maxim = 14 [(format) = "decimal"];
+  BoolValue maxim_use_std = 15;
+  SInt64Value minim_maxim_curry_id = 16 [(bde_entity) = "Obj_asset", (bde_ref_type) = "obj"];
+  StringValue offset = 17 [(format) = "decimal"];
+  SInt64Value offset_curry_id = 18 [(bde_entity) = "Obj_asset", (bde_ref_type) = "obj"];
+  BoolValue offset_use_std = 19;
+  StringValue dscnt_val = 20 [(format) = "decimal"];
+  SInt64Value dscnt_ovr_type_id = 21 [(bde_entity) = "Code_cost_ovr_type", (bde_ref_type) = "code"];
+  SInt64Value dscnt_curry_id = 22 [(bde_entity) = "Obj_asset", (bde_ref_type) = "obj"];
+  StringValue dscnt_minmax_val = 23 [(format) = "decimal"];
+  SInt64Value dscnt_minmax_ovr_type_id = 24 [(bde_entity) = "Code_cost_ovr_type", (bde_ref_type) = "code"];
+  SInt64Value dscnt_minmax_curry_id = 25 [(bde_entity) = "Obj_asset", (bde_ref_type) = "obj"];
+  StringValue ref_nr = 26;
+  StringValue descn = 27;
+  StringValue descn_lang_1 = 28;
+  SInt64Value lang_1_id = 29 [(bde_entity) = "Code_lang", (bde_ref_type) = "code"];
+  StringValue descn_lang_2 = 30;
+  SInt64Value lang_2_id = 31 [(bde_entity) = "Code_lang", (bde_ref_type) = "code"];
+  StringValue descn_lang_3 = 32;
+  SInt64Value lang_3_id = 33 [(bde_entity) = "Code_lang", (bde_ref_type) = "code"];
+  StringValue descn_lang_4 = 34;
+  SInt64Value lang_4_id = 35 [(bde_entity) = "Code_lang", (bde_ref_type) = "code"];
+  SInt64Value rel_prod_id = 36 [(bde_entity) = "Obj_prod", (bde_ref_type) = "obj"];
+  repeated ObjCostpTariffMcrit tariff_mcrit_list = 37;
+  repeated ObjCostpTariffBound tariff_bound_list = 38;
+}
+
+message ObjCostpTariffBound {
+  BoolValue bound_abs = 1;
+  SInt64Value bound_cost_qty_type_id = 2 [(bde_entity) = "Code_cost_qty_type", (bde_ref_type) = "code"];
+  SInt64Value bound_curry_id = 3 [(bde_entity) = "Obj_asset", (bde_ref_type) = "obj"];
+  BoolValue bound_from_excl = 4;
+  BoolValue bound_to_excl = 5;
+  SInt64Value cost_qty_type_id = 6 [(bde_entity) = "Code_cost_qty_type", (bde_ref_type) = "code"];
+  StringValue factor = 7 [(format) = "decimal"];
+  SInt64Value factor_curry_id = 8 [(bde_entity) = "Obj_asset", (bde_ref_type) = "obj"];
+  BoolValue grad = 9;
+  StringValue maxim = 10 [(format) = "decimal"];
+  StringValue minim = 11 [(format) = "decimal"];
+  SInt64Value minim_maxim_curry_id = 12 [(bde_entity) = "Obj_asset", (bde_ref_type) = "obj"];
+  StringValue qty_1_bound_from = 13 [(format) = "decimal"];
+  StringValue qty_1_bound_to = 14 [(format) = "decimal"];
+}
+
+message ObjCostpTariffMcrit {
+  SInt64Value mcrit_type_id = 1 [(bde_entity) = "Code_costp_mcrit_type", (bde_ref_type) = "code"];
+  StringValue id_1 = 2 [(format) = "decimal"];
+  StringValue id_2 = 3 [(format) = "decimal"];
+  StringValue id_3 = 4 [(format) = "decimal"];
+  StringValue text = 5;
+}
+
+message ObjKey {
+  StringValue val = 2;
+  SInt64Value obj_key_id = 3 [(bde_entity) = "Code_obj_key", (bde_ref_type) = "code"];
+  StringValue obj_1_class = 4;
+  SInt64Value obj_1_id = 5 [(bde_entity) = "Obj", (bde_ref_type) = "obj"];
+  StringValue obj_2_class = 6;
+  SInt64Value obj_2_id = 7 [(bde_entity) = "Obj", (bde_ref_type) = "obj"];
+  StringValue obj_3_class = 8;
+  SInt64Value obj_3_id = 9 [(bde_entity) = "Obj", (bde_ref_type) = "obj"];
+  StringValue obj_4_class = 10;
+  SInt64Value obj_4_id = 11 [(bde_entity) = "Obj", (bde_ref_type) = "obj"];
+  SInt64Value obj_id = 12 [(bde_entity) = "Obj", (bde_ref_type) = "obj"];
+  StringValue prio = 13;
+  SInt64Value rule_id = 14;
+  SInt64Value rule_templ_id = 15 [(bde_entity) = "Code_rule_templ", (bde_ref_type) = "code"];
+  SInt64Value seq_nr = 16;
+  SInt64Value trig_meta_typ_id = 17 [(bde_entity) = "Meta_typ", (bde_ref_type) = "code"];
+  SInt64Value trig_order_type_id = 18 [(bde_entity) = "Code_order_type", (bde_ref_type) = "code"];
+  BoolValue val_a = 19;
+  BoolValue obj_1_is_null = 20;
+  BoolValue obj_2_is_null = 21;
+  BoolValue obj_3_is_null = 22;
+  BoolValue obj_4_is_null = 23;
+  SInt64Value ref_obj_id = 116 [(bde_entity) = "Obj", (bde_ref_type) = "obj"];
+}
+
+message ObjName {
+  StringValue name = 2;
+  StringValue name_long = 3;
+  StringValue name_abbr = 4;
+  StringValue name_intl = 5;
+  SInt64Value lang_id = 6 [(bde_entity) = "Code_lang", (bde_ref_type) = "code"];
+  StringValue date_valid = 7 [(format) = "date"];
+  StringValue date_valid_to = 8 [(format) = "date"];
+  StringValue ins_time = 9 [(format) = "date_time"];
+  StringValue name_a = 10;
+  StringValue name_abbr_a = 11;
+  StringValue name_intl_a = 12;
+  StringValue name_long_a = 13;
+}
+
+message ObjRemark {
+  SInt64Value type_id = 2 [(bde_entity) = "Code_remark_type", (bde_ref_type) = "code"];
+  SInt64Value sub_type_id = 3 [(bde_entity) = "Code_remark_sub_type", (bde_ref_type) = "code"];
+  StringValue topic = 4;
+  StringValue text = 5;
+  StringValue attch = 6;
+  StringValue date_valid_to = 7 [(format) = "date"];
+  repeated ObjRemarkDet lang_list = 8;
+  StringValue timestamp = 9 [(format) = "date_time_no_tz"];
+  SInt64Value user_id = 10 [(bde_entity) = "User", (bde_ref_type) = "use"];
+}
+
+message ObjRemarkDet {
+  SInt64Value lang_id = 1 [(bde_entity) = "Code_lang", (bde_ref_type) = "code"];
+  StringValue text = 2;
+}
+
+message ObjStructAdd {
+  StringValue name = 1;
+  repeated ObjStructAddFld fld_list = 2;
+}
+
+message ObjStructAddFld {
+  StringValue name = 1;
+  BoolValue bool_val = 2;
+  StringValue date_val = 3 [(format) = "date"];
+  SInt64Value id_val = 4;
+  StringValue nr_val = 5 [(format) = "decimal"];
+  StringValue text_val = 6;
+  repeated ObjStructAddFld val_list = 7;
+  ObjStructAdd ref_val = 8;
+  repeated ObjStructAdd ref_val_list = 9;
+}
+
+message ObjTrans {
+  UInt64Value doc_id = 1 [(bde_entity) = "Doc", (bde_ref_type) = "doc"];
+  StringValue timestamp = 2 [(format) = "date_time_no_tz"];
+  StringValue userstamp = 4;
+}
+

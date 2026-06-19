@@ -1,0 +1,176 @@
+{
+  "$id": "https://avaloq.com/code_medium.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/code_medium",
+  "definitions": {
+    "code_tab_ref": {
+      "type": "object",
+      "properties": {
+        "_href": {
+          "description" : "Reference/link",
+          "type": "string"
+        },
+        "id": {
+          "description" : "Numeric reference",
+          "type": "integer"
+        },
+        "ident": {
+          "description" : "Unique symbolic reference",
+          "type": "string"
+        },
+        "intlId": {
+          "description" : "Symbolic reference",
+          "type": "string"
+        }
+      }
+    },
+    "code_mediums": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/code_medium"
+      },
+      "uniqueItems": true
+    },
+    "code_medium": {
+      "type": "object",
+      "properties": {
+        "activ": {
+          "type": "boolean"
+        },
+        "descn": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "ident": {
+          "type": "string"
+        },
+        "intl2Id": {
+          "type": "string"
+        },
+        "intlId": {
+          "type": "string"
+        },
+        "mba$doSuppExtlRefNr": {
+          "type": "boolean"
+        },
+        "mba$doSuppInitiator": {
+          "type": "boolean"
+        },
+        "mba$doSuppInstrDet": {
+          "type": "boolean"
+        },
+        "mba$doSuppPhoneNr": {
+          "type": "boolean"
+        },
+        "mba$envCompo": {
+          "description" : "Referencing: `/code-env-compos/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$exclOvrLid": {
+          "type": "array",
+          "items": {
+            "description": "Referencing: `/code-overrides/{id}`",
+            "allOf": [
+              { "$ref": "#/definitions/code_tab_ref" }
+            ]
+          }
+        },
+        "mba$invstrProtMedium": {
+          "description" : "Referencing: `/code-invstr-prot-mediums/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$isAvlBuList": {
+          "type": "array",
+          "items": {
+            "description": "Referencing: `/mba$code-bu-vs/{id}`",
+            "allOf": [
+              { "$ref": "#/definitions/code_tab_ref" }
+            ]
+          }
+        },
+        "mba$isCapi": {
+          "type": "boolean"
+        },
+        "mba$isEbank": {
+          "type": "boolean"
+        },
+        "mba$isGuiAvl": {
+          "type": "boolean"
+        },
+        "mba$isGuiAvlJtgList": {
+          "type": "array",
+          "items": {
+            "description": "Referencing: `/mba$code-job-type-grps/{id}`",
+            "allOf": [
+              { "$ref": "#/definitions/code_tab_ref" }
+            ]
+          }
+        },
+        "mba$isManual": {
+          "type": "boolean"
+        },
+        "mba$isRemtTrx": {
+          "type": "boolean"
+        },
+        "mba$uiErrOvrLid": {
+          "type": "array",
+          "items": {
+            "description": "Referencing: `/code-overrides/{id}`",
+            "allOf": [
+              { "$ref": "#/definitions/code_tab_ref" }
+            ]
+          }
+        },
+        "metaTypList": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "nameI18nList": {
+          "type": "array",
+          "items": {
+            "description" : "Full translation list for name field. Only visible within compound APIs ",
+            "allOf": [
+              { "$ref": "#/definitions/name_i18n"
+               }
+              ]
+          }
+        },
+        "objClassOrdMedium": {
+          "description" : "Referencing: `/code-tab-refs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "swiftDealMethod": {
+          "type": "string"
+        },
+        "userId": {
+          "type": "string"
+        }
+      }
+    },
+    "name_i18n": {
+      "type": "object",
+      "properties": {
+        "lang": {
+          "description" : "LanguageReferencing: `/code-langs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref"
+             }
+            ]
+        },
+        "text": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

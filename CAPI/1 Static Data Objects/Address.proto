@@ -1,0 +1,354 @@
+syntax = "proto3";
+
+package com.avaloq.acp.bde.protobuf.obj_addr;
+
+import "meta_model.proto";
+import "wrappers.proto";
+import "options.proto";
+
+option (version) = "3.17.3";
+
+message ObjAdd {
+  SInt64Value obj_add_id = 1 [(bde_entity) = "Code_obj_add", (bde_ref_type) = "code"];
+  repeated ObjAddVal val_list = 2;
+  BoolValue bool_val = 3;
+  SInt64Value bu_id = 4 [(bde_entity) = "Obj_bp", (bde_ref_type) = "obj"];
+  StringValue date_val = 5 [(format) = "date"];
+  SInt64Value id_val = 6;
+  StringValue nr_val = 7 [(format) = "decimal"];
+  StringValue text_val = 8;
+  StringValue tswtz_val = 9 [(format) = "date_time"];
+}
+
+message ObjAddVal {
+  StringValue text_val = 1;
+  StringValue nr_val = 2 [(format) = "decimal"];
+  StringValue date_val = 3 [(format) = "date"];
+  StringValue tswtz_val = 4 [(format) = "date_time"];
+  SInt64Value id_val = 5;
+  SInt64Value seq_nr = 6;
+}
+
+message ObjAddr {
+  option (is_bde_entity) = true;
+  sint64 id = 2 [(bde_entity) = "Obj", (bde_ref_type) = "obj"];
+  repeated ObjName obj_name_list = 3;
+  repeated ObjKey key_list = 4;
+  StringValue open_date = 5 [(format) = "date"];
+  StringValue close_date = 6 [(format) = "date"];
+  SInt64Value bu_id = 7 [(bde_entity) = "Obj_bp", (bde_ref_type) = "obj"];
+  SInt64Value owner_obj_id = 8 [(bde_entity) = "Obj", (bde_ref_type) = "obj"];
+  SInt64Value addr_type_id = 9 [(bde_entity) = "Code_addr_type", (bde_ref_type) = "code"];
+  repeated ObjAddrHist addr_hist_list = 10;
+  repeated ObjAdd add_list = 11;
+  SInt64Value addr_kind_id = 13 [(bde_entity) = "Code_addr_kind", (bde_ref_type) = "code"];
+  SInt64Value addr_medium_id = 14 [(bde_entity) = "Code_addr_medium", (bde_ref_type) = "code"];
+  SInt64Value addr_role_id = 15 [(bde_entity) = "Code_addr_role", (bde_ref_type) = "code"];
+  StringValue attn_of = 16;
+  StringValue bldg_name = 17;
+  StringValue block_nr = 18;
+  StringValue city = 19;
+  repeated ObjClassif classif_list = 20;
+  SInt64Value contact_bp_id = 21 [(bde_entity) = "Obj_bp", (bde_ref_type) = "obj"];
+  SInt64Value contact_person_id = 22 [(bde_entity) = "Obj_person", (bde_ref_type) = "obj"];
+  SInt64Value country_clng_code_id = 23 [(bde_entity) = "Code_country_calling_code", (bde_ref_type) = "code"];
+  SInt64Value country_id = 24 [(bde_entity) = "Obj_country", (bde_ref_type) = "obj"];
+  BoolValue country_state_a = 25;
+  SInt64Value country_state_id = 26 [(bde_entity) = "Code_country_state", (bde_ref_type) = "code"];
+  StringValue crof = 27;
+  StringValue dept = 28;
+  UInt64Value doc_id = 29 [(bde_entity) = "Doc", (bde_ref_type) = "doc"];
+  StringValue el_addr = 30;
+  StringValue firm = 31;
+  BoolValue firm_a = 32;
+  StringValue first_name = 33;
+  BoolValue first_name_a = 34;
+  StringValue floor_nr = 35;
+  SInt64Value floor_type_id = 36 [(bde_entity) = "Code_floor_type", (bde_ref_type) = "code"];
+  StringValue full_addr = 37;
+  BoolValue full_addr_a = 38;
+  SInt64Value gov_stat_id = 39 [(bde_entity) = "Code_gov_stat", (bde_ref_type) = "code"];
+  BoolValue is_std_addr = 40;
+  BoolValue is_vfy = 41;
+  SInt64Value lang_id = 42 [(bde_entity) = "Code_lang", (bde_ref_type) = "code"];
+  BoolValue lang_id_a = 43;
+  StringValue link = 44;
+  BoolValue link_a = 45;
+  StringValue locality = 46;
+  StringValue middle_name = 47;
+  BoolValue middle_name_a = 48;
+  BoolValue name_a = 49;
+  StringValue name_add = 50;
+  SInt64Value netw_type_id = 51 [(bde_entity) = "Code_social_netw_type", (bde_ref_type) = "code"];
+  SInt64Value nob_title_id = 52 [(bde_entity) = "Code_nob_title", (bde_ref_type) = "code"];
+  SInt64Value obj_sub_type_id = 53 [(bde_entity) = "Code_obj_sub_type", (bde_ref_type) = "code"];
+  SInt64Value obj_type_id = 54 [(bde_entity) = "Code_obj_type", (bde_ref_type) = "code"];
+  SInt64Value owner_bp_id = 55 [(bde_entity) = "Obj_bp", (bde_ref_type) = "obj"];
+  SInt64Value owner_person_id = 56 [(bde_entity) = "Obj_person", (bde_ref_type) = "obj"];
+  StringValue phone_area_code = 57;
+  StringValue phone_extn = 58;
+  StringValue phone_locl_nr = 59;
+  StringValue po_box = 60;
+  SInt64Value po_box_type_id = 61 [(bde_entity) = "Code_po_box_type", (bde_ref_type) = "code"];
+  SInt64Value rcv_restr_id = 62 [(bde_entity) = "Code_rcv_restr", (bde_ref_type) = "code"];
+  SInt64Value ref_addr_id = 63 [(bde_entity) = "Obj_addr", (bde_ref_type) = "obj"];
+  SInt64Value ref_type_id = 64 [(bde_entity) = "Code_addr_ref_type", (bde_ref_type) = "code"];
+  repeated ObjRel rel_list = 65;
+  StringValue remark = 66;
+  repeated ObjRemark remark_list = 67;
+  StringValue residency = 68;
+  StringValue salut_alt = 69;
+  SInt64Value salut_id = 70 [(bde_entity) = "Code_salut", (bde_ref_type) = "code"];
+  BoolValue salut_letter_a = 71;
+  StringValue salut_letter_alt = 72;
+  SInt64Value salut_letter_id = 73 [(bde_entity) = "Code_salut_letter", (bde_ref_type) = "code"];
+  SInt64Value sds_instn_id = 74 [(bde_entity) = "Code_extl_sys", (bde_ref_type) = "code"];
+  StringValue sort_alpha = 75;
+  SInt64Value sort_nr = 76;
+  StringValue state = 77;
+  StringValue street = 78;
+  StringValue street_add = 79;
+  StringValue street_nr = 80;
+  SInt64Value street_type_id = 81 [(bde_entity) = "Code_street_type", (bde_ref_type) = "code"];
+  StringValue title_alt = 82;
+  BoolValue title_alt_a = 83;
+  SInt64Value title_id = 84 [(bde_entity) = "Code_title", (bde_ref_type) = "code"];
+  BoolValue title_id_a = 85;
+  repeated ObjTrans trans_list = 86;
+  StringValue unit_nr = 87;
+  SInt64Value unit_type_id = 88 [(bde_entity) = "Code_unit_type", (bde_ref_type) = "code"];
+  SInt64Value valid_status_id = 89 [(bde_entity) = "Code_addr_valid_status", (bde_ref_type) = "code"];
+  StringValue zip = 90;
+  StringValue name = 91;
+  SInt64Value bde_rec_version = 92;
+  repeated ObjStructAdd struct_add_list = 93;
+  repeated ObjDirectRespRel obj_direct_resp_list = 94;
+  StringValue city_loc_name = 95;
+  StringValue district = 96;
+  StringValue sub_dept = 97;
+  repeated ObjRelDocm docm_rel_list = 98;
+  ObjTrans last_trans = 99;
+  SInt64Value owner_card_id = 101 [(bde_entity) = "Obj_card", (bde_ref_type) = "obj"];
+  StringValue mx_hybrid_addr = 102;
+}
+
+message ObjAddrHist {
+  StringValue date_valid = 1 [(format) = "date"];
+  StringValue date_valid_to = 2 [(format) = "date"];
+  SInt64Value title_id = 3 [(bde_entity) = "Code_title", (bde_ref_type) = "code"];
+  StringValue street = 4;
+  StringValue street_nr = 5;
+  StringValue zip = 6;
+  StringValue city = 7;
+  StringValue state = 8;
+  StringValue full_addr = 9;
+  SInt64Value country_id = 10 [(bde_entity) = "Obj_country", (bde_ref_type) = "obj"];
+  StringValue bldg_name = 11;
+  StringValue block_nr = 12;
+  StringValue floor_nr = 13;
+  SInt64Value floor_type_id = 14 [(bde_entity) = "Code_floor_type", (bde_ref_type) = "code"];
+  StringValue unit_nr = 15;
+  SInt64Value unit_type_id = 16 [(bde_entity) = "Code_unit_type", (bde_ref_type) = "code"];
+  SInt64Value addr_medium_id = 17 [(bde_entity) = "Code_addr_medium", (bde_ref_type) = "code"];
+  StringValue el_addr = 18;
+  SInt64Value addr_kind_id = 19 [(bde_entity) = "Code_addr_kind", (bde_ref_type) = "code"];
+  SInt64Value addr_role_id = 20 [(bde_entity) = "Code_addr_role", (bde_ref_type) = "code"];
+  SInt64Value addr_type_id = 21 [(bde_entity) = "Code_addr_type", (bde_ref_type) = "code"];
+  StringValue attn_of = 22;
+  SInt64Value bu_id = 23 [(bde_entity) = "Obj_bp", (bde_ref_type) = "obj"];
+  SInt64Value contact_bp_id = 24 [(bde_entity) = "Obj_bp", (bde_ref_type) = "obj"];
+  SInt64Value contact_person_id = 25 [(bde_entity) = "Obj_person", (bde_ref_type) = "obj"];
+  SInt64Value country_clng_code_id = 26 [(bde_entity) = "Code_country_calling_code", (bde_ref_type) = "code"];
+  BoolValue country_state_a = 27;
+  SInt64Value country_state_id = 28 [(bde_entity) = "Code_country_state", (bde_ref_type) = "code"];
+  StringValue crof = 29;
+  StringValue dept = 30;
+  StringValue firm = 31;
+  BoolValue firm_a = 32;
+  StringValue first_name = 33;
+  BoolValue first_name_a = 34;
+  BoolValue full_addr_a = 35;
+  SInt64Value gov_stat_id = 36 [(bde_entity) = "Code_gov_stat", (bde_ref_type) = "code"];
+  StringValue ins_time = 37 [(format) = "date_time"];
+  BoolValue is_std_addr = 38;
+  BoolValue is_vfy = 39;
+  SInt64Value lang_id = 40 [(bde_entity) = "Code_lang", (bde_ref_type) = "code"];
+  BoolValue lang_id_a = 41;
+  StringValue link = 42;
+  BoolValue link_a = 43;
+  StringValue locality = 44;
+  StringValue middle_name = 45;
+  BoolValue middle_name_a = 46;
+  BoolValue name_a = 47;
+  StringValue name_add = 48;
+  SInt64Value netw_type_id = 49 [(bde_entity) = "Code_social_netw_type", (bde_ref_type) = "code"];
+  SInt64Value nob_title_id = 50 [(bde_entity) = "Code_nob_title", (bde_ref_type) = "code"];
+  SInt64Value obj_addr_id = 51 [(bde_entity) = "Obj_addr", (bde_ref_type) = "obj"];
+  SInt64Value owner_bp_id = 52 [(bde_entity) = "Obj_bp", (bde_ref_type) = "obj"];
+  SInt64Value owner_obj_id = 53 [(bde_entity) = "Obj", (bde_ref_type) = "obj"];
+  SInt64Value owner_person_id = 54 [(bde_entity) = "Obj_person", (bde_ref_type) = "obj"];
+  StringValue phone_area_code = 55;
+  StringValue phone_extn = 56;
+  StringValue phone_locl_nr = 57;
+  StringValue po_box = 58;
+  SInt64Value po_box_type_id = 59 [(bde_entity) = "Code_po_box_type", (bde_ref_type) = "code"];
+  SInt64Value rcv_restr_id = 60 [(bde_entity) = "Code_rcv_restr", (bde_ref_type) = "code"];
+  SInt64Value ref_addr_id = 61 [(bde_entity) = "Obj_addr", (bde_ref_type) = "obj"];
+  SInt64Value ref_type_id = 62 [(bde_entity) = "Code_addr_ref_type", (bde_ref_type) = "code"];
+  StringValue remark = 63;
+  StringValue residency = 64;
+  StringValue salut_alt = 65;
+  SInt64Value salut_id = 66 [(bde_entity) = "Code_salut", (bde_ref_type) = "code"];
+  BoolValue salut_letter_a = 67;
+  StringValue salut_letter_alt = 68;
+  SInt64Value salut_letter_id = 69 [(bde_entity) = "Code_salut_letter", (bde_ref_type) = "code"];
+  StringValue street_add = 70;
+  SInt64Value street_type_id = 71 [(bde_entity) = "Code_street_type", (bde_ref_type) = "code"];
+  StringValue title_alt = 72;
+  BoolValue title_alt_a = 73;
+  BoolValue title_id_a = 74;
+  StringValue city_loc_name = 75;
+  StringValue district = 76;
+  StringValue sub_dept = 77;
+  SInt64Value owner_card_id = 78 [(bde_entity) = "Obj_card", (bde_ref_type) = "obj"];
+  StringValue mx_hybrid_addr = 79;
+}
+
+message ObjClassif {
+  SInt64Value obj_classif_id = 1 [(bde_entity) = "Code_obj_classif", (bde_ref_type) = "code"];
+  SInt64Value bu_id = 2 [(bde_entity) = "Obj_bp", (bde_ref_type) = "obj"];
+  SInt64Value class_id = 3 [(bde_entity) = "Code_obj_class", (bde_ref_type) = "code"];
+  StringValue start_date = 4 [(format) = "date"];
+  StringValue end_date = 5 [(format) = "date"];
+  BoolValue class_a = 6;
+  StringValue class_factor = 7 [(format) = "decimal"];
+  SInt64Value clt_sgmt_calc_id = 8 [(bde_entity) = "Code_person_mktng_sgmt", (bde_ref_type) = "code"];
+  SInt64Value hist_status_id = 9 [(bde_entity) = "Code_hist_status", (bde_ref_type) = "code"];
+  SInt64Value indiv_feep_id = 10 [(bde_entity) = "Obj_feep", (bde_ref_type) = "obj"];
+  BoolValue is_inht = 11;
+  StringValue remark = 12;
+  SInt64Value sec_user_id = 13 [(bde_entity) = "User", (bde_ref_type) = "use"];
+  SInt64Value spcd_costp_id = 14 [(bde_entity) = "Obj_costp", (bde_ref_type) = "obj"];
+  SInt64Value spcd_curry_id = 15 [(bde_entity) = "Obj_asset", (bde_ref_type) = "obj"];
+  StringValue spcd_max_val = 16 [(format) = "decimal"];
+  StringValue spcd_min_val = 17 [(format) = "decimal"];
+  SInt64Value spcd_minmax_val_type_id = 18 [(bde_entity) = "Code_cost_ovr_type", (bde_ref_type) = "code"];
+  StringValue spcd_offset_val = 19 [(format) = "decimal"];
+  SInt64Value spcd_offset_val_type_id = 20 [(bde_entity) = "Code_cost_ovr_type", (bde_ref_type) = "code"];
+  SInt64Value spcd_reason_id = 21 [(bde_entity) = "Code_cost_ovr_reason", (bde_ref_type) = "code"];
+  StringValue spcd_val = 22 [(format) = "decimal"];
+  SInt64Value spcd_val_type_id = 23 [(bde_entity) = "Code_cost_ovr_type", (bde_ref_type) = "code"];
+  StringValue timestamp = 24 [(format) = "date_time"];
+  SInt64Value user_ref_id = 25 [(bde_entity) = "User", (bde_ref_type) = "use"];
+}
+
+message ObjDirectRespRel {
+  SInt64Value obj_id = 1 [(bde_entity) = "Obj", (bde_ref_type) = "obj"];
+  SInt64Value resp_role_id = 2 [(bde_entity) = "Code_auth_role", (bde_ref_type) = "code"];
+  SInt64Value resp_id = 3 [(bde_entity) = "Obj_person", (bde_ref_type) = "obj"];
+  StringValue valid_from = 4 [(format) = "date"];
+  StringValue valid_to = 5 [(format) = "date"];
+}
+
+message ObjKey {
+  StringValue val = 2;
+  SInt64Value obj_key_id = 3 [(bde_entity) = "Code_obj_key", (bde_ref_type) = "code"];
+  StringValue obj_1_class = 4;
+  SInt64Value obj_1_id = 5 [(bde_entity) = "Obj", (bde_ref_type) = "obj"];
+  StringValue obj_2_class = 6;
+  SInt64Value obj_2_id = 7 [(bde_entity) = "Obj", (bde_ref_type) = "obj"];
+  StringValue obj_3_class = 8;
+  SInt64Value obj_3_id = 9 [(bde_entity) = "Obj", (bde_ref_type) = "obj"];
+  StringValue obj_4_class = 10;
+  SInt64Value obj_4_id = 11 [(bde_entity) = "Obj", (bde_ref_type) = "obj"];
+  SInt64Value obj_id = 12 [(bde_entity) = "Obj", (bde_ref_type) = "obj"];
+  StringValue prio = 13;
+  SInt64Value rule_id = 14;
+  SInt64Value rule_templ_id = 15 [(bde_entity) = "Code_rule_templ", (bde_ref_type) = "code"];
+  SInt64Value seq_nr = 16;
+  SInt64Value trig_meta_typ_id = 17 [(bde_entity) = "Meta_typ", (bde_ref_type) = "code"];
+  SInt64Value trig_order_type_id = 18 [(bde_entity) = "Code_order_type", (bde_ref_type) = "code"];
+  BoolValue val_a = 19;
+  SInt64Value ref_obj_id = 116 [(bde_entity) = "Obj", (bde_ref_type) = "obj"];
+}
+
+message ObjName {
+  StringValue name = 2;
+  StringValue name_long = 3;
+  StringValue name_abbr = 4;
+  StringValue name_intl = 5;
+  SInt64Value lang_id = 6 [(bde_entity) = "Code_lang", (bde_ref_type) = "code"];
+  StringValue date_valid = 7 [(format) = "date"];
+  StringValue date_valid_to = 8 [(format) = "date"];
+  StringValue ins_time = 9 [(format) = "date_time"];
+  StringValue name_a = 10;
+  StringValue name_abbr_a = 11;
+  StringValue name_intl_a = 12;
+  StringValue name_long_a = 13;
+}
+
+message ObjRel {
+  SInt64Value obj_2_id = 1 [(bde_entity) = "Obj", (bde_ref_type) = "obj"];
+  SInt64Value obj_rel_type_id = 2 [(bde_entity) = "Code_obj_rel_type", (bde_ref_type) = "code"];
+  SInt64Value obj_rel_sub_type_id = 3 [(bde_entity) = "Code_obj_rel_sub_type", (bde_ref_type) = "code"];
+  StringValue f1 = 4 [(format) = "decimal"];
+  SInt64Value obj_1_id = 5 [(bde_entity) = "Obj", (bde_ref_type) = "obj"];
+  SInt64Value prio = 6;
+  StringValue share_rate = 7 [(format) = "decimal"];
+  StringValue sub_trl = 8;
+  StringValue trl = 9;
+}
+
+message ObjRelDocm {
+  StringValue deferral_date = 1 [(format) = "date_time_no_tz"];
+  SInt64Value deferral_reason_id = 2 [(bde_entity) = "Code_deferral_reason", (bde_ref_type) = "code"];
+  StringValue expir_date = 3 [(format) = "date_time_no_tz"];
+  StringValue name = 4;
+  SInt64Value obj_rel_sub_type_id = 5 [(bde_entity) = "Code_obj_rel_sub_type", (bde_ref_type) = "code"];
+  SInt64Value obj_id = 6 [(bde_entity) = "Obj", (bde_ref_type) = "obj"];
+  SInt64Value obj_docm_id = 7 [(bde_entity) = "Obj_docm", (bde_ref_type) = "obj"];
+  StringValue sign_date = 8 [(format) = "date_time_no_tz"];
+  StringValue text = 9;
+  StringValue version = 10;
+}
+
+message ObjRemark {
+  SInt64Value type_id = 2 [(bde_entity) = "Code_remark_type", (bde_ref_type) = "code"];
+  SInt64Value sub_type_id = 3 [(bde_entity) = "Code_remark_sub_type", (bde_ref_type) = "code"];
+  StringValue topic = 4;
+  StringValue text = 5;
+  StringValue attch = 6;
+  StringValue date_valid_to = 7 [(format) = "date"];
+  repeated ObjRemarkDet lang_list = 8;
+  StringValue timestamp = 9 [(format) = "date_time_no_tz"];
+  SInt64Value user_id = 10 [(bde_entity) = "User", (bde_ref_type) = "use"];
+}
+
+message ObjRemarkDet {
+  SInt64Value lang_id = 1 [(bde_entity) = "Code_lang", (bde_ref_type) = "code"];
+  StringValue text = 2;
+}
+
+message ObjStructAdd {
+  StringValue name = 1;
+  repeated ObjStructAddFld fld_list = 2;
+}
+
+message ObjStructAddFld {
+  StringValue name = 1;
+  BoolValue bool_val = 2;
+  StringValue date_val = 3 [(format) = "date"];
+  SInt64Value id_val = 4;
+  StringValue nr_val = 5 [(format) = "decimal"];
+  StringValue text_val = 6;
+  repeated ObjStructAddFld val_list = 7;
+  ObjStructAdd ref_val = 8;
+  repeated ObjStructAdd ref_val_list = 9;
+}
+
+message ObjTrans {
+  UInt64Value doc_id = 1 [(bde_entity) = "Doc", (bde_ref_type) = "doc"];
+  StringValue timestamp = 2 [(format) = "date_time_no_tz"];
+  StringValue userstamp = 4;
+}
+

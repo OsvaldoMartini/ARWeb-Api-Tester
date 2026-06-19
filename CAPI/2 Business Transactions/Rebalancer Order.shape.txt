@@ -1,0 +1,3580 @@
+{
+  aa {
+    _href
+    _ident
+    id
+    keyList {
+      objKey {
+        _href
+        id
+        ident
+        intlId
+      }
+      val
+    }
+  }
+  aaHobs {
+    _href
+    _ident
+    id
+    keyList {
+      objKey {
+        _href
+        id
+        ident
+        intlId
+      }
+      val
+    }
+  }
+  aaRange {
+    _href
+    id
+    ident
+    intlId
+  }
+  aaRefContDate {
+    _href
+    id
+    ident
+    intlId
+  }
+  aaWgt
+  addList {
+    docAdd {
+      _href
+      id
+      ident
+      intlId
+    }
+    valList {
+      dateVal
+      idVal
+      nrVal
+      textVal
+      tswtzVal
+    }
+  }
+  advNr
+  agingId
+  applPrioSurr
+  autoCtact {
+    actionList {
+      actionContent
+      ctactActionType {
+        _href
+        id
+        ident
+        intlId
+      }
+      ctactTopic {
+        _href
+        id
+        ident
+        intlId
+      }
+      insByObj {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      timestampIns
+    }
+    addr {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    addrA
+    attch
+    attchA
+    campgnCltReaction
+    campgnDoc {
+      _href
+      _ident
+      id
+    }
+    campgnRespKey
+    chan {
+      _href
+      id
+      ident
+      intlId
+    }
+    chanA
+    cltStisfct {
+      _href
+      id
+      ident
+      intlId
+    }
+    contentLong
+    ctactArea {
+      _href
+      id
+      ident
+      intlId
+    }
+    ctactAreaA
+    ctactEndDate
+    ctactEndDateA
+    ctactMedium {
+      _href
+      id
+      ident
+      intlId
+    }
+    ctactMediumA
+    ctactRespObj {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    ctactRespObjA
+    ctactStartDate
+    ctactStartDateA
+    ctactSubType {
+      _href
+      id
+      ident
+      intlId
+    }
+    ctactSubTypeA
+    ctactType {
+      _href
+      id
+      ident
+      intlId
+    }
+    ctactTypeA
+    dir {
+      _href
+      id
+      ident
+      intlId
+    }
+    dirA
+    docPrcInfo {
+      _href
+      id
+      ident
+      intlId
+    }
+    docPrcInfoRemark
+    enteredVmDate
+    hasWorkItem
+    id
+    involObjListA
+    isDel
+    linkDocListA
+    loc
+    locA
+    parentDoc {
+      _href
+      _ident
+      id
+    }
+    parentMetaTyp {
+      _href
+      id
+      ident
+      intlId
+    }
+    parentOt {
+      _href
+      id
+      ident
+      intlId
+    }
+    react {
+      _href
+      id
+      ident
+      intlId
+    }
+    reactCampgnDoc {
+      _href
+      _ident
+      id
+    }
+    reactCampgnDocA
+    reactCampgnSeqNr
+    reactComment
+    reactDate
+    reactLoc
+    reactNrPartic
+    respDept {
+      _href
+      id
+      ident
+      intlId
+    }
+    respDeptA
+    subj
+    subjA
+    syncSeqNr
+    totExpndTimeM
+  }
+  basketSplitType {
+    _href
+    id
+    ident
+    intlId
+  }
+  bdeRecVersion
+  bookDoc {
+    _href
+    _ident
+    id
+  }
+  bu {
+    _href
+    _ident
+    id
+    keyList {
+      objKey {
+        _href
+        id
+        ident
+        intlId
+      }
+      val
+    }
+  }
+  buySell {
+    _href
+    id
+    ident
+    intlId
+  }
+  cashCap {
+    _href
+    id
+    ident
+    intlId
+  }
+  cashMgmtAccr {
+    _href
+    id
+    ident
+    intlId
+  }
+  cashMgmtOrderDate
+  cashMgmtValDate
+  cashMgmtValDateA
+  cashTrgBalCurry {
+    _href
+    _ident
+    id
+    keyList {
+      objKey {
+        _href
+        id
+        ident
+        intlId
+      }
+      val
+    }
+  }
+  cashTrgBalType {
+    _href
+    id
+    ident
+    intlId
+  }
+  cashTrgBalVal
+  clsInstrList {
+    instrList {
+      agingId
+      assetClass {
+        _href
+        id
+        ident
+        intlId
+      }
+      instr {
+        _href
+        id
+        ident
+        intlId
+      }
+      partId
+    }
+  }
+  cntMaccCurry {
+    _href
+    _ident
+    id
+    keyList {
+      objKey {
+        _href
+        id
+        ident
+        intlId
+      }
+      val
+    }
+  }
+  cont {
+    _href
+    _ident
+    id
+    keyList {
+      objKey {
+        _href
+        id
+        ident
+        intlId
+      }
+      val
+    }
+  }
+  contExtn {
+    _href
+    id
+    ident
+    intlId
+  }
+  contMpfDate {
+    _href
+    id
+    ident
+    intlId
+  }
+  costOvr {
+    _href
+    id
+    ident
+    intlId
+  }
+  costSrc {
+    _href
+    id
+    ident
+    intlId
+  }
+  credChkList {
+    credChkEvt {
+      _href
+      id
+      ident
+      intlId
+    }
+    newViolAmount
+    oldViolAmount
+    refPos {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    secUser {
+      _href
+      id
+    }
+    timestamp
+    violPos {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+  }
+  curryMpfWgtListPartId {
+    agingId
+    hobsList {
+      agingId
+      hobs {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      nodeOptWgt
+      partId
+    }
+    item {
+      agingId
+      asset {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      mpf {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      mpfMaxWgt
+      mpfMinWgt
+      mpfOptWgt
+      partId
+    }
+    itemList {
+      agingId
+      asset {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      mpf {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      mpfMaxWgt
+      mpfMinWgt
+      mpfOptWgt
+      partId
+    }
+    partId
+  }
+  discdReason {
+    _href
+    id
+    ident
+    intlId
+  }
+  docBlock {
+    _href
+    id
+    ident
+    intlId
+  }
+  docBlockA
+  docPrcInfo {
+    _href
+    id
+    ident
+    intlId
+  }
+  docPrcInfoRemark
+  docRevsCause {
+    _href
+    id
+    ident
+    intlId
+  }
+  docRole {
+    _href
+    id
+    ident
+    intlId
+  }
+  dueDate
+  duplDoc {
+    _href
+    _ident
+    id
+  }
+  enteredVmDate
+  excpListPartId
+  expirDate
+  expirDateA
+  extlRefNr
+  extn {
+    afsDocId
+    afsExtlRefNr
+    api1RefNr
+    api2RefNr
+    dxsCtxId
+    dxsEntityExtlRef
+    mba$authEdtRvwCompLvList {
+    }
+    mba$authorEdtRvwJtgList {
+    }
+    mba$blockAprvUserList {
+      _href
+      id
+    }
+    mba$blockJtgList
+    mba$blockRemnJtgList {
+      _href
+      id
+      ident
+      intlId
+    }
+    mba$ccPastAuthorUserList {
+      _href
+      id
+    }
+    mba$credChkAuthCompLvList {
+    }
+    mba$credChkAuthorJtgList {
+      _href
+      id
+      ident
+      intlId
+    }
+    mba$credChkCmt {
+    }
+    mba$credChkRestr {
+    }
+    mba$docErrType {
+      _href
+      id
+      ident
+      intlId
+    }
+    mba$edtRvwJtgList {
+    }
+    mba$edtRvwUserList {
+      _href
+      id
+    }
+    mba$iAuthEdtRvwCompLvLst {
+    }
+    mba$iCredChkAuthCompLvLt {
+    }
+    mba$instrDet
+    mba$isDfltValSet
+    mba$lswfInsJtg {
+      _href
+      id
+      ident
+      intlId
+    }
+    mba$lswfJtg {
+      _href
+      id
+      ident
+      intlId
+    }
+    mba$lswfLastSwfIntfWfaId
+    mba$lswfLastSwfWfaId
+    mba$lswfLastSwfWfsId
+    mba$lswfNextJtg {
+      _href
+      id
+      ident
+      intlId
+    }
+    mba$lswfNextJtgInfo
+    mba$lswfNextRa {
+      _href
+      id
+      ident
+      intlId
+    }
+    mba$lswfNextSwf {
+      _href
+      id
+      ident
+      intlId
+    }
+    mba$lswfPrevSwf {
+      _href
+      id
+      ident
+      intlId
+    }
+    mba$lswfRa {
+      _href
+      id
+      ident
+      intlId
+    }
+    mba$lswfSwf {
+      _href
+      id
+      ident
+      intlId
+    }
+    mba$lswfUc {
+      _href
+      id
+      ident
+      intlId
+    }
+    mba$mediumA
+    mba$mediumPhoneNr
+    mba$pastAuthorUserList {
+      _href
+      id
+    }
+    mba$srcFund {
+      _href
+      id
+      ident
+      intlId
+    }
+    pkpSvcRsvIdent
+  }
+  feBp {
+    _href
+    _ident
+    id
+    keyList {
+      objKey {
+        _href
+        id
+        ident
+        intlId
+      }
+      val
+    }
+  }
+  finalVersion
+  fxfwdMaccMiss {
+    _href
+    id
+    ident
+    intlId
+  }
+  fxfwdValDate
+  hasAaRangeCor
+  hasAggrCredBalCap
+  hasAssetCapCor
+  hasCashCapCor
+  hasMinAmountCor
+  hasMinQtyCor
+  hasMultiBaldMacc
+  hasMultiCntMacc
+  hasNegNav
+  hasPostit
+  hasRdFinPosCor
+  hasRdLotCor
+  hasTuCor
+  hasWorkItem
+  id
+  inclAfpPos
+  inclVmetalBaldCurry
+  inpr {
+    advsClientList {
+      involv {
+        _href
+        id
+        ident
+        intlId
+      }
+      legalNormList {
+        aTest
+        apofTest
+        cbTest
+        customTest
+        induTest
+        legalNorm {
+          _href
+          id
+          ident
+          intlId
+        }
+        sTest
+      }
+      loc {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      manual
+      medium {
+        _href
+        id
+        ident
+        intlId
+      }
+      partId
+      person {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      role {
+        _href
+        id
+        ident
+        intlId
+      }
+      rule {
+        _href
+        id
+        ident
+        intlId
+      }
+      ruleDiag {
+        _href
+        id
+        ident
+        intlId
+      }
+    }
+    advsLoc {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    advsLocA
+    busiCtx {
+      _href
+      id
+      ident
+      intlId
+    }
+    cont {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    doc {
+      _href
+      _ident
+      id
+    }
+    dur {
+      _href
+      id
+      ident
+      intlId
+    }
+    durA
+    finalVersionSeqNr
+    frze
+    intive {
+      _href
+      id
+      ident
+      intlId
+    }
+    intiveA
+    invstAdvs {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    invstAdvsA
+    ips {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    meetingDate
+    meetingDateA
+    overallStatus {
+      _href
+      id
+      ident
+      intlId
+    }
+    refDoc {
+      _href
+      _ident
+      id
+    }
+    scusList {
+      legalNorm {
+        _href
+        id
+        ident
+        intlId
+      }
+      ovr {
+        _href
+        id
+        ident
+        intlId
+      }
+      ovrJustifTempl {
+        _href
+        id
+        ident
+        intlId
+      }
+      ovrJustifTemplA
+      ovrJustifText
+      partId
+      person {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      replyOvr
+      rule {
+        _href
+        id
+        ident
+        intlId
+      }
+      ruleDiag {
+        _href
+        id
+        ident
+        intlId
+      }
+      ruleMsgCtx
+      ruleMsgKeyOrVal
+      ruleReply {
+        _href
+        id
+        ident
+        intlId
+      }
+      status {
+        _href
+        id
+        ident
+        intlId
+      }
+    }
+    scusOverStatus {
+      _href
+      id
+      ident
+      intlId
+    }
+    sdocmOverStatus {
+      _href
+      id
+      ident
+      intlId
+    }
+    sindList {
+      agingId
+      doc {
+        _href
+        _ident
+        id
+      }
+      docm {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      docmDistr {
+        _href
+        id
+        ident
+        intlId
+      }
+      docmExists
+      docmOwns {
+        _href
+        id
+        ident
+        intlId
+      }
+      docmType {
+        _href
+        id
+        ident
+        intlId
+      }
+      docmValid
+      infoDuty {
+        _href
+        id
+        ident
+        intlId
+      }
+      legalNorm {
+        _href
+        id
+        ident
+        intlId
+      }
+      ovr {
+        _href
+        id
+        ident
+        intlId
+      }
+      ovrJustifTempl {
+        _href
+        id
+        ident
+        intlId
+      }
+      ovrJustifTemplA
+      ovrJustifText
+      partId
+      person {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      postTrade {
+        _href
+        id
+        ident
+        intlId
+      }
+      replyOvr
+      rule {
+        _href
+        id
+        ident
+        intlId
+      }
+      ruleDiag {
+        _href
+        id
+        ident
+        intlId
+      }
+      ruleMsgKeyOrVal
+      status {
+        _href
+        id
+        ident
+        intlId
+      }
+    }
+    sindOverStatus {
+      _href
+      id
+      ident
+      intlId
+    }
+    sindmOverState {
+      _href
+      id
+      ident
+      intlId
+    }
+    svcDocmList {
+      altLangList {
+        lang {
+          _href
+          id
+          ident
+          intlId
+        }
+        partId
+      }
+      avlLangList {
+        lang {
+          _href
+          id
+          ident
+          intlId
+        }
+        partId
+      }
+      cltConf {
+        _href
+        id
+        ident
+        intlId
+      }
+      docmDistr {
+        _href
+        id
+        ident
+        intlId
+      }
+      docmState {
+        _href
+        id
+        ident
+        intlId
+      }
+      docmType {
+        _href
+        id
+        ident
+        intlId
+      }
+      jusCountry {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      lang {
+        _href
+        id
+        ident
+        intlId
+      }
+      legalNorm {
+        _href
+        id
+        ident
+        intlId
+      }
+      manual
+      ovDocmState {
+        _href
+        id
+        ident
+        intlId
+      }
+      ovr {
+        _href
+        id
+        ident
+        intlId
+      }
+      ovrJustifTempl {
+        _href
+        id
+        ident
+        intlId
+      }
+      ovrJustifTemplA
+      ovrJustifText
+      partId
+      person {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      postTrade {
+        _href
+        id
+        ident
+        intlId
+      }
+      prefLang {
+        _href
+        id
+        ident
+        intlId
+      }
+      rcvdDocmType {
+        _href
+        id
+        ident
+        intlId
+      }
+      rcvdLang {
+        _href
+        id
+        ident
+        intlId
+      }
+      requ
+      rtrvOvr
+      rtrvTime
+      rule {
+        _href
+        id
+        ident
+        intlId
+      }
+      ruleCltConf {
+        _href
+        id
+        ident
+        intlId
+      }
+      ruleDiag {
+        _href
+        id
+        ident
+        intlId
+      }
+      ruleDocmDistr {
+        _href
+        id
+        ident
+        intlId
+      }
+      ruleJusCountry {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      statusMsgCtx
+      statusMsgKeyVal
+      uuid
+    }
+    svcList {
+      legalNorm {
+        _href
+        id
+        ident
+        intlId
+      }
+      ovr {
+        _href
+        id
+        ident
+        intlId
+      }
+      ovrJustifTempl {
+        _href
+        id
+        ident
+        intlId
+      }
+      ovrJustifTemplA
+      ovrJustifText
+      partId
+      person {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      replyOvr
+      rule {
+        _href
+        id
+        ident
+        intlId
+      }
+      ruleDiag {
+        _href
+        id
+        ident
+        intlId
+      }
+      ruleMsgKeyOrVal
+      ruleReply {
+        _href
+        id
+        ident
+        intlId
+      }
+      status {
+        _href
+        id
+        ident
+        intlId
+      }
+    }
+    svcOverStatus {
+      _href
+      id
+      ident
+      intlId
+    }
+    svcType {
+      _href
+      id
+      ident
+      intlId
+    }
+    svcTypeA
+    versList {
+      acusOverStatus {
+        _href
+        id
+        ident
+        intlId
+      }
+      aindOverStatus {
+        _href
+        id
+        ident
+        intlId
+      }
+      apofOverStatus {
+        _href
+        id
+        ident
+        intlId
+      }
+      assetList {
+        acusList {
+          legalNorm {
+            _href
+            id
+            ident
+            intlId
+          }
+          ovr {
+            _href
+            id
+            ident
+            intlId
+          }
+          ovrJustifTempl {
+            _href
+            id
+            ident
+            intlId
+          }
+          ovrJustifTemplA
+          ovrJustifText
+          partId
+          person {
+            _href
+            _ident
+            id
+            keyList {
+              objKey {
+                _href
+                id
+                ident
+                intlId
+              }
+              val
+            }
+          }
+          replyOvr
+          rule {
+            _href
+            id
+            ident
+            intlId
+          }
+          ruleDiag {
+            _href
+            id
+            ident
+            intlId
+          }
+          ruleMsgCtx
+          ruleMsgKeyOrVal
+          ruleReply {
+            _href
+            id
+            ident
+            intlId
+          }
+          status {
+            _href
+            id
+            ident
+            intlId
+          }
+        }
+        acusOverStatus {
+          _href
+          id
+          ident
+          intlId
+        }
+        advReasonTempl {
+          _href
+          id
+          ident
+          intlId
+        }
+        advReasonTemplA
+        advReasonText
+        aindList {
+          agingId
+          doc {
+            _href
+            _ident
+            id
+          }
+          docm {
+            _href
+            _ident
+            id
+            keyList {
+              objKey {
+                _href
+                id
+                ident
+                intlId
+              }
+              val
+            }
+          }
+          docmDistr {
+            _href
+            id
+            ident
+            intlId
+          }
+          docmExists
+          docmOwns {
+            _href
+            id
+            ident
+            intlId
+          }
+          docmType {
+            _href
+            id
+            ident
+            intlId
+          }
+          docmValid
+          infoDuty {
+            _href
+            id
+            ident
+            intlId
+          }
+          legalNorm {
+            _href
+            id
+            ident
+            intlId
+          }
+          ovr {
+            _href
+            id
+            ident
+            intlId
+          }
+          ovrJustifTempl {
+            _href
+            id
+            ident
+            intlId
+          }
+          ovrJustifTemplA
+          ovrJustifText
+          partId
+          person {
+            _href
+            _ident
+            id
+            keyList {
+              objKey {
+                _href
+                id
+                ident
+                intlId
+              }
+              val
+            }
+          }
+          postTrade {
+            _href
+            id
+            ident
+            intlId
+          }
+          replyOvr
+          rule {
+            _href
+            id
+            ident
+            intlId
+          }
+          ruleDiag {
+            _href
+            id
+            ident
+            intlId
+          }
+          ruleMsgKeyOrVal
+          status {
+            _href
+            id
+            ident
+            intlId
+          }
+        }
+        aindOverStatus {
+          _href
+          id
+          ident
+          intlId
+        }
+        apofList {
+          legalNorm {
+            _href
+            id
+            ident
+            intlId
+          }
+          ovr {
+            _href
+            id
+            ident
+            intlId
+          }
+          ovrJustifTempl {
+            _href
+            id
+            ident
+            intlId
+          }
+          ovrJustifTemplA
+          ovrJustifText
+          partId
+          person {
+            _href
+            _ident
+            id
+            keyList {
+              objKey {
+                _href
+                id
+                ident
+                intlId
+              }
+              val
+            }
+          }
+          replyOvr
+          rule {
+            _href
+            id
+            ident
+            intlId
+          }
+          ruleDiag {
+            _href
+            id
+            ident
+            intlId
+          }
+          ruleMsgKeyOrVal
+          ruleReply {
+            _href
+            id
+            ident
+            intlId
+          }
+          status {
+            _href
+            id
+            ident
+            intlId
+          }
+        }
+        apofOverStatus {
+          _href
+          id
+          ident
+          intlId
+        }
+        asset {
+          _href
+          _ident
+          id
+          keyList {
+            objKey {
+              _href
+              id
+              ident
+              intlId
+            }
+            val
+          }
+        }
+        assetComment
+        atstList {
+          existKnowlExper
+          legalNorm {
+            _href
+            id
+            ident
+            intlId
+          }
+          ovr {
+            _href
+            id
+            ident
+            intlId
+          }
+          ovrJustifTempl {
+            _href
+            id
+            ident
+            intlId
+          }
+          ovrJustifTemplA
+          ovrJustifText
+          partId
+          person {
+            _href
+            _ident
+            id
+            keyList {
+              objKey {
+                _href
+                id
+                ident
+                intlId
+              }
+              val
+            }
+          }
+          replyOvr
+          requKnowlExper
+          rule {
+            _href
+            id
+            ident
+            intlId
+          }
+          ruleDiag {
+            _href
+            id
+            ident
+            intlId
+          }
+          ruleReply {
+            _href
+            id
+            ident
+            intlId
+          }
+          status {
+            _href
+            id
+            ident
+            intlId
+          }
+          succ
+        }
+        atstOverStatus {
+          _href
+          id
+          ident
+          intlId
+        }
+        docmList {
+          altLangList {
+            lang {
+              _href
+              id
+              ident
+              intlId
+            }
+            partId
+          }
+          avlLangList {
+            lang {
+              _href
+              id
+              ident
+              intlId
+            }
+            partId
+          }
+          cltConf {
+            _href
+            id
+            ident
+            intlId
+          }
+          docmDistr {
+            _href
+            id
+            ident
+            intlId
+          }
+          docmState {
+            _href
+            id
+            ident
+            intlId
+          }
+          docmType {
+            _href
+            id
+            ident
+            intlId
+          }
+          jusCountry {
+            _href
+            _ident
+            id
+            keyList {
+              objKey {
+                _href
+                id
+                ident
+                intlId
+              }
+              val
+            }
+          }
+          lang {
+            _href
+            id
+            ident
+            intlId
+          }
+          legalNorm {
+            _href
+            id
+            ident
+            intlId
+          }
+          manual
+          ovDocmState {
+            _href
+            id
+            ident
+            intlId
+          }
+          ovr {
+            _href
+            id
+            ident
+            intlId
+          }
+          ovrJustifTempl {
+            _href
+            id
+            ident
+            intlId
+          }
+          ovrJustifTemplA
+          ovrJustifText
+          partId
+          person {
+            _href
+            _ident
+            id
+            keyList {
+              objKey {
+                _href
+                id
+                ident
+                intlId
+              }
+              val
+            }
+          }
+          postTrade {
+            _href
+            id
+            ident
+            intlId
+          }
+          prefLang {
+            _href
+            id
+            ident
+            intlId
+          }
+          rcvdDocmType {
+            _href
+            id
+            ident
+            intlId
+          }
+          rcvdLang {
+            _href
+            id
+            ident
+            intlId
+          }
+          requ
+          rtrvOvr
+          rtrvTime
+          rule {
+            _href
+            id
+            ident
+            intlId
+          }
+          ruleCltConf {
+            _href
+            id
+            ident
+            intlId
+          }
+          ruleDiag {
+            _href
+            id
+            ident
+            intlId
+          }
+          ruleDocmDistr {
+            _href
+            id
+            ident
+            intlId
+          }
+          ruleJusCountry {
+            _href
+            _ident
+            id
+            keyList {
+              objKey {
+                _href
+                id
+                ident
+                intlId
+              }
+              val
+            }
+          }
+          statusMsgCtx
+          statusMsgKeyVal
+          uuid
+        }
+        docmOverStatus {
+          _href
+          id
+          ident
+          intlId
+        }
+        indmOverState {
+          _href
+          id
+          ident
+          intlId
+        }
+        mkt {
+          _href
+          _ident
+          id
+          keyList {
+            objKey {
+              _href
+              id
+              ident
+              intlId
+            }
+            val
+          }
+        }
+        optimInstr {
+          _href
+          id
+          ident
+          intlId
+        }
+        partId
+        pos {
+          _href
+          _ident
+          id
+          keyList {
+            objKey {
+              _href
+              id
+              ident
+              intlId
+            }
+            val
+          }
+        }
+        qty
+        remark
+        solic {
+          _href
+          id
+          ident
+          intlId
+        }
+      }
+      atstOverStatus {
+        _href
+        id
+        ident
+        intlId
+      }
+      cobeList {
+        legalNorm {
+          _href
+          id
+          ident
+          intlId
+        }
+        ovr {
+          _href
+          id
+          ident
+          intlId
+        }
+        ovrJustifTempl {
+          _href
+          id
+          ident
+          intlId
+        }
+        ovrJustifText
+        partId
+        person {
+          _href
+          _ident
+          id
+          keyList {
+            objKey {
+              _href
+              id
+              ident
+              intlId
+            }
+            val
+          }
+        }
+        replyOvr
+        rule {
+          _href
+          id
+          ident
+          intlId
+        }
+        ruleDiag {
+          _href
+          id
+          ident
+          intlId
+        }
+        ruleMsgCtx
+        ruleMsgKeyOrVal
+        ruleReply {
+          _href
+          id
+          ident
+          intlId
+        }
+        status {
+          _href
+          id
+          ident
+          intlId
+        }
+      }
+      cobeOverStatus {
+        _href
+        id
+        ident
+        intlId
+      }
+      cusOverStatus {
+        _href
+        id
+        ident
+        intlId
+      }
+      docmOverStatus {
+        _href
+        id
+        ident
+        intlId
+      }
+      induOverStatus {
+        _href
+        id
+        ident
+        intlId
+      }
+      motivTempl {
+        _href
+        id
+        ident
+        intlId
+      }
+      motivText
+      overallStatus {
+        _href
+        id
+        ident
+        intlId
+      }
+      partId
+      restrList {
+        restr {
+          _href
+          _ident
+          id
+          keyList {
+            objKey {
+              _href
+              id
+              ident
+              intlId
+            }
+            val
+          }
+        }
+        status {
+          _href
+          id
+          ident
+          intlId
+        }
+      }
+      restrOverStatus {
+        _href
+        id
+        ident
+        intlId
+      }
+      ststList {
+        ststLegalNorm {
+          _href
+          id
+          ident
+          intlId
+        }
+        ststPerson {
+          _href
+          _ident
+          id
+          keyList {
+            objKey {
+              _href
+              id
+              ident
+              intlId
+            }
+            val
+          }
+        }
+        ststRestr {
+          _href
+          _ident
+          id
+          keyList {
+            objKey {
+              _href
+              id
+              ident
+              intlId
+            }
+            val
+          }
+        }
+      }
+      supplmntTempl {
+        _href
+        id
+        ident
+        intlId
+      }
+      supplmntText
+      versionId
+    }
+  }
+  insBySecUser {
+    _href
+    id
+  }
+  intlRefNr
+  ips {
+    _href
+    _ident
+    id
+    keyList {
+      objKey {
+        _href
+        id
+        ident
+        intlId
+      }
+      val
+    }
+  }
+  isAssetExclContMpf
+  isBackdt
+  isChkSurr
+  isDel
+  isFinal
+  isIgnNodeWoutMpf
+  isMigr
+  isMultiPos
+  isNewShortMacc
+  isNewShortPos
+  isNoSolFound
+  isNodeOverwgt
+  isNodeUnderwgt
+  isObjBlock
+  isPosBlock
+  isRestrViol
+  isRevs
+  isSecevtBlock
+  isSim
+  isSplitBasketWgt
+  isSplitCont
+  isSplitFuture
+  isSplitFxfwd
+  isSplitFxswap
+  isSplitOpteq
+  isaRelv
+  keyList {
+    docKey {
+      _href
+      id
+      ident
+      intlId
+    }
+    val
+  }
+  lastMsg {
+    _href
+    _ident
+    id
+    keyList {
+      objKey {
+        _href
+        id
+        ident
+        intlId
+      }
+      val
+    }
+  }
+  lastTrans
+  lastTransSecUser {
+    _href
+    id
+  }
+  masterDoc {
+    _href
+    _ident
+    id
+  }
+  medium {
+    _href
+    id
+    ident
+    intlId
+  }
+  metaTyp {
+    _href
+    id
+    ident
+    intlId
+  }
+  minAmount
+  minAmountCurry {
+    _href
+    _ident
+    id
+    keyList {
+      objKey {
+        _href
+        id
+        ident
+        intlId
+      }
+      val
+    }
+  }
+  minContWgt
+  minQty
+  minTrx {
+    _href
+    id
+    ident
+    intlId
+  }
+  minTrxVal
+  mpf {
+    _href
+    _ident
+    id
+    keyList {
+      objKey {
+        _href
+        id
+        ident
+        intlId
+      }
+      val
+    }
+  }
+  mpfCons {
+    _href
+    id
+    ident
+    intlId
+  }
+  mpfWgt {
+    _href
+    id
+    ident
+    intlId
+  }
+  mpfWgtListPartId {
+    agingId
+    hobsList {
+      agingId
+      hobs {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      nodeOptWgt
+      partId
+    }
+    item {
+      agingId
+      asset {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      mpf {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      mpfMaxWgt
+      mpfMinWgt
+      mpfOptWgt
+      partId
+    }
+    itemList {
+      agingId
+      asset {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      mpf {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      mpfMaxWgt
+      mpfMinWgt
+      mpfOptWgt
+      partId
+    }
+    partId
+  }
+  mpfWgtRange {
+    _href
+    id
+    ident
+    intlId
+  }
+  noContRefCurry
+  noCurryCntMacc
+  noReqCurryMacc
+  notBonusRelv
+  notBonusWidrwRelv
+  notReconStornoRelv
+  notWidrwRelv
+  orderDate
+  orderDateTz
+  orderNr
+  orderType {
+    _href
+    id
+    ident
+    intlId
+  }
+  orderTypeGrp {
+    _href
+    id
+    ident
+    intlId
+  }
+  orderedBy
+  origDoc {
+    _href
+    _ident
+    id
+  }
+  overrideList {
+    override {
+      _href
+      id
+      ident
+      intlId
+    }
+    overrideComment {
+      _href
+      id
+      ident
+      intlId
+    }
+    overrideText
+    secUser {
+      _href
+      id
+    }
+    signt
+    timestamp
+  }
+  perfDate
+  perfDateA
+  postitList {
+    ctx {
+      _href
+      id
+      ident
+      intlId
+    }
+    doProp
+    isMan
+    role {
+      _href
+      id
+    }
+    subType {
+      _href
+      id
+      ident
+      intlId
+    }
+    text
+    timestamp
+    topic
+    type {
+      _href
+      id
+      ident
+      intlId
+    }
+    user {
+      _href
+      id
+    }
+  }
+  questrCtactList {
+    actionList {
+      actionContent
+      ctactActionType {
+        _href
+        id
+        ident
+        intlId
+      }
+      ctactTopic {
+        _href
+        id
+        ident
+        intlId
+      }
+      insByObj {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      timestampIns
+    }
+    addr {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    addrA
+    attch
+    attchA
+    campgnCltReaction
+    campgnDoc {
+      _href
+      _ident
+      id
+    }
+    campgnRespKey
+    chan {
+      _href
+      id
+      ident
+      intlId
+    }
+    chanA
+    cltStisfct {
+      _href
+      id
+      ident
+      intlId
+    }
+    contentLong
+    ctactArea {
+      _href
+      id
+      ident
+      intlId
+    }
+    ctactAreaA
+    ctactEndDate
+    ctactEndDateA
+    ctactMedium {
+      _href
+      id
+      ident
+      intlId
+    }
+    ctactMediumA
+    ctactRespObj {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    ctactRespObjA
+    ctactStartDate
+    ctactStartDateA
+    ctactSubType {
+      _href
+      id
+      ident
+      intlId
+    }
+    ctactSubTypeA
+    ctactType {
+      _href
+      id
+      ident
+      intlId
+    }
+    ctactTypeA
+    dir {
+      _href
+      id
+      ident
+      intlId
+    }
+    dirA
+    docPrcInfo {
+      _href
+      id
+      ident
+      intlId
+    }
+    docPrcInfoRemark
+    enteredVmDate
+    hasWorkItem
+    id
+    involObjListA
+    isDel
+    linkDocListA
+    loc
+    locA
+    parentDoc {
+      _href
+      _ident
+      id
+    }
+    parentMetaTyp {
+      _href
+      id
+      ident
+      intlId
+    }
+    parentOt {
+      _href
+      id
+      ident
+      intlId
+    }
+    react {
+      _href
+      id
+      ident
+      intlId
+    }
+    reactCampgnDoc {
+      _href
+      _ident
+      id
+    }
+    reactCampgnDocA
+    reactCampgnSeqNr
+    reactComment
+    reactDate
+    reactLoc
+    reactNrPartic
+    respDept {
+      _href
+      id
+      ident
+      intlId
+    }
+    respDeptA
+    subj
+    subjA
+    syncSeqNr
+    totExpndTimeM
+  }
+  rebalCmtd {
+    _href
+    id
+    ident
+    intlId
+  }
+  rebalExcp {
+    excpList {
+      agingId
+      asset {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      cont {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      errGrp {
+        _href
+        id
+        ident
+        intlId
+      }
+      errId
+      errTswltz
+      errType {
+        _href
+        id
+        ident
+        intlId
+      }
+      glblLogId
+      metaTyp {
+        _href
+        id
+        ident
+        intlId
+      }
+      msg
+      partId
+      pos {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      versionId
+      wfa {
+        _href
+        id
+        ident
+        intlId
+      }
+      wfaTimestamp
+    }
+  }
+  rebalMd {
+    _href
+    id
+    ident
+    intlId
+  }
+  rebalMinTu {
+    _href
+    id
+    ident
+    intlId
+  }
+  rebalValFactor
+  rebalsRestrList {
+    aa {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    debug
+    evalRes {
+      _href
+      id
+      ident
+      intlId
+    }
+    isLogRestr
+    isOvr
+    justif
+    obj {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    objRef {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    parentRestr {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    prio {
+      _href
+      id
+      ident
+      intlId
+    }
+    remark
+    restr {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    restrRelType {
+      _href
+      id
+      ident
+      intlId
+    }
+    restrResPosList {
+      assetClass {
+        _href
+        id
+        ident
+        intlId
+      }
+      baseMktValRef
+      issuer {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      issuerClass {
+        _href
+        id
+        ident
+        intlId
+      }
+      mktValRef
+      pos {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      posSeqNr
+      price
+      priceCurry {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      resSeqNr
+      rootPos {
+        _href
+        _ident
+        id
+        keyList {
+          objKey {
+            _href
+            id
+            ident
+            intlId
+          }
+          val
+        }
+      }
+      val
+      valType {
+        _href
+        id
+        ident
+        intlId
+      }
+      version
+    }
+    restrTempl {
+      _href
+      id
+      ident
+      intlId
+    }
+    restrType {
+      _href
+      id
+      ident
+      intlId
+    }
+    seqNr
+    subst {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    valFrom
+    valTo
+    valType {
+      _href
+      id
+      ident
+      intlId
+    }
+    version
+    violClass {
+      _href
+      id
+      ident
+      intlId
+    }
+    violPos {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    violRef {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    violTxtId
+    violVal
+  }
+  recon2ItemList {
+    amount
+    assetInfo
+    debCred
+    delIssueDoc {
+      _href
+      _ident
+      id
+    }
+    docTabRef
+    editMode
+    entryDate
+    flowLinkKey
+    fundsCode
+    isExtl
+    issueDoc {
+      _href
+      _ident
+      id
+    }
+    matchQtyDiff
+    matchValDateDiff
+    narr
+    pos {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    qty
+    qtyType
+    recon2ItemStatus {
+      _href
+      id
+      ident
+      intlId
+    }
+    recon2MatchCmtd {
+      _href
+      id
+      ident
+      intlId
+    }
+    reconLotType {
+      _href
+      id
+      ident
+      intlId
+    }
+    ref1
+    ref2
+    ref3
+    ref4
+    ref5
+    ref6
+    seqNr
+    trxType
+    valDate
+  }
+  rectiDoc {
+    _href
+    _ident
+    id
+  }
+  refCurry {
+    _href
+    _ident
+    id
+    keyList {
+      objKey {
+        _href
+        id
+        ident
+        intlId
+      }
+      val
+    }
+  }
+  refCurryIdA
+  refDoc {
+    _href
+    _ident
+    id
+  }
+  respBp {
+    _href
+    _ident
+    id
+    keyList {
+      objKey {
+        _href
+        id
+        ident
+        intlId
+      }
+      val
+    }
+  }
+  respBpA
+  respObj {
+    _href
+    _ident
+    id
+    keyList {
+      objKey {
+        _href
+        id
+        ident
+        intlId
+      }
+      val
+    }
+  }
+  respObjA
+  revsOfDoc {
+    _href
+    _ident
+    id
+  }
+  revsOriginUser {
+    _href
+    id
+  }
+  roundFinPos
+  sdsInstn {
+    _href
+    id
+    ident
+    intlId
+  }
+  settlePlan {
+    _href
+    id
+    ident
+    intlId
+  }
+  settlePlanA
+  stexExecType {
+    _href
+    id
+    ident
+    intlId
+  }
+  terminal {
+    _href
+    _ident
+    id
+    keyList {
+      objKey {
+        _href
+        id
+        ident
+        intlId
+      }
+      val
+    }
+  }
+  todoTempl {
+    _href
+    id
+    ident
+    intlId
+  }
+  tradeLotSize
+  transList {
+    calcCnt
+    calcTime
+    intfWfcAction {
+      _href
+      id
+      ident
+      intlId
+    }
+    newWfcStatus {
+      _href
+      id
+      ident
+      intlId
+    }
+    oldWfcStatus {
+      _href
+      id
+      ident
+      intlId
+    }
+    opnTime
+    remark
+    ruleTime
+    secUser {
+      _href
+      id
+    }
+    seqNr
+    timestamp
+    transAction {
+      _href
+      id
+      ident
+      intlId
+    }
+    userTime
+    wfcAction {
+      _href
+      id
+      ident
+      intlId
+    }
+    wfcTime
+  }
+  trxDate
+  trxDateA
+  trxGenTswltz
+  trxRd {
+    _href
+    id
+    ident
+    intlId
+  }
+  trxRdVal
+  valDate
+  wfcAction {
+    _href
+    action
+    id
+    ident
+    intlId
+  }
+  wfcStatus {
+    _href
+    id
+    ident
+    intlId
+  }
+  wgtType {
+    _href
+    id
+    ident
+    intlId
+  }
+  workItemList {
+    closeDate
+    descn
+    isSlaveDirty
+    isTightLink
+    masterDoc {
+      _href
+      _ident
+      id
+    }
+    seqNr
+    slaveDoc {
+      _href
+      _ident
+      id
+    }
+    subject
+    tag
+    workItemCtx {
+      _href
+      id
+      ident
+      intlId
+    }
+    workItemStatus {
+      _href
+      id
+      ident
+      intlId
+    }
+    workItemType {
+      _href
+      id
+      ident
+      intlId
+    }
+  }
+  xrateList {
+    brkRtngChan {
+      _href
+      id
+      ident
+      intlId
+    }
+    brkRtngChanA
+    buyCurry {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    buyNostroCont {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    buyNostroContA
+    buyQty
+    buyQtyA
+    buySplitRateDigits
+    buySplitRateDigitsA
+    buySplitRatePict
+    buySplitRatePictA
+    cpaAsset {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    cpaAssetFromSplit {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    cpaAssetToSplit {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    dealFwdRate
+    dealFwdRateA
+    dealFwdRatePretty
+    dealRate
+    dealRateA
+    dealRatePretty
+    dealSpotRate
+    dealSpotRateA
+    dealSpotRatePretty
+    digits
+    digitsA
+    fromCurry {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    fromDeprate
+    fromQty
+    fwdBpsQtyCmtd {
+      _href
+      id
+      ident
+      intlId
+    }
+    fwdSpread
+    fwdSpreadA
+    fwdSpreadBuCurry
+    fwdSpreadBuCurryA
+    fwdSpreadFromCurry
+    fwdSpreadOrig
+    fwdSpreadToCurry
+    fxtCont {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    fxtContA
+    fxtDoSplit
+    fxtDoSplitA
+    isin
+    mktFwdBps
+    mktFwdBpsA
+    mktFwdBpsBuCurry
+    mktFwdBpsBuySplit
+    mktFwdBpsBuySplitA
+    mktFwdBpsFromCurry
+    mktFwdBpsSellSplit
+    mktFwdBpsSellSplitA
+    mktFwdBpsToCurry
+    mktFwdRate
+    mktFwdRateA
+    mktFwdRateBuySplit
+    mktFwdRateBuySplitA
+    mktFwdRateBuySplitCalc
+    mktFwdRatePretty
+    mktFwdRateSellSplit
+    mktFwdRateSellSplitA
+    mktFwdRateSellSplitCalc
+    mktRate
+    mktRateA
+    mktRateBuySplit
+    mktRateBuySplitA
+    mktRateSellSplit
+    mktRateSellSplitA
+    mktSpotFeed
+    mktSpotFeedA
+    mktSpotFeedBuySplit
+    mktSpotFeedBuySplitA
+    mktSpotFeedPretty
+    mktSpotFeedSellSplit
+    mktSpotFeedSellSplitA
+    mktSpotRate
+    mktSpotRateA
+    mktSpotRateBuySplit
+    mktSpotRateBuySplitA
+    mktSpotRateBuySplitCalc
+    mktSpotRatePretty
+    mktSpotRateSellSplit
+    mktSpotRateSellSplitA
+    mktSpotRateSellSplitCalc
+    pict
+    pictA
+    priceType {
+      _href
+      id
+      ident
+      intlId
+    }
+    priceTypeA
+    rateSplitToBuCurry
+    refDate {
+      _href
+      id
+      ident
+      intlId
+    }
+    refDateA
+    refDateOffset
+    refDateOffsetA
+    rsvDoc {
+      _href
+      _ident
+      id
+    }
+    sellCurry {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    sellNostroCont {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    sellNostroContA
+    sellQty
+    sellQtyA
+    sellSplitRateDigits
+    sellSplitRateDigitsA
+    sellSplitRatePict
+    sellSplitRatePictA
+    seqNr
+    splitCurry {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    splitCurryA
+    spotSpread
+    spotSpread2
+    spotSpread2A
+    spotSpread2Orig
+    spotSpreadA
+    spotSpreadBuCurry
+    spotSpreadBuCurry2
+    spotSpreadBuCurry2A
+    spotSpreadBuCurryA
+    spotSpreadOrig
+    timestamp
+    toCurry {
+      _href
+      _ident
+      id
+      keyList {
+        objKey {
+          _href
+          id
+          ident
+          intlId
+        }
+        val
+      }
+    }
+    toDeprate
+    toQty
+    toQtyNet
+    tradeDate
+    tradeDateA
+    traderSpotSpread
+    traderSpotSpreadA
+    xrateA
+    xrateCnvt {
+      _href
+      id
+      ident
+      intlId
+    }
+    xrateCnvtA
+    xrateMethod {
+      _href
+      id
+      ident
+      intlId
+    }
+    xrateMethodA
+    xrateStatus {
+      _href
+      id
+      ident
+      intlId
+    }
+  }
+}

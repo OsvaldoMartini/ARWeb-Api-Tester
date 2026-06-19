@@ -1,0 +1,269 @@
+{
+  "$id": "https://avaloq.com/code_book_kind.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/code_book_kind",
+  "definitions": {
+    "code_tab_ref": {
+      "type": "object",
+      "properties": {
+        "_href": {
+          "description" : "Reference/link",
+          "type": "string"
+        },
+        "id": {
+          "description" : "Numeric reference",
+          "type": "integer"
+        },
+        "ident": {
+          "description" : "Unique symbolic reference",
+          "type": "string"
+        },
+        "intlId": {
+          "description" : "Symbolic reference",
+          "type": "string"
+        }
+      }
+    },
+    "code_book_kinds": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/code_book_kind"
+      },
+      "uniqueItems": true
+    },
+    "code_book_kind": {
+      "type": "object",
+      "properties": {
+        "activ": {
+          "type": "boolean"
+        },
+        "bookKindAdv": {
+          "description" : "Referencing: `/code-book-kind-advs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "bookKindType": {
+          "description" : "Referencing: `/code-book-kind-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "class": {
+          "type": "string"
+        },
+        "costGrp": {
+          "type": "string"
+        },
+        "costIntlId": {
+          "type": "string"
+        },
+        "costOrderBy": {
+          "type": "number"
+        },
+        "costTypeId": {
+          "type": "number"
+        },
+        "costUserId": {
+          "type": "string"
+        },
+        "dateType": {
+          "description" : "Referencing: `/code-date-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "descn": {
+          "type": "string"
+        },
+        "exclBvGross": {
+          "type": "boolean"
+        },
+        "exclBvNet": {
+          "type": "boolean"
+        },
+        "exclBvPko4": {
+          "type": "boolean"
+        },
+        "factorClassFactor": {
+          "type": "boolean"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "ident": {
+          "type": "string"
+        },
+        "inclZeroCost": {
+          "type": "boolean"
+        },
+        "intl2Id": {
+          "type": "string"
+        },
+        "intlId": {
+          "type": "string"
+        },
+        "isIfrsAccr": {
+          "type": "boolean"
+        },
+        "isWidrwRelv": {
+          "type": "boolean"
+        },
+        "mba$costLdType": {
+          "description" : "Referencing: `/mba$code-cost-ld-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$doSetPartBill": {
+          "type": "boolean"
+        },
+        "mba$effIntrCostType": {
+          "description" : "Referencing: `/code-eff-intr-cost-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$envCompo": {
+          "description" : "Referencing: `/code-env-compos/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$isAdminVal": {
+          "type": "boolean"
+        },
+        "mba$isAvivaVal": {
+          "type": "boolean"
+        },
+        "mba$isCoolOffRefund": {
+          "type": "boolean"
+        },
+        "mba$isCostOvrStr": {
+          "type": "boolean"
+        },
+        "mba$isCustVal": {
+          "type": "boolean"
+        },
+        "mba$isCustfee": {
+          "type": "boolean"
+        },
+        "mba$isExclNotThp": {
+          "type": "boolean"
+        },
+        "mba$isFxSpreadBk": {
+          "type": "boolean"
+        },
+        "mba$isGrossAmtZero": {
+          "type": "boolean"
+        },
+        "mba$isIconBrkge": {
+          "type": "boolean"
+        },
+        "mba$isIconStax": {
+          "type": "boolean"
+        },
+        "mba$isRecl": {
+          "type": "boolean"
+        },
+        "mba$isThpAgtVal": {
+          "type": "boolean"
+        },
+        "mba$isValadjBk": {
+          "type": "boolean"
+        },
+        "minimMaximClassFactor": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": "string"
+        },
+        "nameI18nList": {
+          "type": "array",
+          "items": {
+            "description" : "Full translation list for name field. Only visible within compound APIs ",
+            "allOf": [
+              { "$ref": "#/definitions/name_i18n"
+               }
+              ]
+          }
+        },
+        "nnmCat": {
+          "description" : "Referencing: `/code-book-kind-nnm-cats/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "objClassifClassFactor": {
+          "description" : "Referencing: `/code-obj-classifs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "offsetClassFactor": {
+          "type": "boolean"
+        },
+        "orderBy": {
+          "type": "number"
+        },
+        "posMove": {
+          "type": "boolean"
+        },
+        "rdDpManual": {
+          "type": "boolean"
+        },
+        "reconCnt": {
+          "type": "boolean"
+        },
+        "reqProd": {
+          "type": "boolean"
+        },
+        "storeCalcDet": {
+          "type": "boolean"
+        },
+        "userId": {
+          "type": "string"
+        },
+        "vatAll": {
+          "type": "boolean"
+        },
+        "vatImportOnly": {
+          "type": "boolean"
+        },
+        "vatInclColl": {
+          "type": "boolean"
+        },
+        "vatInclExpns": {
+          "type": "boolean"
+        },
+        "vatInclImp": {
+          "type": "boolean"
+        },
+        "vatInclRevn": {
+          "type": "boolean"
+        },
+        "vatRate": {
+          "type": "number"
+        },
+        "vatRefundFactor": {
+          "type": "number"
+        }
+      }
+    },
+    "name_i18n": {
+      "type": "object",
+      "properties": {
+        "lang": {
+          "description" : "LanguageReferencing: `/code-langs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref"
+             }
+            ]
+        },
+        "text": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

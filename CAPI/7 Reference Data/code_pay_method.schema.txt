@@ -1,0 +1,158 @@
+{
+  "$id": "https://avaloq.com/code_pay_method.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/code_pay_method",
+  "definitions": {
+    "code_pay_method": {
+      "type": "object",
+      "properties": {
+        "activ": {
+          "type": "boolean"
+        },
+        "descn": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "ident": {
+          "type": "string"
+        },
+        "intlId": {
+          "type": "string"
+        },
+        "mba$alwPayChanList": {
+          "type": "array",
+          "items": {
+            "description": "Referencing: `/code-pay-chans/{id}`",
+            "allOf": [
+              { "$ref": "#/definitions/code_tab_ref" }
+            ]
+          }
+        },
+        "mba$dfltPrio": {
+          "type": "number"
+        },
+        "mba$doSkipApfSync": {
+          "type": "boolean"
+        },
+        "mba$doSkipBoChk": {
+          "type": "boolean"
+        },
+        "mba$envCompo": {
+          "description" : "Referencing: `/code-env-compos/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$isAfpRelv": {
+          "type": "boolean"
+        },
+        "mba$isApfDomPayOrdType": {
+          "type": "boolean"
+        },
+        "mba$isApfFrnPay": {
+          "type": "boolean"
+        },
+        "mba$isApfRelv": {
+          "type": "boolean"
+        },
+        "mba$isAvlBuList": {
+          "type": "array",
+          "items": {
+            "description": "Referencing: `/mba$code-bu-vs/{id}`",
+            "allOf": [
+              { "$ref": "#/definitions/code_tab_ref" }
+            ]
+          }
+        },
+        "mba$isRmwpSupp": {
+          "type": "boolean"
+        },
+        "mba$isStordOrderType": {
+          "type": "boolean"
+        },
+        "mba$paySvcCode": {
+          "description" : "Referencing: `/code-pay-svc-codes/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$restrToPmGrpList": {
+          "type": "array",
+          "items": {
+            "description": "Referencing: `/mba$code-pay-method-grps/{id}`",
+            "allOf": [
+              { "$ref": "#/definitions/code_tab_ref" }
+            ]
+          }
+        },
+        "mba$useIntlBenefMacc": {
+          "type": "boolean"
+        },
+        "metaTypList": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "nameI18nList": {
+          "type": "array",
+          "items": {
+            "description" : "Full translation list for name field. Only visible within compound APIs ",
+            "allOf": [
+              { "$ref": "#/definitions/name_i18n"
+               }
+              ]
+          }
+        },
+        "userId": {
+          "type": "string"
+        }
+      }
+    },
+    "code_tab_ref": {
+      "type": "object",
+      "properties": {
+        "_href": {
+          "description" : "Reference/link",
+          "type": "string"
+        },
+        "id": {
+          "description" : "Numeric reference",
+          "type": "integer"
+        },
+        "ident": {
+          "description" : "Unique symbolic reference",
+          "type": "string"
+        },
+        "intlId": {
+          "description" : "Symbolic reference",
+          "type": "string"
+        }
+      }
+    },
+    "code_pay_methods": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/code_pay_method"
+      },
+      "uniqueItems": true
+    },
+    "name_i18n": {
+      "type": "object",
+      "properties": {
+        "lang": {
+          "description" : "LanguageReferencing: `/code-langs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref"
+             }
+            ]
+        },
+        "text": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

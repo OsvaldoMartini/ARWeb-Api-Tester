@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package com.avaloq.acp.bde.protobuf.user;
+
+import "meta_model.proto";
+import "wrappers.proto";
+import "options.proto";
+
+option (version) = "2.4.0";
+
+message User {
+  option (is_bde_entity) = true;
+  sint64 id = 1 [(bde_entity) = "User", (bde_ref_type) = "use"];
+  StringValue oracle_user = 3;
+  SInt64Value user_type_id = 4 [(bde_entity) = "Code_user_type", (bde_ref_type) = "code"];
+  SInt64Value ref_obj_id = 5 [(bde_entity) = "Obj", (bde_ref_type) = "obj"];
+  StringValue name = 6;
+  StringValue close_date = 7 [(format) = "date_time"];
+}
+

@@ -1,0 +1,236 @@
+{
+  "$id": "https://avaloq.com/code_mail.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/code_mail",
+  "definitions": {
+    "code_tab_ref": {
+      "type": "object",
+      "properties": {
+        "_href": {
+          "description" : "Reference/link",
+          "type": "string"
+        },
+        "id": {
+          "description" : "Numeric reference",
+          "type": "integer"
+        },
+        "ident": {
+          "description" : "Unique symbolic reference",
+          "type": "string"
+        },
+        "intlId": {
+          "description" : "Symbolic reference",
+          "type": "string"
+        }
+      }
+    },
+    "code_mail": {
+      "type": "object",
+      "properties": {
+        "activ": {
+          "type": "boolean"
+        },
+        "chargeable": {
+          "type": "boolean"
+        },
+        "dateType": {
+          "description" : "Referencing: `/code-date-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "envCompo": {
+          "description" : "Referencing: `/code-env-compos/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "id": {
+          "type": "integer"
+        },
+        "ident": {
+          "type": "string"
+        },
+        "intlId": {
+          "type": "string"
+        },
+        "mailCatList": {
+          "type": "array",
+          "items": {
+            "description": "Referencing: `/code-mail-cats/{id}`",
+            "allOf": [
+              { "$ref": "#/definitions/code_tab_ref" }
+            ]
+          }
+        },
+        "mailFreq": {
+          "description" : "Referencing: `/code-mail-freqs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mailMedium": {
+          "description" : "Referencing: `/code-mail-mediums/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mailType": {
+          "description" : "Referencing: `/code-mail-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$ccmElementId": {
+          "type": "string"
+        },
+        "mba$ccmMailBatch": {
+          "type": "string"
+        },
+        "mba$ccmMailProdCode": {
+          "type": "string"
+        },
+        "mba$ccmStmTypeLabel": {
+          "type": "string"
+        },
+        "mba$cltOnbObjVisib": {
+          "type": "array",
+          "items": {
+            "description": "Referencing: `/code-obj-types/{id}`",
+            "allOf": [
+              { "$ref": "#/definitions/code_tab_ref" }
+            ]
+          }
+        },
+        "mba$docType": {
+          "type": "string"
+        },
+        "mba$docmCat": {
+          "description" : "Referencing: `/mba$code-docm-cats/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$envCompo": {
+          "description" : "Referencing: `/code-env-compos/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "mba$hyparcvDocTypeExtlDesc": {
+          "type": "string"
+        },
+        "mba$hyparcvDocTypeExtlId": {
+          "type": "string"
+        },
+        "mba$isBpAvl": {
+          "type": "boolean"
+        },
+        "mba$isCcmStdLtr": {
+          "type": "boolean"
+        },
+        "mba$isCltOnbAvl": {
+          "type": "boolean"
+        },
+        "mba$isContAvl": {
+          "type": "boolean"
+        },
+        "mba$isMaccAvl": {
+          "type": "boolean"
+        },
+        "mba$mailCat": {
+          "description" : "Referencing: `/code-mail-cats/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "metaProc": {
+          "description" : "Referencing: `/code-tab-refs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "metaSmp": {
+          "description" : "Referencing: `/meta-smps/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "name": {
+          "type": "string"
+        },
+        "nameI18nList": {
+          "type": "array",
+          "items": {
+            "description" : "Full translation list for name field. Only visible within compound APIs ",
+            "allOf": [
+              { "$ref": "#/definitions/name_i18n"
+               }
+              ]
+          }
+        },
+        "orderByForm": {
+          "type": "number"
+        },
+        "retainPeriod": {
+          "type": "string"
+        },
+        "sfdrInfoDocmType": {
+          "description" : "Referencing: `/code-info-docm-types/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "sfdrRelv": {
+          "description" : "Referencing: `/code-mail-sfdr-relvs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "shpmtTempl": {
+          "description" : "Referencing: `/code-shpmt-templs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "supprIfNoBooks": {
+          "type": "boolean"
+        },
+        "taskTempl": {
+          "description" : "Referencing: `/code-tab-refs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref" }
+          ]
+        },
+        "userId": {
+          "type": "string"
+        },
+        "xmlRootTag": {
+          "type": "string"
+        }
+      }
+    },
+    "code_mails": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/code_mail"
+      },
+      "uniqueItems": true
+    },
+    "name_i18n": {
+      "type": "object",
+      "properties": {
+        "lang": {
+          "description" : "LanguageReferencing: `/code-langs/{id}`",
+          "allOf": [
+            { "$ref": "#/definitions/code_tab_ref"
+             }
+            ]
+        },
+        "text": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

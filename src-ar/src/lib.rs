@@ -1,12 +1,12 @@
 //! Minimal Tauri shell for AR Conversational.
 //!
 //! Design rule: Rust holds no business logic. All agent/AI logic lives in the
-//! ARAPI TypeScript Node sidecar (server-arapi, port 8787).
+//! C# backend executable on port 8787.
 //! This file does exactly two things:
 //!   1. Create the application window (the React frontend at dist-ar/).
-//!   2. In a packaged build, launch the bundled ARAPI sidecar and stop it on exit.
+//!   2. In a packaged build, launch the bundled C# backend and stop it on exit.
 //!
-//! Both ARAPI Tester and AR Conversational share the same SQLite database.
+//! Both ARAPI Tester and AR Conversational share the same database path.
 //! We use data_dir()/ARWebShared/arweb.db so both apps resolve to the same path
 //! regardless of their bundle identifiers.
 
@@ -17,7 +17,7 @@ use tauri_plugin_shell::{process::CommandChild, ShellExt};
 #[cfg(not(debug_assertions))]
 use std::sync::Mutex;
 
-/// Holds the sidecar child so we can terminate it when the app closes.
+/// Holds the backend child so we can terminate it when the app closes.
 #[cfg(not(debug_assertions))]
 #[derive(Default)]
 struct SidecarState(Mutex<Option<CommandChild>>);
@@ -31,7 +31,7 @@ pub fn run() {
     let builder = builder
         .manage(SidecarState::default())
         .setup(|app| {
-            // Shared DB path — same across ARAPI Tester and AR Conversational.
+            // Shared DB path â€” same across ARAPI Tester and AR Conversational.
             // data_dir() returns AppData/Roaming on Windows (no bundle-id suffix).
             let db_path = match app.path().data_dir() {
                 Ok(dir) => {
@@ -43,7 +43,7 @@ pub fn run() {
                 Err(_) => String::new(),
             };
 
-            match app.shell().sidecar("arweb-sidecar") {
+            match app.shell().sidecar("arapi-backend") {
                 Ok(cmd) => {
                     let cmd = if db_path.is_empty() {
                         cmd
@@ -55,11 +55,11 @@ pub fn run() {
                             let state = app.state::<SidecarState>();
                             *state.0.lock().unwrap() = Some(child);
                         }
-                        Err(e) => eprintln!("[ar-conversational] failed to spawn ARAPI sidecar: {e}"),
+                        Err(e) => eprintln!("[ar-conversational] failed to spawn C# backend: {e}"),
                     }
                 }
-                Err(e) => eprintln!("[ar-conversational] sidecar binary not found ({e}); \
-                    expecting an externally-running ARAPI backend"),
+                Err(e) => eprintln!("[ar-conversational] backend binary not found ({e}); \
+                    expecting an externally-running C# backend"),
             }
             Ok(())
         })

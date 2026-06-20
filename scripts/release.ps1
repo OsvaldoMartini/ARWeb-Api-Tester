@@ -32,7 +32,7 @@ $Tag = "v$Version"
 Write-Host "== Building $Tag..." -ForegroundColor Cyan
 
 # ── 3. build sidecar (Node.js binary bundled into the exe) ───────────────────
-Write-Host "   Building Node sidecar..."
+Write-Host "   Building backend executable..."
 Push-Location $Root
 & "$PSScriptRoot\build-sidecar.ps1"
 
@@ -98,7 +98,7 @@ handles all API communication — no separate server setup required.
 
 ## SQLite database
 The database is stored at:
-\`%APPDATA%\com.arweb.apitester\arweb.db\`
+\`%APPDATA%\ARWebShared\arweb.db\`
 "@
 Write-Host "   wrote releases/$Tag/RELEASE.md"
 

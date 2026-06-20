@@ -1,14 +1,14 @@
 @echo off
-REM build-sidecar.bat — build the Node.js sidecar exe for Tauri packaging
-REM Wraps build-sidecar.ps1 (requires Node 20+, esbuild, internet for @yao-pkg/pkg)
+REM build-sidecar.bat — build the C# backend exe for ARAPI packaging
+REM Wraps build-sidecar.ps1
 REM
 REM Usage:
 REM   scripts\build-sidecar.bat
 
-echo == Building Node sidecar...
+echo == Building ARAPI backend...
 powershell -ExecutionPolicy Bypass -File "%~dp0build-sidecar.ps1"
 if errorlevel 1 (
-    echo ERROR: sidecar build failed.
+    echo ERROR: backend build failed.
     exit /b 1
 )
-echo == Sidecar ready.
+echo == Backend ready.

@@ -1,20 +1,23 @@
-# Build the C# ARAPI backend as a Windows executable for the ARAPI shell.
+# Build the C# backend as a Windows executable.
 #
 # Usage: pwsh scripts/build-arapi-csharp.ps1
 # Optional: pwsh scripts/build-arapi-csharp.ps1 -Runtime win-x64
 # Optional: pwsh scripts/build-arapi-csharp.ps1 -TargetTriple x86_64-pc-windows-msvc
+# Optional: pwsh scripts/build-arapi-csharp.ps1 -OutputDir src-ar\binaries -OutputName arapi-backend
 
 param(
   [string]$TargetTriple = "x86_64-pc-windows-msvc",
   [string]$Runtime = "win-x64",
-  [string]$Configuration = "Release"
+  [string]$Configuration = "Release",
+  [string]$OutputDir,
+  [string]$OutputName = "arapi-backend"
 )
 
 $ErrorActionPreference = "Stop"
 $root = Split-Path $PSScriptRoot -Parent
 $project = Join-Path $root "server-arapi-csharp\server-arapi-csharp.csproj"
-$binDir = Join-Path $root "src-arapi\binaries"
-$output = Join-Path $binDir "arapi-backend-$TargetTriple.exe"
+$binDir = if ($OutputDir) { Join-Path $root $OutputDir } else { Join-Path $root "src-arapi\binaries" }
+$output = Join-Path $binDir "$OutputName-$TargetTriple.exe"
 
 Write-Host ""
 Write-Host "============================================" -ForegroundColor Cyan
@@ -31,7 +34,7 @@ dotnet publish $project `
 
 if ($LASTEXITCODE -ne 0) { throw "dotnet publish failed" }
 
-$sourceExe = Join-Path $binDir "arapi-backend.exe"
+$sourceExe = Join-Path $binDir "$OutputName.exe"
 if (Test-Path $sourceExe) {
   Copy-Item -LiteralPath $sourceExe -Destination $output -Force
 } else {

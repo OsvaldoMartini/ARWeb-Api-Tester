@@ -6,7 +6,7 @@
   "build": {
     "beforeDevCommand": "npm run dev:ar",
     "devUrl": "http://localhost:5174",
-    "beforeBuildCommand": "npm run build:ar",
+    "beforeBuildCommand": "npm run build:ar && npm run build:server-csharp:ar",
     "frontendDist": "../dist-ar"
   },
   "app": {
@@ -35,7 +35,7 @@
       "icons/icon.ico"
     ],
     "externalBin": [
-      "binaries/arweb-sidecar"
+      "binaries/arapi-backend"
     ]
   }
 }

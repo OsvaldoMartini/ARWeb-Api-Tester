@@ -6,8 +6,8 @@
 npm install
 ```
 
-This installs `@yao-pkg/pkg` (the sidecar bundler) and all other dev dependencies.
-You **must** run this before building the sidecar or using the release scripts.
+This installs the backend build dependencies and all other dev dependencies.
+You **must** run this before building the backend executables or using the release scripts.
 
 ---
 
@@ -16,7 +16,7 @@ You **must** run this before building the sidecar or using the release scripts.
 Open **Command Prompt or PowerShell as Administrator** in the project root.
 
 ```bat
-REM Pull latest, bump version, build sidecar + Tauri, collect artifacts, zip
+REM Pull latest, bump version, build backend + Tauri, collect artifacts, zip
 scripts\release.bat patch
 
 REM Or bump minor / major
@@ -36,7 +36,7 @@ scripts\release.bat --skip-bump
 `release.bat` runs the full pipeline automatically:
 1. `git pull --rebase` — syncs remote before touching version files
 2. Bumps version in `package.json`, `tauri.conf.json`, `Cargo.toml`
-3. Builds the Node.js sidecar (`build-sidecar.ps1` → `@yao-pkg/pkg`)
+3. Builds the backend executables (`build-sidecar.ps1` / `build-sidecar-ar.ps1`)
 4. Runs `npm run tauri:build` (Vite + Rust → `.exe` + `.msi`)
 5. Copies installers to `releases\v<ver>\`
 6. Writes `RELEASE.md` and updates `releases\INDEX.md`
@@ -44,18 +44,15 @@ scripts\release.bat --skip-bump
 
 ---
 
-## Build sidecar only
+## Build backend only
 
-If you only need to rebuild the sidecar binary (e.g. after a server code change):
+If you only need to rebuild the backend binary for one app:
 
 ```bat
 scripts\build-sidecar.bat
 ```
 
-The sidecar is built with `@yao-pkg/pkg` (installed locally) which:
-- Bundles all TypeScript via esbuild
-- Packages `better-sqlite3` native addon (`.node`) into the exe
-- Extracts the addon to `%TEMP%` at runtime — no Node.js installation needed on client machines
+The backend is built from the C# project and does not require Node packaging.
 
 ---
 
@@ -131,11 +128,11 @@ gh release create v0.1.2 "releases\v0.1.2\ARWEB-API-Tester-v0.1.2-windows-x64.zi
 
 | Script | Purpose |
 |--------|---------|
-| `build-sidecar.bat` | Builds the Node sidecar exe into `src-tauri\binaries\` |
+| `build-sidecar.bat` | Builds the ARAPI backend exe into `src-arapi\binaries\` |
 | `build-sidecar.ps1` | PowerShell implementation called by the .bat |
 | `bump-version.bat` | Bumps version in the three version files + git commit + tag |
 | `_bump_version.py` | Python helper called by bump-version.bat |
-| `release.bat` | Full pipeline: pull → bump → sidecar → tauri build → collect → zip |
+| `release.bat` | Full pipeline: pull → bump → backend → tauri build → collect → zip |
 | `_release_finalize.py` | Python helper: writes RELEASE.md + updates INDEX.md |
 
 ## Version files kept in sync

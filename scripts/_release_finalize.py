@@ -35,7 +35,7 @@ with open(release_md, 'w', encoding='utf-8') as f:
 Send clients the zip file: `{client_zip}`
 
 Inside they will find the **NSIS installer** — they just double-click it and follow the wizard.
-No separate server or runtime setup is required; the Node.js sidecar is bundled inside the app.
+No separate server or runtime setup is required; the C# backend is bundled inside the app.
 
 ## Artifacts in this folder
 
@@ -46,7 +46,7 @@ No separate server or runtime setup is required; the Node.js sidecar is bundled 
 {f'Run `{nsis}` — double-click, follow the wizard.' if nsis else 'Run the `-setup.exe` installer.'}
 
 The app stores its SQLite database at:
-`%APPDATA%\\com.arweb.apitester\\arweb.db`
+`%APPDATA%\\ARWebShared\\arweb.db`
 
 ## Enterprise / IT deployment
 {f'Use `{msi}` for silent / group-policy deployment:' if msi else 'Use the MSI for silent deployment:'}

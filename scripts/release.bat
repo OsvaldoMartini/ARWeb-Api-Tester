@@ -65,9 +65,9 @@ if "%VERSION%"=="" ( echo ERROR: could not read version from package.json & exit
 set "TAG=v%VERSION%"
 echo == Version: %TAG%
 
-REM ── 3. build Node sidecar ────────────────────────────────────────────────────
+REM ── 3. build backend executable ─────────────────────────────────────────────
 if "%COLLECT_ONLY%"=="1" goto :after_sidecar
-echo    Building Node sidecar...
+echo    Building backend executable...
 cd /d "%ROOT%"
 powershell -ExecutionPolicy Bypass -File "%~dp0build-sidecar.ps1"
 if errorlevel 1 ( echo ERROR: sidecar build failed & exit /b 1 )

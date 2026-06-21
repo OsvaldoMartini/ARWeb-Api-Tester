@@ -2,6 +2,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.RegularExpressions;
+using System.Reflection;
 
 public sealed class ArapiBackend
 {
@@ -16,12 +17,16 @@ public sealed class ArapiBackend
     WriteIndented = true,
   };
 
+  private readonly string _dbPath;
   private readonly string _statePath;
+  private readonly string _catalogSeedPath;
   private BackendState _state = CreateSeedState();
 
   public ArapiBackend()
   {
-    _statePath = ResolveStatePath();
+    _dbPath = ResolveDatabasePath();
+    _statePath = ResolveStatePath(_dbPath);
+    _catalogSeedPath = ResolveCatalogSeedPath(_dbPath);
   }
 
   public void Initialize()
@@ -37,6 +42,10 @@ public sealed class ArapiBackend
           if (loaded is not null)
           {
             _state = loaded;
+            if (_state.ApiEndpoints.Count == 0)
+            {
+              LoadCatalogSeed();
+            }
             EnsureSeedData();
             SaveLocked();
             return;
@@ -46,6 +55,11 @@ public sealed class ArapiBackend
         {
           // Fall back to seed state if the persisted file is corrupt.
         }
+      }
+
+      if (_state.ApiEndpoints.Count == 0)
+      {
+        LoadCatalogSeed();
       }
 
       EnsureSeedData();
@@ -1232,30 +1246,107 @@ public sealed class ArapiBackend
   private void SaveLocked()
   {
     var json = JsonSerializer.Serialize(_state, _json);
-    var temp = _statePath + ".tmp";
-    File.WriteAllText(temp, json, Encoding.UTF8);
-    File.Move(temp, _statePath, true);
+    File.WriteAllText(_statePath, json, Encoding.UTF8);
   }
 
-  private static string ResolveStatePath()
+  private void LoadCatalogSeed()
+  {
+    try
+    {
+      var seedJson = File.Exists(_catalogSeedPath)
+        ? File.ReadAllText(_catalogSeedPath)
+        : ReadEmbeddedCatalogSeed();
+      if (string.IsNullOrWhiteSpace(seedJson))
+      {
+        return;
+      }
+
+      var seed = JsonSerializer.Deserialize<CatalogSeedState>(seedJson, _json);
+      if (seed is null)
+      {
+        return;
+      }
+
+      if (seed.ApiSpecs.Count > 0) _state.ApiSpecs = seed.ApiSpecs;
+      if (seed.ApiEndpoints.Count > 0) _state.ApiEndpoints = seed.ApiEndpoints;
+      if (seed.ApiParameters.Count > 0) _state.ApiParameters = seed.ApiParameters;
+      if (seed.ApiOutputFields.Count > 0) _state.ApiOutputFields = seed.ApiOutputFields;
+    }
+    catch
+    {
+      Console.Error.WriteLine("[arapi] failed to load catalog seed");
+    }
+  }
+
+  private static string? ReadEmbeddedCatalogSeed()
+  {
+    var assembly = Assembly.GetExecutingAssembly();
+    var resourceName = assembly.GetManifestResourceNames()
+      .FirstOrDefault(name => name.EndsWith("catalog.seed.json", StringComparison.OrdinalIgnoreCase));
+    if (resourceName is null)
+    {
+      return null;
+    }
+
+    using var stream = assembly.GetManifestResourceStream(resourceName);
+    if (stream is null)
+    {
+      return null;
+    }
+
+    using var reader = new StreamReader(stream, Encoding.UTF8);
+    return reader.ReadToEnd();
+  }
+
+  private static string ResolveDatabasePath()
   {
     var dbPath = Environment.GetEnvironmentVariable("DB_PATH");
     if (!string.IsNullOrWhiteSpace(dbPath))
     {
-      var dir = Path.GetDirectoryName(dbPath);
-      if (!string.IsNullOrWhiteSpace(dir))
-      {
-        return Path.Combine(dir, "arapi-backend-state.json");
-      }
+      return dbPath;
     }
 
     var appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
     if (!string.IsNullOrWhiteSpace(appData))
     {
-      return Path.Combine(appData, "ARWebShared", "arapi-backend-state.json");
+      return Path.Combine(appData, "data", "app.db");
+    }
+
+    return Path.Combine(AppContext.BaseDirectory, "data", "app.db");
+  }
+
+  private static string ResolveStatePath(string dbPath)
+  {
+    var dir = Path.GetDirectoryName(dbPath);
+    if (!string.IsNullOrWhiteSpace(dir))
+    {
+      return Path.Combine(dir, "arapi-backend-state.json");
+    }
+
+    var appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+    if (!string.IsNullOrWhiteSpace(appData))
+    {
+      return Path.Combine(appData, "data", "arapi-backend-state.json");
     }
 
     return Path.Combine(AppContext.BaseDirectory, "data", "arapi-backend-state.json");
+  }
+
+  private static string ResolveCatalogSeedPath(string dbPath)
+  {
+    var dir = Path.GetDirectoryName(dbPath);
+    if (!string.IsNullOrWhiteSpace(dir))
+    {
+      return Path.Combine(dir, "catalog.seed.json");
+    }
+
+    var appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+    if (!string.IsNullOrWhiteSpace(appData))
+    {
+      return Path.Combine(appData, "data", "catalog.seed.json");
+    }
+
+    return Path.Combine(AppContext.BaseDirectory, "data", "catalog.seed.json");
   }
 
   private static string NormalizeProvider(string provider)
@@ -1352,6 +1443,14 @@ public sealed class BackendState
   public List<MockLogEntryState> MockLog { get; set; } = [];
   public bool MockRunning { get; set; }
   public int MockPort { get; set; } = 8855;
+}
+
+public sealed class CatalogSeedState
+{
+  public List<ApiSpecState> ApiSpecs { get; set; } = [];
+  public List<ApiEndpointState> ApiEndpoints { get; set; } = [];
+  public List<ApiParameterState> ApiParameters { get; set; } = [];
+  public List<ApiOutputFieldState> ApiOutputFields { get; set; } = [];
 }
 
 public sealed class SpecState

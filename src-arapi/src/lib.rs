@@ -1,12 +1,12 @@
-//! Minimal Tauri shell for ARWEB API Tester.
+//! Minimal Tauri shell for ARAPI.
 //!
-//! Design rule (from the roadmap): **Rust holds no business logic.** All ARAPI
-//! backend logic lives in the C# sidecar.
+//! Design rule (from the roadmap): Rust holds no business logic. All ARAPI
+//! backend logic lives in the C# backend executable.
 //! This file does exactly two things:
 //!   1. Create the application window (the React frontend).
-//!   2. In a packaged build, launch the bundled C# sidecar and stop it on exit.
+//!   2. In a packaged build, launch the bundled C# backend and stop it on exit.
 //!
-//! In development the sidecar may not be bundled, so the spawn is best-effort:
+//! In development the backend may not be bundled, so the spawn is best-effort:
 //! if the binary isn't present we log and carry on rather than failing to open.
 
 #[cfg(not(debug_assertions))]
@@ -16,7 +16,7 @@ use tauri_plugin_shell::{process::CommandChild, ShellExt};
 #[cfg(not(debug_assertions))]
 use std::sync::Mutex;
 
-/// Holds the sidecar child so we can terminate it when the app closes.
+/// Holds the backend child so we can terminate it when the app closes.
 #[cfg(not(debug_assertions))]
 #[derive(Default)]
 struct SidecarState(Mutex<Option<CommandChild>>);
@@ -31,15 +31,14 @@ pub fn run() {
         .manage(SidecarState::default())
         .setup(|app| {
             // Resolve the user-specific AppData path for the SQLite database.
-            // Passed as DB_PATH so the sidecar does NOT fall back to the
+            // Passed as DB_PATH so the backend does NOT fall back to the
             // dev-time repo-relative path (data/app.db).
-            // Shared DB path — same across ARAPI Tester and AR Conversational.
-            // data_dir() returns AppData/Roaming on Windows (no bundle-id suffix).
+            // Flat data path for ARAPI: AppData/Roaming/data/arweb.db.
             let db_path = match app.path().data_dir() {
                 Ok(dir) => {
-                    let shared = dir.join("ARWebShared");
-                    let _ = std::fs::create_dir_all(&shared);
-                    let p = shared.join("arweb.db");
+                    let data = dir.join("data");
+                    let _ = std::fs::create_dir_all(&data);
+                    let p = data.join("arweb.db");
                     p.to_string_lossy().into_owned()
                 }
                 Err(_) => String::new(),
@@ -57,11 +56,11 @@ pub fn run() {
                             let state = app.state::<SidecarState>();
                             *state.0.lock().unwrap() = Some(child);
                         }
-                        Err(e) => eprintln!("[arapi] failed to spawn sidecar: {e}"),
+                        Err(e) => eprintln!("[arapi] failed to spawn backend: {e}"),
                     }
                 }
-                Err(e) => eprintln!("[arapi] sidecar binary not found ({e}); \
-                    expecting an externally-running sidecar"),
+                Err(e) => eprintln!("[arapi] backend binary not found ({e}); \
+                    expecting an externally-running backend"),
             }
             Ok(())
         })
@@ -76,5 +75,5 @@ pub fn run() {
 
     builder
         .run(tauri::generate_context!())
-        .expect("error while running ARWEB API Tester");
+        .expect("error while running ARAPI");
 }

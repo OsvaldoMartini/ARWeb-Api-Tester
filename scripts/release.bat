@@ -114,16 +114,16 @@ python "%~dp0_release_finalize.py" "%TAG%" "%RELEASE_DIR%" "%ROOT%\releases\INDE
 if errorlevel 1 ( echo WARNING: could not write release notes )
 
 REM ── 7. create client zip (NSIS exe + RELEASE.md) ─────────────────────────────
-set "ZIP=%RELEASE_DIR%\ARWEB-API-Tester-%TAG%-windows-x64.zip"
+set "ZIP=%RELEASE_DIR%\ARAPI.zip"
 echo    Creating client zip...
-powershell -NoProfile -Command "$files = @(Get-ChildItem '%RELEASE_DIR%\nsis' -Filter '*.exe') + @(Get-ChildItem '%RELEASE_DIR%' -Filter 'RELEASE.md'); if ($files.Count -gt 0) { Compress-Archive -Path $files.FullName -DestinationPath '%ZIP%' -Force; Write-Host '   created ARWEB-API-Tester-%TAG%-windows-x64.zip' } else { Write-Host '   WARNING: no files to zip' }"
+powershell -NoProfile -Command "$files = @(Get-ChildItem '%RELEASE_DIR%\nsis' -Filter '*.exe') + @(Get-ChildItem '%RELEASE_DIR%' -Filter 'RELEASE.md'); if ($files.Count -gt 0) { Compress-Archive -Path $files.FullName -DestinationPath '%ZIP%' -Force; Write-Host '   created ARAPI.zip' } else { Write-Host '   WARNING: no files to zip' }"
 
 REM ── 8. summary ───────────────────────────────────────────────────────────────
 echo.
 echo == Release %TAG% ready ==
 echo.
 echo   Folder : releases\%TAG%\
-echo   Send to clients: releases\%TAG%\ARWEB-API-Tester-%TAG%-windows-x64.zip
+echo   Send to clients: releases\%TAG%\ARAPI.zip
 echo.
 echo   Contents:
 for %%F in ("%RELEASE_DIR%\*") do echo     %%~nxF

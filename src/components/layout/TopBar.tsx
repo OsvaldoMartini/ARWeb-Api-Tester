@@ -14,7 +14,7 @@ export function TopBar() {
   // Fallback label keeps this defined even if a route isn't in NAV_ITEMS
   // (satisfies noUncheckedIndexedAccess without a non-null assertion).
   const current = NAV_ITEMS.find((n) => n.path === pathname);
-  const label = current?.label ?? 'ARWEB API Tester';
+  const label = current?.label ?? 'ARAPI';
 
   const mode = useAppStore((s) => s.mode);
   const setMode = useAppStore((s) => s.setMode);

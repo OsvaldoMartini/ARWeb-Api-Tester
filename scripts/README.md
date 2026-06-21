@@ -40,7 +40,7 @@ scripts\release.bat --skip-bump
 4. Runs `npm run tauri:build` (Vite + Rust → `.exe` + `.msi`)
 5. Copies installers to `releases\v<ver>\`
 6. Writes `RELEASE.md` and updates `releases\INDEX.md`
-7. Creates **`ARWEB-API-Tester-v<ver>-windows-x64.zip`** — the file to send clients
+7. Creates **`ARAPI.zip`** — the file to send clients
 
 ---
 
@@ -62,10 +62,10 @@ The backend is built from the C# project and does not require Node packaging.
 releases\
   v0.1.2\
     nsis\
-      ARWEB API Tester_0.1.2_x64-setup.exe    ← NSIS installer (end users, double-click)
+      ARAPI_0.1.2_x64-setup.exe               ← NSIS installer (end users, double-click)
     msi\
-      ARWEB API Tester_0.1.2_x64_en-US.msi   ← MSI installer (IT/silent deployment)
-    ARWEB-API-Tester-v0.1.2-windows-x64.zip  ← zip this and send to clients (contains NSIS .exe)
+      ARAPI_0.1.2_x64_en-US.msi               ← MSI installer (IT/silent deployment)
+    ARAPI.zip                                 ← zip this and send to clients (contains NSIS .exe)
     RELEASE.md                                ← fill in release notes before sharing
   INDEX.md                                    ← auto-updated, committed to git
 ```
@@ -93,7 +93,7 @@ REM Push version commit + tag
 git push --follow-tags
 
 REM (Optional) Create GitHub release with zip artifact
-gh release create v0.1.2 "releases\v0.1.2\ARWEB-API-Tester-v0.1.2-windows-x64.zip" --title "v0.1.2" --notes-file "releases\v0.1.2\RELEASE.md"
+gh release create v0.1.2 "releases\v0.1.2\ARAPI.zip" --title "v0.1.2" --notes-file "releases\v0.1.2\RELEASE.md"
 ```
 
 ---

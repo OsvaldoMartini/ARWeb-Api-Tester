@@ -9,7 +9,7 @@ interface AppState {
   mode: ConversationMode;
   setMode: (mode: ConversationMode) => void;
 
-  /** Liveness of the Node sidecar (business-logic process). */
+  /** Liveness of the local backend process. */
   sidecarStatus: SidecarStatus;
   /** Pings /health and updates `sidecarStatus`. Never throws. */
   checkSidecar: () => Promise<void>;

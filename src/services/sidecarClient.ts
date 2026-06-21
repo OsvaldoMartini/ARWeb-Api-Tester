@@ -1,5 +1,5 @@
 /**
- * Thin typed client for the Node sidecar.
+ * Thin typed client for the local backend.
  *
  * URL routing:
  *  - Dev / preview : Vite proxies `/api/*` → `http://127.0.0.1:8787/*`
@@ -364,4 +364,3 @@ export const sidecar = {
 export function downloadUrl(path: string): string {
   return `${BASE}${path}`;
 }
-

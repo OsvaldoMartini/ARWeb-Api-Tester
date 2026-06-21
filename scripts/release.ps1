@@ -98,7 +98,7 @@ handles all API communication — no separate server setup required.
 
 ## SQLite database
 The database is stored at:
-\`%APPDATA%\ARWebShared\arweb.db\`
+\`%APPDATA%\data\arweb.db\`
 "@
 Write-Host "   wrote releases/$Tag/RELEASE.md"
 

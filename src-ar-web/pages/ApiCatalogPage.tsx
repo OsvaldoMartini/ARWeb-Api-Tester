@@ -46,7 +46,7 @@ export function ApiCatalogPage() {
     <div>
       <PageHeader
         title="API Catalog"
-        subtitle={`${endpoints.length} endpoint${endpoints.length === 1 ? '' : 's'} available. Read-only view — use the ARAPI Tester app to import or modify endpoints.`}
+        subtitle={`${endpoints.length} endpoint${endpoints.length === 1 ? '' : 's'} available. Read-only view — use the ARAPI app to import or modify endpoints.`}
         actions={
           <input
             className="input w-64"
@@ -63,7 +63,7 @@ export function ApiCatalogPage() {
         <p className="text-sm text-danger">{error}</p>
       ) : endpoints.length === 0 ? (
         <div className="card text-sm text-text-muted">
-          No endpoints yet. Open the <strong>ARAPI Tester</strong> app and use <strong>Import APIs</strong> to load a spec.
+          No endpoints yet. Open the <strong>ARAPI</strong> app and use <strong>Import APIs</strong> to load a spec.
         </div>
       ) : (
         <div className="card overflow-hidden p-0">

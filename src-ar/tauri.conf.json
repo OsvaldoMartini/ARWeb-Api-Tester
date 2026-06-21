@@ -1,6 +1,6 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "AR Conversational",
+  "productName": "AR",
   "version": "1.0.0",
   "identifier": "com.arweb.ar-conversational",
   "build": {
@@ -13,7 +13,7 @@
     "withGlobalTauri": false,
     "windows": [
       {
-        "title": "AR Conversational",
+        "title": "AR",
         "width": 1280,
         "height": 800,
         "minWidth": 960,

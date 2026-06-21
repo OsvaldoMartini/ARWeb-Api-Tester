@@ -1,4 +1,4 @@
-//! Minimal Tauri shell for AR Conversational.
+//! Minimal Tauri shell for AR.
 //!
 //! Design rule: Rust holds no business logic. All agent/AI logic lives in the
 //! C# backend executable on port 8787.
@@ -6,9 +6,8 @@
 //!   1. Create the application window (the React frontend at dist-ar/).
 //!   2. In a packaged build, launch the bundled C# backend and stop it on exit.
 //!
-//! Both ARAPI Tester and AR Conversational share the same database path.
-//! We use data_dir()/ARWebShared/arweb.db so both apps resolve to the same path
-//! regardless of their bundle identifiers.
+//! AR uses a flat data path so the package stays simple:
+//! AppData/Roaming/data/arweb.db
 
 #[cfg(not(debug_assertions))]
 use tauri::Manager;
@@ -31,13 +30,11 @@ pub fn run() {
     let builder = builder
         .manage(SidecarState::default())
         .setup(|app| {
-            // Shared DB path â€” same across ARAPI Tester and AR Conversational.
-            // data_dir() returns AppData/Roaming on Windows (no bundle-id suffix).
             let db_path = match app.path().data_dir() {
                 Ok(dir) => {
-                    let shared = dir.join("ARWebShared");
-                    let _ = std::fs::create_dir_all(&shared);
-                    let p = shared.join("arweb.db");
+                    let data = dir.join("data");
+                    let _ = std::fs::create_dir_all(&data);
+                    let p = data.join("arweb.db");
                     p.to_string_lossy().into_owned()
                 }
                 Err(_) => String::new(),
@@ -55,11 +52,11 @@ pub fn run() {
                             let state = app.state::<SidecarState>();
                             *state.0.lock().unwrap() = Some(child);
                         }
-                        Err(e) => eprintln!("[ar-conversational] failed to spawn C# backend: {e}"),
+                        Err(e) => eprintln!("[ar] failed to spawn backend: {e}"),
                     }
                 }
-                Err(e) => eprintln!("[ar-conversational] backend binary not found ({e}); \
-                    expecting an externally-running C# backend"),
+                Err(e) => eprintln!("[ar] backend binary not found ({e}); \
+                    expecting an externally-running backend"),
             }
             Ok(())
         })
@@ -74,5 +71,5 @@ pub fn run() {
 
     builder
         .run(tauri::generate_context!())
-        .expect("error while running AR Conversational");
+        .expect("error while running AR");
 }

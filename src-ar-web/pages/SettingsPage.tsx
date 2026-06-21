@@ -326,7 +326,7 @@ export function SettingsPage() {
     <div>
       <PageHeader
         title="Settings"
-        subtitle="Configure AI providers. Settings are shared between ARAPI Tester and AR Conversational. The DEFAULT toggle sets which provider is used across both apps."
+        subtitle="Configure AI providers. Settings are shared between ARAPI and AR Conversational. The DEFAULT toggle sets which provider is used across both apps."
       />
 
       <div className="max-w-2xl space-y-5">

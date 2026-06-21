@@ -1,4 +1,4 @@
-# Full production build for ARAPI Tester.
+# Full production build for ARAPI.
 # Produces: src-arapi\binaries\arapi-backend-*.exe
 #           src-arapi\target\release\bundle\nsis\*.exe  (NSIS installer)
 #           src-arapi\target\release\bundle\msi\*.msi   (MSI installer)
@@ -15,7 +15,7 @@ $shellDir = Join-Path $root "src-arapi"
 
 Write-Host ""
 Write-Host "============================================" -ForegroundColor Cyan
-Write-Host "  ARAPI Tester --- full build"               -ForegroundColor Cyan
+Write-Host "  ARAPI --- full build"                      -ForegroundColor Cyan
 Write-Host "============================================" -ForegroundColor Cyan
 Write-Host ""
 
@@ -33,7 +33,7 @@ try {
 $bundleDir = Join-Path $shellDir "target\release\bundle"
 Write-Host ""
 Write-Host "============================================" -ForegroundColor Green
-Write-Host "  ARAPI Tester build complete!"              -ForegroundColor Green
+Write-Host "  ARAPI build complete!"                     -ForegroundColor Green
 Write-Host "============================================" -ForegroundColor Green
 Write-Host ""
 Write-Host "  Backend : src-arapi\binaries\arapi-backend-$TargetTriple.exe"

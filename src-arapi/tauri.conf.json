@@ -1,6 +1,6 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "ARAPI Tester",
+  "productName": "ARAPI",
   "version": "1.0.0",
   "identifier": "com.arweb.arapi-tester",
   "build": {
@@ -13,7 +13,7 @@
     "withGlobalTauri": false,
     "windows": [
       {
-        "title": "ARAPI Tester",
+        "title": "ARAPI",
         "width": 1280,
         "height": 800,
         "minWidth": 960,

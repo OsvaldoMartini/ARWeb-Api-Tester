@@ -1,4 +1,4 @@
-# Full production build for AR Conversational.
+# Full production build for AR.
 # Produces: src-ar\binaries\arapi-backend-*.exe
 #           src-ar\target\release\bundle\nsis\*.exe  (NSIS installer)
 #           src-ar\target\release\bundle\msi\*.msi   (MSI installer)
@@ -15,7 +15,7 @@ $shellDir = Join-Path $root "src-ar"
 
 Write-Host ""
 Write-Host "============================================" -ForegroundColor Magenta
-Write-Host "  AR Conversational --- full build"          -ForegroundColor Magenta
+Write-Host "  AR --- full build"                        -ForegroundColor Magenta
 Write-Host "============================================" -ForegroundColor Magenta
 Write-Host ""
 
@@ -32,7 +32,7 @@ try {
 $bundleDir = Join-Path $shellDir "target\release\bundle"
 Write-Host ""
 Write-Host "============================================" -ForegroundColor Green
-Write-Host "  AR Conversational build complete!"         -ForegroundColor Green
+Write-Host "  AR build complete!"                        -ForegroundColor Green
 Write-Host "============================================" -ForegroundColor Green
 Write-Host ""
 Write-Host "  Backend : src-ar\binaries\arapi-backend-$TargetTriple.exe"

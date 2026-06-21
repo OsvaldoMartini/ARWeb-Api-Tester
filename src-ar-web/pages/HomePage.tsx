@@ -59,7 +59,7 @@ export function HomePage() {
           </div>
           {wired === 0 && (
             <p className="mt-3 text-xs text-text-muted">
-              No endpoints assigned yet — import an OpenAPI spec in the ARAPI Tester app first.
+              No endpoints assigned yet — import an OpenAPI spec in ARAPI first.
             </p>
           )}
         </div>

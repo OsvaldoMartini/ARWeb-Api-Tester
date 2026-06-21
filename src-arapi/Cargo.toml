@@ -1,7 +1,7 @@
 [package]
 name = "arweb-api-tester"
 version = "1.0.0"
-description = "ARWEB API Tester desktop shell"
+description = "ARAPI desktop shell"
 authors = ["ARWEB"]
 edition = "2021"
 

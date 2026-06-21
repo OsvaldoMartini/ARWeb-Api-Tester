@@ -53,7 +53,7 @@ export function SeparationProgressPage() {
 
   return (
     <div>
-      <PageHeader title="Separation Progress" subtitle="Live tracker — splitting ARWeb into ARAPI Tester + AR Conversational. Auto-refreshes every 10 s." />
+      <PageHeader title="Separation Progress" subtitle="Live tracker — splitting ARWeb into ARAPI + AR Conversational. Auto-refreshes every 10 s." />
       {error && <div className="card mb-4 text-sm text-danger">{error}</div>}
       {data && (
         <>

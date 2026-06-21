@@ -11,7 +11,7 @@ export function HomePage() {
   return (
     <div>
       <PageHeader
-        title="ARWEB API Tester"
+        title="ARAPI"
         subtitle="No-code banking API testing — import real specs, map them to business categories, and run validated BotJobs. No login required."
       />
 
@@ -20,7 +20,7 @@ export function HomePage() {
           <div>
             <div className="text-sm font-medium">Engine status</div>
             <div className="text-xs text-text-muted">
-              Business logic runs in the local Node sidecar.
+              Business logic runs in the local C# backend.
             </div>
           </div>
           <span

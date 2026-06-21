@@ -24,7 +24,7 @@ art_lines = '\n'.join(f'- `{a}`' for a in artifacts) if artifacts else '- (none 
 art_str   = ', '.join(artifacts) if artifacts else '—'
 
 # ── write RELEASE.md ──────────────────────────────────────────────────────────
-client_zip = f'ARWEB-API-Tester-{tag}-windows-x64.zip'
+client_zip = 'ARAPI.zip'
 
 release_md = os.path.join(release_dir, 'RELEASE.md')
 with open(release_md, 'w', encoding='utf-8') as f:
@@ -46,7 +46,7 @@ No separate server or runtime setup is required; the C# backend is bundled insid
 {f'Run `{nsis}` — double-click, follow the wizard.' if nsis else 'Run the `-setup.exe` installer.'}
 
 The app stores its SQLite database at:
-`%APPDATA%\\ARWebShared\\arweb.db`
+`%APPDATA%\\data\\arweb.db`
 
 ## Enterprise / IT deployment
 {f'Use `{msi}` for silent / group-policy deployment:' if msi else 'Use the MSI for silent deployment:'}

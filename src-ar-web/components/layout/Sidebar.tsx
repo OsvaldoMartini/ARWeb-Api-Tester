@@ -10,8 +10,8 @@ export function Sidebar() {
           AR
         </div>
         <div className="leading-tight">
-          <div className="text-sm font-semibold">ARWEB</div>
-          <div className="text-xs text-text-muted">Conversational</div>
+          <div className="text-sm font-semibold">AR Conversational</div>
+          <div className="text-xs text-text-muted">Client</div>
         </div>
       </div>
 

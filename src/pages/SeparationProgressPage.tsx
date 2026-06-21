@@ -55,7 +55,7 @@ export function SeparationProgressPage() {
     <div>
       <PageHeader
         title="Separation Progress"
-        subtitle="Live tracker — splitting ARWeb into ARAPI Tester + AR Conversational. Auto-refreshes every 10 s."
+        subtitle="Live tracker — splitting ARWeb into ARAPI + AR Conversational. Auto-refreshes every 10 s."
       />
 
       {error && (

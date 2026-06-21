@@ -1,0 +1,1210 @@
+﻿{
+  "apiSpecs": [],
+  "apiEndpoints": [],
+  "apiParameters": [],
+  "apiOutputFields": [],
+  "businessCategories": [
+    {
+      "id": "cat_00",
+      "name": "Customer \u0026 Onboarding",
+      "description": null,
+      "keywords": [
+        "customer",
+        "client",
+        "onboarding",
+        "kyc",
+        "profile"
+      ],
+      "order": 0
+    },
+    {
+      "id": "cat_01",
+      "name": "Accounts",
+      "description": null,
+      "keywords": [
+        "account",
+        "iban",
+        "ledger"
+      ],
+      "order": 1
+    },
+    {
+      "id": "cat_02",
+      "name": "Balances",
+      "description": null,
+      "keywords": [
+        "balance",
+        "available",
+        "booked"
+      ],
+      "order": 2
+    },
+    {
+      "id": "cat_03",
+      "name": "Payments \u0026 Transfers",
+      "description": null,
+      "keywords": [
+        "payment",
+        "transfer",
+        "sepa",
+        "swift",
+        "remittance"
+      ],
+      "order": 3
+    },
+    {
+      "id": "cat_04",
+      "name": "Cards",
+      "description": null,
+      "keywords": [
+        "card",
+        "debit",
+        "credit card",
+        "pan"
+      ],
+      "order": 4
+    },
+    {
+      "id": "cat_05",
+      "name": "Securities \u0026 Trading",
+      "description": null,
+      "keywords": [
+        "order",
+        "trade",
+        "security",
+        "isin",
+        "execution"
+      ],
+      "order": 5
+    },
+    {
+      "id": "cat_06",
+      "name": "Portfolio \u0026 Holdings",
+      "description": null,
+      "keywords": [
+        "portfolio",
+        "holdings",
+        "positions",
+        "allocation"
+      ],
+      "order": 6
+    },
+    {
+      "id": "cat_07",
+      "name": "Investment Advisory",
+      "description": null,
+      "keywords": [
+        "advice",
+        "recommendation",
+        "suitability",
+        "mifid"
+      ],
+      "order": 7
+    },
+    {
+      "id": "cat_08",
+      "name": "Credit \u0026 Lending",
+      "description": null,
+      "keywords": [
+        "loan",
+        "credit",
+        "lending",
+        "mortgage",
+        "collateral"
+      ],
+      "order": 8
+    },
+    {
+      "id": "cat_09",
+      "name": "Deposits \u0026 Treasury",
+      "description": null,
+      "keywords": [
+        "deposit",
+        "treasury",
+        "term",
+        "money market"
+      ],
+      "order": 9
+    },
+    {
+      "id": "cat_10",
+      "name": "Foreign Exchange",
+      "description": null,
+      "keywords": [
+        "fx",
+        "forex",
+        "exchange",
+        "currency"
+      ],
+      "order": 10
+    },
+    {
+      "id": "cat_11",
+      "name": "Compliance \u0026 AML",
+      "description": null,
+      "keywords": [
+        "compliance",
+        "aml",
+        "sanction",
+        "suspicious",
+        "screening"
+      ],
+      "order": 11
+    },
+    {
+      "id": "cat_12",
+      "name": "Risk Management",
+      "description": null,
+      "keywords": [
+        "risk",
+        "exposure",
+        "var",
+        "limit"
+      ],
+      "order": 12
+    },
+    {
+      "id": "cat_13",
+      "name": "Fraud \u0026 Disputes",
+      "description": null,
+      "keywords": [
+        "fraud",
+        "dispute",
+        "chargeback"
+      ],
+      "order": 13
+    },
+    {
+      "id": "cat_14",
+      "name": "Statements \u0026 Documents",
+      "description": null,
+      "keywords": [
+        "statement",
+        "document",
+        "pdf",
+        "letter"
+      ],
+      "order": 14
+    },
+    {
+      "id": "cat_15",
+      "name": "Notifications \u0026 Messaging",
+      "description": null,
+      "keywords": [
+        "message",
+        "notification",
+        "alert",
+        "inbox"
+      ],
+      "order": 15
+    },
+    {
+      "id": "cat_16",
+      "name": "Authentication \u0026 Access",
+      "description": null,
+      "keywords": [
+        "auth",
+        "login",
+        "token",
+        "mfa",
+        "consent"
+      ],
+      "order": 16
+    },
+    {
+      "id": "cat_17",
+      "name": "Beneficiaries \u0026 Payees",
+      "description": null,
+      "keywords": [
+        "beneficiary",
+        "payee",
+        "recipient"
+      ],
+      "order": 17
+    },
+    {
+      "id": "cat_18",
+      "name": "Standing Orders \u0026 Schedules",
+      "description": null,
+      "keywords": [
+        "standing order",
+        "schedule",
+        "recurring"
+      ],
+      "order": 18
+    },
+    {
+      "id": "cat_19",
+      "name": "Reporting \u0026 Analytics",
+      "description": null,
+      "keywords": [
+        "report",
+        "analytics",
+        "kpi",
+        "dashboard"
+      ],
+      "order": 19
+    },
+    {
+      "id": "cat_20",
+      "name": "Back Office \u0026 Settlement",
+      "description": null,
+      "keywords": [
+        "settlement",
+        "reconciliation",
+        "clearing",
+        "corporate action"
+      ],
+      "order": 20
+    },
+    {
+      "id": "cat_21",
+      "name": "Wealth \u0026 Private Banking",
+      "description": null,
+      "keywords": [
+        "wealth",
+        "private",
+        "mandate",
+        "discretionary"
+      ],
+      "order": 21
+    },
+    {
+      "id": "cat_22",
+      "name": "Insurance \u0026 Bancassurance",
+      "description": null,
+      "keywords": [
+        "insurance",
+        "policy",
+        "premium",
+        "claim"
+      ],
+      "order": 22
+    },
+    {
+      "id": "cat_23",
+      "name": "Fees \u0026 Pricing",
+      "description": null,
+      "keywords": [
+        "fee",
+        "price",
+        "tariff",
+        "charge"
+      ],
+      "order": 23
+    },
+    {
+      "id": "cat_24",
+      "name": "Audit \u0026 Operations",
+      "description": null,
+      "keywords": [
+        "audit",
+        "log",
+        "trace",
+        "operation",
+        "uat"
+      ],
+      "order": 24
+    }
+  ],
+  "businessSubcategories": [
+    {
+      "id": "sub_0000",
+      "categoryId": "cat_00",
+      "name": "New Customer",
+      "keywords": [],
+      "order": 0
+    },
+    {
+      "id": "sub_0001",
+      "categoryId": "cat_00",
+      "name": "KYC / Identity",
+      "keywords": [],
+      "order": 1
+    },
+    {
+      "id": "sub_0002",
+      "categoryId": "cat_00",
+      "name": "Customer 360",
+      "keywords": [],
+      "order": 2
+    },
+    {
+      "id": "sub_0003",
+      "categoryId": "cat_00",
+      "name": "Consents",
+      "keywords": [],
+      "order": 3
+    },
+    {
+      "id": "sub_0004",
+      "categoryId": "cat_00",
+      "name": "Offboarding",
+      "keywords": [],
+      "order": 4
+    },
+    {
+      "id": "sub_0100",
+      "categoryId": "cat_01",
+      "name": "Current Accounts",
+      "keywords": [],
+      "order": 0
+    },
+    {
+      "id": "sub_0101",
+      "categoryId": "cat_01",
+      "name": "Savings",
+      "keywords": [],
+      "order": 1
+    },
+    {
+      "id": "sub_0102",
+      "categoryId": "cat_01",
+      "name": "Account Details",
+      "keywords": [],
+      "order": 2
+    },
+    {
+      "id": "sub_0103",
+      "categoryId": "cat_01",
+      "name": "Statements",
+      "keywords": [],
+      "order": 3
+    },
+    {
+      "id": "sub_0104",
+      "categoryId": "cat_01",
+      "name": "Account Closure",
+      "keywords": [],
+      "order": 4
+    },
+    {
+      "id": "sub_0200",
+      "categoryId": "cat_02",
+      "name": "Available Balance",
+      "keywords": [],
+      "order": 0
+    },
+    {
+      "id": "sub_0201",
+      "categoryId": "cat_02",
+      "name": "Booked Balance",
+      "keywords": [],
+      "order": 1
+    },
+    {
+      "id": "sub_0202",
+      "categoryId": "cat_02",
+      "name": "Holds",
+      "keywords": [],
+      "order": 2
+    },
+    {
+      "id": "sub_0203",
+      "categoryId": "cat_02",
+      "name": "Overdraft",
+      "keywords": [],
+      "order": 3
+    },
+    {
+      "id": "sub_0204",
+      "categoryId": "cat_02",
+      "name": "Currency Balance",
+      "keywords": [],
+      "order": 4
+    },
+    {
+      "id": "sub_0300",
+      "categoryId": "cat_03",
+      "name": "Single Payment",
+      "keywords": [],
+      "order": 0
+    },
+    {
+      "id": "sub_0301",
+      "categoryId": "cat_03",
+      "name": "Bulk Payment",
+      "keywords": [],
+      "order": 1
+    },
+    {
+      "id": "sub_0302",
+      "categoryId": "cat_03",
+      "name": "Standing Orders",
+      "keywords": [],
+      "order": 2
+    },
+    {
+      "id": "sub_0303",
+      "categoryId": "cat_03",
+      "name": "Direct Debit",
+      "keywords": [],
+      "order": 3
+    },
+    {
+      "id": "sub_0304",
+      "categoryId": "cat_03",
+      "name": "Cross-Border",
+      "keywords": [],
+      "order": 4
+    },
+    {
+      "id": "sub_0400",
+      "categoryId": "cat_04",
+      "name": "Card Issuance",
+      "keywords": [],
+      "order": 0
+    },
+    {
+      "id": "sub_0401",
+      "categoryId": "cat_04",
+      "name": "Card Controls",
+      "keywords": [],
+      "order": 1
+    },
+    {
+      "id": "sub_0402",
+      "categoryId": "cat_04",
+      "name": "Transactions",
+      "keywords": [],
+      "order": 2
+    },
+    {
+      "id": "sub_0403",
+      "categoryId": "cat_04",
+      "name": "Disputes",
+      "keywords": [],
+      "order": 3
+    },
+    {
+      "id": "sub_0404",
+      "categoryId": "cat_04",
+      "name": "Replacement",
+      "keywords": [],
+      "order": 4
+    },
+    {
+      "id": "sub_0500",
+      "categoryId": "cat_05",
+      "name": "Order Entry",
+      "keywords": [],
+      "order": 0
+    },
+    {
+      "id": "sub_0501",
+      "categoryId": "cat_05",
+      "name": "Order Status",
+      "keywords": [],
+      "order": 1
+    },
+    {
+      "id": "sub_0502",
+      "categoryId": "cat_05",
+      "name": "Executions",
+      "keywords": [],
+      "order": 2
+    },
+    {
+      "id": "sub_0503",
+      "categoryId": "cat_05",
+      "name": "Instruments",
+      "keywords": [],
+      "order": 3
+    },
+    {
+      "id": "sub_0504",
+      "categoryId": "cat_05",
+      "name": "Market Data",
+      "keywords": [],
+      "order": 4
+    },
+    {
+      "id": "sub_0600",
+      "categoryId": "cat_06",
+      "name": "Positions",
+      "keywords": [],
+      "order": 0
+    },
+    {
+      "id": "sub_0601",
+      "categoryId": "cat_06",
+      "name": "Allocation",
+      "keywords": [],
+      "order": 1
+    },
+    {
+      "id": "sub_0602",
+      "categoryId": "cat_06",
+      "name": "Performance",
+      "keywords": [],
+      "order": 2
+    },
+    {
+      "id": "sub_0603",
+      "categoryId": "cat_06",
+      "name": "Valuation",
+      "keywords": [],
+      "order": 3
+    },
+    {
+      "id": "sub_0604",
+      "categoryId": "cat_06",
+      "name": "Rebalancing",
+      "keywords": [],
+      "order": 4
+    },
+    {
+      "id": "sub_0700",
+      "categoryId": "cat_07",
+      "name": "Suitability",
+      "keywords": [],
+      "order": 0
+    },
+    {
+      "id": "sub_0701",
+      "categoryId": "cat_07",
+      "name": "Recommendations",
+      "keywords": [],
+      "order": 1
+    },
+    {
+      "id": "sub_0702",
+      "categoryId": "cat_07",
+      "name": "Model Portfolios",
+      "keywords": [],
+      "order": 2
+    },
+    {
+      "id": "sub_0703",
+      "categoryId": "cat_07",
+      "name": "Risk Profile",
+      "keywords": [],
+      "order": 3
+    },
+    {
+      "id": "sub_0704",
+      "categoryId": "cat_07",
+      "name": "Proposals",
+      "keywords": [],
+      "order": 4
+    },
+    {
+      "id": "sub_0800",
+      "categoryId": "cat_08",
+      "name": "Applications",
+      "keywords": [],
+      "order": 0
+    },
+    {
+      "id": "sub_0801",
+      "categoryId": "cat_08",
+      "name": "Limits",
+      "keywords": [],
+      "order": 1
+    },
+    {
+      "id": "sub_0802",
+      "categoryId": "cat_08",
+      "name": "Repayments",
+      "keywords": [],
+      "order": 2
+    },
+    {
+      "id": "sub_0803",
+      "categoryId": "cat_08",
+      "name": "Collateral",
+      "keywords": [],
+      "order": 3
+    },
+    {
+      "id": "sub_0804",
+      "categoryId": "cat_08",
+      "name": "Restructuring",
+      "keywords": [],
+      "order": 4
+    },
+    {
+      "id": "sub_0900",
+      "categoryId": "cat_09",
+      "name": "Term Deposits",
+      "keywords": [],
+      "order": 0
+    },
+    {
+      "id": "sub_0901",
+      "categoryId": "cat_09",
+      "name": "Notice Accounts",
+      "keywords": [],
+      "order": 1
+    },
+    {
+      "id": "sub_0902",
+      "categoryId": "cat_09",
+      "name": "Treasury Positions",
+      "keywords": [],
+      "order": 2
+    },
+    {
+      "id": "sub_0903",
+      "categoryId": "cat_09",
+      "name": "Liquidity",
+      "keywords": [],
+      "order": 3
+    },
+    {
+      "id": "sub_0904",
+      "categoryId": "cat_09",
+      "name": "Rates",
+      "keywords": [],
+      "order": 4
+    },
+    {
+      "id": "sub_1000",
+      "categoryId": "cat_10",
+      "name": "Spot",
+      "keywords": [],
+      "order": 0
+    },
+    {
+      "id": "sub_1001",
+      "categoryId": "cat_10",
+      "name": "Forward",
+      "keywords": [],
+      "order": 1
+    },
+    {
+      "id": "sub_1002",
+      "categoryId": "cat_10",
+      "name": "Rates",
+      "keywords": [],
+      "order": 2
+    },
+    {
+      "id": "sub_1003",
+      "categoryId": "cat_10",
+      "name": "Conversions",
+      "keywords": [],
+      "order": 3
+    },
+    {
+      "id": "sub_1004",
+      "categoryId": "cat_10",
+      "name": "Hedging",
+      "keywords": [],
+      "order": 4
+    },
+    {
+      "id": "sub_1100",
+      "categoryId": "cat_11",
+      "name": "Screening",
+      "keywords": [],
+      "order": 0
+    },
+    {
+      "id": "sub_1101",
+      "categoryId": "cat_11",
+      "name": "Alerts",
+      "keywords": [],
+      "order": 1
+    },
+    {
+      "id": "sub_1102",
+      "categoryId": "cat_11",
+      "name": "Case Management",
+      "keywords": [],
+      "order": 2
+    },
+    {
+      "id": "sub_1103",
+      "categoryId": "cat_11",
+      "name": "Reporting",
+      "keywords": [],
+      "order": 3
+    },
+    {
+      "id": "sub_1104",
+      "categoryId": "cat_11",
+      "name": "Watchlists",
+      "keywords": [],
+      "order": 4
+    },
+    {
+      "id": "sub_1200",
+      "categoryId": "cat_12",
+      "name": "Credit Risk",
+      "keywords": [],
+      "order": 0
+    },
+    {
+      "id": "sub_1201",
+      "categoryId": "cat_12",
+      "name": "Market Risk",
+      "keywords": [],
+      "order": 1
+    },
+    {
+      "id": "sub_1202",
+      "categoryId": "cat_12",
+      "name": "Limits",
+      "keywords": [],
+      "order": 2
+    },
+    {
+      "id": "sub_1203",
+      "categoryId": "cat_12",
+      "name": "Exposure",
+      "keywords": [],
+      "order": 3
+    },
+    {
+      "id": "sub_1204",
+      "categoryId": "cat_12",
+      "name": "Stress Tests",
+      "keywords": [],
+      "order": 4
+    },
+    {
+      "id": "sub_1300",
+      "categoryId": "cat_13",
+      "name": "Fraud Alerts",
+      "keywords": [],
+      "order": 0
+    },
+    {
+      "id": "sub_1301",
+      "categoryId": "cat_13",
+      "name": "Investigations",
+      "keywords": [],
+      "order": 1
+    },
+    {
+      "id": "sub_1302",
+      "categoryId": "cat_13",
+      "name": "Chargebacks",
+      "keywords": [],
+      "order": 2
+    },
+    {
+      "id": "sub_1303",
+      "categoryId": "cat_13",
+      "name": "Recovery",
+      "keywords": [],
+      "order": 3
+    },
+    {
+      "id": "sub_1304",
+      "categoryId": "cat_13",
+      "name": "Reporting",
+      "keywords": [],
+      "order": 4
+    },
+    {
+      "id": "sub_1400",
+      "categoryId": "cat_14",
+      "name": "Statements",
+      "keywords": [],
+      "order": 0
+    },
+    {
+      "id": "sub_1401",
+      "categoryId": "cat_14",
+      "name": "Tax Documents",
+      "keywords": [],
+      "order": 1
+    },
+    {
+      "id": "sub_1402",
+      "categoryId": "cat_14",
+      "name": "Contracts",
+      "keywords": [],
+      "order": 2
+    },
+    {
+      "id": "sub_1403",
+      "categoryId": "cat_14",
+      "name": "Notices",
+      "keywords": [],
+      "order": 3
+    },
+    {
+      "id": "sub_1404",
+      "categoryId": "cat_14",
+      "name": "Archive",
+      "keywords": [],
+      "order": 4
+    },
+    {
+      "id": "sub_1500",
+      "categoryId": "cat_15",
+      "name": "Secure Messages",
+      "keywords": [],
+      "order": 0
+    },
+    {
+      "id": "sub_1501",
+      "categoryId": "cat_15",
+      "name": "Push Alerts",
+      "keywords": [],
+      "order": 1
+    },
+    {
+      "id": "sub_1502",
+      "categoryId": "cat_15",
+      "name": "Email",
+      "keywords": [],
+      "order": 2
+    },
+    {
+      "id": "sub_1503",
+      "categoryId": "cat_15",
+      "name": "SMS",
+      "keywords": [],
+      "order": 3
+    },
+    {
+      "id": "sub_1504",
+      "categoryId": "cat_15",
+      "name": "Preferences",
+      "keywords": [],
+      "order": 4
+    },
+    {
+      "id": "sub_1600",
+      "categoryId": "cat_16",
+      "name": "Sessions",
+      "keywords": [],
+      "order": 0
+    },
+    {
+      "id": "sub_1601",
+      "categoryId": "cat_16",
+      "name": "MFA",
+      "keywords": [],
+      "order": 1
+    },
+    {
+      "id": "sub_1602",
+      "categoryId": "cat_16",
+      "name": "Consents",
+      "keywords": [],
+      "order": 2
+    },
+    {
+      "id": "sub_1603",
+      "categoryId": "cat_16",
+      "name": "Scopes",
+      "keywords": [],
+      "order": 3
+    },
+    {
+      "id": "sub_1604",
+      "categoryId": "cat_16",
+      "name": "Devices",
+      "keywords": [],
+      "order": 4
+    },
+    {
+      "id": "sub_1700",
+      "categoryId": "cat_17",
+      "name": "Add Payee",
+      "keywords": [],
+      "order": 0
+    },
+    {
+      "id": "sub_1701",
+      "categoryId": "cat_17",
+      "name": "Verify Payee",
+      "keywords": [],
+      "order": 1
+    },
+    {
+      "id": "sub_1702",
+      "categoryId": "cat_17",
+      "name": "Payee List",
+      "keywords": [],
+      "order": 2
+    },
+    {
+      "id": "sub_1703",
+      "categoryId": "cat_17",
+      "name": "Trusted Payees",
+      "keywords": [],
+      "order": 3
+    },
+    {
+      "id": "sub_1704",
+      "categoryId": "cat_17",
+      "name": "Removal",
+      "keywords": [],
+      "order": 4
+    },
+    {
+      "id": "sub_1800",
+      "categoryId": "cat_18",
+      "name": "Create",
+      "keywords": [],
+      "order": 0
+    },
+    {
+      "id": "sub_1801",
+      "categoryId": "cat_18",
+      "name": "Amend",
+      "keywords": [],
+      "order": 1
+    },
+    {
+      "id": "sub_1802",
+      "categoryId": "cat_18",
+      "name": "Cancel",
+      "keywords": [],
+      "order": 2
+    },
+    {
+      "id": "sub_1803",
+      "categoryId": "cat_18",
+      "name": "Calendar",
+      "keywords": [],
+      "order": 3
+    },
+    {
+      "id": "sub_1804",
+      "categoryId": "cat_18",
+      "name": "History",
+      "keywords": [],
+      "order": 4
+    },
+    {
+      "id": "sub_1900",
+      "categoryId": "cat_19",
+      "name": "Operational",
+      "keywords": [],
+      "order": 0
+    },
+    {
+      "id": "sub_1901",
+      "categoryId": "cat_19",
+      "name": "Regulatory",
+      "keywords": [],
+      "order": 1
+    },
+    {
+      "id": "sub_1902",
+      "categoryId": "cat_19",
+      "name": "Custom",
+      "keywords": [],
+      "order": 2
+    },
+    {
+      "id": "sub_1903",
+      "categoryId": "cat_19",
+      "name": "Exports",
+      "keywords": [],
+      "order": 3
+    },
+    {
+      "id": "sub_1904",
+      "categoryId": "cat_19",
+      "name": "Coverage",
+      "keywords": [],
+      "order": 4
+    },
+    {
+      "id": "sub_2000",
+      "categoryId": "cat_20",
+      "name": "Settlement",
+      "keywords": [],
+      "order": 0
+    },
+    {
+      "id": "sub_2001",
+      "categoryId": "cat_20",
+      "name": "Reconciliation",
+      "keywords": [],
+      "order": 1
+    },
+    {
+      "id": "sub_2002",
+      "categoryId": "cat_20",
+      "name": "Corporate Actions",
+      "keywords": [],
+      "order": 2
+    },
+    {
+      "id": "sub_2003",
+      "categoryId": "cat_20",
+      "name": "Fees",
+      "keywords": [],
+      "order": 3
+    },
+    {
+      "id": "sub_2004",
+      "categoryId": "cat_20",
+      "name": "Adjustments",
+      "keywords": [],
+      "order": 4
+    },
+    {
+      "id": "sub_2100",
+      "categoryId": "cat_21",
+      "name": "Mandates",
+      "keywords": [],
+      "order": 0
+    },
+    {
+      "id": "sub_2101",
+      "categoryId": "cat_21",
+      "name": "Discretionary",
+      "keywords": [],
+      "order": 1
+    },
+    {
+      "id": "sub_2102",
+      "categoryId": "cat_21",
+      "name": "Reporting",
+      "keywords": [],
+      "order": 2
+    },
+    {
+      "id": "sub_2103",
+      "categoryId": "cat_21",
+      "name": "Fees",
+      "keywords": [],
+      "order": 3
+    },
+    {
+      "id": "sub_2104",
+      "categoryId": "cat_21",
+      "name": "Relationship",
+      "keywords": [],
+      "order": 4
+    },
+    {
+      "id": "sub_2200",
+      "categoryId": "cat_22",
+      "name": "Policies",
+      "keywords": [],
+      "order": 0
+    },
+    {
+      "id": "sub_2201",
+      "categoryId": "cat_22",
+      "name": "Quotes",
+      "keywords": [],
+      "order": 1
+    },
+    {
+      "id": "sub_2202",
+      "categoryId": "cat_22",
+      "name": "Premiums",
+      "keywords": [],
+      "order": 2
+    },
+    {
+      "id": "sub_2203",
+      "categoryId": "cat_22",
+      "name": "Claims",
+      "keywords": [],
+      "order": 3
+    },
+    {
+      "id": "sub_2204",
+      "categoryId": "cat_22",
+      "name": "Renewals",
+      "keywords": [],
+      "order": 4
+    },
+    {
+      "id": "sub_2300",
+      "categoryId": "cat_23",
+      "name": "Tariffs",
+      "keywords": [],
+      "order": 0
+    },
+    {
+      "id": "sub_2301",
+      "categoryId": "cat_23",
+      "name": "Charges",
+      "keywords": [],
+      "order": 1
+    },
+    {
+      "id": "sub_2302",
+      "categoryId": "cat_23",
+      "name": "Refunds",
+      "keywords": [],
+      "order": 2
+    },
+    {
+      "id": "sub_2303",
+      "categoryId": "cat_23",
+      "name": "Bundles",
+      "keywords": [],
+      "order": 3
+    },
+    {
+      "id": "sub_2304",
+      "categoryId": "cat_23",
+      "name": "Quotes",
+      "keywords": [],
+      "order": 4
+    },
+    {
+      "id": "sub_2400",
+      "categoryId": "cat_24",
+      "name": "Audit Trail",
+      "keywords": [],
+      "order": 0
+    },
+    {
+      "id": "sub_2401",
+      "categoryId": "cat_24",
+      "name": "Event Log",
+      "keywords": [],
+      "order": 1
+    },
+    {
+      "id": "sub_2402",
+      "categoryId": "cat_24",
+      "name": "UAT",
+      "keywords": [],
+      "order": 2
+    },
+    {
+      "id": "sub_2403",
+      "categoryId": "cat_24",
+      "name": "Health",
+      "keywords": [],
+      "order": 3
+    },
+    {
+      "id": "sub_2404",
+      "categoryId": "cat_24",
+      "name": "Maintenance",
+      "keywords": [],
+      "order": 4
+    }
+  ],
+  "aiProviders": [],
+  "environments": [
+    {
+      "id": "mock",
+      "name": "Mock Server",
+      "baseUrl": "http://127.0.0.1:8855",
+      "description": "Local mock server - replays imported catalog endpoints without a live backend.",
+      "headers": {},
+      "isDefault": true,
+      "isBuiltIn": true,
+      "createdAt": "2026-06-20T14:31:39.3228294\u002B00:00",
+      "updatedAt": "2026-06-20T14:31:39.3228294\u002B00:00"
+    }
+  ],
+  "botJobs": [],
+  "botJobBlocks": [],
+  "botJobCommands": [],
+  "botVariables": [],
+  "executionRuns": [],
+  "executionStepResults": [],
+  "mockLog": [],
+  "mockRunning": false,
+  "mockPort": 8855
+}

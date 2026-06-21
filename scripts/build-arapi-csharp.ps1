@@ -18,6 +18,8 @@ $root = Split-Path $PSScriptRoot -Parent
 $project = Join-Path $root "server-arapi-csharp\server-arapi-csharp.csproj"
 $binDir = if ($OutputDir) { Join-Path $root $OutputDir } else { Join-Path $root "src-arapi\binaries" }
 $output = Join-Path $binDir "$OutputName-$TargetTriple.exe"
+$seedInput = Join-Path $root "data\app.db"
+$seedOutput = Join-Path $root "data\catalog.seed.json"
 
 Write-Host ""
 Write-Host "============================================" -ForegroundColor Cyan
@@ -25,10 +27,16 @@ Write-Host "  Building C# ARAPI backend"                 -ForegroundColor Cyan
 Write-Host "============================================" -ForegroundColor Cyan
 Write-Host ""
 
+python (Join-Path $root "scripts\export-catalog-seed.py") $seedInput $seedOutput
+if ($LASTEXITCODE -ne 0) { throw "catalog seed export failed" }
+
 dotnet publish $project `
   -c $Configuration `
   -r $Runtime `
-  --self-contained false `
+  --self-contained true `
+  -p:PublishSingleFile=true `
+  -p:EnableCompressionInSingleFile=true `
+  -p:IncludeNativeLibrariesForSelfExtract=true `
   -p:PublishTrimmed=false `
   -o $binDir
 
@@ -39,6 +47,24 @@ if (Test-Path $sourceExe) {
   Copy-Item -LiteralPath $sourceExe -Destination $output -Force
 } else {
   throw "Published backend executable not found: $sourceExe"
+}
+
+$publishSeedDir = Join-Path $binDir "data"
+New-Item -ItemType Directory -Force -Path $publishSeedDir | Out-Null
+Copy-Item -LiteralPath $seedOutput -Destination (Join-Path $publishSeedDir "catalog.seed.json") -Force
+
+foreach ($extra in @(
+  (Join-Path $binDir "$OutputName.exe"),
+  (Join-Path $binDir "$OutputName.dll"),
+  (Join-Path $binDir "$OutputName.deps.json"),
+  (Join-Path $binDir "$OutputName.runtimeconfig.json"),
+  (Join-Path $binDir "$OutputName.pdb"),
+  (Join-Path $binDir "web.config"),
+  (Join-Path $binDir "arweb-sidecar-x86_64-pc-windows-msvc.exe")
+)) {
+  if (Test-Path $extra) {
+    Remove-Item -LiteralPath $extra -Force
+  }
 }
 
 Write-Host ""

@@ -38,6 +38,11 @@ logs/
 releases/v*/
 !releases/INDEX.md
 
+# packaged archives
+*.zip
+*.7z
+*.rar
+
 # editor / OS
 .vscode/*
 !.vscode/extensions.json

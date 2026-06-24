@@ -11,7 +11,6 @@ import {
   Settings,
   Globe,
   Sparkles,
-  GitBranch,
   type LucideIcon,
 } from 'lucide-react';
 
@@ -43,5 +42,4 @@ export const NAV_ITEMS: NavItem[] = [
   { path: '/mock', label: 'Mock Server', description: 'Local mock server for offline testing.', icon: Server },
   { path: '/reports', label: 'Reports', description: 'Export HTML / CSV / Bash artifacts.', icon: BarChart3 },
   { path: '/settings', label: 'Settings', description: 'AI providers, ports and preferences.', icon: Settings },
-  { path: '/separation', label: 'Separation Progress', description: 'Live tracker for the ARAPI / AR Conversational split. (temporary)', icon: GitBranch },
 ];

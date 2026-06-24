@@ -165,6 +165,28 @@ const SUGGESTIONS = [
   'Run all my BotJobs against the Mock Server',
 ];
 
+const MOCK_TEST_SUGGESTIONS = [
+  'Create new client - mock functional test',
+  'Payment validation - mock functional test',
+  'Check account balances - mock functional test',
+  'Portfolio exposure review - mock functional test',
+];
+
+function MockTestLabel({ text }: { text: string }) {
+  const suffix = 'mock functional test';
+  const index = text.toLowerCase().indexOf(suffix);
+  if (index < 0) return <>{text}</>;
+
+  return (
+    <>
+      {text.slice(0, index)}
+      <span className="bg-gradient-to-r from-cyan-300 via-cyan-200 to-orange-300 bg-clip-text font-semibold text-transparent drop-shadow-[0_0_8px_rgba(34,211,238,0.55)]">
+        {text.slice(index)}
+      </span>
+    </>
+  );
+}
+
 // ── Main page ─────────────────────────────────────────────────────────────────
 
 export function BotBuilderPage() {
@@ -281,6 +303,17 @@ export function BotBuilderPage() {
                   onClick={() => handleSend(s)}
                 >
                   {s}
+                </button>
+              ))}
+            </div>
+            <div className="mt-3 grid gap-2 sm:grid-cols-2">
+              {MOCK_TEST_SUGGESTIONS.map((s) => (
+                <button
+                  key={s}
+                  className="rounded-lg border border-primary/25 bg-primary/5 px-4 py-2.5 text-left text-sm font-medium hover:border-primary/60 hover:bg-primary/10"
+                  onClick={() => handleSend(s)}
+                >
+                  <MockTestLabel text={s} />
                 </button>
               ))}
             </div>

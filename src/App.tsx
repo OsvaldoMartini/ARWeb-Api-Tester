@@ -12,7 +12,6 @@ import { ReportsPage } from '@/pages/ReportsPage';
 import { SettingsPage } from '@/pages/SettingsPage';
 import { EnvironmentsPage } from '@/pages/EnvironmentsPage';
 import { BotBuilderPage } from '@/pages/BotBuilderPage';
-import { SeparationProgressPage } from '@/pages/SeparationProgressPage';
 
 export function App() {
   return (
@@ -30,7 +29,6 @@ export function App() {
         <Route path="mock" element={<MockServerPage />} />
         <Route path="reports" element={<ReportsPage />} />
         <Route path="settings" element={<SettingsPage />} />
-        <Route path="separation" element={<SeparationProgressPage />} />
       </Route>
       {/* Unknown paths fall back to Home rather than a dead end. */}
       <Route path="*" element={<Navigate to="/" replace />} />

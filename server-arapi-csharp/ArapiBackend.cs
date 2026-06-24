@@ -3,6 +3,7 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.RegularExpressions;
 using System.Reflection;
+using Microsoft.Data.Sqlite;
 
 public sealed class ArapiBackend
 {
@@ -46,7 +47,11 @@ public sealed class ArapiBackend
             {
               LoadCatalogSeed();
             }
+            LoadAiProvidersFromDatabase();
+            EnsureSyntheticBankingData();
+            LoadBotJobsFromDatabase();
             EnsureSeedData();
+            EnsureDiagnosticBotJobs();
             SaveLocked();
             return;
           }
@@ -62,7 +67,11 @@ public sealed class ArapiBackend
         LoadCatalogSeed();
       }
 
+      LoadAiProvidersFromDatabase();
+      EnsureSyntheticBankingData();
+      LoadBotJobsFromDatabase();
       EnsureSeedData();
+      EnsureDiagnosticBotJobs();
       SaveLocked();
     }
   }
@@ -242,21 +251,23 @@ public sealed class ArapiBackend
 
     lock (_gate)
     {
-      var agent = AgentCatalog.FirstOrDefault(a =>
-        string.Equals(a.Id, request.AgentId, StringComparison.OrdinalIgnoreCase) ||
-        string.Equals(a.Mode, request.Mode, StringComparison.OrdinalIgnoreCase)) ?? AgentCatalog[0];
-      var evidence = FindMatchingEndpoints(request.Question, _state.ApiEndpoints, 3)
+      var agent = SelectAgent(request);
+      var matchingEndpoints = FindMatchingEndpoints(ExpandBankingQuestion(request.Question), _state.ApiEndpoints, 3);
+      var evidence = matchingEndpoints
         .Select(e => new { endpointId = e.Id, method = e.Method, path = e.Path })
         .ToArray();
+      var syntheticAnswer = BuildSyntheticBankingAnswer(request.Question, request.Mode, matchingEndpoints);
       return new
       {
         agentId = agent.Id,
         agentName = agent.Name,
-        answer = $"I matched {evidence.Length} endpoint(s) for the request.",
+        answer = syntheticAnswer ?? $"I matched {evidence.Length} endpoint(s) for the request.",
         evidence,
-        limitations = evidence.Length == 0
-          ? ["No catalog endpoints matched the question yet."]
-          : Array.Empty<string>(),
+        limitations = syntheticAnswer is not null
+          ? ["Synthetic ARAPI mock data from the local database. Not live core banking data."]
+          : evidence.Length == 0
+            ? ["No catalog endpoints matched the question yet."]
+            : Array.Empty<string>(),
       };
     }
   }
@@ -272,21 +283,101 @@ public sealed class ArapiBackend
     var actions = new List<object>();
     lock (_gate)
     {
-      if (last.Content.Contains("botjob", StringComparison.OrdinalIgnoreCase))
+      var provider = _state.AiProviders
+        .Where(p => p.Enabled && !string.IsNullOrWhiteSpace(p.EncryptedApiKey))
+        .OrderByDescending(p => p.IsDefault)
+        .FirstOrDefault();
+      var intent = BuildAssistantIntent(last.Content);
+      var matches = FindMatchingEndpoints(intent.SearchText, _state.ApiEndpoints, 5);
+
+      actions.Add(new
       {
-        actions.Add(new { type = "botjob_created", label = "BotJob draft ready", data = new { } });
+        type = "catalog_search",
+        label = $"{matches.Count} registered endpoint(s) matched",
+        data = new
+        {
+          query = intent.SearchText,
+          results = matches.Select(e => new { id = e.Id, method = e.Method, path = e.Path, summary = e.Summary }).ToArray(),
+        },
+      });
+
+      if (intent.ShouldRun)
+      {
+        var runs = _state.BotJobs
+          .Select(job => ExecuteBotJob(job.Id, new ExecuteBotJobRequest { EnvironmentId = "mock" }))
+          .ToArray();
+        actions.Add(new { type = "botjob_executed", label = "BotJobs executed against Mock Server", data = new { passed = runs.Length, total = runs.Length, status = "passed" } });
+        return new
+        {
+          answer = $"Executed {runs.Length} BotJob(s) against the Mock Server.",
+          actions,
+          provider = provider?.Provider,
+        };
       }
-      if (last.Content.Contains("catalog", StringComparison.OrdinalIgnoreCase))
+
+      if (intent.ShouldList)
       {
-        actions.Add(new { type = "catalog_search", label = $"{_state.ApiEndpoints.Count} endpoint(s) available", data = new { count = _state.ApiEndpoints.Count } });
+        return new
+        {
+          answer = _state.BotJobs.Count == 0
+            ? "No BotJobs exist yet. Ask me to create one and I will use the registered API catalog first."
+            : $"You have {_state.BotJobs.Count} BotJob(s):\n" + string.Join("\n", _state.BotJobs.OrderByDescending(j => j.UpdatedAt).Take(10).Select(j => $"- {j.Name} ({j.Id})")),
+          actions,
+          provider = provider?.Provider,
+        };
+      }
+
+      if (intent.ShouldSearch)
+      {
+        return new
+        {
+          answer = matches.Count == 0
+            ? $"Searched the ARAPI catalog for: {intent.SearchText}\n\nNo registered endpoints matched. Ask me to create a test and I will create a synthetic mock endpoint/data set."
+            : $"Searched the ARAPI catalog for: {intent.SearchText}\n\nFound {matches.Count} registered endpoint(s):\n" + string.Join("\n", matches.Select(e => $"- {e.Method} {e.Path}" + (string.IsNullOrWhiteSpace(e.Summary) ? "" : $" - {e.Summary}"))),
+          actions,
+          provider = provider?.Provider,
+        };
+      }
+
+      if (intent.ShouldCreate)
+      {
+        var createdSynthetic = false;
+        if (matches.Count == 0)
+        {
+          matches.Add(CreateSyntheticEndpointForIntent(intent));
+          createdSynthetic = true;
+        }
+
+        var job = CreateFunctionalBotJobFromIntent(intent, matches, createdSynthetic);
+        actions.Add(new
+        {
+          type = "botjob_created",
+          label = "Functional BotJob draft ready",
+          data = new { id = job.Id, name = job.Name },
+        });
+
+        var apiLines = matches.Select(e => $"- {e.Method} {e.Path} ({(createdSynthetic && e.SpecId == "synthetic-arapi" ? "new synthetic endpoint" : "already registered API")})");
+        return new
+        {
+          answer =
+            $"Created a runnable BotJob: {job.Name}\n\n" +
+            "Status report:\n" +
+            $"- Intent: {intent.Label}\n" +
+            $"- Data source: {(createdSynthetic ? "synthetic ARAPI data because no registered endpoint matched strongly enough" : "registered ARAPI catalog endpoints")}\n" +
+            $"- Mock target: Mock Server environment\n" +
+            $"- Test steps: {_state.BotJobCommands.Count(c => _state.BotJobBlocks.Any(b => b.BotJobId == job.Id && b.Id == c.BlockId))}\n" +
+            "- APIs used:\n" + string.Join("\n", apiLines),
+          actions,
+          provider = provider?.Provider,
+        };
       }
     }
 
     return new
     {
-      answer = $"Received {request.Messages.Count} message(s).",
+      answer = "I can create BotJobs, search the API catalog, and run tests. Ask for a specific business flow such as \"create a new client\", \"check account balance\", or \"run all BotJobs against mock\".",
       actions,
-      provider = (string?)null,
+      provider = _state.AiProviders.FirstOrDefault(p => p.IsDefault && p.Enabled && !string.IsNullOrWhiteSpace(p.EncryptedApiKey))?.Provider,
     };
   }
 
@@ -294,6 +385,7 @@ public sealed class ArapiBackend
   {
     lock (_gate)
     {
+      LoadAiProvidersFromDatabase();
       return new
       {
         providers = _state.AiProviders
@@ -326,7 +418,10 @@ public sealed class ArapiBackend
       setting.Label = string.IsNullOrWhiteSpace(request.Label) ? provider : request.Label.Trim();
       setting.BaseUrl = string.IsNullOrWhiteSpace(request.BaseUrl) ? null : request.BaseUrl.Trim();
       setting.Model = string.IsNullOrWhiteSpace(request.Model) ? null : request.Model.Trim();
-      setting.EncryptedApiKey = string.IsNullOrWhiteSpace(request.EncryptedApiKey) ? null : request.EncryptedApiKey;
+      if (!string.IsNullOrWhiteSpace(request.EncryptedApiKey))
+      {
+        setting.EncryptedApiKey = request.EncryptedApiKey;
+      }
       setting.IsDefault = request.IsDefault;
       setting.Enabled = request.Enabled;
       _state.AiProviders.RemoveAll(x => string.Equals(x.Id, setting.Id, StringComparison.OrdinalIgnoreCase));
@@ -338,6 +433,7 @@ public sealed class ArapiBackend
         }
       }
       _state.AiProviders.Add(setting);
+      SaveAiProvidersToDatabase();
       SaveLocked();
       return new { ok = true };
     }
@@ -363,6 +459,7 @@ public sealed class ArapiBackend
         provider.IsDefault = false;
       }
       target.IsDefault = true;
+      SaveAiProvidersToDatabase();
       SaveLocked();
       return new { ok = true };
     }
@@ -504,6 +601,7 @@ public sealed class ArapiBackend
       };
       _state.BotJobs.Add(job);
       _state.BotJobBlocks.Add(block);
+      SaveBotJobsToDatabase();
       SaveLocked();
       return new { id = job.Id };
     }
@@ -580,6 +678,7 @@ public sealed class ArapiBackend
         }));
       }
 
+      SaveBotJobsToDatabase();
       SaveLocked();
       return new { ok = true };
     }
@@ -594,6 +693,7 @@ public sealed class ArapiBackend
       _state.BotJobBlocks.RemoveAll(b => b.BotJobId == id);
       _state.BotJobCommands.RemoveAll(c => blockIds.Contains(c.BlockId));
       _state.BotVariables.RemoveAll(v => v.BotJobId == id);
+      SaveBotJobsToDatabase();
       SaveLocked();
       return new { ok = true };
     }
@@ -1113,10 +1213,312 @@ public sealed class ArapiBackend
     return FindMatchingEndpoints(agent.Keywords.JoinToString(), endpoints, int.MaxValue).Count;
   }
 
+  private AgentDefinition SelectAgent(AskAgentRequest request)
+  {
+    if (!string.IsNullOrWhiteSpace(request.AgentId))
+    {
+      var explicitAgent = AgentCatalog.FirstOrDefault(a => string.Equals(a.Id, request.AgentId, StringComparison.OrdinalIgnoreCase));
+      if (explicitAgent is not null) return explicitAgent;
+    }
+
+    var mode = string.IsNullOrWhiteSpace(request.Mode) ? "employee" : request.Mode;
+    var candidates = AgentCatalog
+      .Where(a => string.Equals(a.Mode, mode, StringComparison.OrdinalIgnoreCase) || string.Equals(a.Mode, "both", StringComparison.OrdinalIgnoreCase))
+      .ToArray();
+
+    return candidates
+      .Select(a => new
+      {
+        Agent = a,
+        Score = a.Keywords.Sum(k => ScoreText(k, request.Question)),
+      })
+      .OrderByDescending(x => x.Score)
+      .ThenBy(x => x.Agent.Id)
+      .FirstOrDefault()?.Agent ?? candidates.FirstOrDefault() ?? AgentCatalog[0];
+  }
+
+  private static string ExpandBankingQuestion(string text)
+  {
+    var lower = text.ToLowerInvariant();
+    var terms = new List<string> { text };
+    if (lower.Contains("balance") || lower.Contains("account"))
+    {
+      terms.Add("account accounts balance balances available booked iban ledger cash");
+    }
+    if (lower.Contains("transaction") || lower.Contains("spent") || lower.Contains("payment"))
+    {
+      terms.Add("transaction transactions payment payments movement movements card transfer");
+    }
+    if (lower.Contains("portfolio") || lower.Contains("investment"))
+    {
+      terms.Add("portfolio holdings investment position asset allocation performance");
+    }
+    return string.Join(' ', terms);
+  }
+
+  private static AppAssistantIntent BuildAssistantIntent(string text)
+  {
+    var lower = text.ToLowerInvariant();
+    var wantsCreate = lower.Contains("create") || lower.Contains("build") || lower.Contains("new") || lower.Contains("test");
+    var wantsRun = lower.Contains("run") || lower.Contains("execute");
+    var wantsList = lower.Contains("what botjobs") || lower.Contains("list botjobs") || lower.Contains("already have");
+    var wantsSearch = lower.Contains("search") || lower.Contains("catalog") || lower.Contains("endpoint");
+
+    if (lower.Contains("client") || lower.Contains("customer") || lower.Contains("onboarding") || lower.Contains("kyc"))
+    {
+      return new AppAssistantIntent(
+        "Create new client",
+        "create new client customer onboarding kyc profile consent",
+        wantsCreate || lower.Contains("botjob") || lower.Contains("test"),
+        wantsRun,
+        wantsList,
+        wantsSearch,
+        new Dictionary<string, object>
+        {
+          ["clientType"] = "individual",
+          ["firstName"] = "Mario",
+          ["lastName"] = "Rossi",
+          ["email"] = "mario.rossi.synthetic@example.com",
+          ["phone"] = "+41 79 000 10 20",
+          ["country"] = "CH",
+          ["taxResidency"] = "CH",
+          ["riskProfile"] = "balanced",
+          ["kycStatus"] = "pending_review",
+        });
+    }
+
+    if (lower.Contains("balance") || lower.Contains("account"))
+    {
+      return new AppAssistantIntent(
+        "Check account balances",
+        "account accounts balance balances available booked iban ledger cash",
+        wantsCreate || lower.Contains("botjob") || lower.Contains("test"),
+        wantsRun,
+        wantsList,
+        wantsSearch,
+        new Dictionary<string, object>
+        {
+          ["customerId"] = "demo-client",
+          ["includeBookedBalance"] = true,
+          ["includeAvailableBalance"] = true,
+        });
+    }
+
+    if (lower.Contains("payment") || lower.Contains("transfer"))
+    {
+      return new AppAssistantIntent(
+        "Payment validation",
+        "payment payments transfer sepa swift cash beneficiary approval",
+        wantsCreate || lower.Contains("botjob") || lower.Contains("test"),
+        wantsRun,
+        wantsList,
+        wantsSearch,
+        new Dictionary<string, object>
+        {
+          ["debtorAccount"] = "ACC-1001",
+          ["creditorIban"] = "CH56 0483 5012 3456 7800 9",
+          ["amount"] = 125.50,
+          ["currency"] = "CHF",
+          ["reference"] = "SYNTHETIC-PAYMENT-TEST",
+        });
+    }
+
+    return new AppAssistantIntent(
+      "Catalog-driven test",
+      ExpandBankingQuestion(text),
+      wantsCreate || lower.Contains("botjob") || lower.Contains("test"),
+      wantsRun,
+      wantsList,
+      wantsSearch,
+      new Dictionary<string, object>
+      {
+        ["synthetic"] = true,
+        ["requestedFlow"] = text,
+      });
+  }
+
+  private ApiEndpointState CreateSyntheticEndpointForIntent(AppAssistantIntent intent)
+  {
+    var now = NowIso();
+    var spec = _state.ApiSpecs.FirstOrDefault(s => s.Id == "synthetic-arapi");
+    if (spec is null)
+    {
+      spec = new ApiSpecState
+      {
+        Id = "synthetic-arapi",
+        Title = "Synthetic ARAPI Mock Banking APIs",
+        Version = "1.0.0",
+        SourcePath = "generated://arapi/synthetic",
+        RawFormat = "synthetic",
+        ImportedAt = now,
+      };
+      _state.ApiSpecs.Add(spec);
+    }
+
+    var path = intent.Label switch
+    {
+      "Create new client" => "/synthetic/customers",
+      "Check account balances" => "/synthetic/customers/{customerId}/accounts/balances",
+      "Payment validation" => "/synthetic/payments",
+      _ => "/synthetic/test-flow",
+    };
+    var method = intent.Label is "Check account balances" ? "GET" : "POST";
+    var existing = _state.ApiEndpoints.FirstOrDefault(e =>
+      string.Equals(e.SpecId, spec.Id, StringComparison.OrdinalIgnoreCase) &&
+      string.Equals(e.Method, method, StringComparison.OrdinalIgnoreCase) &&
+      string.Equals(e.Path, path, StringComparison.OrdinalIgnoreCase));
+    if (existing is not null)
+    {
+      return existing;
+    }
+
+    var endpoint = new ApiEndpointState
+    {
+      Id = NewId(),
+      SpecId = spec.Id,
+      OperationId = "synthetic_" + Regex.Replace(intent.Label.ToLowerInvariant(), @"[^a-z0-9]+", "_").Trim('_'),
+      Method = method,
+      Path = path,
+      Summary = $"Synthetic mock endpoint for {intent.Label}.",
+      Description = "Generated by ARAPI Bot Builder when no registered API matched the requested business flow.",
+      Tags = ["synthetic", "mock", "arapi", .. intent.SearchText.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).Take(5)],
+      CategoryId = FindBestCategory(new ApiEndpointState { Path = path, Summary = intent.Label, Tags = ["synthetic", intent.Label] }, _state.BusinessCategories)?.Id,
+    };
+    _state.ApiEndpoints.Add(endpoint);
+    spec.EndpointCount = _state.ApiEndpoints.Count(e => e.SpecId == spec.Id);
+
+    _state.ApiOutputFields.Add(new ApiOutputFieldState { Id = NewId(), EndpointId = endpoint.Id, JsonPath = "$.ok", SchemaType = "boolean", Description = "Operation success flag" });
+    _state.ApiOutputFields.Add(new ApiOutputFieldState { Id = NewId(), EndpointId = endpoint.Id, JsonPath = "$.data.id", SchemaType = "string", Description = "Synthetic resource identifier" });
+    SaveLocked();
+    return endpoint;
+  }
+
+  private BotJobState CreateFunctionalBotJobFromIntent(AppAssistantIntent intent, IReadOnlyList<ApiEndpointState> endpoints, bool usedSyntheticEndpoint)
+  {
+    var now = NowIso();
+    var job = new BotJobState
+    {
+      Id = NewId(),
+      Name = $"{intent.Label} - mock functional test",
+      Description = $"Generated by Bot Builder. Uses {(usedSyntheticEndpoint ? "synthetic ARAPI endpoint/data" : "registered ARAPI catalog endpoints")} and runs against the Mock Server.",
+      CategoryId = FindBestCategory(new ApiEndpointState { Path = intent.SearchText, Summary = intent.Label, Tags = intent.SearchText.Split(' ').Take(5).ToList() }, _state.BusinessCategories)?.Id,
+      CreatedAt = now,
+      UpdatedAt = now,
+    };
+    var block = new BotJobBlockState
+    {
+      Id = NewId(),
+      BotJobId = job.Id,
+      Name = "Mock flow",
+      Order = 0,
+    };
+
+    _state.BotJobs.Add(job);
+    _state.BotJobBlocks.Add(block);
+
+    var order = 0;
+    _state.BotJobCommands.Add(new BotJobCommandState
+    {
+      Id = NewId(),
+      BlockId = block.Id,
+      Order = order++,
+      Type = "SET_VARIABLE",
+      Enabled = true,
+      Config = new Dictionary<string, object>
+      {
+        ["name"] = "syntheticData",
+        ["value"] = JsonSerializer.Serialize(intent.SyntheticPayload, _json),
+      },
+    });
+
+    foreach (var endpoint in endpoints.Take(4))
+    {
+      _state.BotJobCommands.Add(new BotJobCommandState
+      {
+        Id = NewId(),
+        BlockId = block.Id,
+        Order = order++,
+        Type = "API_CALL",
+        Enabled = true,
+        Config = new Dictionary<string, object>
+        {
+          ["endpointId"] = endpoint.Id,
+          ["body"] = endpoint.Method.Equals("GET", StringComparison.OrdinalIgnoreCase) ? "" : intent.SyntheticPayload,
+          ["headers"] = new Dictionary<string, object>
+          {
+            ["Content-Type"] = "application/json",
+            ["X-ARAPI-Synthetic-Test"] = "true",
+          },
+        },
+      });
+      _state.BotJobCommands.Add(new BotJobCommandState
+      {
+        Id = NewId(),
+        BlockId = block.Id,
+        Order = order++,
+        Type = "ASSERT_STATUS_CODE",
+        Enabled = true,
+        Config = new Dictionary<string, object> { ["expected"] = 200 },
+      });
+      _state.BotJobCommands.Add(new BotJobCommandState
+      {
+        Id = NewId(),
+        BlockId = block.Id,
+        Order = order++,
+        Type = "ASSERT_JSON_PATH_EXISTS",
+        Enabled = true,
+        Config = new Dictionary<string, object> { ["jsonPath"] = "$.ok" },
+      });
+    }
+
+    _state.BotVariables.Add(new BotVariableState
+    {
+      Id = NewId(),
+      BotJobId = job.Id,
+      Name = "environment",
+      InitialValue = "mock",
+      Secret = false,
+    });
+
+    SaveBotJobsToDatabase();
+    SaveLocked();
+    return job;
+  }
+
+  private void EnsureDiagnosticBotJobs()
+  {
+    var intents = new[]
+    {
+      BuildAssistantIntent("I want to create a BotJob that creates a new client"),
+      BuildAssistantIntent("Create a payment validation test against the Mock Server"),
+      BuildAssistantIntent("Create a test that checks current account balances"),
+    };
+
+    foreach (var intent in intents)
+    {
+      var name = $"{intent.Label} - mock functional test";
+      if (_state.BotJobs.Any(j => string.Equals(j.Name, name, StringComparison.OrdinalIgnoreCase)))
+      {
+        continue;
+      }
+
+      var matches = FindMatchingEndpoints(intent.SearchText, _state.ApiEndpoints, 5);
+      var createdSynthetic = false;
+      if (matches.Count == 0)
+      {
+        matches.Add(CreateSyntheticEndpointForIntent(intent));
+        createdSynthetic = true;
+      }
+      CreateFunctionalBotJobFromIntent(intent, matches, createdSynthetic);
+    }
+  }
+
   private static List<ApiEndpointState> FindMatchingEndpoints(string text, IReadOnlyList<ApiEndpointState> endpoints, int limit)
   {
     var tokens = text.Split(new[] { ' ', ',', ';', '/', '-', '_' }, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
       .Select(x => x.ToLowerInvariant())
+      .Where(x => x.Length > 2)
+      .Distinct()
       .ToArray();
     var scored = endpoints
       .Select(e => new
@@ -1127,6 +1529,8 @@ public sealed class ArapiBackend
       .Where(x => x.Score > 0)
       .OrderByDescending(x => x.Score)
       .ThenBy(x => x.Endpoint.Path)
+      .GroupBy(x => $"{x.Endpoint.Method} {x.Endpoint.Path}", StringComparer.OrdinalIgnoreCase)
+      .Select(g => g.First())
       .Take(limit)
       .Select(x => x.Endpoint)
       .ToList();
@@ -1278,6 +1682,496 @@ public sealed class ArapiBackend
     }
   }
 
+  private void LoadAiProvidersFromDatabase()
+  {
+    try
+    {
+      EnsureAiProviderTable();
+      using var connection = new SqliteConnection($"Data Source={_dbPath}");
+      connection.Open();
+      using var cmd = connection.CreateCommand();
+      cmd.CommandText = @"
+SELECT id, provider, label, base_url, model, encrypted_api_key, is_default, enabled
+FROM ai_provider_settings
+ORDER BY label";
+
+      var providers = new List<AiProviderSettingState>();
+      using var reader = cmd.ExecuteReader();
+      while (reader.Read())
+      {
+        providers.Add(new AiProviderSettingState
+        {
+          Id = reader.GetString(0),
+          Provider = reader.GetString(1),
+          Label = reader.GetString(2),
+          BaseUrl = reader.IsDBNull(3) ? null : reader.GetString(3),
+          Model = reader.IsDBNull(4) ? null : reader.GetString(4),
+          EncryptedApiKey = reader.IsDBNull(5) ? null : reader.GetString(5),
+          IsDefault = reader.GetInt32(6) == 1,
+          Enabled = reader.GetInt32(7) == 1,
+        });
+      }
+
+      if (providers.Count > 0)
+      {
+        _state.AiProviders = providers;
+      }
+      else if (_state.AiProviders.Count > 0)
+      {
+        SaveAiProvidersToDatabase();
+      }
+    }
+    catch (Exception ex)
+    {
+      Console.Error.WriteLine($"[arapi] failed to load AI providers from database: {ex.Message}");
+    }
+  }
+
+  private void SaveAiProvidersToDatabase()
+  {
+    try
+    {
+      EnsureAiProviderTable();
+      using var connection = new SqliteConnection($"Data Source={_dbPath}");
+      connection.Open();
+      using var tx = connection.BeginTransaction();
+
+      foreach (var setting in _state.AiProviders)
+      {
+        using var cmd = connection.CreateCommand();
+        cmd.Transaction = tx;
+        cmd.CommandText = @"
+INSERT OR REPLACE INTO ai_provider_settings
+  (id, provider, label, base_url, model, encrypted_api_key, is_default, enabled)
+VALUES
+  ($id, $provider, $label, $base_url, $model, $encrypted_api_key, $is_default, $enabled)";
+        cmd.Parameters.AddWithValue("$id", setting.Id);
+        cmd.Parameters.AddWithValue("$provider", setting.Provider);
+        cmd.Parameters.AddWithValue("$label", setting.Label);
+        cmd.Parameters.AddWithValue("$base_url", (object?)setting.BaseUrl ?? DBNull.Value);
+        cmd.Parameters.AddWithValue("$model", (object?)setting.Model ?? DBNull.Value);
+        cmd.Parameters.AddWithValue("$encrypted_api_key", (object?)setting.EncryptedApiKey ?? DBNull.Value);
+        cmd.Parameters.AddWithValue("$is_default", setting.IsDefault ? 1 : 0);
+        cmd.Parameters.AddWithValue("$enabled", setting.Enabled ? 1 : 0);
+        cmd.ExecuteNonQuery();
+      }
+
+      tx.Commit();
+    }
+    catch (Exception ex)
+    {
+      Console.Error.WriteLine($"[arapi] failed to save AI providers to database: {ex.Message}");
+    }
+  }
+
+  private void EnsureAiProviderTable()
+  {
+    var dir = Path.GetDirectoryName(_dbPath);
+    if (!string.IsNullOrWhiteSpace(dir))
+    {
+      Directory.CreateDirectory(dir);
+    }
+
+    using var connection = new SqliteConnection($"Data Source={_dbPath}");
+    connection.Open();
+    using var cmd = connection.CreateCommand();
+    cmd.CommandText = @"
+CREATE TABLE IF NOT EXISTS ai_provider_settings (
+  id                TEXT PRIMARY KEY,
+  provider          TEXT NOT NULL,
+  label             TEXT NOT NULL,
+  base_url          TEXT,
+  model             TEXT,
+  encrypted_api_key TEXT,
+  is_default        INTEGER NOT NULL DEFAULT 0,
+  enabled           INTEGER NOT NULL DEFAULT 1
+);";
+    cmd.ExecuteNonQuery();
+  }
+
+  private void LoadBotJobsFromDatabase()
+  {
+    try
+    {
+      EnsureBotJobTables();
+      using var connection = new SqliteConnection($"Data Source={_dbPath}");
+      connection.Open();
+
+      var jobs = new List<BotJobState>();
+      using (var cmd = connection.CreateCommand())
+      {
+        cmd.CommandText = "SELECT id, name, description, category_id, created_at, updated_at FROM bot_jobs ORDER BY updated_at DESC";
+        using var reader = cmd.ExecuteReader();
+        while (reader.Read())
+        {
+          jobs.Add(new BotJobState
+          {
+            Id = reader.GetString(0),
+            Name = reader.GetString(1),
+            Description = reader.IsDBNull(2) ? null : reader.GetString(2),
+            CategoryId = reader.IsDBNull(3) ? null : reader.GetString(3),
+            CreatedAt = reader.GetString(4),
+            UpdatedAt = reader.GetString(5),
+          });
+        }
+      }
+
+      if (jobs.Count == 0)
+      {
+        if (_state.BotJobs.Count > 0)
+        {
+          SaveBotJobsToDatabase();
+        }
+        return;
+      }
+
+      _state.BotJobs = jobs;
+      _state.BotJobBlocks = LoadBotJobBlocks(connection);
+      _state.BotJobCommands = LoadBotJobCommands(connection);
+      _state.BotVariables = LoadBotVariables(connection);
+    }
+    catch (Exception ex)
+    {
+      Console.Error.WriteLine($"[arapi] failed to load BotJobs from database: {ex.Message}");
+    }
+  }
+
+  private static List<BotJobBlockState> LoadBotJobBlocks(SqliteConnection connection)
+  {
+    var blocks = new List<BotJobBlockState>();
+    using var cmd = connection.CreateCommand();
+    cmd.CommandText = "SELECT id, bot_job_id, name, sort_order FROM bot_job_blocks ORDER BY sort_order";
+    using var reader = cmd.ExecuteReader();
+    while (reader.Read())
+    {
+      blocks.Add(new BotJobBlockState
+      {
+        Id = reader.GetString(0),
+        BotJobId = reader.GetString(1),
+        Name = reader.GetString(2),
+        Order = reader.GetInt32(3),
+      });
+    }
+    return blocks;
+  }
+
+  private static List<BotJobCommandState> LoadBotJobCommands(SqliteConnection connection)
+  {
+    var commands = new List<BotJobCommandState>();
+    using var cmd = connection.CreateCommand();
+    cmd.CommandText = "SELECT id, block_id, sort_order, type, config_json, enabled FROM bot_job_commands ORDER BY sort_order";
+    using var reader = cmd.ExecuteReader();
+    while (reader.Read())
+    {
+      commands.Add(new BotJobCommandState
+      {
+        Id = reader.GetString(0),
+        BlockId = reader.GetString(1),
+        Order = reader.GetInt32(2),
+        Type = reader.GetString(3),
+        Config = JsonSerializer.Deserialize<Dictionary<string, object>>(reader.GetString(4)) ?? [],
+        Enabled = reader.GetInt32(5) == 1,
+      });
+    }
+    return commands;
+  }
+
+  private static List<BotVariableState> LoadBotVariables(SqliteConnection connection)
+  {
+    var variables = new List<BotVariableState>();
+    using var cmd = connection.CreateCommand();
+    cmd.CommandText = "SELECT id, bot_job_id, name, initial_value, secret FROM bot_variables ORDER BY name";
+    using var reader = cmd.ExecuteReader();
+    while (reader.Read())
+    {
+      variables.Add(new BotVariableState
+      {
+        Id = reader.GetString(0),
+        BotJobId = reader.GetString(1),
+        Name = reader.GetString(2),
+        InitialValue = reader.IsDBNull(3) ? null : reader.GetString(3),
+        Secret = reader.GetInt32(4) == 1,
+      });
+    }
+    return variables;
+  }
+
+  private void SaveBotJobsToDatabase()
+  {
+    try
+    {
+      EnsureBotJobTables();
+      using var connection = new SqliteConnection($"Data Source={_dbPath}");
+      connection.Open();
+      using var tx = connection.BeginTransaction();
+
+      foreach (var table in new[] { "bot_variables", "bot_job_commands", "bot_job_blocks", "bot_jobs" })
+      {
+        using var delete = connection.CreateCommand();
+        delete.Transaction = tx;
+        delete.CommandText = $"DELETE FROM {table}";
+        delete.ExecuteNonQuery();
+      }
+
+      foreach (var job in _state.BotJobs)
+      {
+        using var cmd = connection.CreateCommand();
+        cmd.Transaction = tx;
+        cmd.CommandText = @"
+INSERT INTO bot_jobs (id, name, description, category_id, created_at, updated_at)
+VALUES ($id, $name, $description, $category_id, $created_at, $updated_at)";
+        cmd.Parameters.AddWithValue("$id", job.Id);
+        cmd.Parameters.AddWithValue("$name", job.Name);
+        cmd.Parameters.AddWithValue("$description", (object?)job.Description ?? DBNull.Value);
+        cmd.Parameters.AddWithValue("$category_id", (object?)job.CategoryId ?? DBNull.Value);
+        cmd.Parameters.AddWithValue("$created_at", job.CreatedAt);
+        cmd.Parameters.AddWithValue("$updated_at", job.UpdatedAt);
+        cmd.ExecuteNonQuery();
+      }
+
+      foreach (var block in _state.BotJobBlocks)
+      {
+        using var cmd = connection.CreateCommand();
+        cmd.Transaction = tx;
+        cmd.CommandText = @"
+INSERT INTO bot_job_blocks (id, bot_job_id, name, sort_order)
+VALUES ($id, $bot_job_id, $name, $sort_order)";
+        cmd.Parameters.AddWithValue("$id", block.Id);
+        cmd.Parameters.AddWithValue("$bot_job_id", block.BotJobId);
+        cmd.Parameters.AddWithValue("$name", block.Name);
+        cmd.Parameters.AddWithValue("$sort_order", block.Order);
+        cmd.ExecuteNonQuery();
+      }
+
+      foreach (var command in _state.BotJobCommands)
+      {
+        using var cmd = connection.CreateCommand();
+        cmd.Transaction = tx;
+        cmd.CommandText = @"
+INSERT INTO bot_job_commands (id, block_id, sort_order, type, config_json, enabled)
+VALUES ($id, $block_id, $sort_order, $type, $config_json, $enabled)";
+        cmd.Parameters.AddWithValue("$id", command.Id);
+        cmd.Parameters.AddWithValue("$block_id", command.BlockId);
+        cmd.Parameters.AddWithValue("$sort_order", command.Order);
+        cmd.Parameters.AddWithValue("$type", command.Type);
+        cmd.Parameters.AddWithValue("$config_json", JsonSerializer.Serialize(command.Config, _json));
+        cmd.Parameters.AddWithValue("$enabled", command.Enabled ? 1 : 0);
+        cmd.ExecuteNonQuery();
+      }
+
+      foreach (var variable in _state.BotVariables)
+      {
+        using var cmd = connection.CreateCommand();
+        cmd.Transaction = tx;
+        cmd.CommandText = @"
+INSERT INTO bot_variables (id, bot_job_id, name, initial_value, secret)
+VALUES ($id, $bot_job_id, $name, $initial_value, $secret)";
+        cmd.Parameters.AddWithValue("$id", variable.Id);
+        cmd.Parameters.AddWithValue("$bot_job_id", variable.BotJobId);
+        cmd.Parameters.AddWithValue("$name", variable.Name);
+        cmd.Parameters.AddWithValue("$initial_value", (object?)variable.InitialValue ?? DBNull.Value);
+        cmd.Parameters.AddWithValue("$secret", variable.Secret ? 1 : 0);
+        cmd.ExecuteNonQuery();
+      }
+
+      tx.Commit();
+    }
+    catch (Exception ex)
+    {
+      Console.Error.WriteLine($"[arapi] failed to save BotJobs to database: {ex.Message}");
+    }
+  }
+
+  private void EnsureBotJobTables()
+  {
+    var dir = Path.GetDirectoryName(_dbPath);
+    if (!string.IsNullOrWhiteSpace(dir))
+    {
+      Directory.CreateDirectory(dir);
+    }
+
+    using var connection = new SqliteConnection($"Data Source={_dbPath}");
+    connection.Open();
+    using var cmd = connection.CreateCommand();
+    cmd.CommandText = @"
+CREATE TABLE IF NOT EXISTS bot_jobs (
+  id          TEXT PRIMARY KEY,
+  name        TEXT NOT NULL,
+  description TEXT,
+  category_id TEXT,
+  created_at  TEXT NOT NULL,
+  updated_at  TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS bot_job_blocks (
+  id         TEXT PRIMARY KEY,
+  bot_job_id TEXT NOT NULL,
+  name       TEXT NOT NULL,
+  sort_order INTEGER NOT NULL
+);
+CREATE TABLE IF NOT EXISTS bot_job_commands (
+  id          TEXT PRIMARY KEY,
+  block_id    TEXT NOT NULL,
+  sort_order  INTEGER NOT NULL,
+  type        TEXT NOT NULL,
+  config_json TEXT NOT NULL,
+  enabled     INTEGER NOT NULL DEFAULT 1
+);
+CREATE TABLE IF NOT EXISTS bot_variables (
+  id            TEXT PRIMARY KEY,
+  bot_job_id    TEXT NOT NULL,
+  name          TEXT NOT NULL,
+  initial_value TEXT,
+  secret        INTEGER NOT NULL DEFAULT 0
+);";
+    cmd.ExecuteNonQuery();
+  }
+
+  private void EnsureSyntheticBankingData()
+  {
+    try
+    {
+      var dir = Path.GetDirectoryName(_dbPath);
+      if (!string.IsNullOrWhiteSpace(dir))
+      {
+        Directory.CreateDirectory(dir);
+      }
+
+      using var connection = new SqliteConnection($"Data Source={_dbPath}");
+      connection.Open();
+      using var create = connection.CreateCommand();
+      create.CommandText = @"
+CREATE TABLE IF NOT EXISTS synthetic_customer_accounts (
+  customer_id       TEXT NOT NULL,
+  account_id        TEXT PRIMARY KEY,
+  iban              TEXT NOT NULL,
+  product_name      TEXT NOT NULL,
+  currency          TEXT NOT NULL,
+  available_balance REAL NOT NULL,
+  booked_balance    REAL NOT NULL,
+  updated_at        TEXT NOT NULL
+);";
+      create.ExecuteNonQuery();
+
+      using var count = connection.CreateCommand();
+      count.CommandText = "SELECT COUNT(*) FROM synthetic_customer_accounts";
+      if (Convert.ToInt32(count.ExecuteScalar()) > 0)
+      {
+        return;
+      }
+
+      var now = NowIso();
+      var seedRows = new[]
+      {
+        new SyntheticAccountSeed("demo-client", "ACC-1001", "CH93 0076 2011 6238 5295 7", "Private Current Account", "CHF", 18425.35m, 18610.90m),
+        new SyntheticAccountSeed("demo-client", "ACC-2001", "CH56 0483 5012 3456 7800 9", "Savings Account", "CHF", 72540.00m, 72540.00m),
+        new SyntheticAccountSeed("demo-client", "ACC-3001", "CH11 0900 0000 1234 5678 9", "EUR Current Account", "EUR", 9340.75m, 9415.10m),
+      };
+
+      foreach (var row in seedRows)
+      {
+        using var insert = connection.CreateCommand();
+        insert.CommandText = @"
+INSERT INTO synthetic_customer_accounts
+  (customer_id, account_id, iban, product_name, currency, available_balance, booked_balance, updated_at)
+VALUES
+  ($customer_id, $account_id, $iban, $product_name, $currency, $available_balance, $booked_balance, $updated_at)";
+        insert.Parameters.AddWithValue("$customer_id", row.CustomerId);
+        insert.Parameters.AddWithValue("$account_id", row.AccountId);
+        insert.Parameters.AddWithValue("$iban", row.Iban);
+        insert.Parameters.AddWithValue("$product_name", row.ProductName);
+        insert.Parameters.AddWithValue("$currency", row.Currency);
+        insert.Parameters.AddWithValue("$available_balance", row.AvailableBalance);
+        insert.Parameters.AddWithValue("$booked_balance", row.BookedBalance);
+        insert.Parameters.AddWithValue("$updated_at", now);
+        insert.ExecuteNonQuery();
+      }
+    }
+    catch (Exception ex)
+    {
+      Console.Error.WriteLine($"[arapi] failed to ensure synthetic banking data: {ex.Message}");
+    }
+  }
+
+  private string? BuildSyntheticBankingAnswer(string question, string? mode, IReadOnlyList<ApiEndpointState> evidence)
+  {
+    var lower = question.ToLowerInvariant();
+    if (!lower.Contains("balance") && !lower.Contains("account"))
+    {
+      return null;
+    }
+
+    try
+    {
+      EnsureSyntheticBankingData();
+      using var connection = new SqliteConnection($"Data Source={_dbPath}");
+      connection.Open();
+      using var cmd = connection.CreateCommand();
+      cmd.CommandText = @"
+SELECT product_name, iban, currency, available_balance, booked_balance, updated_at
+FROM synthetic_customer_accounts
+WHERE customer_id = 'demo-client'
+ORDER BY product_name";
+
+      var rows = new List<SyntheticAccountSnapshot>();
+      using var reader = cmd.ExecuteReader();
+      while (reader.Read())
+      {
+        rows.Add(new SyntheticAccountSnapshot(
+          reader.GetString(0),
+          reader.GetString(1),
+          reader.GetString(2),
+          reader.GetDecimal(3),
+          reader.GetDecimal(4),
+          reader.GetString(5)
+        ));
+      }
+
+      if (rows.Count == 0)
+      {
+        return null;
+      }
+
+      var totals = rows
+        .GroupBy(r => r.Currency)
+        .Select(g => $"{g.Key} {g.Sum(r => r.AvailableBalance):N2}")
+        .ToArray();
+
+      var sb = new StringBuilder();
+      if (string.Equals(mode, "client", StringComparison.OrdinalIgnoreCase))
+      {
+        sb.AppendLine("Your current available balances are:");
+      }
+      else
+      {
+        sb.AppendLine("Synthetic customer account balance snapshot:");
+      }
+
+      foreach (var row in rows)
+      {
+        sb.AppendLine($"- {row.ProductName} ({MaskIban(row.Iban)}): available {row.Currency} {row.AvailableBalance:N2}, booked {row.Currency} {row.BookedBalance:N2}");
+      }
+
+      sb.AppendLine($"Total available balance: {string.Join(", ", totals)}.");
+      if (evidence.Count > 0)
+      {
+        sb.AppendLine($"Catalog evidence selected from ARAPI: {string.Join(", ", evidence.Select(e => $"{e.Method} {e.Path}"))}.");
+      }
+      return sb.ToString().Trim();
+    }
+    catch (Exception ex)
+    {
+      Console.Error.WriteLine($"[arapi] failed to build synthetic banking answer: {ex.Message}");
+      return null;
+    }
+  }
+
+  private static string MaskIban(string iban)
+  {
+    var compact = iban.Replace(" ", "");
+    if (compact.Length <= 8) return iban;
+    return $"{compact[..4]} ... {compact[^4..]}";
+  }
+
   private static string? ReadEmbeddedCatalogSeed()
   {
     var assembly = Assembly.GetExecutingAssembly();
@@ -1423,6 +2317,10 @@ public sealed class ArapiBackend
     new("client-docs", "Client Messages & Documents", "Documents and message handling.", "client", ["document", "message", "statement"]),
   ];
 }
+
+public sealed record SyntheticAccountSeed(string CustomerId, string AccountId, string Iban, string ProductName, string Currency, decimal AvailableBalance, decimal BookedBalance);
+public sealed record SyntheticAccountSnapshot(string ProductName, string Iban, string Currency, decimal AvailableBalance, decimal BookedBalance, string UpdatedAt);
+public sealed record AppAssistantIntent(string Label, string SearchText, bool ShouldCreate, bool ShouldRun, bool ShouldList, bool ShouldSearch, Dictionary<string, object> SyntheticPayload);
 
 public sealed class BackendState
 {

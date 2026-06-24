@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <EmbeddedResource Include="..\data\catalog.seed.json" Link="catalog.seed.json" Condition="Exists('..\data\catalog.seed.json')" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.10" />
   </ItemGroup>
 
 </Project>

@@ -6,8 +6,8 @@
 //!   1. Create the application window (the React frontend at dist-ar/).
 //!   2. In a packaged build, launch the bundled C# backend and stop it on exit.
 //!
-//! AR uses a flat data path so the package stays simple:
-//! AppData/Roaming/data/arweb.db
+//! AR uses a portable data folder beside AR-Conversational.exe when present,
+//! otherwise it falls back to AppData/Roaming/data/arweb.db.
 
 #[cfg(not(debug_assertions))]
 use tauri::Manager;
@@ -30,14 +30,22 @@ pub fn run() {
     let builder = builder
         .manage(SidecarState::default())
         .setup(|app| {
-            let db_path = match app.path().data_dir() {
-                Ok(dir) => {
-                    let data = dir.join("data");
-                    let _ = std::fs::create_dir_all(&data);
-                    let p = data.join("arweb.db");
-                    p.to_string_lossy().into_owned()
-                }
-                Err(_) => String::new(),
+            let portable_db = std::env::current_exe()
+                .ok()
+                .and_then(|exe| exe.parent().map(|dir| dir.join("data").join("arweb.db")))
+                .filter(|path| path.parent().is_some_and(|dir| dir.exists()));
+
+            let db_path = match portable_db {
+                Some(path) => path.to_string_lossy().into_owned(),
+                None => match app.path().data_dir() {
+                    Ok(dir) => {
+                        let data = dir.join("data");
+                        let _ = std::fs::create_dir_all(&data);
+                        let p = data.join("arweb.db");
+                        p.to_string_lossy().into_owned()
+                    }
+                    Err(_) => String::new(),
+                },
             };
 
             match app.shell().sidecar("arapi-backend") {

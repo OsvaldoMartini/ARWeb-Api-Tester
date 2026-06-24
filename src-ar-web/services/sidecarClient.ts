@@ -47,6 +47,18 @@ export interface AgentAnswer {
   limitations: string[];
 }
 
+export interface AppAction {
+  type: 'catalog_search' | 'botjob_created' | 'botjobs_listed' | 'botjob_executed' | 'envs_listed';
+  label: string;
+  data: Record<string, unknown>;
+}
+
+export interface AppAssistantResponse {
+  answer: string;
+  actions: AppAction[];
+  provider: string | null;
+}
+
 export interface AiProviderSetting {
   id: string; provider: string; label: string;
   baseUrl?: string | null; model?: string | null;
@@ -75,6 +87,12 @@ export const sidecar = {
       method: 'POST',
       body: JSON.stringify({ question, mode, agentId }),
     }).then(assertNoError),
+
+  appChat: (messages: { role: 'user' | 'assistant'; content: string }[]) =>
+    request<AppAssistantResponse>('/app-assistant/chat', {
+      method: 'POST',
+      body: JSON.stringify({ messages }),
+    }),
 
   getAiProviders: () => request<{ providers: AiProviderSetting[] }>('/settings/ai-providers'),
 

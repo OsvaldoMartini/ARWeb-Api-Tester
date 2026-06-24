@@ -30,18 +30,24 @@ pub fn run() {
     let builder = builder
         .manage(SidecarState::default())
         .setup(|app| {
-            // Resolve the user-specific AppData path for the SQLite database.
-            // Passed as DB_PATH so the backend does NOT fall back to the
-            // dev-time repo-relative path (data/app.db).
-            // Flat data path for ARAPI: AppData/Roaming/data/arweb.db.
-            let db_path = match app.path().data_dir() {
-                Ok(dir) => {
-                    let data = dir.join("data");
-                    let _ = std::fs::create_dir_all(&data);
-                    let p = data.join("arweb.db");
-                    p.to_string_lossy().into_owned()
-                }
-                Err(_) => String::new(),
+            // Prefer a portable data folder beside ARAPI.exe when present.
+            // This is the layout produced in artifacts/ARAPI for client zips.
+            let portable_db = std::env::current_exe()
+                .ok()
+                .and_then(|exe| exe.parent().map(|dir| dir.join("data").join("arweb.db")))
+                .filter(|path| path.parent().is_some_and(|dir| dir.exists()));
+
+            let db_path = match portable_db {
+                Some(path) => path.to_string_lossy().into_owned(),
+                None => match app.path().data_dir() {
+                    Ok(dir) => {
+                        let data = dir.join("data");
+                        let _ = std::fs::create_dir_all(&data);
+                        let p = data.join("arweb.db");
+                        p.to_string_lossy().into_owned()
+                    }
+                    Err(_) => String::new(),
+                },
             };
 
             match app.shell().sidecar("arapi-backend") {

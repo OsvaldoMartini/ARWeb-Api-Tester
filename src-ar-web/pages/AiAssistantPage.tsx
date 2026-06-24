@@ -123,6 +123,17 @@ function CapabilitiesPanel({ agents }: { agents: AgentInfo[] }) {
   );
 }
 
+function shouldDelegateToArapiBuilder(text: string) {
+  const lower = text.toLowerCase();
+  return (
+    (lower.includes('test') && (lower.includes('create') || lower.includes('build'))) ||
+    lower.includes('botjob') ||
+    lower.includes('search the catalog') ||
+    lower.includes('catalog for') ||
+    lower.includes('payment endpoints')
+  );
+}
+
 interface WelcomeModalProps {
   currentMode: 'employee' | 'client';
   onSelect: (mode: 'employee' | 'client') => void;
@@ -233,8 +244,19 @@ export function AiAssistantPage() {
     setBusy(true);
     setError(null);
     try {
-      const ans = await sidecar.ask(q, mode, agentId || undefined);
-      setTurns((t) => [...t, { role: 'agent', text: ans.answer, agentName: ans.agentName || ans.agentId, evidence: ans.evidence, limitations: ans.limitations }]);
+      if (shouldDelegateToArapiBuilder(q)) {
+        const ans = await sidecar.appChat([{ role: 'user', content: q }]);
+        setTurns((t) => [...t, {
+          role: 'agent',
+          text: ans.answer,
+          agentName: 'ARAPI Bot Builder',
+          evidence: [],
+          limitations: ['Created or searched through ARAPI. Open ARAPI BotJob Designer / Execute Tests to review and run saved tests.'],
+        }]);
+      } else {
+        const ans = await sidecar.ask(q, mode, agentId || undefined);
+        setTurns((t) => [...t, { role: 'agent', text: ans.answer, agentName: ans.agentName || ans.agentId, evidence: ans.evidence, limitations: ans.limitations }]);
+      }
     } catch (e) {
       setError(e instanceof Error ? e.message : String(e));
     } finally {

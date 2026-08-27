@@ -1,0 +1,31 @@
+{
+  "docx": "D:\\Projects_DevOps\\ARWeb-Api-Tester\\specifications\\guide\\ARAPI-Complete-Client-Guide.docx",
+  "coverage": {
+    "screens_expected": 26,
+    "screens_missing": [],
+    "commands_expected": 16,
+    "commands_missing": [],
+    "routes_expected": 37,
+    "routes_missing": [],
+    "controls_expected": 61,
+    "controls_missing": [],
+    "captions_missing": []
+  },
+  "images": {
+    "embedded_media": 26,
+    "inline_properties": 26,
+    "missing_alt": 0,
+    "missing_title": 0
+  },
+  "navigation": {
+    "bookmarks": 48,
+    "internal_anchor_targets": 19,
+    "missing_anchor_targets": []
+  },
+  "metadata": {
+    "creator": "",
+    "last_modified_by": "",
+    "scrubbed": true
+  },
+  "passed": true
+}

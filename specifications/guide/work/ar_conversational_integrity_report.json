@@ -1,0 +1,33 @@
+{
+  "docx": "D:\\Projects_DevOps\\ARWeb-Api-Tester\\specifications\\guide\\AR-Conversational-Complete-Client-Guide.docx",
+  "coverage": {
+    "screens_expected": 15,
+    "screens_missing": [],
+    "agents_expected": 14,
+    "agents_missing": [],
+    "controls_expected": 28,
+    "controls_missing": [],
+    "routes_expected": 10,
+    "routes_missing": [],
+    "providers_expected": 7,
+    "providers_missing": [],
+    "captions_missing": []
+  },
+  "images": {
+    "embedded_media": 15,
+    "inline_properties": 15,
+    "missing_alt": 0,
+    "missing_title": 0
+  },
+  "navigation": {
+    "bookmarks": 39,
+    "internal_anchor_targets": 21,
+    "missing_anchor_targets": []
+  },
+  "metadata": {
+    "creator": "",
+    "last_modified_by": "",
+    "scrubbed": true
+  },
+  "passed": true
+}

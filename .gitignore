@@ -64,10 +64,6 @@ docker-compose.ragstack.yml
 restart.sh
 vercel.json
 
-# Keep only the runtime progress payload from the old docs directory.
-docs/*
-!docs/progress.json
-
 # data (runtime, do not commit local DB)
 data/app.db
 data/app.db-*

@@ -90,6 +90,8 @@ releases/v*/
 *.rar
 # delivery package for the guided-tour presentation — tracked on purpose
 !docs/presentations/*.zip
+# locally extracted copy of the package (for viewing) — never commit it
+docs/presentations/ARWeb-Visita-Guidata/
 # generated narration audio stays out of git (shipped only inside the zip)
 docs/guida/*/audio/
 

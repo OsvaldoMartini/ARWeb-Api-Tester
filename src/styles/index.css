@@ -1,0 +1,89 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Theme variables mirror @arweb/shared-ui `tokens`. Stored as space-separated
+ * RGB channels (not hex) so Tailwind can compose opacity modifiers like
+ * `bg-primary/15` via `rgb(var(--color-primary) / <alpha-value>)`.
+ */
+:root {
+  --color-bg: 11 16 32; /* #0b1020 */
+  --color-surface: 18 26 46; /* #121a2e */
+  --color-surface-alt: 26 36 64; /* #1a2440 */
+  --color-border: 36 48 73; /* #243049 */
+  --color-text: 230 235 245; /* #e6ebf5 */
+  --color-text-muted: 148 163 184; /* #94a3b8 */
+  --color-primary: 59 130 246; /* #3b82f6 */
+  --color-success: 22 163 74; /* #16a34a */
+  --color-warning: 217 119 6; /* #d97706 */
+  --color-danger: 220 38 38; /* #dc2626 */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: rgb(var(--color-bg));
+  color: rgb(var(--color-text));
+  font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+@layer components {
+  .card {
+    @apply rounded-lg border border-border bg-surface p-5;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-md border border-border
+      bg-surface-alt px-3 py-2 text-sm font-medium text-text transition-colors
+      hover:bg-border disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .btn-primary {
+    @apply border-transparent bg-primary text-white hover:bg-primary/90;
+  }
+
+  .input {
+    @apply w-full rounded-md border border-border bg-bg px-3 py-2 text-sm text-text
+      outline-none placeholder:text-text-muted focus:border-primary;
+  }
+
+  .label {
+    @apply mb-1 block text-xs font-medium uppercase tracking-wide text-text-muted;
+  }
+
+  .badge {
+    @apply inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium;
+  }
+  .badge-mapped {
+    @apply bg-primary/15 text-primary;
+  }
+  .badge-unmapped {
+    @apply bg-warning/15 text-warning;
+  }
+  .badge-validated {
+    @apply bg-primary/15 text-primary;
+  }
+  .badge-passed {
+    @apply bg-success/15 text-success;
+  }
+  .badge-failed {
+    @apply bg-danger/15 text-danger;
+  }
+
+  .page-title {
+    @apply text-2xl font-semibold tracking-tight;
+  }
+  .page-subtitle {
+    @apply mt-1 text-sm text-text-muted;
+  }
+}

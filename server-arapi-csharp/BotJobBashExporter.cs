@@ -1,0 +1,312 @@
+using System.Text;
+using System.Text.Json;
+using System.Text.RegularExpressions;
+
+internal sealed record BotJobBashExport(string FileName, string Content, int ApiCallCount);
+
+internal static partial class BotJobBashExporter
+{
+  public static BotJobBashExport Generate(
+    BotJobState job,
+    EnvironmentState environment,
+    IReadOnlyList<BotJobCommandState> commands,
+    IReadOnlyList<BotVariableState> variables,
+    IReadOnlyDictionary<string, ApiEndpointState> endpoints)
+  {
+    var apiCalls = commands
+      .Where(command => command.Enabled && string.Equals(command.Type, "API_CALL", StringComparison.OrdinalIgnoreCase))
+      .ToArray();
+
+    if (apiCalls.Length == 0)
+    {
+      throw new InvalidOperationException("The selected BotJob has no enabled API_CALL commands.");
+    }
+
+    var variableNames = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+    var usedVariableNames = new HashSet<string>(StringComparer.Ordinal);
+    foreach (var variable in variables)
+    {
+      GetOrCreateVariableName(variable.Name, variableNames, usedVariableNames);
+    }
+
+    var requiredVariables = new HashSet<string>(StringComparer.Ordinal);
+    var calls = new StringBuilder();
+
+    for (var index = 0; index < apiCalls.Length; index++)
+    {
+      var command = apiCalls[index];
+      var endpointId = GetConfigText(command.Config, "endpointId");
+      if (string.IsNullOrWhiteSpace(endpointId) || !endpoints.TryGetValue(endpointId, out var endpoint))
+      {
+        throw new InvalidOperationException($"API call {index + 1} references an endpoint that is not present in the catalog.");
+      }
+
+      var method = endpoint.Method.Trim().ToUpperInvariant();
+      if (!HttpMethodRegex().IsMatch(method))
+      {
+        throw new InvalidOperationException($"API call {index + 1} has an invalid HTTP method.");
+      }
+
+      var path = PathParameterRegex().Replace(endpoint.Path, match =>
+      {
+        var token = match.Groups[1].Value;
+        var shellName = GetOrCreateVariableName(token, variableNames, usedVariableNames);
+        requiredVariables.Add(shellName);
+        return $"${{{token}}}";
+      });
+
+      var headers = new Dictionary<string, string>(environment.Headers, StringComparer.OrdinalIgnoreCase);
+      foreach (var header in GetConfigHeaders(command.Config))
+      {
+        headers[header.Key] = header.Value;
+      }
+
+      var body = GetConfigText(command.Config, "body");
+      if (!string.IsNullOrWhiteSpace(body) && !headers.ContainsKey("Content-Type"))
+      {
+        headers["Content-Type"] = "application/json";
+      }
+
+      var arguments = new List<string>
+      {
+        "--globoff",
+        "--fail-with-body",
+        "--silent",
+        "--show-error",
+        $"--request {method}",
+      };
+
+      foreach (var header in headers.OrderBy(item => item.Key, StringComparer.OrdinalIgnoreCase))
+      {
+        var headerValue = header.Value;
+        if (IsSensitiveHeader(header.Key))
+        {
+          var referencedTokens = TokenRegex().Matches(headerValue).Cast<Match>().Select(match => match.Groups[1].Value).ToArray();
+          if (referencedTokens.Length == 0)
+          {
+            var headerVariable = Regex.Replace($"ARAPI_HEADER_{header.Key}", "[^A-Za-z0-9_]", "_");
+            var secretName = GetOrCreateVariableName(headerVariable, variableNames, usedVariableNames);
+            requiredVariables.Add(secretName);
+            headerValue = $"${{{secretName}}}";
+          }
+          else
+          {
+            foreach (var token in referencedTokens)
+            {
+              requiredVariables.Add(GetOrCreateVariableName(token, variableNames, usedVariableNames));
+            }
+          }
+        }
+
+        arguments.Add($"--header {BashInterpolatedWord($"{header.Key}: {headerValue}", variableNames, usedVariableNames, requiredVariables)}");
+      }
+
+      if (!string.IsNullOrWhiteSpace(body))
+      {
+        arguments.Add($"--data {BashInterpolatedWord(body, variableNames, usedVariableNames, requiredVariables)}");
+      }
+
+      var url = "\"${BASE_URL}\"" + BashInterpolatedWord(path, variableNames, usedVariableNames, requiredVariables);
+      arguments.Add(url);
+
+      calls.AppendLine($"echo {BashSingleQuote($"==> {index + 1}/{apiCalls.Length} {method} {endpoint.Path}")}");
+      calls.AppendLine("if ! curl \\");
+      for (var argumentIndex = 0; argumentIndex < arguments.Count; argumentIndex++)
+      {
+        var continuation = argumentIndex == arguments.Count - 1 ? string.Empty : " \\";
+        calls.AppendLine($"  {arguments[argumentIndex]}{continuation}");
+      }
+      calls.AppendLine("then");
+      calls.AppendLine("  echo 'Request failed; continuing with the next API call.' >&2");
+      calls.AppendLine("  failures=$((failures + 1))");
+      calls.AppendLine("fi");
+      calls.AppendLine("echo");
+      calls.AppendLine();
+    }
+
+    var script = new StringBuilder();
+    script.AppendLine("#!/usr/bin/env bash");
+    script.AppendLine($"# Generated by ARAPI for BotJob: {SanitizeComment(job.Name)}");
+    script.AppendLine($"# Environment: {SanitizeComment(environment.Name)}");
+    script.AppendLine("# Review this file before running it. Secrets are read from environment variables.");
+    script.AppendLine("set -uo pipefail");
+    script.AppendLine();
+    script.AppendLine($"DEFAULT_BASE_URL={BashSingleQuote(environment.BaseUrl.TrimEnd('/'))}");
+    script.AppendLine("BASE_URL=\"${BASE_URL:-$DEFAULT_BASE_URL}\"");
+    script.AppendLine("failures=0");
+    script.AppendLine();
+
+    foreach (var variable in variables)
+    {
+      var shellName = GetOrCreateVariableName(variable.Name, variableNames, usedVariableNames);
+      if (variable.Secret || requiredVariables.Contains(shellName))
+      {
+        script.AppendLine($": \"${{{shellName}:?Set {shellName} before running this script}}\"");
+      }
+      else
+      {
+        var defaultName = $"DEFAULT_{shellName}";
+        script.AppendLine($"{defaultName}={BashSingleQuote(variable.InitialValue ?? string.Empty)}");
+        script.AppendLine($"{shellName}=\"${{{shellName}:-${defaultName}}}\"");
+      }
+    }
+
+    var declaredNames = variables
+      .Select(variable => GetOrCreateVariableName(variable.Name, variableNames, usedVariableNames))
+      .ToHashSet(StringComparer.Ordinal);
+    foreach (var required in requiredVariables.OrderBy(name => name, StringComparer.Ordinal))
+    {
+      if (!declaredNames.Contains(required))
+      {
+        script.AppendLine($": \"${{{required}:?Set {required} before running this script}}\"");
+      }
+    }
+
+    if (variables.Count > 0 || requiredVariables.Count > 0)
+    {
+      script.AppendLine();
+    }
+
+    script.Append(calls);
+    script.AppendLine("if (( failures > 0 )); then");
+    script.AppendLine("  echo \"$failures API call(s) failed.\" >&2");
+    script.AppendLine("  exit 1");
+    script.AppendLine("fi");
+    script.AppendLine("echo 'All API calls completed successfully.'");
+
+    var timestamp = DateTimeOffset.UtcNow.ToString("yyyyMMdd-HHmmss");
+    return new BotJobBashExport(
+      $"{Slug(job.Name)}-{timestamp}.sh",
+      script.ToString().ReplaceLineEndings("\n"),
+      apiCalls.Length);
+  }
+
+  private static string BashInterpolatedWord(
+    string value,
+    Dictionary<string, string> variableNames,
+    HashSet<string> usedVariableNames,
+    HashSet<string> requiredVariables)
+  {
+    var result = new StringBuilder();
+    var offset = 0;
+    foreach (Match match in TokenRegex().Matches(value))
+    {
+      if (match.Index > offset)
+      {
+        result.Append(BashSingleQuote(value[offset..match.Index]));
+      }
+
+      var token = match.Groups[1].Value;
+      var knownToken = variableNames.ContainsKey(token);
+      var shellName = GetOrCreateVariableName(token, variableNames, usedVariableNames);
+      if (!knownToken)
+      {
+        requiredVariables.Add(shellName);
+      }
+      result.Append($"\"${{{shellName}}}\"");
+      offset = match.Index + match.Length;
+    }
+
+    if (offset < value.Length)
+    {
+      result.Append(BashSingleQuote(value[offset..]));
+    }
+
+    return result.Length == 0 ? "''" : result.ToString();
+  }
+
+  private static string GetOrCreateVariableName(
+    string sourceName,
+    Dictionary<string, string> variableNames,
+    HashSet<string> usedVariableNames)
+  {
+    if (variableNames.TryGetValue(sourceName, out var existing))
+    {
+      return existing;
+    }
+
+    var candidate = Regex.Replace(sourceName.Trim().ToUpperInvariant(), "[^A-Z0-9_]", "_");
+    candidate = Regex.Replace(candidate, "_+", "_").Trim('_');
+    if (string.IsNullOrWhiteSpace(candidate)) candidate = "ARAPI_VALUE";
+    if (char.IsDigit(candidate[0])) candidate = $"ARAPI_{candidate}";
+
+    var unique = candidate;
+    var suffix = 2;
+    while (!usedVariableNames.Add(unique))
+    {
+      unique = $"{candidate}_{suffix++}";
+    }
+
+    variableNames[sourceName] = unique;
+    return unique;
+  }
+
+  private static Dictionary<string, string> GetConfigHeaders(Dictionary<string, object> config)
+  {
+    if (!config.TryGetValue("headers", out var value) || value is null)
+    {
+      return new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+    }
+
+    try
+    {
+      var json = value is JsonElement element ? element.GetRawText() : JsonSerializer.Serialize(value);
+      using var document = JsonDocument.Parse(json);
+      if (document.RootElement.ValueKind != JsonValueKind.Object)
+      {
+        return new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+      }
+
+      return document.RootElement.EnumerateObject().ToDictionary(
+        property => property.Name,
+        property => property.Value.ValueKind == JsonValueKind.String ? property.Value.GetString() ?? string.Empty : property.Value.ToString(),
+        StringComparer.OrdinalIgnoreCase);
+    }
+    catch (JsonException)
+    {
+      return new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+    }
+  }
+
+  private static string GetConfigText(Dictionary<string, object> config, string key)
+  {
+    if (!config.TryGetValue(key, out var value) || value is null)
+    {
+      return string.Empty;
+    }
+
+    return value switch
+    {
+      JsonElement element when element.ValueKind == JsonValueKind.String => element.GetString() ?? string.Empty,
+      JsonElement element => element.GetRawText(),
+      string text => text,
+      _ => JsonSerializer.Serialize(value),
+    };
+  }
+
+  private static bool IsSensitiveHeader(string name) =>
+    name.Contains("authorization", StringComparison.OrdinalIgnoreCase) ||
+    name.Contains("api-key", StringComparison.OrdinalIgnoreCase) ||
+    name.Contains("apikey", StringComparison.OrdinalIgnoreCase) ||
+    name.Contains("token", StringComparison.OrdinalIgnoreCase) ||
+    name.Contains("secret", StringComparison.OrdinalIgnoreCase);
+
+  private static string BashSingleQuote(string value) => "'" + value.Replace("'", "'\"'\"'") + "'";
+
+  private static string SanitizeComment(string value) => value.Replace('\r', ' ').Replace('\n', ' ');
+
+  private static string Slug(string value)
+  {
+    var slug = Regex.Replace(value.Trim().ToLowerInvariant(), "[^a-z0-9]+", "-").Trim('-');
+    return string.IsNullOrWhiteSpace(slug) ? "botjob" : slug;
+  }
+
+  [GeneratedRegex(@"\$\{([^}]+)\}")]
+  private static partial Regex TokenRegex();
+
+  [GeneratedRegex(@"\{([A-Za-z0-9_.-]+)\}")]
+  private static partial Regex PathParameterRegex();
+
+  [GeneratedRegex("^[A-Z]+$")]
+  private static partial Regex HttpMethodRegex();
+}

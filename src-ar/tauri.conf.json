@@ -1,0 +1,41 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "AR",
+  "version": "1.0.0",
+  "identifier": "com.arweb.ar-conversational",
+  "build": {
+    "beforeDevCommand": "npm run dev:ar",
+    "devUrl": "http://localhost:5174",
+    "beforeBuildCommand": "npm run build:ar && npm run build:server-csharp:ar",
+    "frontendDist": "../dist-ar"
+  },
+  "app": {
+    "withGlobalTauri": false,
+    "windows": [
+      {
+        "title": "AR",
+        "width": 1280,
+        "height": 800,
+        "minWidth": 960,
+        "minHeight": 640,
+        "resizable": true,
+        "fullscreen": false
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/icon.ico"
+    ],
+    "externalBin": [
+      "binaries/arapi-backend"
+    ]
+  }
+}

@@ -1,0 +1,102 @@
+# dependencies
+node_modules/
+.pnp/
+.pnp.js
+
+# build output
+dist/
+dist-ar/
+build/
+artifacts/
+*.tsbuildinfo
+packages/*/dist/
+server-arapi/dist/
+server-ar/dist/
+src-arapi/target/
+src-arapi/gen/
+src-arapi/binaries/
+src-ar/target/
+src-ar/gen/
+src-ar/binaries/
+server-arapi-csharp/bin/
+server-arapi-csharp/obj/
+
+# delivery branch: local-only API reference/database folder
+# Keep this directory on authorized workstations, but never commit or push it.
+CAPI/
+
+# delivery branch: legacy implementations are intentionally excluded
+server-arapi/
+server-ar/
+packages/agents/
+packages/api-testing-engine/
+packages/application/
+packages/infrastructure/
+packages/mock-server/
+
+# delivery branch: generated QA/build material
+.tmp/
+.agents/
+.claude/
+.codex/
+e2e/
+test-results/
+playwright-report/
+docker/
+releases/
+public/
+specifications/guide/work/
+specifications/guide/screenshots/
+specifications/guide/screenshots-ar-conversational/
+
+# Legacy delivery/release helpers retained only in older branches.
+scripts/README.md
+scripts/_*.py
+scripts/build-sidecar.ps1
+scripts/build-sidecar.bat
+scripts/build-sidecar-ar.ps1
+scripts/bump-version.*
+scripts/release.*
+.dockerignore
+Dockerfile
+build-images.sh
+docker-compose.ragstack.yml
+restart.sh
+vercel.json
+
+# Keep only the runtime progress payload from the old docs directory.
+docs/*
+!docs/progress.json
+
+# data (runtime, do not commit local DB)
+data/app.db
+data/app.db-*
+data/arapi-backend-state.json*
+data/demo-context.json
+data/exports/*
+
+# env / secrets
+.env
+.env.*
+!.env.example
+
+# logs
+*.log
+logs/
+
+# releases — binary artifacts are ignored; only INDEX.md is tracked
+releases/v*/
+!releases/INDEX.md
+
+# packaged archives
+*.zip
+*.7z
+*.rar
+
+# editor / OS
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+data/.arweb.key

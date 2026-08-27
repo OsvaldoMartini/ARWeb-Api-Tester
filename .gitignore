@@ -89,7 +89,7 @@ releases/v*/
 *.7z
 *.rar
 # delivery package for the guided-tour presentation — tracked on purpose
-!docs/ARWeb-Visita-Guidata.zip
+!docs/presentations/*.zip
 
 # editor / OS
 .vscode/*

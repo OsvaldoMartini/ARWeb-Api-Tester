@@ -119,7 +119,12 @@
 const VOICE_LANG = "it-IT";
 
 const el = id => document.getElementById(id);
-let tour = null, idx = 0, playing = false, utter = null, advanceTimer = null;
+let tour = null, tourName = "", idx = 0, playing = false, utter = null, advanceTimer = null;
+/* narrazione registrata (voce clonata): <tour>/audio/<id>.mp3 + .json con i
+   tempi delle parole; in assenza si ripiega su speechSynthesis.
+   Riproduzione via Web Audio API: l'elemento <audio> si blocca con alcuni
+   serventi minimi, il decodificatore Web Audio no. */
+let actx = null, srcNode = null, audioWords = null, rafId = 0, tZero = 0;
 
 /* ---- voci ---- */
 function italianVoices() {
@@ -152,6 +157,7 @@ async function loadTour(name) {
     return;
   }
   tour.steps = (tour.steps || []).filter(s => !s.obsoleto);
+  tourName = name;
   el("titolo-tour").textContent = tour.titolo || name;
   el("menu").style.display = "none";
   el("player").style.display = "block";
@@ -174,9 +180,10 @@ function showStep(i, speak) {
   el("btn-next").disabled = idx === tour.steps.length - 1;
 
   const img = el("shot");
+  const target = new URL(s.immagine, location.href).href;
   img.onload = () => { placeSpot(s.hotspot); if (speak) speakStep(s); };
-  if (img.src.endsWith(s.immagine)) { placeSpot(s.hotspot); if (speak) speakStep(s); }
-  else img.src = s.immagine;
+  if (img.src === target) { placeSpot(s.hotspot); if (speak) speakStep(s); }
+  else img.src = target;
 }
 
 function placeSpot(h) {
@@ -191,10 +198,52 @@ function placeSpot(h) {
 }
 
 /* ---- voce e sottotitoli progressivi ---- */
-function speakStep(s) {
+async function speakStep(s) {
   stopSpeech();
   const words = el("sub-testo").querySelectorAll(".w");
   if (!s.testo) { onStepEnd(); return; }
+
+  /* narrazione registrata, se disponibile */
+  try {
+    const r = await fetch(tourName + "/audio/" + s.id + ".json");
+    if (r.ok) {
+      const meta = await r.json();
+      const mp3 = await fetch(tourName + "/audio/" + s.id + ".mp3");
+      if (!mp3.ok) throw new Error("audio mancante");
+      actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+      if (actx.state === "suspended") await actx.resume();
+      const buf = await actx.decodeAudioData(await mp3.arrayBuffer());
+      audioWords = meta.parole || [];
+      playing = true;
+      el("btn-play").textContent = "⏸ Pausa";
+      srcNode = actx.createBufferSource();
+      srcNode.buffer = buf;
+      srcNode.connect(actx.destination);
+      tZero = actx.currentTime;
+      /* i tempi delle parole possono includere un segnaposto <start>:
+         si contano solo le voci reali, allineate agli span del testo */
+      const stamps = audioWords.filter(w => !/^<.*>$/.test(w.word));
+      /* setInterval e non requestAnimationFrame: quest'ultimo si ferma
+         del tutto quando la linguetta non è in primo piano */
+      rafId = setInterval(() => {
+        if (!srcNode) return;
+        const t = actx.currentTime - tZero;
+        let n = 0;
+        for (const w of stamps) { if (w.start <= t) n++; else break; }
+        words.forEach((w, k) => w.classList.toggle("on", k < n));
+      }, 120);
+      srcNode.onended = () => {
+        if (!srcNode) return;
+        srcNode = null;
+        clearInterval(rafId);
+        words.forEach(w => w.classList.add("on"));
+        onStepEnd();
+      };
+      srcNode.start();
+      return;
+    }
+  } catch (e) { /* nessun audio registrato: si prosegue con la sintesi */ }
+
   playing = true;
   el("btn-play").textContent = "⏸ Pausa";
 
@@ -238,12 +287,27 @@ function stopSpeech() {
   clearTimeout(advanceTimer);
   if (utter) { utter.onend = utter.onerror = utter.onboundary = null; utter = null; }
   speechSynthesis.cancel();
+  if (srcNode) {
+    const n = srcNode; srcNode = null; n.onended = null;
+    try { n.stop(); } catch (e) {}
+  }
+  clearInterval(rafId);
+  if (actx && actx.state === "suspended") actx.resume();
+  audioWords = null;
   playing = false;
   el("btn-play").textContent = "▶ Avviare";
 }
 
 /* ---- comandi ---- */
 el("btn-play").onclick = () => {
+  if (srcNode) {                                  /* narrazione registrata */
+    if (actx.state === "running") {
+      actx.suspend(); playing = false; el("btn-play").textContent = "▶ Riprendere";
+    } else {
+      actx.resume(); playing = true; el("btn-play").textContent = "⏸ Pausa";
+    }
+    return;
+  }
   if (playing) { stopSpeech(); }
   else if (speechSynthesis.paused) { speechSynthesis.resume(); }
   else showStep(idx, true);

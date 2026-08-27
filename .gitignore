@@ -90,6 +90,8 @@ releases/v*/
 *.rar
 # delivery package for the guided-tour presentation — tracked on purpose
 !docs/presentations/*.zip
+# generated narration audio stays out of git (shipped only inside the zip)
+docs/guida/*/audio/
 
 # editor / OS
 .vscode/*

@@ -1,0 +1,401 @@
+{
+  "titolo": "Guida ARAPI — percorso guidato",
+  "lingua": "it-CH",
+  "linguaVoce": "it-IT",
+  "immagini": {
+    "larghezza": 1296,
+    "altezza": 839
+  },
+  "steps": [
+    {
+      "id": "01-home",
+      "ordine": 1,
+      "immagine": "../guide/screenshots/01-home.png",
+      "capitolo": "5. Interface fundamentals",
+      "sezione": "Common visual states",
+      "titolo": "La pagina Home",
+      "testo": "Ecco la pagina Home di ARAPI. Il pannello Engine status indica se il motore locale è in funzione: l'indicatore verde online conferma che tutto è pronto. Per aprire un'area di lavoro, selezionare uno dei riquadri oppure la voce corrispondente nella barra laterale.",
+      "hotspot": {
+        "x": 0.21,
+        "y": 0.225,
+        "w": 0.765,
+        "h": 0.095
+      }
+    },
+    {
+      "id": "02-import-apis",
+      "ordine": 2,
+      "immagine": "../guide/screenshots/02-import-apis.png",
+      "capitolo": "6. Screen-by-screen guide",
+      "sezione": "6.2 Import APIs - Folder (Desktop)",
+      "titolo": "Importare da una cartella",
+      "testo": "Per importare le specifiche da una cartella locale, aprire la linguetta Folder (Desktop). Premere Browse, scegliere la cartella desiderata e confermare il percorso, poi premere Import. Le sottocartelle vengono analizzate automaticamente; le cartelle tecniche come node_modules vengono ignorate.",
+      "hotspot": {
+        "x": 0.21,
+        "y": 0.22,
+        "w": 0.52,
+        "h": 0.22
+      }
+    },
+    {
+      "id": "14-import-upload",
+      "ordine": 3,
+      "immagine": "../guide/screenshots/14-import-upload.png",
+      "capitolo": "6. Screen-by-screen guide",
+      "sezione": "6.3 Import APIs - Upload Files",
+      "titolo": "Caricare i file delle specifiche",
+      "testo": "In alternativa, la linguetta Upload Files permette di caricare i file direttamente dal navigatore. Trascinare i documenti YAML o JSON nell'apposita zona, oppure premere Browse Files o Browse Folder. Togliere gli elementi indesiderati, poi premere Import e controllare il riepilogo dell'importazione.",
+      "hotspot": {
+        "x": 0.21,
+        "y": 0.295,
+        "w": 0.52,
+        "h": 0.35
+      }
+    },
+    {
+      "id": "03-api-catalog",
+      "ordine": 4,
+      "immagine": "../guide/screenshots/03-api-catalog.png",
+      "capitolo": "6. Screen-by-screen guide",
+      "sezione": "6.4 API Catalog",
+      "titolo": "Il catalogo delle API",
+      "testo": "L'API Catalog raccoglie tutti gli endpoint importati ed è l'unica fonte di verità per i test. Nel campo Search method / path cercare per metodo HTTP, percorso o descrizione. La colonna MAPPING indica con mapped o unmapped se esiste già un'associazione alla tassonomia.",
+      "hotspot": {
+        "x": 0.76,
+        "y": 0.13,
+        "w": 0.205,
+        "h": 0.05
+      }
+    },
+    {
+      "id": "04-business-categories",
+      "ordine": 5,
+      "immagine": "../guide/screenshots/04-business-categories.png",
+      "capitolo": "6. Screen-by-screen guide",
+      "sezione": "6.5 Business Categories",
+      "titolo": "Le categorie bancarie",
+      "testo": "Business Categories offre una vista di sola lettura della tassonomia bancaria: venticinque categorie, ognuna con le proprie sottocategorie. Gli endpoint del catalogo vengono associati a questi ambiti, così anche chi non è tecnico può orientarsi per settore di attività, senza dover conoscere gli indirizzi delle API.",
+      "hotspot": {
+        "x": 0.209,
+        "y": 0.23,
+        "w": 0.245,
+        "h": 0.225
+      }
+    },
+    {
+      "id": "05-test-cases",
+      "ordine": 6,
+      "immagine": "../guide/screenshots/05-test-cases.png",
+      "capitolo": "6. Screen-by-screen guide",
+      "sezione": "6.6 Test Cases",
+      "titolo": "I casi di test",
+      "testo": "La pagina Test Cases documenta il concetto di test riutilizzabili. Nella versione 1.0.0 il pulsante New test case è disattivato: per creare flussi di lavoro utilizzare invece il BotJob Designer. I casi definiti qui verranno convalidati rispetto al catalogo delle API reali.",
+      "hotspot": {
+        "x": 0.885,
+        "y": 0.13,
+        "w": 0.093,
+        "h": 0.05
+      }
+    },
+    {
+      "id": "06-bot-builder",
+      "ordine": 7,
+      "immagine": "../guide/screenshots/06-bot-builder.png",
+      "capitolo": "6. Screen-by-screen guide",
+      "sezione": "6.7 Bot Builder - start",
+      "titolo": "L'assistente Bot Builder",
+      "testo": "Bot Builder è l'assistente conversazionale di ARAPI. Selezionare uno dei suggerimenti oppure scrivere un'istruzione nel campo in basso: premere Enter per inviare, Shift+Enter per andare a capo. L'assistente può cercare nel catalogo, creare BotJob ed eseguire test.",
+      "hotspot": {
+        "x": 0.315,
+        "y": 0.57,
+        "w": 0.535,
+        "h": 0.24
+      }
+    },
+    {
+      "id": "24-bot-builder-action",
+      "ordine": 8,
+      "immagine": "../guide/screenshots/24-bot-builder-action.png",
+      "capitolo": "6. Screen-by-screen guide",
+      "sezione": "6.8 Bot Builder - catalog action",
+      "titolo": "Le carte azione",
+      "testo": "Dopo una richiesta, esaminare la risposta e aprire le carte azione con la freccetta. Una carta azione è la prova di ciò che ARAPI ha trovato o creato: verificare sempre nel catalogo se l'endpoint è importato o sintetico prima di farvi affidamento.",
+      "hotspot": {
+        "x": 0.355,
+        "y": 0.3,
+        "w": 0.44,
+        "h": 0.34
+      }
+    },
+    {
+      "id": "07-botjob-designer",
+      "ordine": 9,
+      "immagine": "../guide/screenshots/07-botjob-designer.png",
+      "capitolo": "6. Screen-by-screen guide",
+      "sezione": "6.9 BotJob Designer - no selection",
+      "titolo": "Il BotJob Designer",
+      "testo": "Il BotJob Designer permette di comporre visivamente le sequenze di comandi. Selezionare un BotJob salvato nell'elenco SAVED BOTJOBS oppure crearne uno nuovo con + New BotJob. I comandi della COMMAND PALETTE restano disattivati finché nessun BotJob è selezionato.",
+      "hotspot": {
+        "x": 0.21,
+        "y": 0.23,
+        "w": 0.17,
+        "h": 0.32
+      }
+    },
+    {
+      "id": "15-botjob-designer-selected",
+      "ordine": 10,
+      "immagine": "../guide/screenshots/15-botjob-designer-selected.png",
+      "capitolo": "6. Screen-by-screen guide",
+      "sezione": "6.10 BotJob Designer - selected job",
+      "titolo": "Modificare un BotJob",
+      "testo": "Con un BotJob selezionato, modificare nome, descrizione e variabili, poi aggiungere comandi dalla palette. Nel Flow Canvas trascinare la maniglia per riordinare i comandi, attivarli o disattivarli con la casella, e infine premere Save per registrare le modifiche.",
+      "hotspot": {
+        "x": 0.4,
+        "y": 0.655,
+        "w": 0.39,
+        "h": 0.32
+      }
+    },
+    {
+      "id": "26-designer-command-config",
+      "ordine": 11,
+      "immagine": "../guide/screenshots/26-designer-command-config.png",
+      "capitolo": "6. Screen-by-screen guide",
+      "sezione": "6.11 BotJob Designer - API Call configuration",
+      "titolo": "Configurare una chiamata API",
+      "testo": "Aprendo un comando API Call, scegliere un endpoint importato nel menù ENDPOINT. Nel campo BODY inserire, se necessario, un JSON valido; le variabili si richiamano con la sintassi ${name}, per esempio ${token}. Anche le intestazioni HEADERS accettano un oggetto JSON facoltativo.",
+      "hotspot": {
+        "x": 0.41,
+        "y": 0.465,
+        "w": 0.37,
+        "h": 0.4
+      }
+    },
+    {
+      "id": "08-environments",
+      "ordine": 12,
+      "immagine": "../guide/screenshots/08-environments.png",
+      "capitolo": "6. Screen-by-screen guide",
+      "sezione": "6.12 Environments",
+      "titolo": "Gli ambienti di esecuzione",
+      "testo": "Environments elenca gli obiettivi di esecuzione con nome. L'ambiente integrato Mock Server esiste sempre e non può essere modificato né eliminato. Per i sistemi di sviluppo, di test o di produzione autorizzati, creare obiettivi separati con New Environment.",
+      "hotspot": {
+        "x": 0.21,
+        "y": 0.228,
+        "w": 0.765,
+        "h": 0.125
+      }
+    },
+    {
+      "id": "16-environment-form",
+      "ordine": 13,
+      "immagine": "../guide/screenshots/16-environment-form.png",
+      "capitolo": "6. Screen-by-screen guide",
+      "sezione": "6.13 Environment form",
+      "titolo": "Creare un nuovo ambiente",
+      "testo": "Nel formulario New Environment compilare Name e Base URL: solo allora Save diventa attivo. Nelle intestazioni predefinite inserire una coppia Key: Value per riga, per esempio Authorization con la propria variabile. Confermare con Save oppure annullare con Cancel.",
+      "hotspot": {
+        "x": 0.21,
+        "y": 0.23,
+        "w": 0.765,
+        "h": 0.49
+      }
+    },
+    {
+      "id": "09-scripts",
+      "ordine": 14,
+      "immagine": "../guide/screenshots/09-scripts.png",
+      "capitolo": "6. Screen-by-screen guide",
+      "sezione": "6.14 Scripts - initial",
+      "titolo": "Generare copioni Bash",
+      "testo": "La pagina Scripts genera un file Bash con le chiamate curl del BotJob scelto, nell'ordine definito. Il pulsante Create Bash Script resta disattivato finché non sono selezionati il BotJob, l'ambiente e la cartella di destinazione sul proprio computer.",
+      "hotspot": {
+        "x": 0.21,
+        "y": 0.23,
+        "w": 0.52,
+        "h": 0.41
+      }
+    },
+    {
+      "id": "17-scripts-selected",
+      "ordine": 15,
+      "immagine": "../guide/screenshots/17-scripts-selected.png",
+      "capitolo": "6. Screen-by-screen guide",
+      "sezione": "6.15 Scripts - selected BotJob",
+      "titolo": "Salvare il copione",
+      "testo": "Dopo aver scelto il BotJob, premere Browse e indicare una cartella dedicata, per esempio Documents\\ARAPI\\Scripts, fuori dalla cartella d'installazione. Premere poi Create Bash Script: i comandi disattivati vengono esclusi e i valori segreti diventano variabili d'ambiente richieste.",
+      "hotspot": {
+        "x": 0.21,
+        "y": 0.455,
+        "w": 0.52,
+        "h": 0.26
+      }
+    },
+    {
+      "id": "10-execute-tests",
+      "ordine": 16,
+      "immagine": "../guide/screenshots/10-execute-tests.png",
+      "capitolo": "6. Screen-by-screen guide",
+      "sezione": "6.16 Execute Tests - initial",
+      "titolo": "Eseguire i test",
+      "testo": "Execute Tests esegue i BotJob contro il Mock Server o un indirizzo reale, mostrando la traccia di controllo passo per passo. Selezionare prima l'ambiente in alto a destra, poi il BotJob nell'apposito menù: Run e Create Scripts si attivano solo quando applicabile.",
+      "hotspot": {
+        "x": 0.253,
+        "y": 0.228,
+        "w": 0.297,
+        "h": 0.05
+      }
+    },
+    {
+      "id": "18-execute-selected",
+      "ordine": 17,
+      "immagine": "../guide/screenshots/18-execute-selected.png",
+      "capitolo": "6. Screen-by-screen guide",
+      "sezione": "6.17 Execute Tests - ready",
+      "titolo": "Pronti all'esecuzione",
+      "testo": "Con BotJob e ambiente selezionati compare lo stato Ready to run. Create Scripts apre la pagina Scripts con le selezioni correnti già impostate; Run avvia l'esecuzione locale, registrando per ogni passo richiesta, risposta, verifiche e tempi.",
+      "hotspot": {
+        "x": 0.826,
+        "y": 0.13,
+        "w": 0.15,
+        "h": 0.05
+      }
+    },
+    {
+      "id": "19-execute-results",
+      "ordine": 18,
+      "immagine": "../guide/screenshots/19-execute-results.png",
+      "capitolo": "6. Screen-by-screen guide",
+      "sezione": "6.18 Execute Tests - result summary",
+      "titolo": "Il riepilogo dei risultati",
+      "testo": "Al termine, il riepilogo mostra lo stato, l'obiettivo e i passi superati, per esempio 13 su 13. Espandere una riga per i dettagli. Per l'accettazione su sistemi reali, confrontare sempre i risultati con le evidenze del sistema di destinazione: lo stato locale da solo non basta.",
+      "hotspot": {
+        "x": 0.21,
+        "y": 0.315,
+        "w": 0.755,
+        "h": 0.09
+      }
+    },
+    {
+      "id": "23-execution-step-detail",
+      "ordine": 19,
+      "immagine": "../guide/screenshots/23-execution-step-detail.png",
+      "capitolo": "6. Screen-by-screen guide",
+      "sezione": "6.19 Execution step detail",
+      "titolo": "Il dettaglio di un passo",
+      "testo": "Aprendo un passo, espandere Request o Response quando presenti per esaminare i dati scambiati. Attenzione alla riservatezza: non copiare contenuti sensibili delle richieste o delle risposte in biglietti di assistenza o in documenti destinati alla clientela.",
+      "hotspot": {
+        "x": 0.21,
+        "y": 0.5,
+        "w": 0.755,
+        "h": 0.12
+      }
+    },
+    {
+      "id": "20-execution-history",
+      "ordine": 20,
+      "immagine": "../guide/screenshots/20-execution-history.png",
+      "capitolo": "6. Screen-by-screen guide",
+      "sezione": "6.20 Execution History",
+      "titolo": "La cronologia delle esecuzioni",
+      "testo": "Il pulsante History mostra le esecuzioni precedenti. Filtrare per BotJob con il menù All BotJobs e selezionare una riga per ricaricare il riepilogo e i risultati di ogni passo. Hide History richiude il pannello quando non serve più.",
+      "hotspot": {
+        "x": 0.21,
+        "y": 0.295,
+        "w": 0.765,
+        "h": 0.195
+      }
+    },
+    {
+      "id": "11-mock-server",
+      "ordine": 21,
+      "immagine": "../guide/screenshots/11-mock-server.png",
+      "capitolo": "6. Screen-by-screen guide",
+      "sezione": "6.21 Mock Server - stopped",
+      "titolo": "Il Mock Server",
+      "testo": "Il Mock Server riproduce localmente gli endpoint importati, senza bisogno di un vero sistema bancario. Premere Start per avviarlo: lo stato passa da Stopped a Running e il registro delle richieste si attiva. I percorsi non riconosciuti restituiscono l'errore 404.",
+      "hotspot": {
+        "x": 0.919,
+        "y": 0.13,
+        "w": 0.058,
+        "h": 0.05
+      }
+    },
+    {
+      "id": "21-mock-running-log",
+      "ordine": 22,
+      "immagine": "../guide/screenshots/21-mock-running-log.png",
+      "capitolo": "6. Screen-by-screen guide",
+      "sezione": "6.22 Mock Server - running",
+      "titolo": "Il Mock Server in funzione",
+      "testo": "Con il servizio in funzione, il pannello mostra i totali, le corrispondenze e il percorso più richiesto sulla porta 8855. Stop arresta il servizio, Clear svuota il registro. Nota della versione attuale: lo stato locale non dimostra da solo che la porta sia raggiungibile dall'esterno.",
+      "hotspot": {
+        "x": 0.21,
+        "y": 0.228,
+        "w": 0.765,
+        "h": 0.14
+      }
+    },
+    {
+      "id": "12-reports",
+      "ordine": 23,
+      "immagine": "../guide/screenshots/12-reports.png",
+      "capitolo": "6. Screen-by-screen guide",
+      "sezione": "6.23 Reports and Exports",
+      "titolo": "Rapporti ed esportazioni",
+      "testo": "Reports & Exports permette lo scaricamento dei risultati. HTML Report e CSV Export riguardano l'esecuzione scelta in Execution Run. Postman Collection e Bash / curl Script coprono invece l'intero catalogo e usano un indirizzo localhost predefinito. I valori segreti vengono sempre oscurati.",
+      "hotspot": {
+        "x": 0.21,
+        "y": 0.415,
+        "w": 0.765,
+        "h": 0.47
+      }
+    },
+    {
+      "id": "13-settings",
+      "ordine": 24,
+      "immagine": "../guide/screenshots/13-settings.png",
+      "capitolo": "6. Screen-by-screen guide",
+      "sezione": "6.24 Settings - provider list",
+      "titolo": "I fornitori di IA",
+      "testo": "In Settings configurare i fornitori di intelligenza artificiale. Il contrassegno verde DEFAULT indica il fornitore usato da tutte le funzioni del programma; i fornitori marcati NO KEY non possono essere scelti come predefiniti finché manca la chiave.",
+      "hotspot": {
+        "x": 0.21,
+        "y": 0.79,
+        "w": 0.52,
+        "h": 0.095
+      }
+    },
+    {
+      "id": "22-settings-provider-form",
+      "ordine": 25,
+      "immagine": "../guide/screenshots/22-settings-provider-form.png",
+      "capitolo": "6. Screen-by-screen guide",
+      "sezione": "6.25 Settings - provider form",
+      "titolo": "Configurare un fornitore",
+      "testo": "Aprendo un fornitore, indicare il modello nel campo MODEL e la chiave in API KEY, poi premere Save. La chiave è cifrata e non viene mai restituita al navigatore. Usare Test come indicatore di configurazione e, dove possibile, credenziali non di produzione.",
+      "hotspot": {
+        "x": 0.21,
+        "y": 0.31,
+        "w": 0.52,
+        "h": 0.35
+      }
+    },
+    {
+      "id": "25-settings-local-services",
+      "ordine": 26,
+      "immagine": "../guide/screenshots/25-settings-local-services.png",
+      "capitolo": "6. Screen-by-screen guide",
+      "sezione": "6.26 Settings - local services",
+      "titolo": "I servizi locali",
+      "testo": "Il riquadro Local services riepiloga i servizi locali: SIDECAR PORT 8787 e MOCK SERVER PORT 8855, entrambi su localhost. Le variabili d'ambiente SIDECAR_PORT e MOCK_SERVER_PORT permettono modifiche riservate all'amministrazione. Con questo la panoramica di ARAPI è completa.",
+      "hotspot": {
+        "x": 0.21,
+        "y": 0.79,
+        "w": 0.52,
+        "h": 0.175
+      }
+    }
+  ]
+}

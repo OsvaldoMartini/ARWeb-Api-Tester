@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="it-CH">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Visita guidata — ARWeb</title>
+<style>
+  :root {
+    --bg: #0d1220; --panel: #151c30; --border: #2a3654;
+    --text: #e8ecf5; --dim: #8b96ad; --accent: #4d8dff; --sub-bg: rgba(8, 12, 24, .92);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg); color: var(--text); min-height: 100vh;
+    font-family: "Segoe UI", system-ui, sans-serif;
+    display: flex; flex-direction: column; align-items: center;
+  }
+  header {
+    width: 100%; max-width: 1100px; padding: 14px 18px;
+    display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  }
+  header h1 { font-size: 1.05rem; font-weight: 600; flex: 1; min-width: 200px; }
+  header .step-pos { color: var(--dim); font-size: .85rem; white-space: nowrap; }
+  select, button {
+    background: var(--panel); color: var(--text); border: 1px solid var(--border);
+    border-radius: 8px; padding: 7px 14px; font-size: .88rem; cursor: pointer;
+  }
+  button:hover, select:hover { border-color: var(--accent); }
+  button.primary { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
+  button:disabled { opacity: .4; cursor: default; }
+
+  /* menu */
+  #menu { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 18px; padding: 40px 20px; }
+  #menu h2 { font-weight: 600; font-size: 1.3rem; }
+  #menu p  { color: var(--dim); max-width: 480px; text-align: center; line-height: 1.5; }
+  .tour-card {
+    display: block; width: 340px; text-align: left; padding: 18px 20px;
+    background: var(--panel); border: 1px solid var(--border); border-radius: 12px;
+  }
+  .tour-card b { display: block; margin-bottom: 4px; font-size: 1rem; }
+  .tour-card span { color: var(--dim); font-size: .85rem; }
+
+  /* stage */
+  #player { display: none; width: 100%; max-width: 1100px; padding: 0 18px 18px; }
+  #stage {
+    position: relative; width: 100%; border: 1px solid var(--border);
+    border-radius: 10px; overflow: hidden; background: #000;
+  }
+  #shot { display: block; width: 100%; height: auto; }
+  #spot {
+    position: absolute; border: 2px solid var(--accent); border-radius: 6px;
+    box-shadow: 0 0 0 9999px rgba(5, 8, 16, .55);
+    transition: all .45s ease; pointer-events: none; display: none;
+  }
+  #subs {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    background: var(--sub-bg); padding: 14px 22px 16px; min-height: 64px;
+  }
+  #subs .titolo { color: var(--accent); font-weight: 600; font-size: .85rem; margin-bottom: 5px; }
+  #subs .testo  { font-size: 1.02rem; line-height: 1.5; }
+  #subs .testo .w { opacity: .22; transition: opacity .18s; }
+  #subs .testo .w.on { opacity: 1; }
+
+  #controls { display: flex; gap: 10px; align-items: center; margin-top: 12px; flex-wrap: wrap; }
+  #controls .spacer { flex: 1; }
+  #bar { width: 100%; height: 4px; background: var(--panel); border-radius: 2px; margin-top: 10px; overflow: hidden; }
+  #bar i { display: block; height: 100%; background: var(--accent); width: 0; transition: width .3s; }
+  #warn { color: #e8a13c; font-size: .82rem; margin-top: 8px; display: none; }
+  label.chk { display: flex; align-items: center; gap: 6px; color: var(--dim); font-size: .85rem; cursor: pointer; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1 id="titolo-tour">Visita guidata</h1>
+  <span class="step-pos" id="pos"></span>
+  <select id="voce" title="Voce italiana"></select>
+  <button id="btn-menu" style="display:none">☰ Percorsi</button>
+</header>
+
+<div id="menu">
+  <h2>Scegliere il percorso guidato</h2>
+  <p>Ogni percorso mostra le schermate dell'applicazione con una zona evidenziata,
+     i sottotitoli progressivi e la narrazione vocale in italiano.</p>
+  <button class="tour-card" data-tour="arapi">
+    <b>ARAPI</b><span>Il banco di prova delle API bancarie — 26 passi</span>
+  </button>
+  <button class="tour-card" data-tour="conversational">
+    <b>AR Conversational</b><span>Il simulatore di conversazioni bancarie — 15 passi</span>
+  </button>
+  <p id="load-err" style="color:#e05f5f"></p>
+</div>
+
+<div id="player">
+  <div id="stage">
+    <img id="shot" alt="">
+    <div id="spot"></div>
+    <div id="subs">
+      <div class="titolo" id="sub-titolo"></div>
+      <div class="testo" id="sub-testo"></div>
+    </div>
+  </div>
+  <div id="bar"><i></i></div>
+  <div id="controls">
+    <button id="btn-prev">⏮ Precedente</button>
+    <button id="btn-play" class="primary">▶ Avviare</button>
+    <button id="btn-next">Successivo ⏭</button>
+    <label class="chk"><input type="checkbox" id="auto" checked> avanzamento automatico</label>
+    <span class="spacer"></span>
+    <button id="btn-restart">↺ Dall'inizio</button>
+  </div>
+  <p id="warn">Nessuna voce italiana trovata nel sistema: i sottotitoli funzionano, la narrazione vocale no.</p>
+</div>
+
+<script>
+"use strict";
+/* Il documento è it-CH; la voce resta it-IT: non esiste una voce it-CH
+   e richiederla farebbe ripiegare sulla voce di sistema (spesso tedesca). */
+const VOICE_LANG = "it-IT";
+
+const el = id => document.getElementById(id);
+let tour = null, idx = 0, playing = false, utter = null, advanceTimer = null;
+
+/* ---- voci ---- */
+function italianVoices() {
+  return speechSynthesis.getVoices().filter(v => v.lang.toLowerCase().startsWith("it"));
+}
+function fillVoices() {
+  const sel = el("voce"), keep = sel.value;
+  const voices = italianVoices();
+  sel.innerHTML = "";
+  voices.forEach(v => {
+    const o = document.createElement("option");
+    o.value = v.name; o.textContent = v.name.replace(/^Microsoft |^Google /, "");
+    sel.appendChild(o);
+  });
+  if (keep && voices.some(v => v.name === keep)) sel.value = keep;
+  el("warn").style.display = voices.length ? "none" : "block";
+}
+speechSynthesis.onvoiceschanged = fillVoices;
+fillVoices();
+
+/* ---- caricamento ---- */
+async function loadTour(name) {
+  try {
+    const r = await fetch(name + "/steps.json");
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    tour = await r.json();
+  } catch (e) {
+    el("load-err").textContent = "Impossibile caricare " + name + "/steps.json — " + e.message +
+      ". Servire la cartella con: python -m http.server 8000";
+    return;
+  }
+  tour.steps = (tour.steps || []).filter(s => !s.obsoleto);
+  el("titolo-tour").textContent = tour.titolo || name;
+  el("menu").style.display = "none";
+  el("player").style.display = "block";
+  el("btn-menu").style.display = "inline-block";
+  idx = 0;
+  showStep(0, false);
+}
+
+/* ---- passi ---- */
+function showStep(i, speak) {
+  stopSpeech();
+  idx = Math.max(0, Math.min(i, tour.steps.length - 1));
+  const s = tour.steps[idx];
+  el("pos").textContent = "passo " + (idx + 1) + " / " + tour.steps.length;
+  el("bar").firstElementChild.style.width = ((idx + 1) / tour.steps.length * 100) + "%";
+  el("sub-titolo").textContent = s.titolo || "";
+  el("sub-testo").innerHTML = (s.testo || "")
+    .split(/\s+/).map(w => "<span class='w'>" + w.replace(/</g, "&lt;") + "</span>").join(" ");
+  el("btn-prev").disabled = idx === 0;
+  el("btn-next").disabled = idx === tour.steps.length - 1;
+
+  const img = el("shot");
+  img.onload = () => { placeSpot(s.hotspot); if (speak) speakStep(s); };
+  if (img.src.endsWith(s.immagine)) { placeSpot(s.hotspot); if (speak) speakStep(s); }
+  else img.src = s.immagine;
+}
+
+function placeSpot(h) {
+  const spot = el("spot");
+  if (!h) { spot.style.display = "none"; return; }
+  /* le coordinate sono frazioni dell'IMMAGINE; l'immagine riempie lo stage in larghezza */
+  spot.style.display = "block";
+  spot.style.left   = (h.x * 100) + "%";
+  spot.style.top    = (h.y * 100) + "%";
+  spot.style.width  = (h.w * 100) + "%";
+  spot.style.height = (h.h * 100) + "%";
+}
+
+/* ---- voce e sottotitoli progressivi ---- */
+function speakStep(s) {
+  stopSpeech();
+  const words = el("sub-testo").querySelectorAll(".w");
+  if (!s.testo) { onStepEnd(); return; }
+  playing = true;
+  el("btn-play").textContent = "⏸ Pausa";
+
+  utter = new SpeechSynthesisUtterance(s.testo);
+  utter.lang = VOICE_LANG;
+  const chosen = italianVoices().find(v => v.name === el("voce").value);
+  if (chosen) utter.voice = chosen;
+  utter.rate = 0.95;
+
+  /* rivelazione per parola tramite onboundary; ripiego temporizzato se assente */
+  let wi = 0, boundarySeen = false;
+  utter.onboundary = ev => {
+    if (ev.name && ev.name !== "word") return;
+    boundarySeen = true;
+    revealUpTo(s.testo, ev.charIndex, words);
+  };
+  const fallback = setInterval(() => {
+    if (boundarySeen || !playing) { clearInterval(fallback); return; }
+    if (wi < words.length) words[wi++].classList.add("on");
+  }, Math.max(180, (s.testo.length * 55) / Math.max(words.length, 1)));
+
+  utter.onend = () => { clearInterval(fallback); words.forEach(w => w.classList.add("on")); onStepEnd(); };
+  utter.onerror = () => { clearInterval(fallback); words.forEach(w => w.classList.add("on")); onStepEnd(); };
+  speechSynthesis.speak(utter);
+}
+
+function revealUpTo(text, charIndex, words) {
+  let count = text.slice(0, charIndex + 1).trim().split(/\s+/).length;
+  words.forEach((w, k) => w.classList.toggle("on", k < count));
+}
+
+function onStepEnd() {
+  playing = false;
+  el("btn-play").textContent = "▶ Avviare";
+  if (el("auto").checked && idx < tour.steps.length - 1) {
+    advanceTimer = setTimeout(() => showStep(idx + 1, true), 1200);
+  }
+}
+
+function stopSpeech() {
+  clearTimeout(advanceTimer);
+  if (utter) { utter.onend = utter.onerror = utter.onboundary = null; utter = null; }
+  speechSynthesis.cancel();
+  playing = false;
+  el("btn-play").textContent = "▶ Avviare";
+}
+
+/* ---- comandi ---- */
+el("btn-play").onclick = () => {
+  if (playing) { stopSpeech(); }
+  else if (speechSynthesis.paused) { speechSynthesis.resume(); }
+  else showStep(idx, true);
+};
+el("btn-prev").onclick = () => showStep(idx - 1, playing || el("auto").checked);
+el("btn-next").onclick = () => showStep(idx + 1, playing || el("auto").checked);
+el("btn-restart").onclick = () => showStep(0, true);
+el("btn-menu").onclick = () => {
+  stopSpeech();
+  el("player").style.display = "none";
+  el("btn-menu").style.display = "none";
+  el("menu").style.display = "flex";
+  el("titolo-tour").textContent = "Visita guidata";
+  el("pos").textContent = "";
+};
+document.querySelectorAll(".tour-card").forEach(b => b.onclick = () => loadTour(b.dataset.tour));
+document.addEventListener("keydown", ev => {
+  if (!tour || el("player").style.display === "none") return;
+  if (ev.key === "ArrowRight") el("btn-next").click();
+  if (ev.key === "ArrowLeft")  el("btn-prev").click();
+  if (ev.key === " ") { ev.preventDefault(); el("btn-play").click(); }
+});
+
+/* ?tour=arapi apre direttamente un percorso */
+const q = new URLSearchParams(location.search).get("tour");
+if (q === "arapi" || q === "conversational") loadTour(q);
+</script>
+</body>
+</html>

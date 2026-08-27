@@ -1,0 +1,236 @@
+{
+  "titolo": "Guida AR Conversational — percorso guidato",
+  "lingua": "it-CH",
+  "linguaVoce": "it-IT",
+  "immagini": {
+    "larghezza": 1296,
+    "altezza": 839
+  },
+  "steps": [
+    {
+      "id": "01-home",
+      "ordine": 1,
+      "immagine": "../guide/screenshots-ar-conversational/01-home.png",
+      "capitolo": "6. Screen-by-screen guide",
+      "sezione": "6.1 Home overview",
+      "titolo": "La pagina Home",
+      "testo": "AR Conversational è il simulatore di conversazioni bancarie. Prima di iniziare, verificare che il pannello Sidecar status indichi online e osservare la copertura degli agenti. Il valore 13/14 è una copertura dinamica per parole chiave, non un limite fisso del prodotto.",
+      "hotspot": {
+        "x": 0.21,
+        "y": 0.35,
+        "w": 0.765,
+        "h": 0.28
+      }
+    },
+    {
+      "id": "02-assistant-employee",
+      "ordine": 2,
+      "immagine": "../guide/screenshots-ar-conversational/02-assistant-employee.png",
+      "capitolo": "6. Screen-by-screen guide",
+      "sezione": "6.2 Employee conversation workspace",
+      "titolo": "La modalità collaboratore",
+      "testo": "Lo spazio di lavoro in modalità Employee adatta l'instradamento automatico, gli esempi proposti e la presentazione dei saldi sintetici. Scrivere la domanda nel campo Ask as a bank employee e premere Send. Domande e risposte restano visibili solo finché la pagina rimane aperta.",
+      "hotspot": {
+        "x": 0.225,
+        "y": 0.89,
+        "w": 0.735,
+        "h": 0.055
+      }
+    },
+    {
+      "id": "03-mode-welcome",
+      "ordine": 3,
+      "immagine": "../guide/screenshots-ar-conversational/03-mode-welcome.png",
+      "capitolo": "6. Screen-by-screen guide",
+      "sezione": "6.3 Conversation mode chooser",
+      "titolo": "Scegliere la prospettiva",
+      "testo": "All'apertura, scegliere la prospettiva della simulazione: Start as Bank Employee oppure Start as e-Banking Client. Close mantiene la modalità attuale e il pulsante Mode riapre la scelta. La modalità cambia instradamento e linguaggio, ma non autentica nessun cliente.",
+      "hotspot": {
+        "x": 0.26,
+        "y": 0.74,
+        "w": 0.48,
+        "h": 0.06
+      }
+    },
+    {
+      "id": "04-agent-coverage",
+      "ordine": 4,
+      "immagine": "../guide/screenshots-ar-conversational/04-agent-coverage.png",
+      "capitolo": "6. Screen-by-screen guide",
+      "sezione": "6.4 Agent catalog coverage",
+      "titolo": "La copertura degli agenti",
+      "testo": "Il pulsante Coverage mostra l'inventario degli agenti: per ogni gruppo, il numero di endpoint associati per corrispondenza di parole chiave. Una voce con contatore indica solo una sovrapposizione lessicale con il catalogo: convalidare in ARAPI il contratto reale di ogni endpoint.",
+      "hotspot": {
+        "x": 0.21,
+        "y": 0.235,
+        "w": 0.765,
+        "h": 0.4
+      }
+    },
+    {
+      "id": "05-agent-selected",
+      "ordine": 5,
+      "immagine": "../guide/screenshots-ar-conversational/05-agent-selected.png",
+      "capitolo": "6. Screen-by-screen guide",
+      "sezione": "6.5 Explicit agent selection",
+      "titolo": "Forzare un agente",
+      "testo": "Con il menù in alto a destra si può forzare un agente, per esempio Relationship Manager. La selezione esplicita ha la precedenza sull'instradamento automatico e resta attiva finché non si sceglie Auto-route o un altro agente, indipendentemente dalla modalità corrente.",
+      "hotspot": {
+        "x": 0.815,
+        "y": 0.13,
+        "w": 0.16,
+        "h": 0.05
+      }
+    },
+    {
+      "id": "06-assistant-client",
+      "ordine": 6,
+      "immagine": "../guide/screenshots-ar-conversational/06-assistant-client.png",
+      "capitolo": "6. Screen-by-screen guide",
+      "sezione": "6.6 Client e-Banking workspace",
+      "titolo": "La modalità cliente",
+      "testo": "La linguetta Client attiva la modalità e-Banking: linguaggio da cliente finale e instradamento verso gli agenti dedicati. Si tratta di un contesto di presentazione, non di una sessione e-banking collegata: usare soltanto domande sintetiche, senza dati reali della clientela.",
+      "hotspot": {
+        "x": 0.795,
+        "y": 0.05,
+        "w": 0.105,
+        "h": 0.04
+      }
+    },
+    {
+      "id": "07-client-balance-answer",
+      "ordine": 7,
+      "immagine": "../guide/screenshots-ar-conversational/07-client-balance-answer.png",
+      "capitolo": "6. Screen-by-screen guide",
+      "sezione": "6.7 Synthetic client balance answer",
+      "titolo": "Una risposta con i saldi",
+      "testo": "Ecco una risposta del CLIENT CASH ASSISTANT con i saldi dei conti. Attenzione all'avvertenza arancione: si tratta di dati dimostrativi sintetici di ARAPI, con identificativi mascherati, non di dati bancari reali. Non citarli mai come posizione effettiva di un cliente.",
+      "hotspot": {
+        "x": 0.225,
+        "y": 0.31,
+        "w": 0.62,
+        "h": 0.245
+      }
+    },
+    {
+      "id": "08-client-evidence-expanded",
+      "ordine": 8,
+      "immagine": "../guide/screenshots-ar-conversational/08-client-evidence-expanded.png",
+      "capitolo": "6. Screen-by-screen guide",
+      "sezione": "6.8 Expanded endpoint evidence",
+      "titolo": "L'evidenza degli endpoint",
+      "testo": "Il collegamento show 3 endpoints used espande l'evidenza: le pastiglie con metodo e percorso indicano i record del catalogo scelti per corrispondenza di parole chiave. Non dimostrano autorizzazione, convalida o esecuzione in rete: esaminare ogni voce prima di farvi affidamento.",
+      "hotspot": {
+        "x": 0.22,
+        "y": 0.585,
+        "w": 0.49,
+        "h": 0.04
+      }
+    },
+    {
+      "id": "09-arapi-delegation",
+      "ordine": 9,
+      "immagine": "../guide/screenshots-ar-conversational/09-arapi-delegation.png",
+      "capitolo": "6. Screen-by-screen guide",
+      "sezione": "6.9 ARAPI catalog-search delegation",
+      "titolo": "La delega ad ARAPI",
+      "testo": "Le richieste su catalogo, BotJob e test vengono delegate ad ARAPI, come mostra la carta ARAPI BOT BUILDER. La carta conversazionale non è un'approvazione finale: aprire l'applicazione ARAPI e controllare ogni endpoint trovato, registrazione sintetica o esecuzione.",
+      "hotspot": {
+        "x": 0.225,
+        "y": 0.59,
+        "w": 0.49,
+        "h": 0.27
+      }
+    },
+    {
+      "id": "10-api-catalog",
+      "ordine": 10,
+      "immagine": "../guide/screenshots-ar-conversational/10-api-catalog.png",
+      "capitolo": "6. Screen-by-screen guide",
+      "sezione": "6.10 API Catalog overview",
+      "titolo": "Il catalogo in sola lettura",
+      "testo": "L'API Catalog di AR Conversational è una vista di sola lettura sulla banca dati condivisa: qui 5'556 endpoint disponibili. Le funzioni di importazione, modifica e associazione restano volutamente in ARAPI: ogni cambiamento va effettuato là.",
+      "hotspot": {
+        "x": 0.21,
+        "y": 0.175,
+        "w": 0.46,
+        "h": 0.03
+      }
+    },
+    {
+      "id": "11-catalog-filtered",
+      "ordine": 11,
+      "immagine": "../guide/screenshots-ar-conversational/11-catalog-filtered.png",
+      "capitolo": "6. Screen-by-screen guide",
+      "sezione": "6.11 Filtered API Catalog",
+      "titolo": "Filtrare il catalogo",
+      "testo": "La ricerca filtra per metodo, percorso o descrizione. Un termine generico come balance può includere risultati tecnicamente o semanticamente deboli, che richiedono una verifica umana. Controllare sempre che l'endpoint trovato corrisponda davvero all'esigenza prima di utilizzarlo.",
+      "hotspot": {
+        "x": 0.766,
+        "y": 0.13,
+        "w": 0.197,
+        "h": 0.05
+      }
+    },
+    {
+      "id": "12-settings",
+      "ordine": 12,
+      "immagine": "../guide/screenshots-ar-conversational/12-settings.png",
+      "capitolo": "6. Screen-by-screen guide",
+      "sezione": "6.12 Settings provider list",
+      "titolo": "Impostazioni condivise",
+      "testo": "Le impostazioni sono condivise fra ARAPI e AR Conversational: cambiare il fornitore predefinito o i suoi dati ha effetto su entrambe le applicazioni. Il messaggio verde indica il fornitore attivo per tutte le funzioni di intelligenza artificiale.",
+      "hotspot": {
+        "x": 0.21,
+        "y": 0.23,
+        "w": 0.52,
+        "h": 0.05
+      }
+    },
+    {
+      "id": "13-settings-provider-form",
+      "ordine": 13,
+      "immagine": "../guide/screenshots-ar-conversational/13-settings-provider-form.png",
+      "capitolo": "6. Screen-by-screen guide",
+      "sezione": "6.13 Provider configuration form",
+      "titolo": "Configurare un fornitore",
+      "testo": "Nel formulario del fornitore indicare il modello e la chiave, poi premere Save. Con una chiave già registrata, lasciare vuoto il campo per conservarla. Mai inserire credenziali di produzione in catture di schermo o biglietti di assistenza.",
+      "hotspot": {
+        "x": 0.21,
+        "y": 0.31,
+        "w": 0.52,
+        "h": 0.35
+      }
+    },
+    {
+      "id": "14-settings-local-services",
+      "ordine": 14,
+      "immagine": "../guide/screenshots-ar-conversational/14-settings-local-services.png",
+      "capitolo": "6. Screen-by-screen guide",
+      "sezione": "6.14 Settings local services",
+      "titolo": "I servizi locali",
+      "testo": "Il riquadro Local services mostra i servizi locali: ARAPI BACKEND sulla porta 8787 e AR CONVERSATIONAL CLIENT sulla porta 5174, riservata allo sviluppo. Il backend risponde solo su localhost: nessuna delle due porte va esposta come servizio pubblico.",
+      "hotspot": {
+        "x": 0.21,
+        "y": 0.775,
+        "w": 0.52,
+        "h": 0.19
+      }
+    },
+    {
+      "id": "15-settings-test-result",
+      "ordine": 15,
+      "immagine": "../guide/screenshots-ar-conversational/15-settings-test-result.png",
+      "capitolo": "6. Screen-by-screen guide",
+      "sezione": "6.15 Provider Test result",
+      "titolo": "Il risultato del Test",
+      "testo": "Premere Test accanto al fornitore: il risultato Connected è un indicatore di configurazione locale. Nella versione esaminata non dimostra né il collegamento esterno, né la validità delle credenziali, né l'elaborazione da parte di un modello. La visita guidata termina qui.",
+      "hotspot": {
+        "x": 0.225,
+        "y": 0.65,
+        "w": 0.49,
+        "h": 0.055
+      }
+    }
+  ]
+}
